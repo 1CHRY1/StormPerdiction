@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="nnu.edu.station.dao.nc.NCMapper">
+    <select id="getInfoByTimeAndType" resultType="java.util.Map">
+        select path,name from NC where time=#{time} and manual=#{type}
+    </select>
+</mapper>

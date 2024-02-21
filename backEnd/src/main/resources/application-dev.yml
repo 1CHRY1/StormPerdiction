@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    level:
+      jdbc-url: jdbc:sqlite:D:\1study\Work\2023_12_22_Storm\Data\DataProcess\Forcasting.db
+      driver-class-name: org.sqlite.JDBC
+    nc:
+      jdbc-url: jdbc:sqlite:D:\1study\Work\2023_12_22_Storm\Data\DataProcess\NC.db
+      driver-class-name: org.sqlite.JDBC
+
+python:
+  python
+DataProcess:
+  D:/1study/Work/2023_12_22_Storm/Data/DataProcess/
+DataProcessLog:
+  D:/1study/Work/2023_12_22_Storm/Data/DataProcess/logfile.log

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="nnu.edu.station.dao.level.StationMapper">
+    <select id="getInfoByName" resultType="java.util.Map">
+        select name_cn,lat,lon,type,tablename from stations where name = #{name}
+    </select>
+
+    <select id="getAllStations" resultType="java.util.Map">
+        select name from stations
+    </select>
+</mapper>
