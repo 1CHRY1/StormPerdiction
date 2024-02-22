@@ -43,7 +43,10 @@ public class LevelController {
         return ResultUtils.success(levelService.getNoTyphAllByStation(station));
     }
 
-    @RequestMapping(value = "/getNoTyph72ManualByStation/{station}", method = RequestMethod.GET)
+    @RequestMapping(value =
+
+
+            "/getNoTyph72ManualByStation/{station}", method = RequestMethod.GET)
     public JsonResult getNoTyph72ManualByStation(@PathVariable String station) {
         /* 根据名称获取站点无台风情况下72小时手动计算潮位预报信息 */
         return ResultUtils.success(levelService.getNoTyph72ManualByStation(station));
