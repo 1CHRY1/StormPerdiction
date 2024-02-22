@@ -1,0 +1,1312 @@
+ 
+2023-08-31 05:15:09
+ 
+x=========================================================================x
+x===============================SYSTEM START==============================x
+x=========================================================================x
+ 
+TODAY IS :
+2023 08 31
+Have a nice day! Start today's work!
+ 
+x=========================================================================x
+x=============================CONDA ACTIVATE==============================x
+x=========================================================================x
+ 
+RUN conda activate ncl_stable
+dir_root = /home/ps/ForecastPlatform/storm_ad_user
+create path1_ForecastFolder.path
+ 
+x=========================================================================x
+x=============================DOWNLOAD WIND -xDAY=========================x
+x=========================================================================x
+ 
+function input:  -3
+preXday X is: -3
+preXday's date is : 20230828
+ 
+dir_atmos_i = /home/ps/ForecastPlatform/storm_ad_user/20230828/atmos
+ 
+JUDGE IF xday's wind nc files exists ...
+ 
+xday's ncfiles HAVE EXIST ! DONT download ! 
+ 
+-----------------------------------------------
+ 
+function input:  -2
+preXday X is: -2
+preXday's date is : 20230829
+ 
+dir_atmos_i = /home/ps/ForecastPlatform/storm_ad_user/20230829/atmos
+ 
+JUDGE IF xday's wind nc files exists ...
+ 
+xday's ncfiles HAVE EXIST ! DONT download ! 
+ 
+-----------------------------------------------
+ 
+function input:  -1
+preXday X is: -1
+preXday's date is : 20230830
+ 
+dir_atmos_i = /home/ps/ForecastPlatform/storm_ad_user/20230830/atmos
+ 
+JUDGE IF xday's wind nc files exists ...
+ 
+xday's ncfiles DONT EXIST! MUST DOWNLOAD! 
+ 
+CD  /home/ps/ForecastPlatform/storm_ad_user/codesGFS
+ 
+DOWNLOAD GFS file: RUN GFSdownload_xday.sh.x ...
+https://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p25.pl?file=gfs.t00z.pgrb2.0p25.f000&lev_surface=on&lev_10_m_above_ground=on&var_PRES=on&var_UGRD=on&var_VGRD=on&leftlon=115&rightlon=135&toplat=45&bottomlat=20&dir=%2Fgfs.20230830%2F00%2Fatmos
+文件下载成功！
+https://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p25.pl?file=gfs.t00z.pgrb2.0p25.f003&lev_surface=on&lev_10_m_above_ground=on&var_PRES=on&var_UGRD=on&var_VGRD=on&leftlon=115&rightlon=135&toplat=45&bottomlat=20&dir=%2Fgfs.20230830%2F00%2Fatmos
+文件下载成功！
+https://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p25.pl?file=gfs.t00z.pgrb2.0p25.f006&lev_surface=on&lev_10_m_above_ground=on&var_PRES=on&var_UGRD=on&var_VGRD=on&leftlon=115&rightlon=135&toplat=45&bottomlat=20&dir=%2Fgfs.20230830%2F00%2Fatmos
+文件下载成功！
+https://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p25.pl?file=gfs.t00z.pgrb2.0p25.f009&lev_surface=on&lev_10_m_above_ground=on&var_PRES=on&var_UGRD=on&var_VGRD=on&leftlon=115&rightlon=135&toplat=45&bottomlat=20&dir=%2Fgfs.20230830%2F00%2Fatmos
+文件下载成功！
+https://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p25.pl?file=gfs.t00z.pgrb2.0p25.f012&lev_surface=on&lev_10_m_above_ground=on&var_PRES=on&var_UGRD=on&var_VGRD=on&leftlon=115&rightlon=135&toplat=45&bottomlat=20&dir=%2Fgfs.20230830%2F00%2Fatmos
+文件下载成功！
+https://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p25.pl?file=gfs.t00z.pgrb2.0p25.f015&lev_surface=on&lev_10_m_above_ground=on&var_PRES=on&var_UGRD=on&var_VGRD=on&leftlon=115&rightlon=135&toplat=45&bottomlat=20&dir=%2Fgfs.20230830%2F00%2Fatmos
+文件下载成功！
+https://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p25.pl?file=gfs.t00z.pgrb2.0p25.f018&lev_surface=on&lev_10_m_above_ground=on&var_PRES=on&var_UGRD=on&var_VGRD=on&leftlon=115&rightlon=135&toplat=45&bottomlat=20&dir=%2Fgfs.20230830%2F00%2Fatmos
+文件下载成功！
+https://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p25.pl?file=gfs.t00z.pgrb2.0p25.f021&lev_surface=on&lev_10_m_above_ground=on&var_PRES=on&var_UGRD=on&var_VGRD=on&leftlon=115&rightlon=135&toplat=45&bottomlat=20&dir=%2Fgfs.20230830%2F00%2Fatmos
+文件下载成功！
+https://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p25.pl?file=gfs.t00z.pgrb2.0p25.f024&lev_surface=on&lev_10_m_above_ground=on&var_PRES=on&var_UGRD=on&var_VGRD=on&leftlon=115&rightlon=135&toplat=45&bottomlat=20&dir=%2Fgfs.20230830%2F00%2Fatmos
+文件下载成功！
+ 
+MOVE wind_GFS Folder to dir_atmos_i ...
+ 
+CONVERT GFS files *.grb to *.nc
+CD  /home/ps/ForecastPlatform/storm_ad_user/20230830/atmos/wind_GFS
+RUN ncl_convert2nc *.grb ...
+Processing file: 0.grb...
+ Copyright (C) 1995-2019 - All Rights Reserved
+ University Corporation for Atmospheric Research
+ NCAR Command Language Version 6.6.2
+ The use of this software is governed by a License Agreement.
+ See http://www.ncl.ucar.edu/ for more details.
+
+Processing file: 12.grb...
+ Copyright (C) 1995-2019 - All Rights Reserved
+ University Corporation for Atmospheric Research
+ NCAR Command Language Version 6.6.2
+ The use of this software is governed by a License Agreement.
+ See http://www.ncl.ucar.edu/ for more details.
+
+Processing file: 15.grb...
+ Copyright (C) 1995-2019 - All Rights Reserved
+ University Corporation for Atmospheric Research
+ NCAR Command Language Version 6.6.2
+ The use of this software is governed by a License Agreement.
+ See http://www.ncl.ucar.edu/ for more details.
+
+Processing file: 18.grb...
+ Copyright (C) 1995-2019 - All Rights Reserved
+ University Corporation for Atmospheric Research
+ NCAR Command Language Version 6.6.2
+ The use of this software is governed by a License Agreement.
+ See http://www.ncl.ucar.edu/ for more details.
+
+Processing file: 21.grb...
+ Copyright (C) 1995-2019 - All Rights Reserved
+ University Corporation for Atmospheric Research
+ NCAR Command Language Version 6.6.2
+ The use of this software is governed by a License Agreement.
+ See http://www.ncl.ucar.edu/ for more details.
+
+Processing file: 24.grb...
+ Copyright (C) 1995-2019 - All Rights Reserved
+ University Corporation for Atmospheric Research
+ NCAR Command Language Version 6.6.2
+ The use of this software is governed by a License Agreement.
+ See http://www.ncl.ucar.edu/ for more details.
+
+Processing file: 27.grb...
+ Copyright (C) 1995-2019 - All Rights Reserved
+ University Corporation for Atmospheric Research
+ NCAR Command Language Version 6.6.2
+ The use of this software is governed by a License Agreement.
+ See http://www.ncl.ucar.edu/ for more details.
+
+Processing file: 30.grb...
+ Copyright (C) 1995-2019 - All Rights Reserved
+ University Corporation for Atmospheric Research
+ NCAR Command Language Version 6.6.2
+ The use of this software is governed by a License Agreement.
+ See http://www.ncl.ucar.edu/ for more details.
+
+Processing file: 33.grb...
+ Copyright (C) 1995-2019 - All Rights Reserved
+ University Corporation for Atmospheric Research
+ NCAR Command Language Version 6.6.2
+ The use of this software is governed by a License Agreement.
+ See http://www.ncl.ucar.edu/ for more details.
+
+Processing file: 36.grb...
+ Copyright (C) 1995-2019 - All Rights Reserved
+ University Corporation for Atmospheric Research
+ NCAR Command Language Version 6.6.2
+ The use of this software is governed by a License Agreement.
+ See http://www.ncl.ucar.edu/ for more details.
+
+Processing file: 39.grb...
+ Copyright (C) 1995-2019 - All Rights Reserved
+ University Corporation for Atmospheric Research
+ NCAR Command Language Version 6.6.2
+ The use of this software is governed by a License Agreement.
+ See http://www.ncl.ucar.edu/ for more details.
+
+Processing file: 3.grb...
+ Copyright (C) 1995-2019 - All Rights Reserved
+ University Corporation for Atmospheric Research
+ NCAR Command Language Version 6.6.2
+ The use of this software is governed by a License Agreement.
+ See http://www.ncl.ucar.edu/ for more details.
+
+Processing file: 42.grb...
+ Copyright (C) 1995-2019 - All Rights Reserved
+ University Corporation for Atmospheric Research
+ NCAR Command Language Version 6.6.2
+ The use of this software is governed by a License Agreement.
+ See http://www.ncl.ucar.edu/ for more details.
+
+Processing file: 45.grb...
+ Copyright (C) 1995-2019 - All Rights Reserved
+ University Corporation for Atmospheric Research
+ NCAR Command Language Version 6.6.2
+ The use of this software is governed by a License Agreement.
+ See http://www.ncl.ucar.edu/ for more details.
+
+Processing file: 48.grb...
+ Copyright (C) 1995-2019 - All Rights Reserved
+ University Corporation for Atmospheric Research
+ NCAR Command Language Version 6.6.2
+ The use of this software is governed by a License Agreement.
+ See http://www.ncl.ucar.edu/ for more details.
+
+Processing file: 51.grb...
+ Copyright (C) 1995-2019 - All Rights Reserved
+ University Corporation for Atmospheric Research
+ NCAR Command Language Version 6.6.2
+ The use of this software is governed by a License Agreement.
+ See http://www.ncl.ucar.edu/ for more details.
+
+Processing file: 54.grb...
+ Copyright (C) 1995-2019 - All Rights Reserved
+ University Corporation for Atmospheric Research
+ NCAR Command Language Version 6.6.2
+ The use of this software is governed by a License Agreement.
+ See http://www.ncl.ucar.edu/ for more details.
+
+Processing file: 57.grb...
+ Copyright (C) 1995-2019 - All Rights Reserved
+ University Corporation for Atmospheric Research
+ NCAR Command Language Version 6.6.2
+ The use of this software is governed by a License Agreement.
+ See http://www.ncl.ucar.edu/ for more details.
+
+Processing file: 60.grb...
+ Copyright (C) 1995-2019 - All Rights Reserved
+ University Corporation for Atmospheric Research
+ NCAR Command Language Version 6.6.2
+ The use of this software is governed by a License Agreement.
+ See http://www.ncl.ucar.edu/ for more details.
+
+Processing file: 63.grb...
+ Copyright (C) 1995-2019 - All Rights Reserved
+ University Corporation for Atmospheric Research
+ NCAR Command Language Version 6.6.2
+ The use of this software is governed by a License Agreement.
+ See http://www.ncl.ucar.edu/ for more details.
+
+Processing file: 66.grb...
+ Copyright (C) 1995-2019 - All Rights Reserved
+ University Corporation for Atmospheric Research
+ NCAR Command Language Version 6.6.2
+ The use of this software is governed by a License Agreement.
+ See http://www.ncl.ucar.edu/ for more details.
+
+Processing file: 69.grb...
+ Copyright (C) 1995-2019 - All Rights Reserved
+ University Corporation for Atmospheric Research
+ NCAR Command Language Version 6.6.2
+ The use of this software is governed by a License Agreement.
+ See http://www.ncl.ucar.edu/ for more details.
+
+Processing file: 6.grb...
+ Copyright (C) 1995-2019 - All Rights Reserved
+ University Corporation for Atmospheric Research
+ NCAR Command Language Version 6.6.2
+ The use of this software is governed by a License Agreement.
+ See http://www.ncl.ucar.edu/ for more details.
+
+Processing file: 72.grb...
+ Copyright (C) 1995-2019 - All Rights Reserved
+ University Corporation for Atmospheric Research
+ NCAR Command Language Version 6.6.2
+ The use of this software is governed by a License Agreement.
+ See http://www.ncl.ucar.edu/ for more details.
+
+Processing file: 75.grb...
+ Copyright (C) 1995-2019 - All Rights Reserved
+ University Corporation for Atmospheric Research
+ NCAR Command Language Version 6.6.2
+ The use of this software is governed by a License Agreement.
+ See http://www.ncl.ucar.edu/ for more details.
+
+Processing file: 9.grb...
+ Copyright (C) 1995-2019 - All Rights Reserved
+ University Corporation for Atmospheric Research
+ NCAR Command Language Version 6.6.2
+ The use of this software is governed by a License Agreement.
+ See http://www.ncl.ucar.edu/ for more details.
+
+ 
+END CREATE WIND xDAY
+ 
+-----------------------------------------------
+ 
+ 
+x=========================================================================x
+x=========================MKDIR TODAY MODEL FILE==========================x
+x=========================================================================x
+ 
+create todayDate.dat
+dir_today = /home/ps/ForecastPlatform/storm_ad_user/20230831
+dir_atmos = /home/ps/ForecastPlatform/storm_ad_user/20230831/atmos
+dir_computeTide = /home/ps/ForecastPlatform/storm_ad_user/20230831/computeTide
+dir_computeTideMetro = /home/ps/ForecastPlatform/storm_ad_user/20230831/computeTideMetro
+dir_results = /home/ps/ForecastPlatform/storm_ad_user/20230831/results
+dir_static = /home/ps/ForecastPlatform/storm_ad_user/static
+dir_exe = /home/ps/ForecastPlatform/storm_ad_user/codesMain
+dir_codesTide = /home/ps/ForecastPlatform/storm_ad_user/codesFort19_tpxo
+dir_codesRiver = /home/ps/ForecastPlatform/storm_ad_user/codesFort20_datong
+dir_codesMetro = /home/ps/ForecastPlatform/storm_ad_user/codesMetro
+dir_codesGFS = /home/ps/ForecastPlatform/storm_ad_user/codesGFS
+dir_logsystem = /home/ps/ForecastPlatform/storm_ad_user/LogSystem
+dir_logtimestamp = /home/ps/ForecastPlatform/storm_ad_user/LogTimestamp
+dir_checkcode = /home/ps/ForecastPlatform/storm_ad_user/CheckCodes
+ 
+x=========================================================================x
+x=============================GENERATE FORT.19============================x
+x=========================================================================x
+ 
+START generate FORT.19
+CD  /home/ps/ForecastPlatform/storm_ad_user/codesFort19_tpxo
+RUN extract_fort19_fromXiaMYTide_routine_main.m ...
+END generate FORT.19
+ 
+x=========================================================================x
+x=============================GENERATE FORT.20============================x
+x=========================================================================x
+ 
+START generate FORT.20
+CD  /home/ps/ForecastPlatform/storm_ad_user/codesFort20_datong
+RUN extract_fort20_fromDatong_routine_main.m ...
+END generate FORT.20
+ 
+x=========================================================================x
+x=============================GENERATE FORT.22============================x
+x=========================================================================x
+ 
+START generate WIND and PRESSURE FORT.22
+ 
+function input:  0
+preXday X is: 0
+preXday's date is : 20230831
+ 
+dir_atmos_i = /home/ps/ForecastPlatform/storm_ad_user/20230831/atmos
+ 
+JUDGE IF xday's wind nc files exists ...
+ 
+xday's ncfiles DONT EXIST! MUST DOWNLOAD! 
+ 
+CD  /home/ps/ForecastPlatform/storm_ad_user/codesGFS
+ 
+DOWNLOAD GFS file: RUN GFSdownload_xday.sh.x ...
+https://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p25.pl?file=gfs.t12z.pgrb2.0p25.f012&lev_surface=on&lev_10_m_above_ground=on&var_PRES=on&var_UGRD=on&var_VGRD=on&leftlon=115&rightlon=135&toplat=45&bottomlat=20&dir=%2Fgfs.20230830%2F12%2Fatmos
+文件下载成功！
+https://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p25.pl?file=gfs.t12z.pgrb2.0p25.f015&lev_surface=on&lev_10_m_above_ground=on&var_PRES=on&var_UGRD=on&var_VGRD=on&leftlon=115&rightlon=135&toplat=45&bottomlat=20&dir=%2Fgfs.20230830%2F12%2Fatmos
+文件下载成功！
+https://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p25.pl?file=gfs.t12z.pgrb2.0p25.f018&lev_surface=on&lev_10_m_above_ground=on&var_PRES=on&var_UGRD=on&var_VGRD=on&leftlon=115&rightlon=135&toplat=45&bottomlat=20&dir=%2Fgfs.20230830%2F12%2Fatmos
+文件下载成功！
+https://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p25.pl?file=gfs.t12z.pgrb2.0p25.f021&lev_surface=on&lev_10_m_above_ground=on&var_PRES=on&var_UGRD=on&var_VGRD=on&leftlon=115&rightlon=135&toplat=45&bottomlat=20&dir=%2Fgfs.20230830%2F12%2Fatmos
+文件下载成功！
+https://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p25.pl?file=gfs.t12z.pgrb2.0p25.f024&lev_surface=on&lev_10_m_above_ground=on&var_PRES=on&var_UGRD=on&var_VGRD=on&leftlon=115&rightlon=135&toplat=45&bottomlat=20&dir=%2Fgfs.20230830%2F12%2Fatmos
+文件下载成功！
+https://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p25.pl?file=gfs.t12z.pgrb2.0p25.f027&lev_surface=on&lev_10_m_above_ground=on&var_PRES=on&var_UGRD=on&var_VGRD=on&leftlon=115&rightlon=135&toplat=45&bottomlat=20&dir=%2Fgfs.20230830%2F12%2Fatmos
+文件下载成功！
+https://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p25.pl?file=gfs.t12z.pgrb2.0p25.f030&lev_surface=on&lev_10_m_above_ground=on&var_PRES=on&var_UGRD=on&var_VGRD=on&leftlon=115&rightlon=135&toplat=45&bottomlat=20&dir=%2Fgfs.20230830%2F12%2Fatmos
+文件下载成功！
+https://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p25.pl?file=gfs.t12z.pgrb2.0p25.f033&lev_surface=on&lev_10_m_above_ground=on&var_PRES=on&var_UGRD=on&var_VGRD=on&leftlon=115&rightlon=135&toplat=45&bottomlat=20&dir=%2Fgfs.20230830%2F12%2Fatmos
+文件下载成功！
+https://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p25.pl?file=gfs.t12z.pgrb2.0p25.f036&lev_surface=on&lev_10_m_above_ground=on&var_PRES=on&var_UGRD=on&var_VGRD=on&leftlon=115&rightlon=135&toplat=45&bottomlat=20&dir=%2Fgfs.20230830%2F12%2Fatmos
+文件下载成功！
+https://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p25.pl?file=gfs.t12z.pgrb2.0p25.f039&lev_surface=on&lev_10_m_above_ground=on&var_PRES=on&var_UGRD=on&var_VGRD=on&leftlon=115&rightlon=135&toplat=45&bottomlat=20&dir=%2Fgfs.20230830%2F12%2Fatmos
+文件下载成功！
+https://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p25.pl?file=gfs.t12z.pgrb2.0p25.f042&lev_surface=on&lev_10_m_above_ground=on&var_PRES=on&var_UGRD=on&var_VGRD=on&leftlon=115&rightlon=135&toplat=45&bottomlat=20&dir=%2Fgfs.20230830%2F12%2Fatmos
+文件下载成功！
+https://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p25.pl?file=gfs.t12z.pgrb2.0p25.f045&lev_surface=on&lev_10_m_above_ground=on&var_PRES=on&var_UGRD=on&var_VGRD=on&leftlon=115&rightlon=135&toplat=45&bottomlat=20&dir=%2Fgfs.20230830%2F12%2Fatmos
+文件下载成功！
+https://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p25.pl?file=gfs.t12z.pgrb2.0p25.f048&lev_surface=on&lev_10_m_above_ground=on&var_PRES=on&var_UGRD=on&var_VGRD=on&leftlon=115&rightlon=135&toplat=45&bottomlat=20&dir=%2Fgfs.20230830%2F12%2Fatmos
+文件下载成功！
+https://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p25.pl?file=gfs.t12z.pgrb2.0p25.f051&lev_surface=on&lev_10_m_above_ground=on&var_PRES=on&var_UGRD=on&var_VGRD=on&leftlon=115&rightlon=135&toplat=45&bottomlat=20&dir=%2Fgfs.20230830%2F12%2Fatmos
+文件下载成功！
+https://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p25.pl?file=gfs.t12z.pgrb2.0p25.f054&lev_surface=on&lev_10_m_above_ground=on&var_PRES=on&var_UGRD=on&var_VGRD=on&leftlon=115&rightlon=135&toplat=45&bottomlat=20&dir=%2Fgfs.20230830%2F12%2Fatmos
+文件下载成功！
+https://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p25.pl?file=gfs.t12z.pgrb2.0p25.f057&lev_surface=on&lev_10_m_above_ground=on&var_PRES=on&var_UGRD=on&var_VGRD=on&leftlon=115&rightlon=135&toplat=45&bottomlat=20&dir=%2Fgfs.20230830%2F12%2Fatmos
+文件下载成功！
+https://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p25.pl?file=gfs.t12z.pgrb2.0p25.f060&lev_surface=on&lev_10_m_above_ground=on&var_PRES=on&var_UGRD=on&var_VGRD=on&leftlon=115&rightlon=135&toplat=45&bottomlat=20&dir=%2Fgfs.20230830%2F12%2Fatmos
+文件下载成功！
+https://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p25.pl?file=gfs.t12z.pgrb2.0p25.f063&lev_surface=on&lev_10_m_above_ground=on&var_PRES=on&var_UGRD=on&var_VGRD=on&leftlon=115&rightlon=135&toplat=45&bottomlat=20&dir=%2Fgfs.20230830%2F12%2Fatmos
+文件下载成功！
+https://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p25.pl?file=gfs.t12z.pgrb2.0p25.f066&lev_surface=on&lev_10_m_above_ground=on&var_PRES=on&var_UGRD=on&var_VGRD=on&leftlon=115&rightlon=135&toplat=45&bottomlat=20&dir=%2Fgfs.20230830%2F12%2Fatmos
+文件下载成功！
+https://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p25.pl?file=gfs.t12z.pgrb2.0p25.f069&lev_surface=on&lev_10_m_above_ground=on&var_PRES=on&var_UGRD=on&var_VGRD=on&leftlon=115&rightlon=135&toplat=45&bottomlat=20&dir=%2Fgfs.20230830%2F12%2Fatmos
+文件下载成功！
+https://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p25.pl?file=gfs.t12z.pgrb2.0p25.f072&lev_surface=on&lev_10_m_above_ground=on&var_PRES=on&var_UGRD=on&var_VGRD=on&leftlon=115&rightlon=135&toplat=45&bottomlat=20&dir=%2Fgfs.20230830%2F12%2Fatmos
+文件下载成功！
+https://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p25.pl?file=gfs.t12z.pgrb2.0p25.f075&lev_surface=on&lev_10_m_above_ground=on&var_PRES=on&var_UGRD=on&var_VGRD=on&leftlon=115&rightlon=135&toplat=45&bottomlat=20&dir=%2Fgfs.20230830%2F12%2Fatmos
+文件下载成功！
+https://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p25.pl?file=gfs.t12z.pgrb2.0p25.f078&lev_surface=on&lev_10_m_above_ground=on&var_PRES=on&var_UGRD=on&var_VGRD=on&leftlon=115&rightlon=135&toplat=45&bottomlat=20&dir=%2Fgfs.20230830%2F12%2Fatmos
+文件下载成功！
+https://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p25.pl?file=gfs.t12z.pgrb2.0p25.f081&lev_surface=on&lev_10_m_above_ground=on&var_PRES=on&var_UGRD=on&var_VGRD=on&leftlon=115&rightlon=135&toplat=45&bottomlat=20&dir=%2Fgfs.20230830%2F12%2Fatmos
+文件下载成功！
+https://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p25.pl?file=gfs.t12z.pgrb2.0p25.f084&lev_surface=on&lev_10_m_above_ground=on&var_PRES=on&var_UGRD=on&var_VGRD=on&leftlon=115&rightlon=135&toplat=45&bottomlat=20&dir=%2Fgfs.20230830%2F12%2Fatmos
+文件下载成功！
+https://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p25.pl?file=gfs.t12z.pgrb2.0p25.f087&lev_surface=on&lev_10_m_above_ground=on&var_PRES=on&var_UGRD=on&var_VGRD=on&leftlon=115&rightlon=135&toplat=45&bottomlat=20&dir=%2Fgfs.20230830%2F12%2Fatmos
+文件下载成功！
+ 
+MOVE wind_GFS Folder to dir_atmos_i ...
+ 
+CONVERT GFS files *.grb to *.nc
+CD  /home/ps/ForecastPlatform/storm_ad_user/20230831/atmos/wind_GFS
+RUN ncl_convert2nc *.grb ...
+Processing file: 0.grb...
+ Copyright (C) 1995-2019 - All Rights Reserved
+ University Corporation for Atmospheric Research
+ NCAR Command Language Version 6.6.2
+ The use of this software is governed by a License Agreement.
+ See http://www.ncl.ucar.edu/ for more details.
+
+Processing file: 12.grb...
+ Copyright (C) 1995-2019 - All Rights Reserved
+ University Corporation for Atmospheric Research
+ NCAR Command Language Version 6.6.2
+ The use of this software is governed by a License Agreement.
+ See http://www.ncl.ucar.edu/ for more details.
+
+Processing file: 15.grb...
+ Copyright (C) 1995-2019 - All Rights Reserved
+ University Corporation for Atmospheric Research
+ NCAR Command Language Version 6.6.2
+ The use of this software is governed by a License Agreement.
+ See http://www.ncl.ucar.edu/ for more details.
+
+Processing file: 18.grb...
+ Copyright (C) 1995-2019 - All Rights Reserved
+ University Corporation for Atmospheric Research
+ NCAR Command Language Version 6.6.2
+ The use of this software is governed by a License Agreement.
+ See http://www.ncl.ucar.edu/ for more details.
+
+Processing file: 21.grb...
+ Copyright (C) 1995-2019 - All Rights Reserved
+ University Corporation for Atmospheric Research
+ NCAR Command Language Version 6.6.2
+ The use of this software is governed by a License Agreement.
+ See http://www.ncl.ucar.edu/ for more details.
+
+Processing file: 24.grb...
+ Copyright (C) 1995-2019 - All Rights Reserved
+ University Corporation for Atmospheric Research
+ NCAR Command Language Version 6.6.2
+ The use of this software is governed by a License Agreement.
+ See http://www.ncl.ucar.edu/ for more details.
+
+Processing file: 27.grb...
+ Copyright (C) 1995-2019 - All Rights Reserved
+ University Corporation for Atmospheric Research
+ NCAR Command Language Version 6.6.2
+ The use of this software is governed by a License Agreement.
+ See http://www.ncl.ucar.edu/ for more details.
+
+Processing file: 30.grb...
+ Copyright (C) 1995-2019 - All Rights Reserved
+ University Corporation for Atmospheric Research
+ NCAR Command Language Version 6.6.2
+ The use of this software is governed by a License Agreement.
+ See http://www.ncl.ucar.edu/ for more details.
+
+Processing file: 33.grb...
+ Copyright (C) 1995-2019 - All Rights Reserved
+ University Corporation for Atmospheric Research
+ NCAR Command Language Version 6.6.2
+ The use of this software is governed by a License Agreement.
+ See http://www.ncl.ucar.edu/ for more details.
+
+Processing file: 36.grb...
+ Copyright (C) 1995-2019 - All Rights Reserved
+ University Corporation for Atmospheric Research
+ NCAR Command Language Version 6.6.2
+ The use of this software is governed by a License Agreement.
+ See http://www.ncl.ucar.edu/ for more details.
+
+Processing file: 39.grb...
+ Copyright (C) 1995-2019 - All Rights Reserved
+ University Corporation for Atmospheric Research
+ NCAR Command Language Version 6.6.2
+ The use of this software is governed by a License Agreement.
+ See http://www.ncl.ucar.edu/ for more details.
+
+Processing file: 3.grb...
+ Copyright (C) 1995-2019 - All Rights Reserved
+ University Corporation for Atmospheric Research
+ NCAR Command Language Version 6.6.2
+ The use of this software is governed by a License Agreement.
+ See http://www.ncl.ucar.edu/ for more details.
+
+Processing file: 42.grb...
+ Copyright (C) 1995-2019 - All Rights Reserved
+ University Corporation for Atmospheric Research
+ NCAR Command Language Version 6.6.2
+ The use of this software is governed by a License Agreement.
+ See http://www.ncl.ucar.edu/ for more details.
+
+Processing file: 45.grb...
+ Copyright (C) 1995-2019 - All Rights Reserved
+ University Corporation for Atmospheric Research
+ NCAR Command Language Version 6.6.2
+ The use of this software is governed by a License Agreement.
+ See http://www.ncl.ucar.edu/ for more details.
+
+Processing file: 48.grb...
+ Copyright (C) 1995-2019 - All Rights Reserved
+ University Corporation for Atmospheric Research
+ NCAR Command Language Version 6.6.2
+ The use of this software is governed by a License Agreement.
+ See http://www.ncl.ucar.edu/ for more details.
+
+Processing file: 51.grb...
+ Copyright (C) 1995-2019 - All Rights Reserved
+ University Corporation for Atmospheric Research
+ NCAR Command Language Version 6.6.2
+ The use of this software is governed by a License Agreement.
+ See http://www.ncl.ucar.edu/ for more details.
+
+Processing file: 54.grb...
+ Copyright (C) 1995-2019 - All Rights Reserved
+ University Corporation for Atmospheric Research
+ NCAR Command Language Version 6.6.2
+ The use of this software is governed by a License Agreement.
+ See http://www.ncl.ucar.edu/ for more details.
+
+Processing file: 57.grb...
+ Copyright (C) 1995-2019 - All Rights Reserved
+ University Corporation for Atmospheric Research
+ NCAR Command Language Version 6.6.2
+ The use of this software is governed by a License Agreement.
+ See http://www.ncl.ucar.edu/ for more details.
+
+Processing file: 60.grb...
+ Copyright (C) 1995-2019 - All Rights Reserved
+ University Corporation for Atmospheric Research
+ NCAR Command Language Version 6.6.2
+ The use of this software is governed by a License Agreement.
+ See http://www.ncl.ucar.edu/ for more details.
+
+Processing file: 63.grb...
+ Copyright (C) 1995-2019 - All Rights Reserved
+ University Corporation for Atmospheric Research
+ NCAR Command Language Version 6.6.2
+ The use of this software is governed by a License Agreement.
+ See http://www.ncl.ucar.edu/ for more details.
+
+Processing file: 66.grb...
+ Copyright (C) 1995-2019 - All Rights Reserved
+ University Corporation for Atmospheric Research
+ NCAR Command Language Version 6.6.2
+ The use of this software is governed by a License Agreement.
+ See http://www.ncl.ucar.edu/ for more details.
+
+Processing file: 69.grb...
+ Copyright (C) 1995-2019 - All Rights Reserved
+ University Corporation for Atmospheric Research
+ NCAR Command Language Version 6.6.2
+ The use of this software is governed by a License Agreement.
+ See http://www.ncl.ucar.edu/ for more details.
+
+Processing file: 6.grb...
+ Copyright (C) 1995-2019 - All Rights Reserved
+ University Corporation for Atmospheric Research
+ NCAR Command Language Version 6.6.2
+ The use of this software is governed by a License Agreement.
+ See http://www.ncl.ucar.edu/ for more details.
+
+Processing file: 72.grb...
+ Copyright (C) 1995-2019 - All Rights Reserved
+ University Corporation for Atmospheric Research
+ NCAR Command Language Version 6.6.2
+ The use of this software is governed by a License Agreement.
+ See http://www.ncl.ucar.edu/ for more details.
+
+Processing file: 75.grb...
+ Copyright (C) 1995-2019 - All Rights Reserved
+ University Corporation for Atmospheric Research
+ NCAR Command Language Version 6.6.2
+ The use of this software is governed by a License Agreement.
+ See http://www.ncl.ucar.edu/ for more details.
+
+Processing file: 9.grb...
+ Copyright (C) 1995-2019 - All Rights Reserved
+ University Corporation for Atmospheric Research
+ NCAR Command Language Version 6.6.2
+ The use of this software is governed by a License Agreement.
+ See http://www.ncl.ucar.edu/ for more details.
+
+ 
+END CREATE WIND xDAY
+ 
+-----------------------------------------------
+ 
+RUN GFS_outputFort22_main.m for -3~+3Days ...
+MATLAB is selecting SOFTWARE OPENGL rendering.
+
+                            < M A T L A B (R) >
+                  Copyright 1984-2020 The MathWorks, Inc.
+                  R2020a (9.8.0.1323502) 64-bit (glnxa64)
+                             February 25, 2020
+
+ 
+To get started, type doc.
+For product information, visit www.mathworks.com.
+ 
+GFS UTC+0 -72-9hrs~72hrs ncFiles are read! 
+GFS UTC+8 -72-9hrs~72hrs ncFiles are read! 
+Interpolate GFS 3hrs to 1hrs is done! 
+Holland wind is ready to structure! ... 
+Open path.txt ... 
+Check path.txt ... 
+Start to reconstruct Vc_x_wangge & Vc_y_wangge by Holland 
+kk:1
+kk:2
+kk:3
+kk:4
+kk:5
+kk:6
+kk:7
+k:1
+kk:8
+k:2
+kk:9
+k:3
+kk:10
+k:4
+kk:11
+k:5
+kk:12
+k:6
+kk:13
+k:7
+kk:14
+k:8
+kk:15
+k:9
+kk:16
+k:10
+kk:17
+k:11
+kk:18
+k:12
+kk:19
+k:13
+kk:20
+k:14
+kk:21
+k:15
+kk:22
+k:16
+kk:23
+k:17
+kk:24
+k:18
+kk:25
+k:19
+kk:26
+k:20
+kk:27
+k:21
+kk:28
+k:22
+kk:29
+k:23
+kk:30
+k:24
+kk:31
+k:25
+kk:32
+k:26
+kk:33
+k:27
+kk:34
+k:28
+kk:35
+k:29
+kk:36
+k:30
+kk:37
+k:31
+kk:38
+k:32
+kk:39
+k:33
+kk:40
+k:34
+kk:41
+k:35
+kk:42
+k:36
+kk:43
+k:37
+kk:44
+k:38
+kk:45
+k:39
+kk:46
+k:40
+kk:47
+k:41
+kk:48
+k:42
+kk:49
+k:43
+kk:50
+k:44
+kk:51
+k:45
+kk:52
+k:46
+kk:53
+k:47
+kk:54
+k:48
+kk:55
+k:49
+kk:56
+k:50
+kk:57
+k:51
+kk:58
+k:52
+kk:59
+k:53
+kk:60
+k:54
+kk:61
+k:55
+kk:62
+k:56
+kk:63
+k:57
+kk:64
+k:58
+kk:65
+k:59
+kk:66
+k:60
+kk:67
+k:61
+kk:68
+k:62
+kk:69
+k:63
+kk:70
+k:64
+kk:71
+k:65
+kk:72
+k:66
+kk:73
+k:67
+kk:74
+k:68
+kk:75
+k:69
+kk:76
+k:70
+kk:77
+k:71
+kk:78
+k:72
+kk:79
+k:73
+kk:80
+k:74
+kk:81
+k:75
+kk:82
+k:76
+kk:83
+k:77
+kk:84
+k:78
+kk:85
+k:79
+kk:86
+k:80
+kk:87
+k:81
+kk:88
+k:82
+kk:89
+k:83
+kk:90
+k:84
+kk:91
+k:85
+kk:92
+k:86
+kk:93
+k:87
+kk:94
+k:88
+kk:95
+k:89
+kk:96
+k:90
+kk:97
+k:91
+kk:98
+k:92
+kk:99
+k:93
+kk:100
+k:94
+kk:101
+k:95
+kk:102
+k:96
+kk:103
+k:97
+kk:104
+k:98
+kk:105
+k:99
+kk:106
+k:100
+kk:107
+k:101
+kk:108
+k:102
+kk:109
+k:103
+kk:110
+k:104
+kk:111
+k:105
+kk:112
+k:106
+kk:113
+k:107
+kk:114
+k:108
+kk:115
+k:109
+kk:116
+k:110
+kk:117
+k:111
+kk:118
+k:112
+kk:119
+k:113
+kk:120
+k:114
+kk:121
+k:115
+kk:122
+k:116
+kk:123
+k:117
+kk:124
+k:118
+kk:125
+k:119
+kk:126
+k:120
+kk:127
+k:121
+kk:128
+k:122
+kk:129
+k:123
+kk:130
+k:124
+kk:131
+k:125
+kk:132
+k:126
+kk:133
+k:127
+kk:134
+k:128
+Modify GFS by Holland ...
+kk:135
+k:129
+Modify GFS by Holland ...
+kk:136
+k:130
+Modify GFS by Holland ...
+kk:137
+k:131
+Modify GFS by Holland ...
+kk:138
+k:132
+Modify GFS by Holland ...
+kk:139
+k:133
+Modify GFS by Holland ...
+kk:140
+k:134
+Modify GFS by Holland ...
+kk:141
+k:135
+Modify GFS by Holland ...
+kk:142
+k:136
+Modify GFS by Holland ...
+kk:143
+k:137
+Modify GFS by Holland ...
+kk:144
+k:138
+Modify GFS by Holland ...
+kk:145
+k:139
+Modify GFS by Holland ...
+kk:146
+k:140
+Modify GFS by Holland ...
+kk:147
+k:141
+Modify GFS by Holland ...
+kk:148
+k:142
+Modify GFS by Holland ...
+kk:149
+k:143
+Modify GFS by Holland ...
+kk:150
+k:144
+Modify GFS by Holland ...
+kk:151
+k:145
+Modify GFS by Holland ...
+kk:152
+k:146
+Modify GFS by Holland ...
+kk:153
+k:147
+Modify GFS by Holland ...
+Holland structure end! 
+Add realtime typhoon path is done! 
+reading mesh file
+# nodes 100631
+# elems 182824
+mesh read in
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+writing begin:
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+CP fort.22 from dir_codesMetro to dir_atmos...
+END generate WIND and PRESSURE FORT.22
+ 
+x=========================================================================x
+x=============================ADCIRC TIDE RUN=============================x
+x=========================================================================x
+ 
+START run TIDE PADCIRC
+CD  /home/ps/ForecastPlatform/storm_ad_user/20230831/computeTide
+CP FILEs: fort.13 fort.14 fort.15 fort.19 fort.20 ...
+CP EXEs: adcprep1 adcprep2 padcirc ...
+RUN adcprep1 adcprep2 ...
+USE CORES: 90 ...
+RUN MPIRUN ...
+RUN mpirun -np 90 ./padcirc > padcirc.log ...
+FINISH mpirun -np 90 ./padcirc 
+FINISH MPIRUN
+END run TIDE PADCIRC
+ 
+x=========================================================================x
+x===========================ADCIRC TIDEMETRO RUN==========================x
+x=========================================================================x
+ 
+START run TIDEMETRO PADCIRC
+CD  /home/ps/ForecastPlatform/storm_ad_user/20230831/computeTideMetro
+CP FILEs: fort.13 fort.14 fort.15 fort.19 fort.20 fort.22...
+CP EXEs: adcprep1 adcprep2 padcirc ...
+RUN adcprep1 adcprep2 ...
+USE CORES: 90 ...
+RUN MPIRUN ...
+RUN mpirun -np 90 ./padcirc > padcirc.log ...
+FINISH mpirun -np 90 ./padcirc 
+FINISH MPIRUN
+END run TIDEMETRO PADCIRC
+ 
+x=========================================================================x
+x====================GENERATE adcirc.nc - for TIDE========================x
+x=========================================================================x
+ 
+START generate fort.63/64.nc - for TIDE
+RM -rf PE* ...
+CP adc2net_63 adc2net_64 & attri.* ...
+GENERATE adcirc.nc
+CP fort.63.nc to  /home/ps/ForecastPlatform/storm_ad_user/20230831/results
+CP fort.64.nc to  /home/ps/ForecastPlatform/storm_ad_user/20230831/results
+CP fort.61 to  /home/ps/ForecastPlatform/storm_ad_user/20230831/results
+END generate adcirc.nc - for TIDEMETRO
+ 
+x=========================================================================x
+x==================GENERATE adcirc.nc - for TIDEMETRO=====================x
+x=========================================================================x
+ 
+START generate adcirc.nc - for TIDEMETRO
+RM -rf PE* ...
+CP adc2net_63 adc2net_64 & attri.* ...
+GENERATE adcirc.nc
+CP adcirc.nc to  /home/ps/ForecastPlatform/storm_ad_user/20230831/results
+CP fort.61 to  /home/ps/ForecastPlatform/storm_ad_user/20230831/results
+END generate adcirc.nc - for TIDEMETRO
+ 
+x=========================================================================x
+x============================WRITE timestamp LOG==========================x
+x=========================================================================x
+ 
+START write TimeStamp LOG to  /home/ps/ForecastPlatform/storm_ad_user/platform_x_timestamp.log
+system start time:				 2023-08-31 05:15:09
+adcirc start time(TIDE):		 2023-08-31 05:18:36
+adcirc   end time(TIDE):		 2023-08-31 05:30:29
+adcirc start time(TIDEMETRO):		 2023-08-31 05:31:03
+adcirc   end time(TIDEMETRO):		 2023-08-31 05:44:20
+adcirc.nc success:				
+END write TimeStamp LOG!
+ 
+x=========================================================================x
+x===============================BACKUP LOGs===============================x
+x=========================================================================x
+ 
+BACKUP Timestamp LOG as platform_x_timestamp.log_ in ./LogTimestamp
+BACKUP Work LOG as platform_user.log_ in ./LogSystem
+ 
+x=========================================================================x
+x====================================END==================================x
+x=========================================================================x
+ 
+2023-08-31 05:45:21
+ 
