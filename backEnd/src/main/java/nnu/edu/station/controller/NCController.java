@@ -1,29 +1,33 @@
 package nnu.edu.station.controller;
 
+import nnu.edu.station.common.result.JsonResult;
 import nnu.edu.station.common.result.ResultUtils;
 import nnu.edu.station.service.NCService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 
 import java.io.File;
+import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/NC")
+@RequestMapping("/api/v1/data/nc")
 public class NCController {
 
     @Autowired
     NCService ncService;
 
-    @RequestMapping(value = "/getInfoByTimeAndType/{time}/{type}", method = RequestMethod.GET)
-    public ResponseEntity<FileSystemResource> getInfoByTimeAndType(@PathVariable String time, @PathVariable Integer type) {
+    @GetMapping
+    public JsonResult getInfoByTime() {
+        return ResultUtils.success(ncService.getAll());
+    }
+
+    @GetMapping("/time&type")
+    public ResponseEntity<FileSystemResource> getInfoByTimeAndType(@RequestParam String time, @RequestParam String type) {
         Map<String, String> fileInfo = ncService.getInfoByTimeAndType(time, type);
         String filePath = fileInfo.get("path");
         String fileName = fileInfo.get("name");
