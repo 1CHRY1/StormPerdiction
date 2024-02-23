@@ -1,5 +1,6 @@
 package nnu.edu.station.dao.level;
 
+import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 

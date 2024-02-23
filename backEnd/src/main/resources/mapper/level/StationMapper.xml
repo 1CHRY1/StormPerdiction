@@ -6,6 +6,6 @@
     </select>
 
     <select id="getAllStations" resultType="java.util.Map">
-        select name from stations
+        select name_cn,lat,lon,type,tablename from stations
     </select>
 </mapper>
