@@ -1,0 +1,9 @@
+{
+  "type": "module",
+  "dependencies": {
+    "@types/node": "^20.11.20",
+    "pinyin": "4.0.0-alpha.0",
+    "pinyin-pro": "^3.19.6",
+    "typescript": "^5.3.3"
+  }
+}

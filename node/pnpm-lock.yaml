@@ -1,0 +1,71 @@
+lockfileVersion: '6.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+dependencies:
+  '@types/node':
+    specifier: ^20.11.20
+    version: 20.11.20
+  pinyin:
+    specifier: 4.0.0-alpha.0
+    version: 4.0.0-alpha.0
+  pinyin-pro:
+    specifier: ^3.19.6
+    version: 3.19.6
+  typescript:
+    specifier: ^5.3.3
+    version: 5.3.3
+
+packages:
+
+  /@types/node@20.11.20:
+    resolution: {integrity: sha512-7/rR21OS+fq8IyHTgtLkDK949uzsa6n8BkziAKtPVpugIkO6D+/ooXMvzXxDnZrmtXVfjb1bKQafYpb8s89LOg==}
+    dependencies:
+      undici-types: 5.26.5
+    dev: false
+
+  /commander@1.1.1:
+    resolution: {integrity: sha512-71Rod2AhcH3JhkBikVpNd0pA+fWsmAaVoti6OR38T76chA7vE3pSerS0Jor4wDw+tOueD2zLVvFOw5H0Rcj7rA==}
+    engines: {node: '>= 0.6.x'}
+    dependencies:
+      keypress: 0.1.0
+    dev: false
+
+  /keypress@0.1.0:
+    resolution: {integrity: sha512-x0yf9PL/nx9Nw9oLL8ZVErFAk85/lslwEP7Vz7s5SI1ODXZIgit3C5qyWjw4DxOuO/3Hb4866SQh28a1V1d+WA==}
+    dev: false
+
+  /pinyin-pro@3.19.6:
+    resolution: {integrity: sha512-oWb34orr12+DjXf6gtGMB+gIpjRi7DZzyJE66ultbmNzVhpimM/utGtMI8GcbOy/lb26Ph/nogwNYriRPu+SGQ==}
+    dev: false
+
+  /pinyin@4.0.0-alpha.0:
+    resolution: {integrity: sha512-hdxO/2RuLWarhLaIcGKdXjkFZ0hFr3W/Yrvrd0YPxuIafixMZSAa4jvxskYLgYHE8OkOXkGsxMsEScwGzqKe3g==}
+    engines: {install-node: ^18.0.0}
+    hasBin: true
+    peerDependencies:
+      '@node-rs/jieba': ^1.6.0
+      nodejieba: 2.5.2
+      segmentit: ^2.0.3
+    peerDependenciesMeta:
+      '@node-rs/jieba':
+        optional: true
+      nodejieba:
+        optional: true
+      segmentit:
+        optional: true
+    dependencies:
+      commander: 1.1.1
+    dev: false
+
+  /typescript@5.3.3:
+    resolution: {integrity: sha512-pXWcraxM0uxAS+tN0AG/BF2TyqmHO014Z070UsJ+pFvYuRSq8KH8DmWpnbXe0pEPDHXZV3FcAbJkijJ5oNEnWw==}
+    engines: {node: '>=14.17'}
+    hasBin: true
+    dev: false
+
+  /undici-types@5.26.5:
+    resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==}
+    dev: false
