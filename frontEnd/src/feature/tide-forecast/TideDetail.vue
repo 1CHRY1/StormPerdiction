@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Ref, computed, onMounted, ref, watch } from 'vue'
 import { useStationStore } from '../../store/stationStore'
-import { getStationCurrentWaterSituation, getStationInfo } from './api'
+import { getStationCurrentTideSituation, getStationInfo } from './api'
 import { drawEcharts, generateTreeDataOfStation, initEcharts } from './util'
 
 let echart: echarts.ECharts | null = null
@@ -43,7 +43,7 @@ const stationTable = computed(() => {
 })
 
 watch(stationStore, async () => {
-  waterSituationData.value = await getStationCurrentWaterSituation(
+  waterSituationData.value = await getStationCurrentTideSituation(
     stationStore.currentStationID as any,
   )
   if (echart) {
@@ -58,7 +58,7 @@ watch(stationStore, async () => {
 })
 
 onMounted(async () => {
-  waterSituationData.value = await getStationCurrentWaterSituation(
+  waterSituationData.value = await getStationCurrentTideSituation(
     stationStore.currentStationID as any,
   )
   if (isStationDataExist.value) {
@@ -102,7 +102,7 @@ onMounted(async () => {
       </el-tabs>
     </div>
     <div class="flex flex-col w-[300px] bg-white">
-      <div class="h-44 relative m-2 top-1 border border-zinc-300">
+      <div class="h-56 relative m-2 top-1 border border-zinc-300">
         <div class="h-8 leading-8 px-2 bg-blue-500 text-white">站点详情</div>
         <div class="mx-3 my-2 flex flex-col">
           <div class="my-1">
@@ -122,6 +122,11 @@ onMounted(async () => {
             ><span>{{ stationInfo.lat }}</span>
           </div>
           <div class="my-1">
+            <span class="inline-block pr-2">台风状况:</span>
+            <span class="inline-block pr-3">{{ stationInfo.lat }}</span
+            ><span>{{ stationInfo.lat }}</span>
+          </div>
+          <div class="my-1">
             <span class="inline-block pr-2">当前时间:</span>
             <span class="inline-block pr-3">{{ stationInfo.time }}</span>
           </div>
@@ -131,7 +136,7 @@ onMounted(async () => {
         <div class="h-8 leading-8 px-2 bg-blue-500 text-white">站点列表</div>
         <el-radio-group
           v-model="stationStore.currentStationID"
-          class="py-2 px-4 block overflow-auto h-[25rem]"
+          class="py-2 px-4 block overflow-auto h-[22rem]"
         >
           <el-radio
             v-for="item in treeData"

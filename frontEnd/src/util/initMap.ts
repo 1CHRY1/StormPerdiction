@@ -6,13 +6,22 @@ import { useMapStore } from '../store/mapStore'
 mapbox.accessToken =
   'pk.eyJ1Ijoiam9obm55dCIsImEiOiJja2xxNXplNjYwNnhzMm5uYTJtdHVlbTByIn0.f1GfZbFLWjiEayI6hb_Qvg'
 
-export const initMap = async (container: HTMLDivElement) => {
+export const initMap = async (
+  container: HTMLDivElement,
+  {
+    center,
+    zoom,
+  }: {
+    center: [number, number]
+    zoom: number
+  },
+) => {
   const map = (await new Promise((resolve) => {
     let map = new mapbox.Map({
       container: container,
       style: 'mapbox://styles/mapbox/streets-v12',
-      center: [120.55, 32.08],
-      zoom: 6.5, // starting zoom
+      center: center,
+      zoom: zoom,
     })
 
     map.addControl(

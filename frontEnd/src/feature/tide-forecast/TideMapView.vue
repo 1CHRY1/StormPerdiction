@@ -11,7 +11,7 @@ const mapContainerRef: Ref<HTMLDivElement | null> = ref(null)
 const addLayer = async (map: mapbox.Map) => {
   map.addSource('stations', {
     type: 'geojson',
-    data: '/geojson/water.geojson',
+    data: '/geojson/tide.geojson',
     attribution: 'name',
   })
 
@@ -37,11 +37,9 @@ const addLayer = async (map: mapbox.Map) => {
 }
 
 onMounted(async () => {
-  // center: [120.55, 32.08],
-  //     zoom: 6.5, // starting zoom
   const map = await initMap(mapContainerRef.value as HTMLDivElement, {
-    center: [120.55, 32.08],
-    zoom: 6.5,
+    center: [120, 31.5],
+    zoom: 7.2,
   })
   if (map) {
     addLayer(map)
@@ -59,7 +57,7 @@ onMounted(async () => {
         if (stations && stations[0]) {
           const id = stations[0].properties!.id as string
           stationStore.currentStationID = id
-          router.push('/real-time-situation/data')
+          router.push('/tide-forecast/data')
         }
       }
     })

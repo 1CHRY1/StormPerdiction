@@ -96,7 +96,7 @@ const handlePlayClick = () => {
 <template>
   <div class="flex h-full">
     <div class="flex flex-auto justify-center items-center bg-zinc-200">
-      <img class="flex-auto m-4 max-h-[36rem] object-contain" :src="imageUrl" />
+      <img class="flex-auto m-4 max-h-[38rem] object-contain" :src="imageUrl" />
     </div>
     <div class="flex flex-col w-[300px] bg-white">
       <div class="h-24 relative m-2 top-1 border border-zinc-300">

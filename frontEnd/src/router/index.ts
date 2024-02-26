@@ -1,6 +1,8 @@
 import { RouteRecordRaw, createRouter, createWebHistory } from 'vue-router'
 import WaterMapView from '../feature/real-time-situation/WaterMapView.vue'
 import WaterSituationDetail from '../feature/real-time-situation/WaterSituationDetail.vue'
+import TideDetail from '../feature/tide-forecast/TideDetail.vue'
+import TideMapView from '../feature/tide-forecast/TideMapView.vue'
 import Observation from '../feature/weather/Observation.vue'
 import Precipitation from '../feature/weather/Precipitation.vue'
 import Radar from '../feature/weather/Radar.vue'
@@ -82,14 +84,14 @@ const routes: RouteRecordRaw[] = [
       {
         path: 'map',
         name: 'TideMapView',
-        component: WaterMapView,
-        meta: { index: 2 },
+        component: TideMapView,
+        meta: { index: 3 },
       },
       {
         path: 'data',
         name: 'TideDetail',
-        component: WaterSituationDetail,
-        meta: { index: 2 },
+        component: TideDetail,
+        meta: { index: 3 },
       },
     ],
   },
