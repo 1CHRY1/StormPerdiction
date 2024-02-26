@@ -6,10 +6,25 @@ spring:
     nc:
       jdbc-url: jdbc:sqlite:D:\1study\Work\2023_12_22_Storm\Data\DataProcess\NC.db
       driver-class-name: org.sqlite.JDBC
+    meteorology:
+      jdbc-url: jdbc:sqlite:D:\1study\Work\2023_12_22_Storm\Data\DataProcess\Clawing\Meteorology.db
+      driver-class-name: org.sqlite.JDBC
 
 python:
-  python
-DataProcess:
-  D:/1study/Work/2023_12_22_Storm/Data/DataProcess/
+  D:/1tools/Miniconda/envs/Env1/python.exe
+updateData:
+  D:/1study/Work/2023_12_22_Storm/Data/DataProcess/UpdateData.py
+
+clawingCloud:
+  D:/1study/Work/2023_12_22_Storm/Data/DataProcess/Clawing/Cloud.py
+clawingRadar:
+  D:/1study/Work/2023_12_22_Storm/Data/DataProcess/Clawing/Radar.py
+clawingRainfall:
+  D:/1study/Work/2023_12_22_Storm/Data/DataProcess/Clawing/Rainfall.py
+clawingRainfallpre:
+  D:/1study/Work/2023_12_22_Storm/Data/DataProcess/Clawing/Rainfall_pre.py
+deleteClawingData:
+  D:/1study/Work/2023_12_22_Storm/Data/DataProcess/Clawing/DeleteData.py
+
 DataProcessLog:
   D:/1study/Work/2023_12_22_Storm/Data/DataProcess/logfile.log

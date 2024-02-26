@@ -11,6 +11,6 @@ import java.util.Map;
 @MapperScan
 public interface NCMapper {
 
-    List<String> getAll();
-    Map<String, String> getInfoByTimeAndType(@Param("time") String time, @Param("type") String type);
+    List<Object> getAll();
+    Object getInfoByTimeAndType(@Param("time") String time, @Param("type") String type);
 }

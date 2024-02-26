@@ -15,12 +15,12 @@ public class NCServiceImpl implements NCService {
     NCMapper ncMapper;
 
     @Override
-    public List<String> getAll() {
+    public List<Object> getAll() {
         return ncMapper.getAll();
     }
 
     @Override
-    public Map<String, String> getInfoByTimeAndType(String time, String type) {
+    public Object getInfoByTimeAndType(String time, String type) {
         return ncMapper.getInfoByTimeAndType(time, type);
     }
 }
