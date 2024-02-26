@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Ref, computed, onMounted, ref, watch } from 'vue'
 import { useStationStore } from '../../store/stationStore'
-import { getStationCurrentTideSituation, getStationInfo } from './api'
+import { getStationInfo, getStationPredictionTideSituation } from './api'
 import { drawEcharts, generateTreeDataOfStation, initEcharts } from './util'
 
 let echart: echarts.ECharts | null = null
@@ -43,7 +43,7 @@ const stationTable = computed(() => {
 })
 
 watch(stationStore, async () => {
-  waterSituationData.value = await getStationCurrentTideSituation(
+  waterSituationData.value = await getStationPredictionTideSituation(
     stationStore.currentStationID as any,
   )
   if (echart) {
@@ -58,7 +58,7 @@ watch(stationStore, async () => {
 })
 
 onMounted(async () => {
-  waterSituationData.value = await getStationCurrentTideSituation(
+  waterSituationData.value = await getStationPredictionTideSituation(
     stationStore.currentStationID as any,
   )
   if (isStationDataExist.value) {
@@ -96,13 +96,17 @@ onMounted(async () => {
             :highlight-current-row="true"
           >
             <el-table-column prop="time" label="时间" />
-            <el-table-column prop="hpre" label="天文潮位 (hpre)" />
+            <el-table-column
+              align="center"
+              prop="hpre"
+              label="天文潮位 (hpre)"
+            />
           </el-table>
         </el-tab-pane>
       </el-tabs>
     </div>
     <div class="flex flex-col w-[300px] bg-white">
-      <div class="h-56 relative m-2 top-1 border border-zinc-300">
+      <div class="h-52 relative m-2 top-1 border border-zinc-300">
         <div class="h-8 leading-8 px-2 bg-blue-500 text-white">站点详情</div>
         <div class="mx-3 my-2 flex flex-col">
           <div class="my-1">
@@ -112,9 +116,8 @@ onMounted(async () => {
           <div class="my-1">
             <span class="inline-block pr-2">站点类型:</span>
             <span class="inline-block pr-3">{{
-              stationInfo.type === 'sea' ? '沿江' : '沿海'
-            }}</span
-            ><span>{{ stationInfo.lat }}</span>
+              stationInfo.type === 'sea' ? '沿海' : '沿江'
+            }}</span>
           </div>
           <div class="my-1">
             <span class="inline-block pr-2">站点位置:</span>
@@ -136,7 +139,7 @@ onMounted(async () => {
         <div class="h-8 leading-8 px-2 bg-blue-500 text-white">站点列表</div>
         <el-radio-group
           v-model="stationStore.currentStationID"
-          class="py-2 px-4 block overflow-auto h-[22rem]"
+          class="py-2 px-4 block overflow-auto h-[23rem]"
         >
           <el-radio
             v-for="item in treeData"
@@ -152,7 +155,7 @@ onMounted(async () => {
 </template>
 
 <style scoped>
-:deep(.el-table tbody tr:nth-child(2n)) {
-  background: #eff6ff;
+:deep(.el-table tbody tr:nth-child(2n) td) {
+  background: #eff6ff !important;
 }
 </style>

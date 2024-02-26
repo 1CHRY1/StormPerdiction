@@ -131,7 +131,7 @@ const handlePlayClick = () => {
         <el-table
           :data="tableData"
           stripe
-          height="250"
+          height="260"
           class="w-full"
           :highlight-current-row="true"
           v-loading="tableLoading"
@@ -169,7 +169,7 @@ const handlePlayClick = () => {
   background-color: #dbeafe !important;
 }
 
-:deep(.el-table tbody tr:nth-child(2n)) {
-  background: #eff6ff;
+:deep(.el-table tbody tr:nth-child(2n) td) {
+  background: #eff6ff !important;
 }
 </style>

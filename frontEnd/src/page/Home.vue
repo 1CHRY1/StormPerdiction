@@ -29,7 +29,7 @@ const handleClick = async () => {
       {{ header }}
     </div>
     <div class="flex flex-auto flex-row bg-pink-200">
-      <div class="flex flex-col bg-red-300 w-[280px]">
+      <div class="flex flex-col bg-red-300">
         <AsideMenu class="h-full"></AsideMenu>
       </div>
       <div class="relative flex-auto">

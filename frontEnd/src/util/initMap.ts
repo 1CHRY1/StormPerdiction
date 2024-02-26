@@ -22,6 +22,7 @@ export const initMap = async (
       style: 'mapbox://styles/mapbox/streets-v12',
       center: center,
       zoom: zoom,
+      projection: 'mercator' as any,
     })
 
     map.addControl(

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Ref, computed, onMounted, ref, watch } from 'vue'
 import { useStationStore } from '../../store/stationStore'
-import { getStationCurrentWaterSituation, getStationInfo } from './api'
+import { getStationInfo, getStationPredictionTideSituation } from './api'
 import { drawEcharts, generateTreeDataOfStation, initEcharts } from './util'
 
 let echart: echarts.ECharts | null = null
@@ -43,7 +43,7 @@ const stationTable = computed(() => {
 })
 
 watch(stationStore, async () => {
-  waterSituationData.value = await getStationCurrentWaterSituation(
+  waterSituationData.value = await getStationPredictionTideSituation(
     stationStore.currentStationID as any,
   )
   if (echart) {
@@ -58,7 +58,7 @@ watch(stationStore, async () => {
 })
 
 onMounted(async () => {
-  waterSituationData.value = await getStationCurrentWaterSituation(
+  waterSituationData.value = await getStationPredictionTideSituation(
     stationStore.currentStationID as any,
   )
   if (isStationDataExist.value) {
@@ -86,7 +86,9 @@ onMounted(async () => {
           class="flex flex-col items-center"
         >
           <div class="text-lg font-semibold text-blue-500">
-            {{ `${stationInfo.name}站点 ${stationInfo.time} 实时水情数据表` }}
+            {{
+              `${stationInfo.name}站点 ${stationInfo.time} 72 小时预报评定数据表`
+            }}
           </div>
           <el-table
             :data="stationTable"

@@ -29,7 +29,7 @@ export const drawEcharts = async (
   let option: EChartsOption
   option = {
     title: {
-      text: `${info.name}站点 ${info.time} 实时水情折线图`,
+      text: `${info.name}站点 ${info.time} 72 小时预报评定折线图`,
       textStyle: {
         color: 'hsl(220, 50%, 50%)',
       },

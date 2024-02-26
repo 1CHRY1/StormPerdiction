@@ -11,7 +11,7 @@ const mapContainerRef: Ref<HTMLDivElement | null> = ref(null)
 const addLayer = async (map: mapbox.Map) => {
   map.addSource('stations', {
     type: 'geojson',
-    data: '/geojson/water.geojson',
+    data: '/geojson/station.geojson',
     attribution: 'name',
   })
 
@@ -37,8 +37,6 @@ const addLayer = async (map: mapbox.Map) => {
 }
 
 onMounted(async () => {
-  // center: [120.55, 32.08],
-  //     zoom: 6.5, // starting zoom
   const map = await initMap(mapContainerRef.value as HTMLDivElement, {
     center: [120.55, 32.08],
     zoom: 6.5,

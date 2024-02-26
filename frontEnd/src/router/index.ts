@@ -1,15 +1,15 @@
 import { RouteRecordRaw, createRouter, createWebHistory } from 'vue-router'
+import AccuracyDetail from '../feature/accuracy-assessment/AccuracyDetail.vue'
+import AccuracyMapView from '../feature/accuracy-assessment/AccuracyMapView.vue'
 import WaterMapView from '../feature/real-time-situation/WaterMapView.vue'
 import WaterSituationDetail from '../feature/real-time-situation/WaterSituationDetail.vue'
 import TideDetail from '../feature/tide-forecast/TideDetail.vue'
 import TideMapView from '../feature/tide-forecast/TideMapView.vue'
+import StormMapView from '../feature/typical-storm-surge/StormMapView.vue'
 import Observation from '../feature/weather/Observation.vue'
 import Precipitation from '../feature/weather/Precipitation.vue'
 import Radar from '../feature/weather/Radar.vue'
 import Satellite from '../feature/weather/Satellite.vue'
-
-const Home = { template: '<div>Home</div>' }
-const About = { template: '<div>About</div>' }
 
 const routes: RouteRecordRaw[] = [
   {
@@ -54,7 +54,7 @@ const routes: RouteRecordRaw[] = [
       {
         path: 'typhoon',
         name: 'Typhoon',
-        component: Home,
+        component: Precipitation,
         meta: {
           index: 1,
         },
@@ -97,11 +97,25 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/accuracy-assessment',
-    component: About,
+    children: [
+      {
+        path: 'map',
+        name: 'AccuracyMapView',
+        component: AccuracyMapView,
+        meta: { index: 4 },
+      },
+      {
+        path: 'data',
+        name: 'AccuracyDetail',
+        component: AccuracyDetail,
+        meta: { index: 4 },
+      },
+    ],
   },
   {
     path: '/typical-storm-surge',
-    component: About,
+    component: StormMapView,
+    meta: { index: 5 },
   },
 ]
 

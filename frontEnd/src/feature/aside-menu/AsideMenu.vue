@@ -4,12 +4,11 @@ import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
-
 const path = computed(() => route.path)
 </script>
 
 <template>
-  <el-menu :default-active="path" router>
+  <el-menu :default-active="path" router unique-opened class="w-60">
     <el-sub-menu index="/weather">
       <template #title>
         <el-icon><icon-menu /></el-icon>
@@ -69,10 +68,22 @@ const path = computed(() => route.path)
         ></el-menu-item
       >
     </el-sub-menu>
-    <el-menu-item index="/accuracy-assessment">
-      <el-icon><icon-menu /></el-icon>
-      <router-link to="/accuracy-assessment">预报精度评定</router-link>
-    </el-menu-item>
+    <el-sub-menu index="/accuracy-assessment">
+      <template #title>
+        <el-icon><icon-menu /></el-icon>
+        <span>精度评估</span>
+      </template>
+      <el-menu-item index="/accuracy-assessment/map"
+        ><router-link to="/accuracy-assessment/map"
+          >地图底图</router-link
+        ></el-menu-item
+      >
+      <el-menu-item index="/accuracy-assessment/data"
+        ><router-link to="/accuracy-assessment/data"
+          >站点数据</router-link
+        ></el-menu-item
+      >
+    </el-sub-menu>
     <el-menu-item index="/typical-storm-surge">
       <el-icon><icon-menu /></el-icon>
       <router-link to="/typical-storm-surge">历史典型风暴潮</router-link>
