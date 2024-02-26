@@ -1,36 +1,45 @@
-interface ISatelliteTypeAndTimeResponse {
-  time: string
-  type: string
-}
-interface ISatelliteTypeAndTime {
-  type: Set<string>
-  time: Record<string, Set<string>>
-}
+import { ISatelliteTypeAndTime, ISatelliteTypeAndTimeResponse } from './type'
 
 export const getSatelliteTypeAndTime =
   async (): Promise<ISatelliteTypeAndTime> => {
-    const data = (await fetch('/api/v1/data/meteorology')
+    const data = (await fetch('/api/v1/data/meteorology/cloud')
       .then((res) => res.json())
       .then((value) => value.data)) as ISatelliteTypeAndTimeResponse[]
 
-    let type: Set<string> = new Set()
-    let time: Record<string, Set<string>> = {}
+    const typeName = data[0].type1
+    let typeMap: Set<string> = new Set()
+    let timeMap: Record<string, Set<string>> = {}
     data.forEach((value) => {
-      type.add(value.type)
-      if (!time[value.type]) {
-        time[value.type] = new Set()
+      const type =
+        value.type3.length === 0
+          ? value.type2
+          : value.type2 + ' - ' + value.type3
+      typeMap.add(type)
+      if (!timeMap[type]) {
+        timeMap[type] = new Set()
       }
-      time[value.type].add(value.time)
+      timeMap[type].add(value.time)
     })
 
     return {
-      type,
-      time,
+      imageType: typeName,
+      type: typeMap,
+      time: timeMap,
     }
   }
 
-export const getSatelliteImage = async (type: string, time: string) => {
-  const url = `/api/v1/data/meteorology/time&type?time=${time}&type=${type}`
+export const getSatelliteImage = async (
+  imageType: string,
+  type: string,
+  time: string,
+) => {
+  let type2 = type
+  let type3 = ''
+  if (type.includes('-')) {
+    type2 = type.split(' - ')[0]
+    type3 = type.split(' - ')[1]
+  }
+  const url = `/api/v1/data/meteorology/time&type?time=${time}&type1=${imageType}&type2=${type2}&type3=${type3}`
   const imageBlob = await fetch(url)
     .then((res) => res.blob())
     .then((blob) => blob)

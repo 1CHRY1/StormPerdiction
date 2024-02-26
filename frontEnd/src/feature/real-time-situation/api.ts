@@ -1,95 +1,142 @@
 export const stationInfo = {
-  0: {
+  '0': {
+    coord: [117.633, 30.767],
     name: '大通',
     pinyin: 'datong',
-    coord: [117.63333333333334, 30.766666666666666],
+    type: 'river',
   },
-  1: {
+  '1': {
+    coord: [121.267, 31.583],
     name: '杨林',
     pinyin: 'yanglin',
-    coord: [121.26666666666667, 31.583333333333332],
+    type: 'river',
   },
-  2: {
-    name: '射阳河口',
-    pinyin: 'sheyanghekou',
-    coord: [120.56666666666666, 33.88333333333333],
+  '2': {
+    coord: [118.35, 31.35],
+    name: '芜湖',
+    pinyin: 'wuhu',
+    type: 'river',
   },
-  3: { name: '芜湖', pinyin: 'wuhu', coord: [118.35, 31.35] },
-  4: { name: '六滧', pinyin: 'liuyao', coord: [121.7, 31.5] },
-  5: {
-    name: '黄沙港闸下',
-    pinyin: 'huangshagangzhaxia',
-    coord: [120.63333333333334, 33.583333333333336],
+  '3': {
+    coord: [121.7, 31.5],
+    name: '六滧',
+    pinyin: 'liulang',
+    type: 'river',
   },
-  6: {
+  '4': {
+    coord: [118.45, 31.717],
     name: '马鞍山',
     pinyin: 'maanshan',
-    coord: [118.45, 31.716666666666665],
+    type: 'river',
   },
-  7: {
+  '5': {
+    coord: [121.55, 31.383],
     name: '高桥',
     pinyin: 'gaoqiao',
-    coord: [121.55, 31.383333333333333],
+    type: 'river',
   },
-  8: {
-    name: '新洋港闸下',
-    pinyin: 'xinyanggangzhaxia',
-    coord: [120.6, 33.63333333333333],
-  },
-  9: {
+  '6': {
+    coord: [118.717, 32.083],
     name: '南京',
     pinyin: 'nanjing',
-    coord: [118.71666666666667, 32.083333333333336],
+    type: 'river',
   },
-  10: {
+  '7': {
+    coord: [121.233, 31.267],
     name: '吴淞',
     pinyin: 'wusong',
-    coord: [121.23333333333333, 31.266666666666666],
+    type: 'river',
   },
-  11: {
-    name: '斗龙港闸下',
-    pinyin: 'doulonggangzhaxia',
-    coord: [120.66666666666667, 33.516666666666666],
-  },
-  12: {
+  '8': {
+    coord: [119.433, 32.217],
     name: '镇江',
     pinyin: 'zhenjiang',
-    coord: [119.43333333333334, 32.21666666666667],
+    type: 'river',
   },
-  13: {
+  '9': {
+    coord: [117.783, 31.133],
     name: '凤凰颈站下',
     pinyin: 'fenghuangjingzhanxia',
-    coord: [117.78333333333333, 31.133333333333333],
+    type: 'river',
   },
-  14: {
-    name: '川东港闸下',
-    pinyin: 'chuandonggangzhaxia',
-    coord: [120.91666666666667, 33.083333333333336],
+  '10': {
+    coord: [120.3, 31.95],
+    name: '江阴',
+    pinyin: 'jiangyin',
+    type: 'river',
   },
-  15: { name: '江阴', pinyin: 'jiangyin', coord: [120.3, 31.95] },
-  16: {
+  '11': {
+    coord: [118.317, 31.433],
     name: '裕溪闸闸下',
-    pinyin: 'yuxizhazhaxia',
-    coord: [118.31666666666666, 31.433333333333334],
+    pinyin: 'yuxizhaxia',
+    type: 'river',
   },
-  17: { name: '乍浦', pinyin: 'zhapu', coord: [121.1, 30.583333333333332] },
-  18: {
+  '12': {
+    coord: [120.75, 32.033],
     name: '天生港',
     pinyin: 'tianshenggang',
-    coord: [120.75, 32.03333333333333],
+    type: 'river',
   },
-  19: {
+  '13': {
+    coord: [118.367, 31.533],
     name: '新桥闸闸下',
-    pinyin: 'xinqiaozhazhaxia',
-    coord: [118.36666666666666, 31.533333333333335],
+    pinyin: 'xinqiaozhaxia',
+    type: 'river',
   },
-  20: {
+  '14': {
+    coord: [120.95, 31.75],
+    name: '徐六泾',
+    pinyin: 'xuliujing',
+    type: 'river',
+  },
+  '15': {
+    coord: [120.567, 33.883],
+    name: '射阳河口',
+    pinyin: 'sheyanghekou',
+    type: 'sea',
+  },
+  '16': {
+    coord: [120.633, 33.583],
+    name: '黄沙港闸下',
+    pinyin: 'huangshagangzhaxia',
+    type: 'sea',
+  },
+  '17': {
+    coord: [120.6, 33.633],
+    name: '新洋港闸下',
+    pinyin: 'xinyanggangzhaxia',
+    type: 'sea',
+  },
+  '18': {
+    coord: [120.667, 33.517],
+    name: '斗龙港闸下',
+    pinyin: 'doulonggangzhaxia',
+    type: 'sea',
+  },
+  '19': {
+    coord: [120.917, 33.083],
+    name: '川东港闸下',
+    pinyin: 'chuandonggangzhaxia',
+    type: 'sea',
+  },
+  '20': {
+    coord: [121.1, 30.583],
+    name: '乍浦',
+    pinyin: 'zhapu',
+    type: 'sea',
+  },
+  '21': {
+    coord: [120.917, 30.367],
     name: '澉浦',
     pinyin: 'ganpu',
-    coord: [120.91666666666667, 30.366666666666667],
+    type: 'sea',
   },
-  21: { name: '徐六泾', pinyin: 'xuliujing', coord: [120.95, 31.75] },
-  22: { name: '盐官', pinyin: 'yanguan', coord: [120.55, 30.4] },
+  '22': {
+    coord: [120.55, 30.4],
+    name: '盐官',
+    pinyin: 'yanguan',
+    type: 'sea',
+  },
 }
 
 const decimalToDMS = (decimal: number): string => {
@@ -106,6 +153,7 @@ export const getStationInfo = (id: keyof typeof stationInfo): IStationInfo => {
     time: new Date(Date.now()).toLocaleString().replace(/:\d\d$/, ''),
     lon: decimalToDMS(info.coord[0]),
     lat: decimalToDMS(info.coord[1]),
+    type: info.type,
   }
   return result
 }
@@ -116,8 +164,22 @@ export const getStationCurrentWaterSituation = async (
   const url = `/api/v1/data/level/station/notyph/72?station=${stationInfo[id].pinyin}`
   const dataMap = (await fetch(url)
     .then((res) => res.json())
-    .then((data) => data.data)) as IWaterSituation[]
-  const time = dataMap[0].time
+    .then((data) => data.data)) as IWaterSituationResponse[]
+
+  if (dataMap.length === 0) {
+    return {
+      time: [],
+      hpre: [],
+    }
+  }
   const data = dataMap[0].hpre
+
+  let time: string[] = []
+  const length = data.length
+  const startTime = new Date(dataMap[0].time)
+  for (let i = 0; i < length; i++) {
+    const nextHour = new Date(startTime.getTime() + i * 60 * 60 * 1000)
+    time.push(nextHour.toLocaleString().replace(/:\d\d$/, ''))
+  }
   return { time, hpre: data }
 }

@@ -4,11 +4,19 @@ interface Props {
 }
 defineProps<Props>()
 
+import { computed } from 'vue'
 import AsideMenu from '../feature/aside-menu/AsideMenu.vue'
-import { getStationCurrentWaterSituation } from '../feature/real-time-situation/api'
+import { useKeepAliveStore } from '../store/keepActiveStore'
+import { useStationStore } from '../store/stationStore'
+
+const keepAliveStore = useKeepAliveStore()
+const keepAliveComponents = computed(() => {
+  return keepAliveStore.getKeepAliveComponent()
+})
 
 const handleClick = async () => {
-  getStationCurrentWaterSituation(0)
+  const a = useStationStore().currentStationID
+  console.log(a)
 }
 </script>
 
@@ -25,7 +33,11 @@ const handleClick = async () => {
         <AsideMenu class="h-full"></AsideMenu>
       </div>
       <div class="relative flex-auto">
-        <router-view></router-view>
+        <router-view v-slot="{ Component }">
+          <keep-alive :include="keepAliveComponents">
+            <component :is="Component" />
+          </keep-alive>
+        </router-view>
       </div>
     </div>
   </div>

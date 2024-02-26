@@ -2,20 +2,16 @@
 import mapbox from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import { Ref, onMounted, ref } from 'vue'
+import { router } from '../../router'
 import { useStationStore } from '../../store/stationStore'
 import { initMap } from '../../util/initMap'
-
-interface Props {
-  currentComponent: Ref
-}
-defineProps<Props>()
 
 let stationStore = useStationStore()
 const mapContainerRef: Ref<HTMLDivElement | null> = ref(null)
 const addLayer = async (map: mapbox.Map) => {
   map.addSource('stations', {
     type: 'geojson',
-    data: '/geojson/station.geojson',
+    data: '/geojson/water.geojson',
     attribution: 'name',
   })
 
@@ -58,6 +54,7 @@ onMounted(async () => {
         if (stations && stations[0]) {
           const id = stations[0].properties!.id as string
           stationStore.currentStationID = id
+          router.push('/real-time-situation/data')
         }
       }
     })

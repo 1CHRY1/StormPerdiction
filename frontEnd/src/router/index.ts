@@ -1,12 +1,12 @@
-import { RouteRecordRaw } from 'vue-router'
-import MapView from '../feature/real-time-situation/MapView.vue'
+import { RouteRecordRaw, createRouter, createWebHistory } from 'vue-router'
+import WaterMapView from '../feature/real-time-situation/WaterMapView.vue'
 import WaterSituationDetail from '../feature/real-time-situation/WaterSituationDetail.vue'
 import Satellite from '../feature/weather/Satellite.vue'
 
 const Home = { template: '<div>Home</div>' }
 const About = { template: '<div>About</div>' }
 
-export const routes: RouteRecordRaw[] = [
+const routes: RouteRecordRaw[] = [
   {
     path: '/',
     redirect: '/weather/satellite',
@@ -16,7 +16,11 @@ export const routes: RouteRecordRaw[] = [
     children: [
       {
         path: 'satellite',
+        name: 'Satellite',
         component: Satellite,
+        meta: {
+          index: 1,
+        },
       },
       {
         path: 'radar',
@@ -41,17 +45,34 @@ export const routes: RouteRecordRaw[] = [
     children: [
       {
         path: 'map',
-        component: MapView,
+        name: 'WaterMapView',
+        component: WaterMapView,
+        meta: { index: 2 },
       },
       {
         path: 'data',
+        name: 'WaterSituationDetail',
         component: WaterSituationDetail,
+        meta: { index: 2 },
       },
     ],
   },
   {
     path: '/tide-forecast',
-    component: About,
+    children: [
+      {
+        path: 'map',
+        name: 'TideMapView',
+        component: WaterMapView,
+        meta: { index: 2 },
+      },
+      {
+        path: 'data',
+        name: 'TideDetail',
+        component: WaterSituationDetail,
+        meta: { index: 2 },
+      },
+    ],
   },
   {
     path: '/accuracy-assessment',
@@ -62,3 +83,8 @@ export const routes: RouteRecordRaw[] = [
     component: About,
   },
 ]
+
+export const router = createRouter({
+  history: createWebHistory(),
+  routes: routes,
+})

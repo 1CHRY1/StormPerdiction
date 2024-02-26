@@ -4,18 +4,21 @@ import { getSatelliteImage, getSatelliteTypeAndTime } from './api'
 
 let options: Ref<Record<string, string>[]> = ref([])
 let timeListMap: Ref<Record<string, Record<number, string[]>>> = ref({})
+const currentImageType = ref()
 const selectType = ref()
 const timeRange = ref(24)
 const currentTime = ref()
 const tableLoading = ref(true)
 const isPlay = ref(false)
-const playRate = ref(500)
+const playRate = ref(300)
 const playTag = ref(0)
 const imageUrl = ref()
 
 const timeListOfType = computed(() => {
   if (timeListMap.value[selectType.value]) {
     return timeListMap.value[selectType.value][timeRange.value]
+      .toSorted()
+      .toReversed()
   } else {
     return []
   }
@@ -25,7 +28,8 @@ const tableData = computed(() => {
 })
 
 onMounted(async () => {
-  const { type, time } = await getSatelliteTypeAndTime()
+  const { type, time, imageType } = await getSatelliteTypeAndTime()
+  currentImageType.value = imageType
   options.value = [...type].map((value) => ({
     value: value,
     label: value,
@@ -42,13 +46,21 @@ onMounted(async () => {
 
   selectType.value = options.value[0].value
   currentTime.value = timeListMap.value[selectType.value][24][0]
-  imageUrl.value = await getSatelliteImage(selectType.value, currentTime.value)
+  imageUrl.value = await getSatelliteImage(
+    currentImageType.value,
+    selectType.value,
+    currentTime.value,
+  )
 
   tableLoading.value = false
 })
 
 watch([selectType, currentTime], async () => {
-  imageUrl.value = await getSatelliteImage(selectType.value, currentTime.value)
+  imageUrl.value = imageUrl.value = await getSatelliteImage(
+    currentImageType.value,
+    selectType.value,
+    currentTime.value,
+  )
 })
 
 watch(tableData, () => {
@@ -67,11 +79,11 @@ const handleTableSelectionChange = (selection: any) => {
 
 const handlePlayClick = () => {
   if (!isPlay.value) {
-    let index = 0
     const length = timeListOfType.value.length
+    let index = length - 1
     playTag.value = setInterval(() => {
       currentTime.value = timeListOfType.value[index]
-      index === length - 1 ? (index = 0) : (index += 1)
+      index === 0 ? (index = length - 1) : (index -= 1)
     }, playRate.value)
   } else {
     clearInterval(playTag.value)
@@ -84,7 +96,7 @@ const handlePlayClick = () => {
 <template>
   <div class="flex h-full">
     <div class="flex flex-auto justify-center items-center bg-zinc-200">
-      <img class="flex-auto m-4 max-h-[36rem]" :src="imageUrl" />
+      <img class="flex-auto m-4 max-h-[36rem] object-contain" :src="imageUrl" />
     </div>
     <div class="flex flex-col w-[300px] bg-white">
       <div class="h-24 relative m-2 top-1 border border-zinc-300">
@@ -135,7 +147,7 @@ const handlePlayClick = () => {
             v-model="playRate"
             :min="1"
             :max="100000"
-            :step="500"
+            :step="200"
             class="m-3"
           />
           <div class="m-3">
@@ -155,5 +167,9 @@ const handlePlayClick = () => {
 <style scoped>
 :deep(.el-table__body tr.current-row > td.el-table__cell) {
   background-color: #dbeafe !important;
+}
+
+:deep(.el-table tbody tr:nth-child(2n)) {
+  background: #eff6ff;
 }
 </style>
