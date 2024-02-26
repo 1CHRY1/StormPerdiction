@@ -25,11 +25,25 @@ def createStationtable(db_path, tablename):
                 iftyph INTEGER,
                 addwind INTEGER,
                 hpre FLOAT,
-                hz FLOAT,
                 hyubao FLOAT,
                 manual INTEGER
             )
         ''')
+    conn.commit()
+    conn.close()
+
+# 字段介绍： 数据时间， 潮位
+def  createHZtable(db_path, tablename):
+    # 创建站点历史所有潮位表
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+    cursor.execute(f'''
+                CREATE TABLE IF NOT EXISTS {tablename} (
+                    updatetime DATETIME,
+                    time DATETIME,
+                    hz_value FLOAT
+                )
+            ''')
     conn.commit()
     conn.close()
 
@@ -60,7 +74,9 @@ def main():
 
     # 根据站点名称创建不同数据表
     for station in stations:
+        station_hz = station + "_hz"
         createStationtable(db_path, station)
+        createHZtable(db_path, station_hz)
 
 if __name__ == "__main__":
     main()

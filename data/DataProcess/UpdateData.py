@@ -54,6 +54,10 @@ def insert_Nottyphdata(db_path, name, time, addwind, hpre, manual):
     conn.commit()
     conn.close()
 
+def list_process(hpre):
+    data = hpre
+    return data
+
 def insert_hzdata(db_path, name, time, hz_value):
     # 插入站点详细数据
     conn = sqlite3.connect(db_path)
@@ -66,12 +70,6 @@ def insert_hzdata(db_path, name, time, hz_value):
             ''')
     conn.commit()
     conn.close()
-
-def list_process(hpre):
-    data = []
-    for item in hpre:
-        data.append(item[0])
-    return data
 
 def get_hzdata(hz, start_time):
     result = []
@@ -116,27 +114,16 @@ def get_prefix_before_digits(input_str):
     return prefix
 
 def main():
-    db_path_Forcasting = os.getcwd() + '\\Forcasting.db'
-    db_path_NC = os.getcwd() + '\\NC.db'
-    # folderPath = os.path.join(os.pardir,"forecastData")
-    folderPath = os.path.abspath(os.pardir)
+    db_path_Forcasting = os.getcwd() + '/Forcasting.db'
+    db_path_NC = os.getcwd() + '/NC.db'
+    folderPath = os.pardir
     folders = os.listdir(folderPath)
     for folder in folders:
-        # 遍历每个文件夹中的数据
-        Path = folderPath + "\\" + folder
-        # 获取数据时间
-        if ( len(folder)==8 ):
-            # 数据时间非手动计算
-            time = datetime.strptime(folder, "%Y%m%d")
-            manual = 0
-        else:
-            # 数据时间为手动计算
-            try:
-                time = datetime.strptime(folder, "%Y%m%d_%H:%M")
-                manual = 1
-            except Exception as e:
-                print(e)
-                continue
+        current_time = datetime.now().strftime("%Y%m%d")
+        if (len(folder) != 8 or folder != current_time):
+            continue
+        Path = folderPath + "//" + folder
+        manual = 0
         try:
             txtPath = os.path.join(Path, "ifTyph.txt")
             if (JudgeIfTyph(txtPath) == True):
@@ -175,7 +162,7 @@ def main():
                             type = "fort74"
                         else:
                             continue
-                        path = Path + "\\" + file
+                        path = os.path.abspath(file)
                         filename = os.path.basename(file)
                         insert_NCdata(db_path_NC, time, type, path, filename, manual)
 
@@ -222,7 +209,7 @@ def main():
                             type = "fort74"
                         else:
                             continue
-                        path = Path + "\\" + file
+                        path = os.path.abspath(file)
                         filename = os.path.basename(file)
                         insert_NCdata(db_path_NC, time, type, path, filename, manual)
 
