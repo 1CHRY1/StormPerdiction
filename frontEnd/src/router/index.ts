@@ -1,6 +1,9 @@
 import { RouteRecordRaw, createRouter, createWebHistory } from 'vue-router'
 import WaterMapView from '../feature/real-time-situation/WaterMapView.vue'
 import WaterSituationDetail from '../feature/real-time-situation/WaterSituationDetail.vue'
+import Observation from '../feature/weather/Observation.vue'
+import Precipitation from '../feature/weather/Precipitation.vue'
+import Radar from '../feature/weather/Radar.vue'
 import Satellite from '../feature/weather/Satellite.vue'
 
 const Home = { template: '<div>Home</div>' }
@@ -24,19 +27,35 @@ const routes: RouteRecordRaw[] = [
       },
       {
         path: 'radar',
-        component: Home,
+        name: 'Radar',
+        component: Radar,
+        meta: {
+          index: 1,
+        },
       },
       {
         path: 'observation',
-        component: Home,
+        name: 'Observation',
+        component: Observation,
+        meta: {
+          index: 1,
+        },
       },
       {
         path: 'precipitation',
-        component: Home,
+        name: 'Precipitation',
+        component: Precipitation,
+        meta: {
+          index: 1,
+        },
       },
       {
         path: 'typhoon',
+        name: 'Typhoon',
         component: Home,
+        meta: {
+          index: 1,
+        },
       },
     ],
   },

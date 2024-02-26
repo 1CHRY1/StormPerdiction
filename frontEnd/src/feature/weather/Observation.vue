@@ -28,7 +28,7 @@ const tableData = computed(() => {
 })
 
 onMounted(async () => {
-  const { type, time, imageType } = await getSatelliteTypeAndTime('cloud')
+  const { type, time, imageType } = await getSatelliteTypeAndTime('rainfall')
   currentImageType.value = imageType
   options.value = [...type].map((value) => ({
     value: value,

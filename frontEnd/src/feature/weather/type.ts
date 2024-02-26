@@ -8,15 +8,17 @@ export interface IWeatherImageInfo {
   time: string
 }
 
-export interface ISatelliteTypeAndTimeResponse {
+export interface IImageTypeAndTimeResponse {
   time: string
   type1: string
   type2: string
   type3: string
 }
 
-export interface ISatelliteTypeAndTime {
+export interface IImageTypeAndTime {
   imageType: string
   type: Set<string>
   time: Record<string, Set<string>>
 }
+
+export type ImageType = 'cloud' | 'radar' | 'rainfall' | 'rainfallpre'

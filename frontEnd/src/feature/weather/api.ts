@@ -1,32 +1,31 @@
-import { ISatelliteTypeAndTime, ISatelliteTypeAndTimeResponse } from './type'
+import { IImageTypeAndTime, IImageTypeAndTimeResponse, ImageType } from './type'
 
-export const getSatelliteTypeAndTime =
-  async (): Promise<ISatelliteTypeAndTime> => {
-    const data = (await fetch('/api/v1/data/meteorology/cloud')
-      .then((res) => res.json())
-      .then((value) => value.data)) as ISatelliteTypeAndTimeResponse[]
+export const getSatelliteTypeAndTime = async (
+  imageType: ImageType,
+): Promise<IImageTypeAndTime> => {
+  const data = (await fetch(`/api/v1/data/meteorology/${imageType}`)
+    .then((res) => res.json())
+    .then((value) => value.data)) as IImageTypeAndTimeResponse[]
 
-    const typeName = data[0].type1
-    let typeMap: Set<string> = new Set()
-    let timeMap: Record<string, Set<string>> = {}
-    data.forEach((value) => {
-      const type =
-        value.type3.length === 0
-          ? value.type2
-          : value.type2 + ' - ' + value.type3
-      typeMap.add(type)
-      if (!timeMap[type]) {
-        timeMap[type] = new Set()
-      }
-      timeMap[type].add(value.time)
-    })
-
-    return {
-      imageType: typeName,
-      type: typeMap,
-      time: timeMap,
+  const typeName = data[0].type1
+  let typeMap: Set<string> = new Set()
+  let timeMap: Record<string, Set<string>> = {}
+  data.forEach((value) => {
+    const type =
+      value.type3.length === 0 ? value.type2 : value.type2 + ' - ' + value.type3
+    typeMap.add(type)
+    if (!timeMap[type]) {
+      timeMap[type] = new Set()
     }
+    timeMap[type].add(value.time)
+  })
+
+  return {
+    imageType: typeName,
+    type: typeMap,
+    time: timeMap,
   }
+}
 
 export const getSatelliteImage = async (
   imageType: string,
