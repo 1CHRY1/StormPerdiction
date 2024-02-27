@@ -21,6 +21,11 @@ public class NCController {
     @Autowired
     NCService ncService;
 
+    @GetMapping("/txt")
+    public JsonResult getTxtDataByTime(@RequestParam String time) {
+        return ResultUtils.success(ncService.getTxtDataByTime(time));
+    }
+
     @GetMapping
     public JsonResult getInfoByTime() {
         return ResultUtils.success(ncService.getAll());

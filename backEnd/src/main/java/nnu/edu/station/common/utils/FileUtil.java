@@ -8,10 +8,7 @@ import nnu.edu.station.common.exception.MyException;
 import nnu.edu.station.common.result.ResultEnum;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -140,6 +137,28 @@ public class FileUtil {
             e.printStackTrace();
             throw new MyException(ResultEnum.DEFAULT_EXCEPTION);
         }
+    }
+
+    public static List<List<String>> readTxtFile(String filePath) {
+        List<List<String>> result = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String headerLine = br.readLine();
+            String replacedHeaderLine = "zhandian   mae(m)   mae(m)-aftercorrection   rmse(m)   rmse(m)-aftercorrection   hegelv(%)   hegelv(%)-aftercorrection";
+            String[] headerTokens = replacedHeaderLine.trim().split("\\s+");
+            for (String token : headerTokens) {
+                result.add(new ArrayList<>(Arrays.asList(token)));
+            }
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] tokens = line.trim().split("\\s+");
+                for (int i = 0; i < tokens.length; i++) {
+                    result.get(i).add(tokens[i]);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
 }

@@ -79,7 +79,7 @@ public class TimeTask {
         }
     }
 
-    @Scheduled(cron = "0 0 13 * * ?")
+    @Scheduled(cron = "0 5 * * * ?")
     public void executePythonClawingCloudData() {
         // 爬取卫星云图数据
         try {
@@ -96,7 +96,7 @@ public class TimeTask {
         }
     }
 
-    @Scheduled(cron = "0 0 14 * * ?")
+    @Scheduled(cron = "0 20 * * * ?")
     public void executePythonClawingRadarData() {
         // 爬取雷达拼图数据
         try {
@@ -113,7 +113,7 @@ public class TimeTask {
         }
     }
 
-    @Scheduled(cron = "0 0 15 * * ?")
+    @Scheduled(cron = "0 35 * * * ?")
     public void executePythonClawingRainfallData() {
         // 爬取降水量实况数据
         try {
@@ -130,7 +130,7 @@ public class TimeTask {
         }
     }
 
-    @Scheduled(cron = "00 00 16 * * ?")
+    @Scheduled(cron = "00 50 * * * ?")
     public void executePythonClawingRainfallpreData() {
         // 爬取降水量预报数据
         try {
@@ -147,7 +147,7 @@ public class TimeTask {
         }
     }
 
-    @Scheduled(cron = "00 55 15 * * ?")
+    @Scheduled(cron = "00 55 8 * * ?")
     public void executePythonDeleteClawingData() {
         // 删除过期数据
         try {

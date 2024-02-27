@@ -28,4 +28,44 @@ public class ListUtil {
         }
         return result;
     }
+
+    public static  List<Map<String, Object>> StringObjList2ArrayObjList(List<Map<String, Object>> objs) {
+        for (Map<String, Object> obj : objs){
+            String hpre_str = (String) obj.get("hpre");
+            String hyubao_str = (String) obj.get("hyubao");
+            String hadd_str = (String) obj.get("hadd");
+            if ( hpre_str != null ) {
+                List<Double> hpre = ListUtil.String2Array(hpre_str);
+                obj.replace("hpre",hpre);
+            }
+            if ( hyubao_str != null ) {
+                List<Double> hyubao = ListUtil.String2Array(hyubao_str);
+                obj.replace("hyubao",hyubao);
+            }
+            if ( hadd_str != null ) {
+                List<Double> hadd = ListUtil.String2Array(hadd_str);
+                obj.replace("hadd",hadd);
+            }
+        }
+        return objs;
+    }
+
+    public static  Map<String, Object> StringObj2ArrayObj(Map<String, Object> obj) {
+        String hpre_str = (String) obj.get("hpre");
+        String hyubao_str = (String) obj.get("hyubao");
+        String hadd_str = (String) obj.get("hadd");
+        if ( hpre_str != null ) {
+            List<Double> hpre = ListUtil.String2Array(hpre_str);
+            obj.replace("hpre",hpre);
+        }
+        if ( hyubao_str != null ) {
+            List<Double> hyubao = ListUtil.String2Array(hyubao_str);
+            obj.replace("hyubao",hyubao);
+        }
+        if ( hadd_str != null ) {
+            List<Double> hadd = ListUtil.String2Array(hadd_str);
+            obj.replace("hadd",hadd);
+        }
+        return obj;
+    }
 }
