@@ -1,0 +1,48 @@
+{
+    "area_masks": [
+        "/images/flowtest/mask_0.png",
+        "/images/flowtest/mask_1.png",
+        "/images/flowtest/mask_2.png"
+    ],
+    "constraints": {
+        "max_drop_rate": 0.1,
+        "max_drop_rate_bump": 0.2,
+        "max_segment_num": 64,
+        "max_streamline_num": 262144,
+        "max_texture_size": 4096
+    },
+    "extent": [
+        0.8265593179722474,
+        0.42783033267074205,
+        0.8592976513055807,
+        0.37521733976393157
+    ],
+    "flow_boundary": {
+        "u_max": 1.2482787335,
+        "u_min": -0.9909723064,
+        "v_max": 1.7778602094,
+        "v_min": -1.5004043209
+    },
+    "flow_fields": [
+        "/images/flowtest/uv_0.png",
+        "/images/flowtest/uv_1.png",
+        "/images/flowtest/uv_2.png"
+    ],
+    "projection": [
+        "/images/flowtest/projection_mapbox.png"
+    ],
+    "texture_size": {
+        "area_mask": [
+            1024,
+            1372
+        ],
+        "flow_field": [
+            1024,
+            1372
+        ],
+        "projection": [
+            1024,
+            2048
+        ]
+    }
+}

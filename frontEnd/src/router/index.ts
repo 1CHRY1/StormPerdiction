@@ -10,11 +10,16 @@ import Observation from '../feature/weather/Observation.vue'
 import Precipitation from '../feature/weather/Precipitation.vue'
 import Radar from '../feature/weather/Radar.vue'
 import Satellite from '../feature/weather/Satellite.vue'
+import HelloWorld from '../components/HelloWorld.vue'
 
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
     redirect: '/weather/satellite',
+  },
+  {
+    path: '/test',
+    component: HelloWorld
   },
   {
     path: '/weather',
