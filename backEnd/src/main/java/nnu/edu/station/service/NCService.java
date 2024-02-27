@@ -5,7 +5,7 @@ import java.util.Map;
 
 public interface NCService {
 
-    List<String> getAll();
+    List<Object> getAll();
 
-    Map<String, String> getInfoByTimeAndType(String time, String type);
+    Object getInfoByTimeAndType(String time, String type);
 }

@@ -15,12 +15,12 @@ public class StationServiceImpl implements StationService {
     StationMapper StationMapper;
 
     @Override
-    public Map<String, Object> getInfoByName(String name) {
+    public Object getInfoByName(String name) {
         return StationMapper.getInfoByName(name);
     }
 
     @Override
-    public List<String> getAllStations(){
+    public List<Object> getAllStations(){
         return StationMapper.getAllStations();
     }
 }
