@@ -1363,3 +1363,16 @@ export const updateTyphoonSymbol = (
   const source = map.getSource('typhoon') as mapbox.GeoJSONSource
   source.setData(generateGeoJSONByCoord(coord) as any)
 }
+
+export const removeLayer = (map: mapbox.Map) => {
+  map.removeLayer('storm-point')
+  map.removeSource('storm-point')
+
+  map.removeLayer('storm-line')
+  map.removeSource('storm-line')
+
+  map.removeLayer('typhoon')
+  map.removeSource('typhoon')
+
+  map.removeImage('typhoon-icon')
+}

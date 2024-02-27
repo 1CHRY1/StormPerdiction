@@ -9,12 +9,10 @@ const echartsRef = ref()
 const activeName = ref('graph')
 const stationStore = useStationStore()
 const treeData = generateTreeDataOfStation()
-
 const stationInfo = computed(() =>
   getStationInfo(stationStore.currentStationID as any),
 )
-
-const waterSituationData: Ref<IRealTideSituation | null> = ref(null)
+const waterSituationData: Ref<ITideSituation | null> = ref(null)
 const isStationDataExist = computed(() => {
   if (
     waterSituationData.value === null ||
@@ -86,9 +84,7 @@ onMounted(async () => {
           class="flex flex-col items-center"
         >
           <div class="text-lg font-semibold text-blue-500">
-            {{
-              `${stationInfo.name}站点 ${stationInfo.time} 72 小时预报评定数据表`
-            }}
+            {{ `${stationInfo.name}站点 ${stationInfo.time} 实时水情数据表` }}
           </div>
           <el-table
             :data="stationTable"

@@ -1,4 +1,5 @@
 import * as echarts from 'echarts'
+import mapbox from 'mapbox-gl'
 import { Ref } from 'vue'
 import { stationInfo } from './api'
 
@@ -246,4 +247,38 @@ export const drawEcharts = async (
     }
   }
   option && echart.setOption(option)
+}
+
+export const addLayer = async (map: mapbox.Map) => {
+  map.addSource('stations', {
+    type: 'geojson',
+    data: '/geojson/station.geojson',
+    attribution: 'name',
+  })
+
+  const image = await new Promise((resolve) => {
+    map.loadImage('/png/custom_marker.png', (_, image) => {
+      resolve(image)
+    })
+  })
+  map.addImage('station-marker', image as any)
+  map.addLayer({
+    id: 'stations',
+    source: 'stations',
+    type: 'symbol',
+    layout: {
+      'icon-image': 'station-marker',
+      'icon-size': 0.6,
+      'text-field': ['get', 'name'],
+      'text-font': ['Open Sans Semibold', 'Arial Unicode MS Bold'],
+      'text-offset': [0, 1.25],
+      'text-anchor': 'top',
+    },
+  })
+}
+
+export const removeLayer = (map: mapbox.Map) => {
+  map.removeLayer('stations')
+  map.removeSource('stations')
+  map.removeImage('station-marker')
 }

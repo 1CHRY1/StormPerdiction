@@ -15,7 +15,6 @@ import {
   updateTyphoonSymbol,
 } from './util'
 
-// let stationStore = useStationStore()
 const mapContainerRef: Ref<HTMLDivElement | null> = ref(null)
 const selectPoint: Ref<string> = ref('0')
 const currentPointData: Ref<null | IStormDataOfPoint> = ref(null)
@@ -59,40 +58,36 @@ watch(selectPoint, () => {
 onMounted(async () => {
   stormData.value = getStormData(selectStormType.value)
   tableData.value = generateStormTableData(stormData.value)
+  currentPointData.value = stormData.value!.dataList[Number(selectPoint.value)]
 
-  const map = await initMap(mapContainerRef.value as HTMLDivElement, {
+  let map: mapbox.Map = await initMap(mapContainerRef.value as HTMLDivElement, {
     center: [133.4, 30.2],
     zoom: 4,
   })
+  map.flyTo({
+    center: [currentPointData.value.lng, currentPointData.value.lat],
+  })
+  await addStormLayer(map, selectStormType.value)
+  await addTyphoonSymbol(map, [
+    currentPointData.value.lng,
+    currentPointData.value.lat,
+  ])
+  map.on('click', (event: mapbox.MapMouseEvent) => {
+    const box: [[number, number], [number, number]] = [
+      [event.point.x - 3, event.point.y - 3],
+      [event.point.x + 3, event.point.y + 3],
+    ]
 
-  if (map) {
-    currentPointData.value =
-      stormData.value!.dataList[Number(selectPoint.value)]
-    map.flyTo({
-      center: [currentPointData.value.lng, currentPointData.value.lat],
-    })
-    await addStormLayer(map, selectStormType.value)
-    await addTyphoonSymbol(map, [
-      currentPointData.value.lng,
-      currentPointData.value.lat,
-    ])
-    map.on('click', (event: mapbox.MapMouseEvent) => {
-      const box: [[number, number], [number, number]] = [
-        [event.point.x - 3, event.point.y - 3],
-        [event.point.x + 3, event.point.y + 3],
-      ]
-
-      if (map.getLayer('storm-point')) {
-        const point = map.queryRenderedFeatures(box, {
-          layers: ['storm-point'],
-        })
-        if (point && point[0]) {
-          const id = point[0].properties!.id as string
-          selectPoint.value = id
-        }
+    if (map.getLayer('storm-point')) {
+      const point = map.queryRenderedFeatures(box, {
+        layers: ['storm-point'],
+      })
+      if (point && point[0]) {
+        const id = point[0].properties!.id as string
+        selectPoint.value = id
       }
-    })
-  }
+    }
+  })
 })
 </script>
 

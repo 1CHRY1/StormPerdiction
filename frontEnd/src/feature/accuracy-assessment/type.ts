@@ -7,14 +7,19 @@ interface IStationInfo {
   type: string
 }
 
-interface IRealTideSituationResponse {
+interface ITideSituationResponse {
   time: string
   hpre: number[]
+  hyubao?: number[]
+  hadd?: number[]
 }
 
-interface IRealTideSituation {
+interface ITideSituation {
+  isTyphoon: boolean
   time: string[]
   hpre: number[]
+  hyubao: number[]
+  hadd: number[]
 }
 
 interface Tree {

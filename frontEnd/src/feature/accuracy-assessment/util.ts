@@ -1,4 +1,5 @@
 import * as echarts from 'echarts'
+import mapbox from 'mapbox-gl'
 import { Ref } from 'vue'
 import { stationInfo } from './api'
 
@@ -18,18 +19,18 @@ export const initEcharts = (ref: Ref) => {
 
 export const drawEcharts = async (
   echart: echarts.ECharts,
-  waterSituationData: IRealTideSituation,
-  info: IStationInfo,
-  isValid: boolean,
+  waterSituationData: ITideSituation,
+  stationInfo: IStationInfo,
+  isStationDataExist: boolean,
 ) => {
-  const min = Math.min(...waterSituationData.hpre)
-  const max = Math.max(...waterSituationData.hpre)
-  const range = max - min
   type EChartsOption = echarts.EChartsOption
   let option: EChartsOption
+  const min = Math.min(...waterSituationData.hpre, ...waterSituationData.hyubao)
+  const max = Math.max(...waterSituationData.hpre, ...waterSituationData.hyubao)
+  const range = max - min
   option = {
     title: {
-      text: `${info.name}站点 ${info.time} 72 小时预报评定折线图`,
+      text: `${stationInfo.name}站点 ${stationInfo.time} 精读评定折线图`,
       textStyle: {
         color: 'hsl(220, 50%, 50%)',
       },
@@ -38,7 +39,7 @@ export const drawEcharts = async (
       trigger: 'axis',
     },
     legend: {
-      data: [info.name],
+      data: ['预报数据', '实测数据'],
       right: '15%',
       top: '1%',
     },
@@ -87,14 +88,20 @@ export const drawEcharts = async (
     ],
     series: [
       {
-        name: info.name,
+        name: '预报数据',
         type: 'line',
         smooth: true,
         data: waterSituationData.hpre,
       },
+      {
+        name: '实测数据',
+        type: 'line',
+        smooth: true,
+        data: waterSituationData.hyubao,
+      },
     ],
   }
-  if (!isValid) {
+  if (!isStationDataExist) {
     option['graphic'] = {
       type: 'text', // 类型：文本
       left: 'center',
@@ -111,4 +118,38 @@ export const drawEcharts = async (
     }
   }
   option && echart.setOption(option)
+}
+
+export const addLayer = async (map: mapbox.Map) => {
+  map.addSource('stations', {
+    type: 'geojson',
+    data: '/geojson/station.geojson',
+    attribution: 'name',
+  })
+
+  const image = await new Promise((resolve) => {
+    map.loadImage('/png/custom_marker.png', (_, image) => {
+      resolve(image)
+    })
+  })
+  map.addImage('station-marker', image as any)
+  map.addLayer({
+    id: 'stations',
+    source: 'stations',
+    type: 'symbol',
+    layout: {
+      'icon-image': 'station-marker',
+      'icon-size': 0.6,
+      'text-field': ['get', 'name'],
+      'text-font': ['Open Sans Semibold', 'Arial Unicode MS Bold'],
+      'text-offset': [0, 1.25],
+      'text-anchor': 'top',
+    },
+  })
+}
+
+export const removeLayer = (map: mapbox.Map) => {
+  map.removeLayer('stations')
+  map.removeSource('stations')
+  map.removeImage('station-marker')
 }

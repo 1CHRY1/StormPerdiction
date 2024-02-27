@@ -146,8 +146,9 @@ onMounted(async () => {
           </div>
           <div class="my-1">
             <span class="inline-block pr-2">台风状况:</span>
-            <span class="inline-block pr-3">{{ stationInfo.lat }}</span
-            ><span>{{ stationInfo.lat }}</span>
+            <span class="inline-block pr-3">{{
+              waterSituationData?.isTyphoon ? '有台风' : '无台风'
+            }}</span>
           </div>
           <div class="my-1">
             <span class="inline-block pr-2">当前时间:</span>
