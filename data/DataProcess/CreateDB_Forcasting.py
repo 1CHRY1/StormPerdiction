@@ -23,9 +23,9 @@ def createStationtable(db_path, tablename):
                 updatetime DATETIME,
                 time DATETIME,
                 iftyph INTEGER,
-                addwind INTEGER,
                 hpre FLOAT,
                 hyubao FLOAT,
+                hadd FLOAT,
                 manual INTEGER
             )
         ''')

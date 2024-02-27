@@ -10,6 +10,9 @@ spring:
       jdbc-url: jdbc:sqlite:D:\1study\Work\2023_12_22_Storm\Data\DataProcess\Clawing\Meteorology.db
       driver-class-name: org.sqlite.JDBC
 
+stations:
+  "data/DataProcess/station.json"
+
 python:
   D:/1tools/Miniconda/envs/Env1/python.exe
 updateData:

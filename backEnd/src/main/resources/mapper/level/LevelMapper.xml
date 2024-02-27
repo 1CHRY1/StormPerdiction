@@ -2,19 +2,31 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="nnu.edu.station.dao.level.LevelMapper">
     <select id="getAllInfoByStation" resultType="java.util.Map">
-        select time, iftyph, hpre, hyubao, manual from ${station}
-    </select>
-
-    <select id="getNoTyph72ByStation" resultType="java.util.Map">
-        select time, hpre from ${station} where iftyph=0 and manual=0
-    </select>
-
-    <select id="getTyph72ByStation" resultType="java.util.Map">
-        select hyubao from ${station} where iftyph=1 and manual=0
+        select time, iftyph, hpre, hyubao, hadd, manual from ${station}
     </select>
 
     <select id="getNoTyphAllByStation" resultType="java.util.Map">
-        select hz from ${station} where iftyph=0 and manual=0
+        select time, hpre from ${station} where iftyph=0 and manual=0
+    </select>
+
+    <select id="getTyphAllByStation" resultType="java.util.Map">
+        select time, hpre, hyubao, hadd from ${station} where iftyph=1 and manual=0
+    </select>
+
+    <select id="ifTyph" resultType="java.lang.Integer">
+        select iftyph from ${station} where time=#{time}
+    </select>
+
+    <select id="getBefore72ByStation" resultType="java.util.Map">
+        select hz_value from ${station} where time between #{beforetime} and #{currenttime}
+    </select>
+
+    <select id="getNoTyph72ByStation" resultType="java.util.Map">
+        select hpre from ${station} where iftyph=0 and manual=0 and time=#{time}
+    </select>
+
+    <select id="getTyph72ByStation" resultType="java.util.Map">
+        select hpre, hyubao, hadd from ${station} where iftyph=1 and manual=0 and time=#{time}
     </select>
 
     <select id="getNoTyph72ManualByStation" resultType="java.util.Map">

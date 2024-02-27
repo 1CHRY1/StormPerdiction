@@ -11,6 +11,9 @@ import java.util.Map;
 @MapperScan
 public interface NCMapper {
 
+    String getTxtPathByTime(@Param("time") String time);
+
     List<Object> getAll();
+
     Object getInfoByTimeAndType(@Param("time") String time, @Param("type") String type);
 }
