@@ -7,12 +7,12 @@ interface IStationInfo {
   type: string
 }
 
-interface ITideSituationResponse {
+interface IRealTideSituationResponse {
   time: string
   hpre: number[]
 }
 
-interface ITideSituation {
+interface IRealTideSituation {
   time: string[]
   hpre: number[]
 }

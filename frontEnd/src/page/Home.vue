@@ -7,7 +7,6 @@ defineProps<Props>()
 import { computed } from 'vue'
 import AsideMenu from '../feature/aside-menu/AsideMenu.vue'
 import { useKeepAliveStore } from '../store/keepActiveStore'
-import { useStationStore } from '../store/stationStore'
 
 const keepAliveStore = useKeepAliveStore()
 const keepAliveComponents = computed(() => {
@@ -15,8 +14,15 @@ const keepAliveComponents = computed(() => {
 })
 
 const handleClick = async () => {
-  const a = useStationStore().currentStationID
-  console.log(a)
+  fetch(
+    'https://geomodeling.njnu.edu.cn/waterLevel/jiangsu/getInfoByStation/%E5%8D%97%E4%BA%AC',
+    {
+      method: 'GET',
+    },
+  ).then((res) => {
+    console.log(res.status)
+    console.log(res.headers)
+  })
 }
 </script>
 

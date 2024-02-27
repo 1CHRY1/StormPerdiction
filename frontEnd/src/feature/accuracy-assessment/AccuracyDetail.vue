@@ -14,7 +14,7 @@ const stationInfo = computed(() =>
   getStationInfo(stationStore.currentStationID as any),
 )
 
-const waterSituationData: Ref<ITideSituation | null> = ref(null)
+const waterSituationData: Ref<IRealTideSituation | null> = ref(null)
 const isStationDataExist = computed(() => {
   if (
     waterSituationData.value === null ||

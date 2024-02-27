@@ -89,6 +89,54 @@ export const stationInfo = {
     pinyin: 'xuliujing',
     type: 'river',
   },
+  '15': {
+    coord: [120.567, 33.883],
+    name: '射阳河口',
+    pinyin: 'sheyanghekou',
+    type: 'sea',
+  },
+  '16': {
+    coord: [120.633, 33.583],
+    name: '黄沙港闸下',
+    pinyin: 'huangshagangzhaxia',
+    type: 'sea',
+  },
+  '17': {
+    coord: [120.6, 33.633],
+    name: '新洋港闸下',
+    pinyin: 'xinyanggangzhaxia',
+    type: 'sea',
+  },
+  '18': {
+    coord: [120.667, 33.517],
+    name: '斗龙港闸下',
+    pinyin: 'doulonggangzhaxia',
+    type: 'sea',
+  },
+  '19': {
+    coord: [120.917, 33.083],
+    name: '川东港闸下',
+    pinyin: 'chuandonggangzhaxia',
+    type: 'sea',
+  },
+  '20': {
+    coord: [121.1, 30.583],
+    name: '乍浦',
+    pinyin: 'zhapu',
+    type: 'sea',
+  },
+  '21': {
+    coord: [120.917, 30.367],
+    name: '澉浦',
+    pinyin: 'ganpu',
+    type: 'sea',
+  },
+  '22': {
+    coord: [120.55, 30.4],
+    name: '盐官',
+    pinyin: 'yanguan',
+    type: 'sea',
+  },
 }
 
 const decimalToDMS = (decimal: number): string => {
@@ -112,11 +160,11 @@ export const getStationInfo = (id: keyof typeof stationInfo): IStationInfo => {
 
 export const getStationPredictionTideSituation = async (
   id: keyof typeof stationInfo,
-): Promise<ITideSituation> => {
+): Promise<IRealTideSituation> => {
   const url = `/api/v1/data/level/station/notyph/72?station=${stationInfo[id].pinyin}`
   const dataMap = (await fetch(url)
     .then((res) => res.json())
-    .then((data) => data.data)) as ITideSituationResponse[]
+    .then((data) => data.data)) as IRealTideSituationResponse[]
 
   if (dataMap.length === 0) {
     return {

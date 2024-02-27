@@ -8,7 +8,7 @@ const path = computed(() => route.path)
 </script>
 
 <template>
-  <el-menu :default-active="path" router unique-opened class="w-60">
+  <el-menu :default-active="path" router unique-opened class="w-56">
     <el-sub-menu index="/weather">
       <template #title>
         <el-icon><icon-menu /></el-icon>

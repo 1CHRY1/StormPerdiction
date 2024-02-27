@@ -9,12 +9,11 @@ const echartsRef = ref()
 const activeName = ref('graph')
 const stationStore = useStationStore()
 const treeData = generateTreeDataOfStation()
-
+const waterSituationData: Ref<ITideSituation | null> = ref(null)
 const stationInfo = computed(() =>
   getStationInfo(stationStore.currentStationID as any),
 )
 
-const waterSituationData: Ref<ITideSituation | null> = ref(null)
 const isStationDataExist = computed(() => {
   if (
     waterSituationData.value === null ||
@@ -30,12 +29,20 @@ const stationTable = computed(() => {
   } else {
     const result: {
       hpre: number
+      hyubao: number | null
+      hadd: number | null
       time: string
     }[] = []
     waterSituationData.value!.hpre.forEach((value, index) => {
       result.push({
         hpre: value,
         time: waterSituationData.value!.time[index],
+        hyubao: waterSituationData.value!.isTyphoon
+          ? waterSituationData.value!.hyubao[index]
+          : null,
+        hadd: waterSituationData.value!.isTyphoon
+          ? waterSituationData.value!.hadd[index]
+          : null,
       })
     })
     return result
@@ -61,6 +68,7 @@ onMounted(async () => {
   waterSituationData.value = await getStationPredictionTideSituation(
     stationStore.currentStationID as any,
   )
+  console.log(isStationDataExist.value)
   if (isStationDataExist.value) {
     echart = initEcharts(echartsRef)
     drawEcharts(
@@ -100,6 +108,18 @@ onMounted(async () => {
               align="center"
               prop="hpre"
               label="天文潮位 (hpre)"
+            />
+            <el-table-column
+              align="center"
+              prop="hyubao"
+              label="总潮位 (hyubao)"
+              v-if="waterSituationData?.isTyphoon"
+            />
+            <el-table-column
+              align="center"
+              prop="hadd"
+              label="台风增水"
+              v-if="waterSituationData?.isTyphoon"
             />
           </el-table>
         </el-tab-pane>

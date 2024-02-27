@@ -9,12 +9,10 @@ const echartsRef = ref()
 const activeName = ref('graph')
 const stationStore = useStationStore()
 const treeData = generateTreeDataOfStation()
-
 const stationInfo = computed(() =>
   getStationInfo(stationStore.currentStationID as any),
 )
-
-const waterSituationData: Ref<ITideSituation | null> = ref(null)
+const waterSituationData: Ref<IRealTideSituation | null> = ref(null)
 const isStationDataExist = computed(() => {
   if (
     waterSituationData.value === null ||

@@ -18,7 +18,7 @@ export const initEcharts = (ref: Ref) => {
 
 export const drawEcharts = async (
   echart: echarts.ECharts,
-  waterSituationData: ITideSituation,
+  waterSituationData: IRealTideSituation,
   info: IStationInfo,
   isValid: boolean,
 ) => {

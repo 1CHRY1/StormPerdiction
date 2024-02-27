@@ -160,23 +160,23 @@ export const getStationInfo = (id: keyof typeof stationInfo): IStationInfo => {
 
 export const getStationCurrentWaterSituation = async (
   id: keyof typeof stationInfo,
-): Promise<ITideSituation> => {
-  const url = `/api/v1/data/level/station/notyph/72?station=${stationInfo[id].pinyin}`
+): Promise<IRealTideSituation> => {
+  const url = `/api/v1/data/level/station/72?station=${stationInfo[id].pinyin}`
   const dataMap = (await fetch(url)
     .then((res) => res.json())
-    .then((data) => data.data)) as ITideSituationResponse[]
+    .then((data) => data.data)) as IRealTideSituationResponse
 
-  if (dataMap.length === 0) {
+  if (!dataMap.hpre) {
     return {
       time: [],
       hpre: [],
     }
   }
-  const data = dataMap[0].hpre
+  const data = dataMap.hpre
 
   let time: string[] = []
   const length = data.length
-  const startTime = new Date(dataMap[0].time)
+  const startTime = new Date(dataMap.time)
   for (let i = 0; i < length; i++) {
     const nextHour = new Date(startTime.getTime() + i * 60 * 60 * 1000)
     time.push(nextHour.toLocaleString().replace(/:\d\d$/, ''))

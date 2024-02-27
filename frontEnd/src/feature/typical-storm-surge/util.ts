@@ -1302,7 +1302,7 @@ export const addStormLayer = async (
         'case',
         ['<=', ['to-number', ['get', 'power']], 8],
         4,
-        ['+', ['*', ['to-number', ['get', 'power']], 0.15], 3],
+        ['+', ['*', ['to-number', ['get', 'power']], 0.2], 2.5],
       ],
       'circle-color': [
         'case',

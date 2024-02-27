@@ -10,11 +10,16 @@ interface IStationInfo {
 interface ITideSituationResponse {
   time: string
   hpre: number[]
+  hyubao?: number[]
+  hadd?: number[]
 }
 
 interface ITideSituation {
+  isTyphoon: boolean
   time: string[]
   hpre: number[]
+  hyubao: number[]
+  hadd: number[]
 }
 
 interface Tree {

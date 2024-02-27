@@ -19,82 +19,217 @@ export const initEcharts = (ref: Ref) => {
 export const drawEcharts = async (
   echart: echarts.ECharts,
   waterSituationData: ITideSituation,
-  info: IStationInfo,
-  isValid: boolean,
+  stationInfo: IStationInfo,
+  isStationDataExist: boolean,
 ) => {
-  const min = Math.min(...waterSituationData.hpre)
-  const max = Math.max(...waterSituationData.hpre)
-  const range = max - min
   type EChartsOption = echarts.EChartsOption
   let option: EChartsOption
-  option = {
-    title: {
-      text: `${info.name}站点 ${info.time} 72 小时预报折线图`,
-      textStyle: {
-        color: 'hsl(220, 50%, 50%)',
-      },
-    },
-    tooltip: {
-      trigger: 'axis',
-    },
-    legend: {
-      data: [info.name],
-      right: '15%',
-      top: '1%',
-    },
-    grid: {
-      left: '3%',
-      right: '4%',
-      bottom: '10%',
-      containLabel: true,
-    },
-    toolbox: {
-      feature: {
-        dataZoom: {
-          yAxisIndex: 'none',
-        },
-        saveAsImage: {},
-      },
-    },
-    xAxis: {
-      type: 'category',
-      boundaryGap: false,
-      data: waterSituationData.time,
-      axisLabel: {
-        padding: [0, 0, 0, 50],
-      },
-    },
-    yAxis: {
-      type: 'value',
-      min: min - range * 0.05,
-      max: max + range * 0.05,
-      axisLabel: {
-        formatter: function (value) {
-          return value.toFixed(2)
+  if (waterSituationData.isTyphoon) {
+    const tideMin = Math.min(
+      ...waterSituationData.hpre,
+      ...waterSituationData.hyubao,
+    )
+    const tideMax = Math.max(
+      ...waterSituationData.hpre,
+      ...waterSituationData.hyubao,
+    )
+    const tideRange = tideMax - tideMin
+    const haddMin = Math.min(...waterSituationData.hadd)
+    const haddMax = Math.max(...waterSituationData.hadd)
+    const haddRange = haddMax - haddMin
+    option = {
+      title: {
+        text: `${stationInfo.name}站点 ${stationInfo.time} 72 小时预报折线图`,
+        textStyle: {
+          color: 'hsl(220, 50%, 50%)',
         },
       },
-    },
-    dataZoom: [
-      {
-        type: 'inside',
-        start: 0,
-        end: 100,
+      tooltip: {
+        trigger: 'axis',
       },
-      {
-        start: 0,
-        end: 20,
+      legend: {
+        data: ['天文潮位', '总潮位', '台风增水'],
+        right: '15%',
+        top: '1%',
       },
-    ],
-    series: [
-      {
-        name: info.name,
-        type: 'line',
-        smooth: true,
-        data: waterSituationData.hpre,
+      grid: [
+        {
+          left: 60,
+          right: 50,
+          height: '35%',
+        },
+        {
+          left: 60,
+          right: 50,
+          top: '55%',
+          height: '35%',
+        },
+      ],
+      toolbox: {
+        feature: {
+          dataZoom: {
+            yAxisIndex: 'none',
+          },
+          saveAsImage: {},
+        },
       },
-    ],
+      axisPointer: {
+        link: [
+          {
+            xAxisIndex: 'all',
+          },
+        ],
+      },
+      xAxis: [
+        {
+          type: 'category',
+          boundaryGap: false,
+          data: waterSituationData.time,
+          axisLabel: {
+            padding: [15, 0, 0, 50],
+          },
+        },
+        {
+          gridIndex: 1,
+          data: waterSituationData.time,
+          axisLabel: {
+            show: false,
+          },
+          position: 'top',
+        },
+      ],
+      yAxis: [
+        {
+          type: 'value',
+          min: tideMin - tideRange * 0.05,
+          max: tideMax + tideRange * 0.05,
+          axisLabel: {
+            formatter: function (value) {
+              return value.toFixed(2)
+            },
+          },
+        },
+        {
+          type: 'value',
+          gridIndex: 1,
+          min: haddMin - haddRange * 0.05,
+          max: haddMax + haddRange * 0.05,
+          axisLabel: {
+            formatter: function (value) {
+              return value.toFixed(2)
+            },
+          },
+        },
+      ],
+      dataZoom: [
+        {
+          type: 'inside',
+          start: 0,
+          end: 100,
+          xAxisIndex: [0, 1],
+        },
+        {
+          start: 0,
+          end: 100,
+          xAxisIndex: [0, 1],
+        },
+      ],
+      series: [
+        {
+          name: '天文潮位',
+          type: 'line',
+          smooth: true,
+          data: waterSituationData.hpre,
+        },
+        {
+          name: '总潮位',
+          type: 'line',
+          smooth: true,
+          data: waterSituationData.hyubao,
+        },
+        {
+          name: '台风增水',
+          type: 'line',
+          smooth: true,
+          data: waterSituationData.hadd,
+          yAxisIndex: 1,
+          xAxisIndex: 1,
+        },
+      ],
+    }
+  } else {
+    const min = Math.min(...waterSituationData.hpre)
+    const max = Math.max(...waterSituationData.hpre)
+    const range = max - min
+    option = {
+      title: {
+        text: `${stationInfo.name}站点 ${stationInfo.time} 72 小时预报折线图`,
+        textStyle: {
+          color: 'hsl(220, 50%, 50%)',
+        },
+      },
+      tooltip: {
+        trigger: 'axis',
+      },
+      legend: {
+        data: ['天文潮位'],
+        right: '15%',
+        top: '1%',
+      },
+      grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '10%',
+        containLabel: true,
+      },
+      toolbox: {
+        feature: {
+          dataZoom: {
+            yAxisIndex: 'none',
+          },
+          saveAsImage: {},
+        },
+      },
+      xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: waterSituationData.time,
+        axisLabel: {
+          padding: [0, 0, 0, 50],
+        },
+      },
+      yAxis: {
+        type: 'value',
+        min: min - range * 0.05,
+        max: max + range * 0.05,
+        axisLabel: {
+          formatter: function (value) {
+            return value.toFixed(2)
+          },
+        },
+      },
+      dataZoom: [
+        {
+          type: 'inside',
+          start: 0,
+          end: 100,
+        },
+        {
+          start: 0,
+          end: 20,
+        },
+      ],
+      series: [
+        {
+          name: '天文潮位',
+          type: 'line',
+          smooth: true,
+          data: waterSituationData.hpre,
+        },
+      ],
+    }
   }
-  if (!isValid) {
+  if (!isStationDataExist) {
     option['graphic'] = {
       type: 'text', // 类型：文本
       left: 'center',
