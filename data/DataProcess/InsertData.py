@@ -28,28 +28,28 @@ def JudgeIfTyph(filePath):
     else:
         return False
 
-def insert_typhdata(db_path, name, time, addwind, hyubao, manual):
+def insert_typhdata(db_path, name, time, hpre, hyubao, hadd, manual):
     # 插入有台风数据
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     updatetime = datetime.now()
     # 插入数据
     cursor.execute(f'''
-            INSERT INTO {name} ( updatetime, time, iftyph, addwind, hyubao, manual )
-            VALUES ('{updatetime}', '{time}', '1', '{addwind}','{hyubao}', '{manual}')
+            INSERT INTO {name} ( updatetime, time, iftyph, hpre, hyubao, hadd, manual )
+            VALUES ('{updatetime}', '{time}', '1', '{hpre}', '{hyubao}', '{hadd}', '{manual}')
         ''')
     conn.commit()
     conn.close()
 
-def insert_Nottyphdata(db_path, name, time, addwind, hpre, manual):
+def insert_Nottyphdata(db_path, name, time, hpre, manual):
     # 插入无台风数据
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     updatetime = datetime.now()
     # 插入数据
     cursor.execute(f'''
-            INSERT INTO {name} ( updatetime, time, iftyph, addwind, hpre, manual )
-            VALUES ('{updatetime}', '{time}', '0', '{addwind}', '{hpre}', '{manual}')
+            INSERT INTO {name} ( updatetime, time, iftyph, hpre, manual )
+            VALUES ('{updatetime}', '{time}', '0', '{hpre}', '{manual}')
         ''')
     conn.commit()
     conn.close()
@@ -67,6 +67,20 @@ def insert_hzdata(db_path, name, time, hz_value):
     conn.commit()
     conn.close()
 
+def nc2array(filepath):
+    # 将nc数据读取为array'
+    ncfile = nc.Dataset(filepath, "r", format='NETCDF3_CLASSIC')
+    zeta = ncfile["zeta"][:]
+    return zeta
+
+def getZetaFromArray(array, stations):
+    result = []
+    for name, info in stations.items():
+        row = info.get("row")
+        data = array[:,row]
+        result.append({"name":name, "data":data})
+    return result
+
 def list_process(hpre):
     data = []
     for item in hpre:
@@ -75,6 +89,7 @@ def list_process(hpre):
 
 def get_hzdata(hz, start_time):
     result = []
+    start_time = start_time + timedelta(days=1)
     # 倒推数组长度的时间单位
     for i in range(len(hz)):
         # 计算当前时间戳
@@ -116,14 +131,16 @@ def get_prefix_before_digits(input_str):
     return prefix
 
 def main():
-    db_path_Forcasting = os.getcwd() + '\\Forcasting.db'
-    db_path_NC = os.getcwd() + '\\NC.db'
-    # folderPath = os.path.join(os.pardir,"forecastData")
-    folderPath = os.path.abspath(os.pardir)
+    db_path_Forcasting = os.getcwd() + '/Forcasting.db'
+    db_path_NC = os.getcwd() + '/NC.db'
+    stations_path = 'station.json'
+    with open(stations_path, 'r', encoding='utf-8') as file:
+        stations = json.load(file)
+    folderPath = os.path.abspath(os.pardir) + "/forecastData"
     folders = os.listdir(folderPath)
     for folder in folders:
         # 遍历每个文件夹中的数据
-        Path = folderPath + "\\" + folder
+        Path = folderPath + "/" + folder
         # 获取数据时间
         if ( len(folder)==8 ):
             # 数据时间非手动计算
@@ -142,66 +159,75 @@ def main():
             if (JudgeIfTyph(txtPath) == True):
                 # 存在台风
                 files = os.listdir(Path)
+                hyubao = []
+                hpre = []
                 for file in files:
-                    # 获取站点名称
+                    # 文件名称
                     name = os.path.splitext(file)[0]
-                    # 处理mat数据
-                    if file.endswith(".mat"):
-                        # 去掉尾部数字
-                        name = get_prefix_before_digits(name)
-                        # 判断是否是以addwind结尾
-                        if name.endswith("addwind"):
-                            addwind = 1
-                            name = name[:-len("addwind")]
-                        else:
-                            addwind = 0
-                        mat_path = os.path.join(Path, file)
-                        mat_data = loadmat(mat_path)
-                        try:
-                            hyubao = mat_data['hyubao']
-                            # 将预报数据存入数据库
-                            insert_typhdata(db_path_Forcasting, name, time, addwind, hyubao, manual)
-                        except Exception as e:
-                            print(e)
+                    # # 处理mat数据
+                    # if file.endswith(".mat"):
+                    #     # 去掉尾部数字
+                    #     name = get_prefix_before_digits(name)
+                    #     # 判断是否是以addwind结尾
+                    #     if name.endswith("addwind"):
+                    #         addwind = 1
+                    #         name = name[:-len("addwind")]
+                    #     else:
+                    #         addwind = 0
+                    #     mat_path = os.path.join(Path, file)
+                    #     mat_data = loadmat(mat_path)
+                    #     try:
+                    #         hyubao = mat_data['hyubao']
+                    #         # 将预报数据存入数据库
+                    #         insert_typhdata(db_path_Forcasting, name, time, addwind, hyubao, manual)
+                    #     except Exception as e:
+                    #         print(e)
                     # 处理nc数据
                     if file.endswith(".nc"):
+                        path = Path + "/" + file
+                        zeta = nc2array(path)
+                        filename = os.path.basename(file)
                         if name == "adcirc_addwind":
                             type = "adcirc"
-                        elif name == "fort.63_nowind":
+                            insert_NCdata(db_path_NC, time, type, path, filename, manual)
+                            hyubao = getZetaFromArray(zeta,stations)
+                        if name == "fort.63_nowind":
                             type = "fort63"
-                        elif name == "fort.64_nowind":
-                            type = "fort64"
-                        elif name == "fort.74_nowind":
-                            type = "fort74"
-                        else:
-                            continue
-                        path = Path + "\\" + file
-                        filename = os.path.basename(file)
-                        insert_NCdata(db_path_NC, time, type, path, filename, manual)
+                            insert_NCdata(db_path_NC, time, type, path, filename, manual)
+                            hpre = getZetaFromArray(zeta, stations)
+                        if hyubao != [] and hpre != []:
+                            for i in range(len(hyubao)):
+                                name = hyubao[i].get("name")
+                                hyubao_data = hyubao[i].get("data")
+                                hpre_data = hpre[i].get("data")
+                                hadd_data = hyubao_data - hpre_data
+                                insert_typhdata(db_path_Forcasting, name, time, hpre_data.tolist(), hyubao_data.tolist(), hadd_data.tolist(), manual)
 
+                    # 处理精度评定结果数据
+                    if os.path.basename(file) == "result.txt":
+                        path = Path + "/" + file
+                        filename = "result.txt"
+                        type = "result"
+                        insert_NCdata(db_path_NC, time, type, path, filename, manual)
             else:
                 # 不存在台风
                 files = os.listdir(Path)
                 for file in files:
+                    name = os.path.splitext(file)[0]
                     # 处理mat数据
                     if file.endswith(".mat"):
                         # 获取站点名称
                         name = os.path.splitext(file)[0]
                         # 去掉尾部数字
                         name = get_prefix_before_digits(name)
-                        # 判断是否是以addwind结尾
-                        if name.endswith("addwind"):
-                            addwind = 1
-                            name = name[:-len("addwind")]
-                        else:
-                            addwind = 0
+
                         mat_path = os.path.join(Path, file)
                         mat_data = loadmat(mat_path)
                         try:
                             hpre = list_process(mat_data['hpre'])
                             hz = mat_data['hz']
                             # 将预报数据存入数据库
-                            insert_Nottyphdata(db_path_Forcasting, name, time, addwind, hpre, manual)
+                            insert_Nottyphdata(db_path_Forcasting, name, time, hpre, manual)
                             # 处理站点所有潮位数据
                             name_hz = name + "_hz"
                             hz_dblen = get_DBhzlen(db_path_Forcasting, name_hz)
@@ -214,21 +240,19 @@ def main():
                     if file.endswith(".nc"):
                         if name == "adcirc_addwind":
                             type = "adcirc"
-                        elif name == "fort.63_nowind":
-                            type = "fort63"
-                        elif name == "fort.64_nowind":
-                            type = "fort64"
-                        elif name == "fort.74_nowind":
-                            type = "fort74"
-                        else:
-                            continue
-                        path = Path + "\\" + file
-                        filename = os.path.basename(file)
+                            path = Path + "/" + file
+                            filename = os.path.basename(file)
+                            insert_NCdata(db_path_NC, time, type, path, filename, manual)
+
+                    # 处理精度评定结果数据
+                    if os.path.basename(file) == "result.txt":
+                        path = Path + "/" + file
+                        filename = "result.txt"
+                        type = "result"
                         insert_NCdata(db_path_NC, time, type, path, filename, manual)
 
-        # except Exception as e:
-        #     print(e)
-        except:
+        except Exception as e:
+            print(e)
             continue
 
 if __name__ == "__main__":
