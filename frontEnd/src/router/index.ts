@@ -1,4 +1,5 @@
 import { RouteRecordRaw, createRouter, createWebHistory } from 'vue-router'
+import HelloWorld from '../components/HelloWorld.vue'
 import AccuracyDetail from '../feature/accuracy-assessment/AccuracyDetail.vue'
 import AccuracyMapView from '../feature/accuracy-assessment/AccuracyMapView.vue'
 import WaterMapView from '../feature/real-time-situation/WaterMapView.vue'
@@ -10,7 +11,7 @@ import Observation from '../feature/weather/Observation.vue'
 import Precipitation from '../feature/weather/Precipitation.vue'
 import Radar from '../feature/weather/Radar.vue'
 import Satellite from '../feature/weather/Satellite.vue'
-import HelloWorld from '../components/HelloWorld.vue'
+import Typhoon from '../feature/weather/Typhoon.vue'
 
 const routes: RouteRecordRaw[] = [
   {
@@ -19,7 +20,7 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/test',
-    component: HelloWorld
+    component: HelloWorld,
   },
   {
     path: '/weather',
@@ -59,7 +60,7 @@ const routes: RouteRecordRaw[] = [
       {
         path: 'typhoon',
         name: 'Typhoon',
-        component: Precipitation,
+        component: Typhoon,
         meta: {
           index: 1,
         },

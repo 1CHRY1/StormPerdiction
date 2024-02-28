@@ -1,4 +1,4 @@
-interface IStationInfo {
+export interface IStationInfo {
   name: string
   pinyin: string
   time: string
@@ -7,14 +7,14 @@ interface IStationInfo {
   type: string
 }
 
-interface ITideSituationResponse {
+export interface ITideSituationResponse {
   time: string
   hpre: number[]
   hyubao?: number[]
   hadd?: number[]
 }
 
-interface ITideSituation {
+export interface ITideSituation {
   isTyphoon: boolean
   time: string[]
   hpre: number[]
@@ -22,8 +22,18 @@ interface ITideSituation {
   hadd: number[]
 }
 
-interface Tree {
+export interface Tree {
   label: string
   id: string
   children?: Tree[]
+}
+
+export interface IAccurateAssessmentTableRow {
+  name: string
+  'mae(m)': string
+  'mae(m)-aftercorrection': string
+  'rmse(m)': string
+  'rmse(m)-aftercorrection': string
+  'hegelv(%)': string
+  'hegelv(%)-aftercorrection': string
 }

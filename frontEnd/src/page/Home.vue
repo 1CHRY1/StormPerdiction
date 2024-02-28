@@ -14,12 +14,9 @@ const keepAliveComponents = computed(() => {
 })
 
 const handleClick = async () => {
-  fetch(
-    'https://geomodeling.njnu.edu.cn/waterLevel/jiangsu/getInfoByStation/%E5%8D%97%E4%BA%AC',
-    {
-      method: 'GET',
-    },
-  ).then((res) => {
+  fetch('https://typhoon.slt.zj.gov.cn/Api/TyhoonActivity', {
+    method: 'GET',
+  }).then((res) => {
     console.log(res.status)
     console.log(res.headers)
   })

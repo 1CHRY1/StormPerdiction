@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import { Ref, computed, onMounted, ref, watch } from 'vue'
 import { useStationStore } from '../../store/stationStore'
-import { getStationInfo, getStationPredictionTideSituation } from './api'
+import {
+  getAccurateAssessmentTable,
+  getStationInfo,
+  getStationPredictionTideSituation,
+} from './api'
 import { drawEcharts, generateTreeDataOfStation, initEcharts } from './util'
 
 let echart: echarts.ECharts | null = null
@@ -12,6 +16,7 @@ const treeData = generateTreeDataOfStation()
 const stationInfo = computed(() =>
   getStationInfo(stationStore.currentStationID as any),
 )
+const stationTable: Ref<IAccurateAssessmentTableRow[] | null> = ref(null)
 const waterSituationData: Ref<ITideSituation | null> = ref(null)
 const isStationDataExist = computed(() => {
   if (
@@ -22,28 +27,12 @@ const isStationDataExist = computed(() => {
   }
   return false
 })
-const stationTable = computed(() => {
-  if (!waterSituationData.value) {
-    return []
-  } else {
-    const result: {
-      hpre: number
-      time: string
-    }[] = []
-    waterSituationData.value!.hpre.forEach((value, index) => {
-      result.push({
-        hpre: value,
-        time: waterSituationData.value!.time[index],
-      })
-    })
-    return result
-  }
-})
 
 watch(stationStore, async () => {
   waterSituationData.value = await getStationPredictionTideSituation(
     stationStore.currentStationID as any,
   )
+  stationTable.value = await getAccurateAssessmentTable('2023-08-30 00:00:00')
   if (echart) {
     echart.clear()
     drawEcharts(
@@ -59,6 +48,7 @@ onMounted(async () => {
   waterSituationData.value = await getStationPredictionTideSituation(
     stationStore.currentStationID as any,
   )
+  stationTable.value = await getAccurateAssessmentTable('2023-08-30 00:00:00')
   if (isStationDataExist.value) {
     echart = initEcharts(echartsRef)
     drawEcharts(
@@ -84,18 +74,35 @@ onMounted(async () => {
           class="flex flex-col items-center"
         >
           <div class="text-lg font-semibold text-blue-500">
-            {{ `${stationInfo.name}站点 ${stationInfo.time} 实时水情数据表` }}
+            {{ `${stationInfo.name}站点 ${stationInfo.time} 精度统计表` }}
           </div>
           <el-table
             :data="stationTable"
             class="w-[60rem] h-[34rem]"
             :highlight-current-row="true"
           >
-            <el-table-column prop="time" label="时间" />
+            <el-table-column prop="name" label="name" align="center" />
+            <el-table-column prop="mae(m)" label="mae(m)" align="center" />
             <el-table-column
+              prop="mae(m)-aftercorrection"
+              label="mae(m)-aftercorrection"
               align="center"
-              prop="hpre"
-              label="天文潮位 (hpre)"
+            />
+            <el-table-column prop="rmse(m)" label="rmse(m)" align="center" />
+            <el-table-column
+              prop="rmse(m)-aftercorrection"
+              label="rmse(m)-aftercorrection"
+              align="center"
+            />
+            <el-table-column
+              prop="hegelv(%)"
+              label="hegelv(%)"
+              align="center"
+            />
+            <el-table-column
+              prop="hegelv(%)-aftercorrection"
+              label="hegelv(%)-aftercorrection"
+              align="center"
             />
           </el-table>
         </el-tab-pane>

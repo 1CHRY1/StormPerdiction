@@ -1,4 +1,4 @@
-interface IStationInfo {
+export interface IStationInfo {
   name: string
   pinyin: string
   time: string
@@ -7,17 +7,17 @@ interface IStationInfo {
   type: string
 }
 
-interface IRealTideSituationResponse {
+export interface IRealTideSituationResponse {
   time: string
   hpre: number[]
 }
 
-interface IRealTideSituation {
+export interface IRealTideSituation {
   time: string[]
   hpre: number[]
 }
 
-interface Tree {
+export interface Tree {
   label: string
   id: string
   children?: Tree[]

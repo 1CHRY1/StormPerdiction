@@ -189,3 +189,37 @@ export const getStationPredictionTideSituation = async (
   }
   return { time, isTyphoon, hyubao, hpre, hadd }
 }
+
+export const getAccurateAssessmentTable = async (
+  time: string,
+): Promise<IAccurateAssessmentTableRow[]> => {
+  const response = await fetch(
+    `http://192.168.1.5:9999/api/v1/data/nc/txt?time=${time}`,
+  )
+    .then((res) => {
+      return res.json()
+    })
+    .then((result) => {
+      return result.data as string[][]
+    })
+
+  const result: IAccurateAssessmentTableRow[] = []
+  if (response.length === 0) {
+    return result
+  }
+
+  const length = response[0].length
+  for (let index = 0; index < length; index++) {
+    const temp = {} as any
+    temp['name'].push(response[0][index])
+    temp['mae(m)'].push(response[1][index])
+    temp['mae(m)-aftercorrection'].push(response[2][index])
+    temp['rmse(m)'].push(response[3][index])
+    temp['rmse(m)-aftercorrection'].push(response[4][index])
+    temp['hegelv(%)'].push(response[5][index])
+    temp['hegelv(%)-aftercorrection'].push(response[6][index])
+    result.push(temp)
+  }
+
+  return result
+}

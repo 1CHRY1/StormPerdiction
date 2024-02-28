@@ -4,6 +4,7 @@ import 'mapbox-gl/dist/mapbox-gl.css'
 import { Ref, onMounted, ref, watch } from 'vue'
 import { useMapStore } from '../../store/mapStore'
 import { initMap } from '../../util/initMap'
+import { IStormData, IStormDataOfPoint, IStormTableRow } from './type'
 import {
   addStormLayer,
   addTyphoonSymbol,
@@ -118,7 +119,7 @@ onMounted(async () => {
         </el-select>
       </div>
       <div class="h-40 m-2 border border-zinc-300 bg-white">
-        <div class="h-10 leading-10 px-3 bg-blue-500 text-white">路径详情</div>
+        <div class="h-10 leading-10 px-3 bg-blue-500 text-white">历史信息</div>
         <div class="mx-2 my-1 flex flex-col">
           <div>
             <span class="inline-block pr-2">当前时间:</span>

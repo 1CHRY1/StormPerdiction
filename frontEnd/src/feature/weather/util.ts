@@ -1,9 +1,10 @@
-import * as mapbox from 'mapbox-gl'
-import { IStormData, IStormTableRow } from './type'
+import mapbox from 'mapbox-gl'
+import { IStormDataMap, IStormDataOfPoint, IStormTableRow } from './type'
 
 const stormData199711 = {
   type: 'FeatureCollection',
   name: '温妮 (199711)',
+  tfid: '199711',
   features: [
     {
       type: 'Feature',
@@ -814,6 +815,7 @@ const stormData199711 = {
 const stormData200012 = {
   type: 'FeatureCollection',
   name: '派比安 (200012)',
+  tfid: '200012',
   features: [
     {
       type: 'Feature',
@@ -1203,27 +1205,55 @@ const stormData200012 = {
   ],
 }
 
-export const getStormData = (stormType: '199711' | '200012'): IStormData => {
-  let stormData = stormType === '199711' ? stormData199711 : stormData200012
-  const result: IStormData = {
-    name: stormData.name,
-    dataList: [],
-  }
+export const getActiveStormList = (): IStormDataOfPoint[] => {
+  const activeStormList: IStormDataOfPoint[] = [
+    {
+      id: '199711',
+      name: '温妮 (199711)',
+      strong: '热带低压',
+      time: new Date(Date.now()).toLocaleString(),
+      power: '5',
+      speed: '10',
+      lng: 135.5,
+      lat: 47.2,
+    },
+    {
+      id: '200012',
+      name: '派比安 (200012)',
+      strong: '热带低压',
+      time: new Date(Date.now()).toString(),
+      power: '7',
+      speed: '15',
+      lng: 134.9,
+      lat: 43.7,
+    },
+  ]
+  return activeStormList
+}
 
-  for (const feature of stormData['features']) {
-    const coord = feature.geometry.coordinates as [number, number]
-    const properties = feature.properties
-    const temp = {
-      id: properties.id,
-      time: properties.time,
-      strong: properties.strong,
-      power: Number(properties.power),
-      speed: Number(properties.speed),
-      lng: coord[0],
-      lat: coord[1],
+export const getStormDataMap = (): IStormDataMap => {
+  const result: IStormDataMap = {}
+
+  const data = [stormData199711, stormData200012]
+  data.forEach((stormData) => {
+    const list = []
+    for (const feature of stormData['features']) {
+      const coord = feature.geometry.coordinates as [number, number]
+      const properties = feature.properties
+      const temp = {
+        id: properties.id,
+        name: stormData.name,
+        time: properties.time,
+        strong: properties.strong,
+        power: properties.power,
+        speed: properties.speed,
+        lng: coord[0],
+        lat: coord[1],
+      }
+      list.push(temp)
     }
-    result.dataList.push(temp)
-  }
+    result[stormData.tfid] = list
+  })
 
   return result
 }
@@ -1238,9 +1268,12 @@ export const formatDate = (inputDate: string): string => {
   return formattedDate
 }
 
-export const generateStormTableData = (data: IStormData): IStormTableRow[] => {
-  const result: IStormTableRow[] = data.dataList.map((value) => ({
+export const generateStormTableData = (
+  data: IStormDataOfPoint[],
+): IStormTableRow[] => {
+  const result: IStormTableRow[] = data.map((value) => ({
     id: value.id,
+    name: value.name,
     time: formatDate(value.time),
     powerAndStrong: `${value.power} (${value.strong})`,
     speed: value.speed,
@@ -1269,23 +1302,20 @@ export const generateGeoJSONByCoord = (coord: [number, number]) => {
   return result
 }
 
-export const addStormLayer = async (
-  map: mapbox.Map,
-  type: '199711' | '200012',
-) => {
-  map.addSource('storm-point', {
+export const addStormLayer = async (map: mapbox.Map, stormID: string) => {
+  map.addSource(`storm-${stormID}-point`, {
     type: 'geojson',
-    data: `/geojson/${type}-point.geojson`,
+    data: `/geojson/${stormID}-point.geojson`,
     attribution: 'name',
   })
-  map.addSource('storm-line', {
+  map.addSource(`storm-${stormID}-line`, {
     type: 'geojson',
-    data: `/geojson/${type}-line.geojson`,
+    data: `/geojson/${stormID}-line.geojson`,
     attribution: 'name',
   })
   map.addLayer({
-    id: 'storm-line',
-    source: 'storm-line',
+    id: `storm-${stormID}-line`,
+    source: `storm-${stormID}-line`,
     type: 'line',
     paint: {
       'line-color': '#2563eb',
@@ -1293,8 +1323,8 @@ export const addStormLayer = async (
     },
   })
   map.addLayer({
-    id: 'storm-point',
-    source: 'storm-point',
+    id: `storm-${stormID}-point`,
+    source: `storm-${stormID}-point`,
     type: 'circle',
     paint: {
       'circle-stroke-color': '#71717a',
@@ -1322,37 +1352,28 @@ export const addStormLayer = async (
     },
   })
 }
-export const updateStormLayer = async (
-  map: mapbox.Map,
-  type: '199711' | '200012',
-) => {
-  const point = map.getSource('storm-point') as mapbox.GeoJSONSource
-  point.setData(`/geojson/${type}-point.geojson`)
-  const line = map.getSource('storm-line') as mapbox.GeoJSONSource
-  line.setData(`/geojson/${type}-line.geojson`)
-}
 
 export const addTyphoonSymbol = async (
   map: mapbox.Map,
   coord: [number, number],
+  stormID: string,
 ) => {
-  map.addSource('typhoon', {
-    type: 'geojson',
-    data: generateGeoJSONByCoord(coord) as any,
-  })
-
   const image = await new Promise((resolve) => {
     map.loadImage('/png/typhoon.png', (_, image) => {
       resolve(image)
     })
   })
-  map.addImage('typhoon-icon', image as any)
+  map.addImage(`typhoon-${stormID}-icon`, image as any)
+  map.addSource(`typhoon-${stormID}`, {
+    type: 'geojson',
+    data: generateGeoJSONByCoord(coord) as any,
+  })
   map.addLayer({
-    id: 'typhoon',
-    source: 'typhoon',
+    id: `typhoon-${stormID}`,
+    source: `typhoon-${stormID}`,
     type: 'symbol',
     layout: {
-      'icon-image': 'typhoon-icon',
+      'icon-image': `typhoon-${stormID}-icon`,
     },
   })
 }
@@ -1363,17 +1384,4 @@ export const updateTyphoonSymbol = (
 ) => {
   const source = map.getSource('typhoon') as mapbox.GeoJSONSource
   source.setData(generateGeoJSONByCoord(coord) as any)
-}
-
-export const removeLayer = (map: mapbox.Map) => {
-  map.removeLayer('storm-point')
-  map.removeSource('storm-point')
-
-  map.removeLayer('storm-line')
-  map.removeSource('storm-line')
-
-  map.removeLayer('typhoon')
-  map.removeSource('typhoon')
-
-  map.removeImage('typhoon-icon')
 }

@@ -1,4 +1,4 @@
-interface IStormData {
+export interface IStormData {
   name: string
   dataList: {
     id: string
@@ -11,14 +11,14 @@ interface IStormData {
   }[]
 }
 
-interface IStormTableRow {
+export interface IStormTableRow {
   id: string
   time: string
   powerAndStrong: string
   speed: number
 }
 
-interface IStormDataOfPoint {
+export interface IStormDataOfPoint {
   id: string
   time: string
   strong: string
