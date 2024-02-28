@@ -29,9 +29,9 @@ export function viewing() {
 
     map.on('load', () => {
 
-        map.addLayer(new WaterDifLayer())   
+        // map.addLayer(new WaterDifLayer())   
         // map.addLayer(new FlowLayer())
-        // map.addLayer(new WindLayer())
+        map.addLayer(new WindLayer())
 
 
     })
