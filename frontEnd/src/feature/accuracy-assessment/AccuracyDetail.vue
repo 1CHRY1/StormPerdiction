@@ -6,6 +6,7 @@ import {
   getStationInfo,
   getStationPredictionTideSituation,
 } from './api'
+import { IAccurateAssessmentTableRow, ITideSituation } from './type';
 import { drawEcharts, generateTreeDataOfStation, initEcharts } from './util'
 
 let echart: echarts.ECharts | null = null

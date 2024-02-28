@@ -4,11 +4,16 @@ import 'mapbox-gl/dist/mapbox-gl.css'
 import { Ref, onMounted, ref } from 'vue'
 import { router } from '../../router'
 import { useStationStore } from '../../store/stationStore'
+// import { useMapStore } from '../../store/mapStore'
 import { initMap } from '../../util/initMap'
 import { addLayer } from './util'
+import radioVue from './radio.vue'
+// import { FlowLayer, WaterDifLayer, WindLayer } from '../../components/LayerFromWebGPU'
 
 let stationStore = useStationStore()
 const mapContainerRef: Ref<HTMLDivElement | null> = ref(null)
+
+
 
 onMounted(async () => {
   const map: mapbox.Map = await initMap(
@@ -18,6 +23,12 @@ onMounted(async () => {
       zoom: 6.5,
     },
   )
+
+  window.addEventListener("keydown", (e) => {
+    if (e.key == '\\')
+      console.log(map);
+  })
+
   addLayer(map)
 
   map.on('click', (event: mapbox.MapMouseEvent) => {
@@ -38,8 +49,29 @@ onMounted(async () => {
     }
   })
 })
+
 </script>
 
 <template>
   <div ref="mapContainerRef" class="map-container h-full w-full" />
+  <canvas id="WebGPUFrame" class="playground"></canvas>
+  <radioVue></radioVue>
 </template>
+
+<style scoped>
+#radio {
+  position: absolute;
+  left: 10rem;
+  top: 3rem;
+  /* z-index: 2; */
+}
+
+#WebGPUFrame {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  top: 0;
+  pointer-events: none;
+}
+</style>

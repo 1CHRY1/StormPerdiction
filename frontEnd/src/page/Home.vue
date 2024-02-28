@@ -31,7 +31,7 @@ const handleClick = async () => {
     >
       {{ header }}
     </div>
-    <div class="flex flex-auto flex-row bg-pink-200">
+    <div class="flex flex-auto flex-row bg-[rgb(6,22,50)]">
       <div class="flex flex-col bg-red-300">
         <AsideMenu class="h-full"></AsideMenu>
       </div>

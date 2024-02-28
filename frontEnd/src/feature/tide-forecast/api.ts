@@ -1,3 +1,5 @@
+import { IStationInfo, ITideSituation, ITideSituationResponse } from "./type"
+
 export const stationInfo = {
   '0': {
     coord: [117.633, 30.767],

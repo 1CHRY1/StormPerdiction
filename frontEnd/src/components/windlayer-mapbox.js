@@ -49,7 +49,6 @@ export default class WindLayer {
             this.screen.swap()
             tickLogic(undefined, [mapCenter.lng, mapCenter.lat],matrix)
             Scratch.director.tick()
-            console.log(this.frameCount);
             if(this.frameCount>110){
                 // showFlowField(true)
                 Scratch.director.addStage({

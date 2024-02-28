@@ -18,6 +18,7 @@ app.mount('#app')
 
 const keepAliveStore = useKeepAliveStore()
 const stationStore = useStationStore()
+
 router.beforeEach((to, from) => {
   if (from.meta.index !== to.meta.index) {
     keepAliveStore.clearKeepAliveComponent()

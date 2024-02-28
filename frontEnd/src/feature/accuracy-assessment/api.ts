@@ -1,3 +1,5 @@
+import { IAccurateAssessmentTableRow, IStationInfo, ITideSituation, ITideSituationResponse } from "./type"
+
 export const stationInfo = {
   '0': {
     coord: [117.633, 30.767],
@@ -190,11 +192,11 @@ export const getStationPredictionTideSituation = async (
   return { time, isTyphoon, hyubao, hpre, hadd }
 }
 
-export const getAccurateAssessmentTable = async (
+const getAccurateAssessmentTable = async (
   time: string,
 ): Promise<IAccurateAssessmentTableRow[]> => {
   const response = await fetch(
-    `http://192.168.1.5:9999/api/v1/data/nc/txt?time=${time}`,
+    `/api/v1/data/nc/txt?time=${time}`,
   )
     .then((res) => {
       return res.json()
@@ -222,4 +224,8 @@ export const getAccurateAssessmentTable = async (
   }
 
   return result
+}
+
+export {
+  getAccurateAssessmentTable
 }

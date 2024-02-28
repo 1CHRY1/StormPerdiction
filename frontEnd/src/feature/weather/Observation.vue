@@ -24,7 +24,7 @@ const timeListOfType = computed(() => {
   }
 })
 const tableData = computed(() => {
-  return timeListOfType.value.map((value) => ({ time: value }))
+  return timeListOfType.value.map((value:any) => ({ time: value }))
 })
 
 onMounted(async () => {
