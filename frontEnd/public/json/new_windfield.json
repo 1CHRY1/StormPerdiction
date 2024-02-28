@@ -7,13 +7,16 @@
         "/images/windtest/mask_4.png",
         "/images/windtest/mask_5.png",
         "/images/windtest/mask_6.png",
-        "/images/windtest/mask_7.png"
+        "/images/windtest/mask_7.png",
+        "/images/windtest/mask_8.png",
+        "/images/windtest/mask_9.png",
+        "/images/windtest/mask_10.png"
     ],
     "constraints": {
         "max_drop_rate": 0.1,
         "max_drop_rate_bump": 0.2,
-        "max_segment_num": 64,
-        "max_streamline_num": 262144,
+        "max_segment_num": 32,
+        "max_streamline_num": 65536,
         "max_texture_size": 4096
     },
     "extent": [
@@ -36,7 +39,10 @@
         "/images/windtest/uv_4.png",
         "/images/windtest/uv_5.png",
         "/images/windtest/uv_6.png",
-        "/images/windtest/uv_7.png"
+        "/images/windtest/uv_7.png",
+        "/images/windtest/uv_8.png",
+        "/images/windtest/uv_9.png",
+        "/images/windtest/uv_10.png"
     ],
     "projection": [
         "/images/windtest/projection_mapbox.png"

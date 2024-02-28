@@ -23,9 +23,12 @@ override attribMin: f32;
 
 @vertex fn vMain(vInput: VertexInput)-> VertexOutput {
 
+    let alpha = (vInput.attrib - attribMin)/(attribMax - attribMin);
     var vsOutput: VertexOutput;
     vsOutput.position = ubo.u_matrix * vec4f(vInput.vertexPos, 0.0, 1.0);
-    vsOutput.color = vec4f(getColor(vInput.attrib, vec2f(attribMin, attribMax)),1.0);
+    // vsOutput.color = vec4f(getColor(vInput.attrib, vec2f(attribMin, attribMax)),vInput.attrib);
+    vsOutput.color = vec4f(getColor(vInput.attrib, vec2f(attribMin, attribMax)),alpha);
+
     return vsOutput;
 }
 
@@ -59,8 +62,8 @@ fn getColor(attrib: f32, boundary: vec2f) -> vec3f{
     let fastColor = colorFromInt(rampColors[u32(topIndex)]);
 
     
-    return select(slowColor, fastColor, interval>0.5);
-    // return mix(slowColor, fastColor, interval);
+    // return select(slowColor, fastColor, interval>0.5);
+    return mix(slowColor, fastColor, interval);
 }
 
 

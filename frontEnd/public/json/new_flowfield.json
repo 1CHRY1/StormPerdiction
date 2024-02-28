@@ -2,7 +2,15 @@
     "area_masks": [
         "/images/flowtest/mask_0.png",
         "/images/flowtest/mask_1.png",
-        "/images/flowtest/mask_2.png"
+        "/images/flowtest/mask_2.png",
+        "/images/flowtest/mask_3.png",
+        "/images/flowtest/mask_4.png",
+        "/images/flowtest/mask_5.png",
+        "/images/flowtest/mask_6.png",
+        "/images/flowtest/mask_7.png",
+        "/images/flowtest/mask_8.png",
+        "/images/flowtest/mask_9.png",
+        "/images/flowtest/mask_10.png"
     ],
     "constraints": {
         "max_drop_rate": 0.1,
@@ -18,15 +26,23 @@
         0.37521733976393157
     ],
     "flow_boundary": {
-        "u_max": 1.2482787335,
-        "u_min": -0.9909723064,
-        "v_max": 1.7778602094,
-        "v_min": -1.5004043209
+        "u_max": 2.6107207861,
+        "u_min": -1.7650471022,
+        "v_max": 2.1075299972,
+        "v_min": -2.116990115
     },
     "flow_fields": [
         "/images/flowtest/uv_0.png",
         "/images/flowtest/uv_1.png",
-        "/images/flowtest/uv_2.png"
+        "/images/flowtest/uv_2.png",
+        "/images/flowtest/uv_3.png",
+        "/images/flowtest/uv_4.png",
+        "/images/flowtest/uv_5.png",
+        "/images/flowtest/uv_6.png",
+        "/images/flowtest/uv_7.png",
+        "/images/flowtest/uv_8.png",
+        "/images/flowtest/uv_9.png",
+        "/images/flowtest/uv_10.png"
     ],
     "projection": [
         "/images/flowtest/projection_mapbox.png"
@@ -44,5 +60,18 @@
             1024,
             2048
         ]
-    }
+    },
+    "valid_address": [
+        "/images/flowtest/valid_0.png",
+        "/images/flowtest/valid_1.png",
+        "/images/flowtest/valid_2.png",
+        "/images/flowtest/valid_3.png",
+        "/images/flowtest/valid_4.png",
+        "/images/flowtest/valid_5.png",
+        "/images/flowtest/valid_6.png",
+        "/images/flowtest/valid_7.png",
+        "/images/flowtest/valid_8.png",
+        "/images/flowtest/valid_9.png",
+        "/images/flowtest/valid_10.png"
+    ]
 }

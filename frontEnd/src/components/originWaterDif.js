@@ -21,8 +21,9 @@ let uniformData
 const init = async (cvs) => {
 
     canvas = cvs
-    // const { vertex, attrib, index, attribBoundary } = (await axios.get("/images/zetaTri/zeta_tri_0.json")).data
-    const { vertex, attrib, index, attribBoundary } = (await axios.get("/json/testTri.json")).data
+    // const { vertex, attrib, index, attribBoundary } = (await axios.get("/json/testTri.json")).data
+    const { vertex, attrib, index, attribBoundary } = (await axios.get("/json/zetaTri/zetaTri_3.json")).data
+
 
     // const vertex = [[0.5, 0.5], [0.0, 0.5], [0.0, 0.0], [0.3, 0.1], [0.7, 0.2]]
     // const index = [[0, 1, 2], [0, 3, 4]]

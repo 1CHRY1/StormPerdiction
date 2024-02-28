@@ -1,7 +1,7 @@
 import mapboxgl, { Map } from "mapbox-gl"
 import 'mapbox-gl/dist/mapbox-gl.css'
-// import { DEMLayer } from "./demLayer.js"
 import FlowLayer from "./flowlayer-mapbox.js"
+import WindLayer from "./windlayer-mapbox.js"
 import WaterDifLayer from "./waterDifLayer-mapbox.js"
 
 
@@ -29,56 +29,10 @@ export function viewing() {
 
     map.on('load', () => {
 
-        // const container = document.getElementById('stats');
-        // stats = new Stats()
-        // container.appendChild(stats.dom)
+        map.addLayer(new WaterDifLayer())   
+        // map.addLayer(new FlowLayer())
+        // map.addLayer(new WindLayer())
 
-        // map.addSource('mapbox-dem', {
-        // 'type': 'raster-dem',
-        // 'url': 'mapbox://mapbox.mapbox-terrain-dem-v1',
-        // 'tileSize': 512,
-        // 'maxzoom': 16
-        // });
-
-        // map.setTerrain({ 'source': 'mapbox-dem', 'exaggeration': 3.0 });
-
-        // map.addLayer({
-        //     'id': 'bridge-column',
-        //     'type': 'fill-extrusion',
-        //     'source': {
-        //         'type': 'geojson',
-        //         'data': '/json/bridgeColumn.geojson',
-        //     },
-        //     'paint': {
-        //         'fill-extrusion-color': "#aaaabb",  
-        //         'fill-extrusion-height': 65,
-        //         'fill-extrusion-opacity': 1.0
-        //     },
-        // })
-
-        // map.addLayer({
-        //     'id': 'bridge-surf',
-        //     'type': 'fill-extrusion',
-        //     'source': {
-        //         'type': 'geojson',
-        //         'data': '/json/bridgeSurf.geojson',
-        //     },
-        //     'paint': {
-        //         'fill-extrusion-color': "#aaaabb",  
-        //         'fill-extrusion-height': 80,
-        //         'fill-extrusion-base': 65,
-        //         'fill-extrusion-opacity': 1.0
-        //     },
-        // })
-
-
-        map.addLayer(new WaterDifLayer())
-        // map.addLayer(new DEMLayer())
-        // window.addEventListener('keydown', (e) => {
-        //     console.log(e);
-        //     if (e.key == 'Enter')
-        //         map.addLayer(new FlowLayer())
-        // })
 
     })
 

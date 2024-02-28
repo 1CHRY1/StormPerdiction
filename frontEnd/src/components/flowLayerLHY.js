@@ -78,7 +78,7 @@ class DynamicController {
 
     constructor(constraints) {
         this.particleNum = 65536
-        this.segmentNum = 8
+        this.segmentNum = 32
         this.speedFactor = 0.5
         this.dropRate = 0.003
         this.dropRateBump = 0.001
@@ -196,9 +196,9 @@ const init = async (sceneTexture) => {
     
     // ============main================
 
-    parser = new DescriptionParser("/json/new_windfield.json")
+    // parser = new DescriptionParser("/json/new_windfield.json")
     // note:: speedfactor in shader
-    // parser = new DescriptionParser("/json/new_flowfield.json")
+    parser = new DescriptionParser("/json/new_flowfield.json")
 
     await parser.Parsing()
 
@@ -329,7 +329,7 @@ const init = async (sceneTexture) => {
                     },
                     speedFactor: {
                         type: 'f32',
-                        value: () => controller.speedFactor,
+                        value: () => controller.speedFactor * 10.0,
                     },
                     randomSeed: {
                         type: 'f32',
@@ -517,13 +517,13 @@ const init = async (sceneTexture) => {
     }).add(render_pipeline, render_binding);
 
 
-    Scratch.director.addStage({
-        name: 'Flow Field Shower',
-        items: [
-            simulation_pass,
-            render_pass,
-        ]
-    })
+    // Scratch.director.addStage({
+    //     name: 'Flow Field Shower',
+    //     items: [
+    //         simulation_pass,
+    //         render_pass,
+    //     ]
+    // })
 
     return {
         simulationPass: simulation_pass,
@@ -573,14 +573,14 @@ const tickLogic = (mapbox_matrix, mercatorCenter, ogMatrix) => {
             let updatePhase = (nowPhase + 1) % frameTimer.phaseCount
 
             // using mutiple binding
-            // bindingIndex = nowPhase % flowTextureArrSize
-            // simulation_pass.empty()
-            // simulation_pass.add(simulation_pipeline, simuBindArr[bindingIndex])
-            // updateReparse(flowTextureArr[updatePhase % flowTextureArrSize], parser.flowFieldResourceArray[updatePhase]);
-            
-            // single texture test
+            bindingIndex = nowPhase % flowTextureArrSize
             simulation_pass.empty()
             simulation_pass.add(simulation_pipeline, simuBindArr[bindingIndex])
+            updateReparse(flowTextureArr[updatePhase % flowTextureArrSize], parser.flowFieldResourceArray[updatePhase]);
+            
+            // single texture test
+            // simulation_pass.empty()
+            // simulation_pass.add(simulation_pipeline, simuBindArr[bindingIndex])
         }
 
     }
@@ -595,11 +595,6 @@ const tickLogic = (mapbox_matrix, mercatorCenter, ogMatrix) => {
     centerX = encodeFloatToDouble(mercatorCenter[0])
     centerY = encodeFloatToDouble(mercatorCenter[1])
 
-    // const mat = mapbox_matrix.slice();
-    // mat[12] += mat[0] * centerX[0] + mat[4] * centerY[0];
-    // mat[13] += mat[1] * centerX[0] + mat[5] * centerY[0];
-    // mat[14] += mat[2] * centerX[0] + mat[6] * centerY[0];
-    // mat[15] += mat[3] * centerX[0] + mat[7] * centerY[0];
     g_matrix = new Float32Array(ogMatrix)
 
     // screen.swap()
@@ -609,12 +604,12 @@ const tickLogic = (mapbox_matrix, mercatorCenter, ogMatrix) => {
 export function showFlowField(visibility) {
 
     if (visibility) {
-        controller.stop = false
+        // controller.stop = false
         Scratch.director.showStage('Flow Field Shower')
         gui.show()
     }
     else {
-        controller.stop = true
+        // controller.stop = true
         Scratch.director.hideStage('Flow Field Shower')
         gui.hide()
     }
