@@ -29,10 +29,10 @@ export function viewing() {
 
     map.on('load', () => {
 
+        ////// main //////////
         // map.addLayer(new WaterDifLayer())   
         // map.addLayer(new FlowLayer())
         map.addLayer(new WindLayer())
-
 
     })
 
