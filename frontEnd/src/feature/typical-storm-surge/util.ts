@@ -1204,13 +1204,13 @@ const stormData200012 = {
 }
 
 export const getStormData = (stormType: '199711' | '200012'): IStormData => {
-  let stormData = stormType === '199711' ? stormData199711 : stormData200012
+  const stormData = stormType === '199711' ? stormData199711 : stormData200012
   const result: IStormData = {
     name: stormData.name,
     dataList: [],
   }
 
-  for (const feature of stormData['features']) {
+  for (const feature of stormData.features) {
     const coord = feature.geometry.coordinates as [number, number]
     const properties = feature.properties
     const temp = {
@@ -1250,8 +1250,8 @@ export const generateStormTableData = (data: IStormData): IStormTableRow[] => {
 }
 
 export const decimalToDMS = (decimal: number): string => {
-  var degrees = Math.floor(decimal)
-  var minutes = Math.floor((decimal - degrees) * 60)
+  const degrees = Math.floor(decimal)
+  const minutes = Math.floor((decimal - degrees) * 60)
   return degrees + '° ' + minutes + "'"
 }
 

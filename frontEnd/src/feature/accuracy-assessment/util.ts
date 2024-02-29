@@ -5,7 +5,7 @@ import { stationInfo } from './api'
 import { IStationInfo, ITideSituation, Tree } from './type'
 
 export const generateTreeDataOfStation = (): Tree[] => {
-  let data: Tree[] = Object.entries(stationInfo).map((value) => ({
+  const data: Tree[] = Object.entries(stationInfo).map((value) => ({
     id: value[0],
     label: value[1].name,
   }))
@@ -25,11 +25,10 @@ export const drawEcharts = async (
   isStationDataExist: boolean,
 ) => {
   type EChartsOption = echarts.EChartsOption
-  let option: EChartsOption
   const min = Math.min(...waterSituationData.hpre, ...waterSituationData.hyubao)
   const max = Math.max(...waterSituationData.hpre, ...waterSituationData.hyubao)
   const range = max - min
-  option = {
+  const option: EChartsOption = {
     title: {
       text: `${stationInfo.name}站点 ${stationInfo.time} 精读评定折线图`,
       textStyle: {
@@ -71,7 +70,7 @@ export const drawEcharts = async (
       min: min - range * 0.05,
       max: max + range * 0.05,
       axisLabel: {
-        formatter: function (value:number) {
+        formatter: function (value: number) {
           return value.toFixed(2)
         },
       },
@@ -103,7 +102,7 @@ export const drawEcharts = async (
     ],
   }
   if (!isStationDataExist) {
-    option['graphic'] = {
+    option.graphic = {
       type: 'text', // 类型：文本
       left: 'center',
       top: 'middle',

@@ -73,10 +73,13 @@ onMounted(async () => {
   activateStormList.value = getActiveStormList()
   activateStormDataMap.value = getStormDataMap()
 
-  let map: mapbox.Map = await initMap(mapContainerRef.value as HTMLDivElement, {
-    center: [133.4, 30.2],
-    zoom: 4,
-  })
+  const map: mapbox.Map = await initMap(
+    mapContainerRef.value as HTMLDivElement,
+    {
+      center: [133.4, 30.2],
+      zoom: 4,
+    },
+  )
   const mapboxLayerNames: string[] = []
   activateStormList.value.forEach(async (storm) => {
     mapboxLayerNames.push(`storm-${storm.id}-point`)

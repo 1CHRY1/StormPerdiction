@@ -2,10 +2,10 @@ import * as echarts from 'echarts'
 import mapbox from 'mapbox-gl'
 import { Ref } from 'vue'
 import { stationInfo } from './api'
-import { Tree, ITideSituation, IStationInfo } from './type'
+import { IStationInfo, ITideSituation, Tree } from './type'
 
 export const generateTreeDataOfStation = (): Tree[] => {
-  let data: Tree[] = Object.entries(stationInfo).map((value) => ({
+  const data: Tree[] = Object.entries(stationInfo).map((value) => ({
     id: value[0],
     label: value[1].name,
   }))
@@ -106,7 +106,7 @@ export const drawEcharts = async (
           min: tideMin - tideRange * 0.05,
           max: tideMax + tideRange * 0.05,
           axisLabel: {
-            formatter: function (value:number) {
+            formatter: function (value: number) {
               return value.toFixed(2)
             },
           },
@@ -117,7 +117,7 @@ export const drawEcharts = async (
           min: haddMin - haddRange * 0.05,
           max: haddMax + haddRange * 0.05,
           axisLabel: {
-            formatter: function (value:number) {
+            formatter: function (value: number) {
               return value.toFixed(2)
             },
           },
@@ -205,7 +205,7 @@ export const drawEcharts = async (
         min: min - range * 0.05,
         max: max + range * 0.05,
         axisLabel: {
-          formatter: function (value:number) {
+          formatter: function (value: number) {
             return value.toFixed(2)
           },
         },
@@ -232,7 +232,7 @@ export const drawEcharts = async (
     }
   }
   if (!isStationDataExist) {
-    option['graphic'] = {
+    option.graphic = {
       type: 'text', // 类型：文本
       left: 'center',
       top: 'middle',

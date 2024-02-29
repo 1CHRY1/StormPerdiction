@@ -1237,7 +1237,7 @@ export const getStormDataMap = (): IStormDataMap => {
   const data = [stormData199711, stormData200012]
   data.forEach((stormData) => {
     const list = []
-    for (const feature of stormData['features']) {
+    for (const feature of stormData.features) {
       const coord = feature.geometry.coordinates as [number, number]
       const properties = feature.properties
       const temp = {
@@ -1283,8 +1283,8 @@ export const generateStormTableData = (
 }
 
 export const decimalToDMS = (decimal: number): string => {
-  var degrees = Math.floor(decimal)
-  var minutes = Math.floor((decimal - degrees) * 60)
+  const degrees = Math.floor(decimal)
+  const minutes = Math.floor((decimal - degrees) * 60)
   return degrees + '° ' + minutes + "'"
 }
 

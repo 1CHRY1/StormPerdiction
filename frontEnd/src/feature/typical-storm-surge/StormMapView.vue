@@ -61,10 +61,13 @@ onMounted(async () => {
   tableData.value = generateStormTableData(stormData.value)
   currentPointData.value = stormData.value!.dataList[Number(selectPoint.value)]
 
-  let map: mapbox.Map = await initMap(mapContainerRef.value as HTMLDivElement, {
-    center: [133.4, 30.2],
-    zoom: 4,
-  })
+  const map: mapbox.Map = await initMap(
+    mapContainerRef.value as HTMLDivElement,
+    {
+      center: [133.4, 30.2],
+      zoom: 4,
+    },
+  )
   map.flyTo({
     center: [currentPointData.value.lng, currentPointData.value.lat],
   })

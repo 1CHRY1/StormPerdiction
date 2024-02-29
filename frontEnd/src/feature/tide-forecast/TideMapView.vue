@@ -6,14 +6,12 @@ import { router } from '../../router'
 import { useStationStore } from '../../store/stationStore'
 // import { useMapStore } from '../../store/mapStore'
 import { initMap } from '../../util/initMap'
-import { addLayer } from './util'
 import radioVue from './radio.vue'
+import { addLayer } from './util'
 // import { FlowLayer, WaterDifLayer, WindLayer } from '../../components/LayerFromWebGPU'
 
-let stationStore = useStationStore()
+const stationStore = useStationStore()
 const mapContainerRef: Ref<HTMLDivElement | null> = ref(null)
-
-
 
 onMounted(async () => {
   const map: mapbox.Map = await initMap(
@@ -24,9 +22,8 @@ onMounted(async () => {
     },
   )
 
-  window.addEventListener("keydown", (e) => {
-    if (e.key == '\\')
-      console.log(map);
+  window.addEventListener('keydown', (e) => {
+    if (e.key === '\\') console.log(map)
   })
 
   addLayer(map)
@@ -49,7 +46,6 @@ onMounted(async () => {
     }
   })
 })
-
 </script>
 
 <template>

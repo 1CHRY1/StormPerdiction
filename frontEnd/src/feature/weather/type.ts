@@ -21,7 +21,6 @@ export interface IImageTypeAndTime {
 }
 export type ImageType = 'cloud' | 'radar' | 'rainfall' | 'rainfallpre'
 
-export type IStormDataMap = Record<string, IStormDataOfPoint[]>
 export interface IStormDataOfPoint {
   id: string
   name: string
@@ -39,3 +38,5 @@ export interface IStormTableRow {
   powerAndStrong: string
   speed: string
 }
+
+export type IStormDataMap = Record<string, IStormDataOfPoint[]>

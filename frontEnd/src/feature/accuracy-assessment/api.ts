@@ -1,4 +1,9 @@
-import { IAccurateAssessmentTableRow, IStationInfo, ITideSituation, ITideSituationResponse } from "./type"
+import {
+  IAccurateAssessmentTableRow,
+  IStationInfo,
+  ITideSituation,
+  ITideSituationResponse,
+} from './type'
 
 export const stationInfo = {
   '0': {
@@ -142,8 +147,8 @@ export const stationInfo = {
 }
 
 const decimalToDMS = (decimal: number): string => {
-  var degrees = Math.floor(decimal)
-  var minutes = Math.floor((decimal - degrees) * 60)
+  const degrees = Math.floor(decimal)
+  const minutes = Math.floor((decimal - degrees) * 60)
   return degrees + '° ' + minutes + "'"
 }
 
@@ -195,9 +200,7 @@ export const getStationPredictionTideSituation = async (
 const getAccurateAssessmentTable = async (
   time: string,
 ): Promise<IAccurateAssessmentTableRow[]> => {
-  const response = await fetch(
-    `/api/v1/data/nc/txt?time=${time}`,
-  )
+  const response = await fetch(`/api/v1/data/nc/txt?time=${time}`)
     .then((res) => {
       return res.json()
     })
@@ -213,7 +216,7 @@ const getAccurateAssessmentTable = async (
   const length = response[0].length
   for (let index = 0; index < length; index++) {
     const temp = {} as any
-    temp['name'].push(response[0][index])
+    temp.name.push(response[0][index])
     temp['mae(m)'].push(response[1][index])
     temp['mae(m)-aftercorrection'].push(response[2][index])
     temp['rmse(m)'].push(response[3][index])
@@ -226,6 +229,4 @@ const getAccurateAssessmentTable = async (
   return result
 }
 
-export {
-  getAccurateAssessmentTable
-}
+export { getAccurateAssessmentTable }

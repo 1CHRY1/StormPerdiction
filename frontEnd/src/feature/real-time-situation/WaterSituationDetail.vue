@@ -1,8 +1,9 @@
 <script setup lang="ts">
+import * as echarts from 'echarts'
 import { Ref, computed, onMounted, ref, watch } from 'vue'
 import { useStationStore } from '../../store/stationStore'
 import { getStationCurrentWaterSituation, getStationInfo } from './api'
-import { IRealTideSituation } from './type';
+import { IRealTideSituation } from './type'
 import { drawEcharts, generateTreeDataOfStation, initEcharts } from './util'
 
 let echart: echarts.ECharts | null = null

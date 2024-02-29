@@ -9,14 +9,12 @@
 // import { Matrix4 } from "./core/math/Matrix4";
 // import { DEG2RAD } from "three/src/math/MathUtils";
 
-
 // async function createTextureByUrl(device: GPUDevice, url: string, name: string = "", format: GPUTextureFormat = "rgba8unorm", usage = GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_DST | GPUTextureUsage.COPY_SRC, flipY = true ) {
-
 
 //     const textureSource = await fetch(url);
 //     const textureBlob = await textureSource.blob();
 //     const imageBitmap = await createImageBitmap(textureBlob, {imageOrientation: "none", premultiplyAlpha: "none", colorSpaceConversion: "default"});
-    
+
 //     const texture = device.createTexture({
 //         label: `Texture (${name})`,
 //         format: format,
@@ -80,7 +78,6 @@
 // let rHalf = radius / 2;
 // let rLink = rHalf - 100;
 
-
 // let vertexBuffer_index: VertexBuffer;
 // let vertexBuffer_particle_position: VertexBuffer;
 // let vertexBuffer_particle_color: VertexBuffer;
@@ -121,7 +118,7 @@
 //       depthTexture,
 //       sampleCount,
 //     } = canvasInfo;
-    
+
 //     let width: number ,height: number;
 //     width = Math.max(1, Math.min(device.limits.maxTextureDimension2D, (canvas as HTMLCanvasElement).clientWidth));
 //     height = Math.max(1, Math.min(device.limits.maxTextureDimension2D, (canvas as HTMLCanvasElement).clientHeight));
@@ -413,7 +410,7 @@
 //                 name: "linear",
 //                 addressModeUVW: ["repeat", "repeat"],
 //                 filterMinMag: ["linear", "linear"],
-        
+
 //                 visibility: GPUShaderStage.FRAGMENT,
 //                 bindingType: "filtering"
 //             }
@@ -509,7 +506,7 @@
 //                 name: "linear",
 //                 addressModeUVW: ["repeat", "repeat"],
 //                 filterMinMag: ["linear", "linear"],
-        
+
 //                 visibility: GPUShaderStage.FRAGMENT,
 //                 bindingType: "filtering"
 //             }
@@ -645,7 +642,6 @@
 //             format: "depth24plus"
 //         },
 //     });
-
 
 //     const waterShader = device.createShaderModule({
 //         label: "Water shader",
@@ -858,7 +854,6 @@
 //     lightPos = [-600, 0.0, 0.0];
 //     lightPos = new Vector3(lightPos[0], lightPos[1], lightPos[2]).applyMatrix4(new Matrix4().makeRotationZ(DEG2RAD * -23.0)).toArray();
 
-
 //     for (let i = 0; i < particleCount; i++) {
 //         particlesData[i].numConnections = 0;
 //     }
@@ -964,7 +959,6 @@
 //     const renderPass = encoder.beginRenderPass(renderPassDescriptor);
 //     renderPass.setBlendConstant([0.0, 0.0, 0.0, 1.0]);
 
-
 //     // Draw land
 //     landBinding.setBindGroups(renderPass);
 //     renderPass.setVertexBuffer(0, vertexBuffer_index.buffer);
@@ -990,7 +984,7 @@
 //     // Draw water
 //     landBinding.setBindGroups(renderPass);
 //     renderPass.setVertexBuffer(0, vertexBuffer_index.buffer);
-    
+
 //     renderPass.setPipeline(waterRenderPipeline);
 //     renderPass.draw(vertexNum);
 
@@ -999,7 +993,6 @@
 
 //     renderPass.setPipeline(cloudRenderPipeline);
 //     renderPass.draw(vertexNum);
-
 
 //     renderPass.end();
 

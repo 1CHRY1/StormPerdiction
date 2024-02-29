@@ -1,12 +1,12 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+import AsideMenu from '../feature/aside-menu/AsideMenu.vue'
+import { useKeepAliveStore } from '../store/keepActiveStore'
+
 interface Props {
   header: string
 }
 defineProps<Props>()
-
-import { computed } from 'vue'
-import AsideMenu from '../feature/aside-menu/AsideMenu.vue'
-import { useKeepAliveStore } from '../store/keepActiveStore'
 
 const keepAliveStore = useKeepAliveStore()
 const keepAliveComponents = computed(() => {
@@ -26,8 +26,8 @@ const handleClick = async () => {
 <template>
   <div class="h-screen w-screen flex flex-col bg-white">
     <div
-      @click="handleClick"
       class="h-12 leading-[3rem] text-xl text-white tracking-widest pl-4 bg-blue-500"
+      @click="handleClick"
     >
       {{ header }}
     </div>

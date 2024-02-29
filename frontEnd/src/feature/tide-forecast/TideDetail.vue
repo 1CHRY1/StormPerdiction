@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import * as echarts from 'echarts'
 import { Ref, computed, onMounted, ref, watch } from 'vue'
 import { useStationStore } from '../../store/stationStore'
-import { ITideSituation } from '../accuracy-assessment/type';
+import { ITideSituation } from '../accuracy-assessment/type'
 import { getStationInfo, getStationPredictionTideSituation } from './api'
 import { drawEcharts, generateTreeDataOfStation, initEcharts } from './util'
 
@@ -111,16 +112,16 @@ onMounted(async () => {
               label="天文潮位 (hpre)"
             />
             <el-table-column
+              v-if="waterSituationData?.isTyphoon"
               align="center"
               prop="hyubao"
               label="总潮位 (hyubao)"
-              v-if="waterSituationData?.isTyphoon"
             />
             <el-table-column
+              v-if="waterSituationData?.isTyphoon"
               align="center"
               prop="hadd"
               label="台风增水"
-              v-if="waterSituationData?.isTyphoon"
             />
           </el-table>
         </el-tab-pane>

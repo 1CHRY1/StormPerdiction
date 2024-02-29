@@ -1,4 +1,4 @@
-import { IStationInfo, ITideSituation, ITideSituationResponse } from "./type"
+import { IStationInfo, ITideSituation, ITideSituationResponse } from './type'
 
 export const stationInfo = {
   '0': {
@@ -142,8 +142,8 @@ export const stationInfo = {
 }
 
 const decimalToDMS = (decimal: number): string => {
-  var degrees = Math.floor(decimal)
-  var minutes = Math.floor((decimal - degrees) * 60)
+  const degrees = Math.floor(decimal)
+  const minutes = Math.floor((decimal - degrees) * 60)
   return degrees + '° ' + minutes + "'"
 }
 

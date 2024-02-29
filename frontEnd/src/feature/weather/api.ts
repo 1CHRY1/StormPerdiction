@@ -8,8 +8,8 @@ export const getSatelliteTypeAndTime = async (
     .then((value) => value.data)) as IImageTypeAndTimeResponse[]
 
   const typeName = data[0].type1
-  let typeMap: Set<string> = new Set()
-  let timeMap: Record<string, Set<string>> = {}
+  const typeMap: Set<string> = new Set()
+  const timeMap: Record<string, Set<string>> = {}
   data.forEach((value) => {
     const type =
       value.type3.length === 0 ? value.type2 : value.type2 + ' - ' + value.type3

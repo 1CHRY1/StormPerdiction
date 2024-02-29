@@ -2,8 +2,8 @@
 import { Ref, computed, onMounted, ref, watch } from 'vue'
 import { getSatelliteImage, getSatelliteTypeAndTime } from './api'
 
-let options: Ref<Record<string, string>[]> = ref([])
-let timeListMap: Ref<Record<string, Record<number, string[]>>> = ref({})
+const options: Ref<Record<string, string>[]> = ref([])
+const timeListMap: Ref<Record<string, Record<number, string[]>>> = ref({})
 const currentImageType = ref()
 const selectType = ref()
 const timeRange = ref(24)
@@ -31,7 +31,7 @@ onMounted(async () => {
   const { type, time, imageType } = await getSatelliteTypeAndTime('radar')
   currentImageType.value = imageType
   options.value = [...type].map((value) => ({
-    value: value,
+    value,
     label: value,
   }))
 
@@ -129,12 +129,12 @@ const handlePlayClick = () => {
       <div class="flex-auto h-24 relative m-2 top-1 border border-zinc-300">
         <div class="h-8 leading-8 px-2 bg-blue-500 text-white">图片列表</div>
         <el-table
+          v-loading="tableLoading"
           :data="tableData"
           stripe
           height="260"
           class="w-full"
           :highlight-current-row="true"
-          v-loading="tableLoading"
           @current-change="handleTableSelectionChange"
         >
           <el-table-column prop="time" label="时间" />
@@ -151,10 +151,10 @@ const handlePlayClick = () => {
             class="m-3"
           />
           <div class="m-3">
-            <el-button type="primary" v-if="!isPlay" @click="handlePlayClick"
+            <el-button v-if="!isPlay" type="primary" @click="handlePlayClick"
               >播放动画</el-button
             >
-            <el-button type="danger" v-else @click="handlePlayClick"
+            <el-button v-else type="danger" @click="handlePlayClick"
               >停止动画</el-button
             >
           </div>

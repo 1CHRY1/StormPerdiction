@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import * as echarts from 'echarts'
 import { Ref, computed, onMounted, ref, watch } from 'vue'
 import { useStationStore } from '../../store/stationStore'
 import {
@@ -6,7 +7,7 @@ import {
   getStationInfo,
   getStationPredictionTideSituation,
 } from './api'
-import { IAccurateAssessmentTableRow, ITideSituation } from './type';
+import { IAccurateAssessmentTableRow, ITideSituation } from './type'
 import { drawEcharts, generateTreeDataOfStation, initEcharts } from './util'
 
 let echart: echarts.ECharts | null = null

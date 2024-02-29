@@ -2,10 +2,10 @@ import * as echarts from 'echarts'
 import mapbox from 'mapbox-gl'
 import { Ref } from 'vue'
 import { stationInfo } from './api'
-import { Tree, IRealTideSituation, IStationInfo } from './type'
+import { IRealTideSituation, IStationInfo, Tree } from './type'
 
 export const generateTreeDataOfStation = (): Tree[] => {
-  let data: Tree[] = Object.entries(stationInfo).map((value) => ({
+  const data: Tree[] = Object.entries(stationInfo).map((value) => ({
     id: value[0],
     label: value[1].name,
   }))
@@ -28,8 +28,7 @@ export const drawEcharts = async (
   const max = Math.max(...waterSituationData.hpre)
   const range = max - min
   type EChartsOption = echarts.EChartsOption
-  let option: EChartsOption
-  option = {
+  const option: EChartsOption = {
     title: {
       text: `${info.name}站点 ${info.time} 实时水情折线图`,
       textStyle: {
@@ -71,7 +70,7 @@ export const drawEcharts = async (
       min: min - range * 0.05,
       max: max + range * 0.05,
       axisLabel: {
-        formatter: function (value:number) {
+        formatter: function (value: number) {
           return value.toFixed(2)
         },
       },
@@ -97,7 +96,7 @@ export const drawEcharts = async (
     ],
   }
   if (!isValid) {
-    option['graphic'] = {
+    option.graphic = {
       type: 'text', // 类型：文本
       left: 'center',
       top: 'middle',

@@ -17,11 +17,11 @@ export const initMap = async (
   },
 ) => {
   const map = (await new Promise((resolve) => {
-    let map = new mapbox.Map({
-      container: container,
+    const map = new mapbox.Map({
+      container,
       style: 'mapbox://styles/johnnyt/clrldnfyk001f01q2092ndx2y',
-      center: center,
-      zoom: zoom,
+      center,
+      zoom,
       projection: 'mercator' as any,
     })
 

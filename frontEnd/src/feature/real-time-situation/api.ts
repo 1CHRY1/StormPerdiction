@@ -1,4 +1,8 @@
-import { IStationInfo, IRealTideSituation, IRealTideSituationResponse } from "./type"
+import {
+  IRealTideSituation,
+  IRealTideSituationResponse,
+  IStationInfo,
+} from './type'
 
 export const stationInfo = {
   '0': {
@@ -142,8 +146,8 @@ export const stationInfo = {
 }
 
 const decimalToDMS = (decimal: number): string => {
-  var degrees = Math.floor(decimal)
-  var minutes = Math.floor((decimal - degrees) * 60)
+  const degrees = Math.floor(decimal)
+  const minutes = Math.floor((decimal - degrees) * 60)
   return degrees + '° ' + minutes + "'"
 }
 
@@ -176,7 +180,7 @@ export const getStationCurrentWaterSituation = async (
   }
   const data = dataMap.hpre
 
-  let time: string[] = []
+  const time: string[] = []
   const length = data.length
   const startTime = new Date(dataMap.time)
   for (let i = 0; i < length; i++) {

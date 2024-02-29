@@ -7,7 +7,7 @@ import { useStationStore } from '../../store/stationStore'
 import { initMap } from '../../util/initMap'
 import { addLayer } from './util'
 
-let stationStore = useStationStore()
+const stationStore = useStationStore()
 const mapContainerRef: Ref<HTMLDivElement | null> = ref(null)
 
 onMounted(async () => {
