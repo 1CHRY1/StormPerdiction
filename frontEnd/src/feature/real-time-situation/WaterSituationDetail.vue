@@ -85,7 +85,7 @@ onMounted(async () => {
           name="table"
           class="flex flex-col items-center"
         >
-          <div class="text-lg font-semibold text-blue-500">
+          <div class="text-lg font-semibold text-[#406abf]">
             {{ `${stationInfo.name}站点 ${stationInfo.time} 实时水情数据表` }}
           </div>
           <el-table
@@ -103,9 +103,9 @@ onMounted(async () => {
         </el-tab-pane>
       </el-tabs>
     </div>
-    <div class="flex flex-col w-[300px] bg-white">
+    <div class="flex flex-col w-[18rem] bg-white">
       <div class="h-44 relative m-2 top-1 border border-zinc-300">
-        <div class="h-8 leading-8 px-2 bg-blue-500 text-white">站点详情</div>
+        <div class="h-8 leading-8 px-2 bg-[#1b6ec8] text-white">站点详情</div>
         <div class="mx-3 my-2 flex flex-col">
           <div class="my-1">
             <span class="inline-block pr-2">站点名称:</span>
@@ -129,7 +129,7 @@ onMounted(async () => {
         </div>
       </div>
       <div class="flex flex-col flex-auto m-2 top-1 border border-zinc-300">
-        <div class="h-8 leading-8 px-2 bg-blue-500 text-white">站点列表</div>
+        <div class="h-8 leading-8 px-2 bg-[#1b6ec8] text-white">站点列表</div>
         <el-radio-group
           v-model="stationStore.currentStationID"
           class="py-2 px-4 block overflow-auto h-[25rem]"

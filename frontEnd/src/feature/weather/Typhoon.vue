@@ -4,7 +4,7 @@ import 'mapbox-gl/dist/mapbox-gl.css'
 import { Ref, computed, onMounted, ref, watch } from 'vue'
 import { useMapStore } from '../../store/mapStore'
 import { initMap } from '../../util/initMap'
-import { IStormDataMap, IStormDataOfPoint } from './type'
+import { IStormDataMap, IStormDataOfPoint, IStormTableRow } from './type'
 import {
   addStormLayer,
   addTyphoonSymbol,
@@ -22,14 +22,8 @@ const activateStormDataMap: Ref<null | IStormDataMap> = ref(null)
 const selectPointID: Ref<string> = ref('0')
 const selectPointData: Ref<null | IStormDataOfPoint> = ref(null)
 const mapStore = useMapStore()
+const activateStormTableData: Ref<null | IStormTableRow[]> = ref(null)
 
-const activateStormTableData = computed(() => {
-  if (activateStormList.value) {
-    return generateStormTableData(activateStormList.value)
-  } else {
-    return []
-  }
-})
 const selectHistoryTableData = computed(() => {
   if (selectStormID.value && activateStormDataMap.value) {
     return generateStormTableData(
@@ -41,20 +35,24 @@ const selectHistoryTableData = computed(() => {
 })
 
 const handleActivateTableSelectionChange = (selection: any) => {
-  const currentStormData = activateStormList.value!.filter(
-    (value) => value.id === selection.id,
-  )[0]
-  selectStormID.value = selection.id
-  selectPointID.value = (
-    activateStormDataMap.value![selection.id].length - 1
-  ).toString()
-  mapStore.map?.flyTo({
-    center: [currentStormData.lng, currentStormData.lat],
-  })
+  if (selection) {
+    const currentStormData = activateStormList.value!.filter(
+      (value) => value.id === selection.id,
+    )[0]
+    selectStormID.value = selection.id
+    selectPointID.value = (
+      activateStormDataMap.value![selection.id].length - 1
+    ).toString()
+    mapStore.map?.flyTo({
+      center: [currentStormData.lng, currentStormData.lat],
+    })
+  }
 }
 
 const handleHistoryTableSelectionChange = (selection: any) => {
-  selectPointID.value = selection.id
+  if (selection) {
+    selectPointID.value = selection.id
+  }
 }
 
 watch(selectPointID, () => {
@@ -72,6 +70,7 @@ watch(selectPointID, () => {
 onMounted(async () => {
   activateStormList.value = getActiveStormList()
   activateStormDataMap.value = getStormDataMap()
+  activateStormTableData.value = generateStormTableData(activateStormList.value)
 
   const map: mapbox.Map = await initMap(
     mapContainerRef.value as HTMLDivElement,
@@ -111,7 +110,7 @@ onMounted(async () => {
     <div ref="mapContainerRef" class="map-container h-full w-full" />
     <div class="bg-white w-[21rem]">
       <div class="h-48 m-2 border border-zinc-300 bg-white">
-        <div class="h-10 leading-10 px-3 bg-blue-500 text-white">实时信息</div>
+        <div class="h-10 leading-10 px-3 bg-[#1b6ec8] text-white">实时信息</div>
         <div class="mx-2 my-1 flex flex-col">
           <div>
             <span class="inline-block pr-2">台风名称:</span>
@@ -158,7 +157,7 @@ onMounted(async () => {
         </div>
       </div>
       <div class="m-2 mt-3 w-80 bg-white">
-        <div class="h-10 leading-10 px-3 bg-blue-500 text-white">实时台风</div>
+        <div class="h-10 leading-10 px-3 bg-[#1b6ec8] text-white">实时台风</div>
         <div class="border border-zinc-300">
           <el-table
             stripe
@@ -175,7 +174,7 @@ onMounted(async () => {
         </div>
       </div>
       <div class="m-2 mt-3 w-80 bg-white">
-        <div class="h-10 leading-10 px-3 bg-blue-500 text-white">历史路径</div>
+        <div class="h-10 leading-10 px-3 bg-[#1b6ec8] text-white">历史路径</div>
         <div class="border border-zinc-300">
           <el-table
             stripe

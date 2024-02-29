@@ -27,3 +27,28 @@ export interface IStormDataOfPoint {
   lng: number
   lat: number
 }
+
+export interface IStationInfo {
+  name: string
+  pinyin: string
+  time: string
+  lon: string
+  lat: string
+  type: string
+}
+
+export interface IHistoryTideResponse {
+  time: string
+  hpre: number[]
+}
+
+export interface IHistoryTide {
+  time: string[]
+  hpre: number[]
+}
+
+export interface Tree {
+  label: string
+  id: string
+  children?: Tree[]
+}

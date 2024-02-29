@@ -26,7 +26,7 @@ const handleClick = async () => {
 <template>
   <div class="h-screen w-screen flex flex-col bg-white">
     <div
-      class="h-12 leading-[3rem] text-xl text-white tracking-widest pl-4 bg-blue-500"
+      class="h-12 leading-[3rem] text-xl text-white tracking-widest pl-4 bg-[#134d8c]"
       @click="handleClick"
     >
       {{ header }}
