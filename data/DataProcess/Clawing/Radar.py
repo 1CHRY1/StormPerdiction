@@ -64,9 +64,8 @@ def Radar_clawing(Path, name, url, type1, type2, type3):
                     print(f"文件{Time}下载成功")
                     filenames.append(Time)
                     # 处理时间变量
-                    Time_obj = datetime.strptime(Time, "%m%d %H%M")
                     current_year = datetime.now().year
-                    Time_obj = Time_obj.replace(year=current_year)
+                    Time_obj = datetime.strptime(str(current_year) + Time, "%Y%m%d %H%M")
                     insertData(db_path, "Meteorology", Time_obj, type1, type2, type3, filepath)
                     print(f"文件{Time}插入数据库成功")
                 else:

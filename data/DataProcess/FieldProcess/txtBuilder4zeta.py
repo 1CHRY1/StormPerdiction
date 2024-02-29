@@ -2,6 +2,7 @@
 ## 条目数
 ## 字段名
 ## x  y  ZetaDif
+import os
 
 import netCDF4 as nc
 import sys
@@ -27,7 +28,7 @@ adcirc_z = adcirc.variables['zeta'][:]
 timeCount = 0
 allTime = 2
 # allTime = 2
-rootPath = './output'
+rootPath = os.path.dirname(__file__) + '/output'
 space = '    '
 abnormal = adcirc_z[0][61590]  # --
 validCount = 0

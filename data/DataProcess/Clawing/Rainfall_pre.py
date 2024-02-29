@@ -17,14 +17,6 @@ import requests
 import time
 import asyncio
 
-def removeAllfiles(folderpath):
-    files = os.listdir(folderpath)
-    for file in files:
-        file_path = os.path.join(folderpath, file)
-        # 判断是否是文件，如果是文件则删除
-        if os.path.isfile(file_path):
-            os.remove(file_path)
-
 def insertData(db_path, name, time, type1, type2, type3, path):
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
@@ -53,7 +45,6 @@ def Rainfallpre_clawing(Path, name, url, type1, type2, type3):
         time_obj = datetime.now() + timedelta(days=1)
         time = time_obj.strftime("%m%d")
         filepath = f"{folderpath}/{time}.jpg"
-        removeAllfiles(folderpath)
         response = requests.get(img_url)
         if response.status_code == 200:
             with open(filepath, 'wb') as f:
