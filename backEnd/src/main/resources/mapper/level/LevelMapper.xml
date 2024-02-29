@@ -14,7 +14,7 @@
     </select>
 
     <select id="ifTyph" resultType="java.lang.Integer">
-        select iftyph from ${station} where time=#{time}
+        select iftyph from typh where time=#{time}
     </select>
 
     <select id="getBefore72ByStation" resultType="java.util.Map">

@@ -10,6 +10,10 @@
         select path,name from NC
     </select>
 
+    <select id="getPathByTimeAndType" resultType="java.lang.String">
+        select path from NC where time=#{time} and type=#{type}
+    </select>
+
     <select id="getInfoByTimeAndType" resultType="java.util.Map">
         select path,name from NC where time=#{time} and type=#{type}
     </select>

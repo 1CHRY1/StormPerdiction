@@ -17,6 +17,14 @@ import requests
 import time
 import asyncio
 
+def removeAllfiles(folderpath):
+    files = os.listdir(folderpath)
+    for file in files:
+        file_path = os.path.join(folderpath, file)
+        # 判断是否是文件，如果是文件则删除
+        if os.path.isfile(file_path):
+            os.remove(file_path)
+
 def insertData(db_path, name, time, type1, type2, type3, path):
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
@@ -30,11 +38,11 @@ def insertData(db_path, name, time, type1, type2, type3, path):
     conn.close()
 
 def Rainfallpre_clawing(Path, name, url, type1, type2, type3):
-    folderpath = Path + '\\' + name
+    folderpath = Path + '/' + name
     # 图片爬取
     options = Options()
     options.add_argument('--headless')  # 不打开浏览器
-    chromedriver_path = "D:\\1tools\\Miniconda\\envs\\Crawling\\chromedriver.exe"
+    chromedriver_path = "D:/1tools/Miniconda/envs/Crawling/chromedriver.exe"
     chromedriver_service = Service(executable_path=chromedriver_path)
     driver = webdriver.Chrome(options=options, service=chromedriver_service)
     wait = WebDriverWait(driver, 10)
@@ -44,7 +52,8 @@ def Rainfallpre_clawing(Path, name, url, type1, type2, type3):
         img_url = img.get_attribute("src")
         time_obj = datetime.now() + timedelta(days=1)
         time = time_obj.strftime("%m%d")
-        filepath = f"{folderpath}\\{time}.jpg"
+        filepath = f"{folderpath}/{time}.jpg"
+        removeAllfiles(folderpath)
         response = requests.get(img_url)
         if response.status_code == 200:
             with open(filepath, 'wb') as f:
@@ -59,6 +68,7 @@ def Rainfallpre_clawing(Path, name, url, type1, type2, type3):
         print(e)
         driver.close()
         Rainfallpre_clawing(Path, name, url, type1, type2, type3)
+        return
     finally:
         driver.close()
 
@@ -79,14 +89,14 @@ datatypes = [
         {"name":"24小时","url":"http://www.nmc.cn/publish/precipitation/6hours-24.html"}
     ]}
 ]
-db_path = "D:\\1study\\Work\\2023_12_22_Storm\\Data\\DataProcess\\Clawing\\Meteorology.db"
-Path = "D:\\1study\\Work\\2023_12_22_Storm\\Data\\气象产品\\降水量预报"
+db_path = "D:/1study/Work/2023_12_22_Storm/stormPrediction/data/DataProcess/Clawing/Meteorology.db"
+Path = "D:/1study/Work/2023_12_22_Storm/stormPrediction/data/气象产品/降水量预报"
 type1 = "降水量预报"
 for datatype in datatypes:
     name = datatype["name"]
     type2 = name
     urls = datatype["url"]
-    Path_ = Path + "\\" + name
+    Path_ = Path + "/" + name
     for item in urls:
         name = item["name"]
         url = item["url"]

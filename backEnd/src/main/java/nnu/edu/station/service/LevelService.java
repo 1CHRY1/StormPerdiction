@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Map;
 
 public interface LevelService {
+
+    Integer ifTyph(String time);
+
     List<Map<String, Object>> getAllInfoByStation(String station);
 
     String getAllRealInfoByStation(String station) throws IOException;

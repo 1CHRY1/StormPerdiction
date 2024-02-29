@@ -33,6 +33,11 @@ public class NCServiceImpl implements NCService {
     }
 
     @Override
+    public String getPathByTimeAndType(String time, String type){
+        return ncMapper.getPathByTimeAndType(time, type);
+    }
+
+    @Override
     public Object getInfoByTimeAndType(String time, String type) {
         return ncMapper.getInfoByTimeAndType(time, type);
     }

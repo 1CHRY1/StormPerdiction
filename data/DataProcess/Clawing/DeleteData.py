@@ -13,9 +13,8 @@ def delete_jpg_files(folder_path):
                 if len(time) == 4:
                     os.remove(file_path) #特殊情况处理，直接删去降水预报如图
                     continue
-                time_obj = datetime.strptime(time, "%m%d %H%M")
                 current_year = datetime.now().year
-                time_obj = time_obj.replace(year=current_year)
+                time_obj = datetime.strptime(str(current_year)+time, "%Y%m%d %H%M").replace(year=current_year)
                 # 如果time_obj早于前天的时间，则删去
                 yesterday = datetime.now() - timedelta(days=1)
                 if ( time_obj.date() < yesterday.date()):
@@ -39,8 +38,8 @@ def remove_dbcontent(db_path, name):
     conn.close()
 
 # 调用函数并传入文件夹路径
-folder_path = "D:\\1study\\Work\\2023_12_22_Storm\\Data\\气象产品"
-db_path = "D:\\1study\\Work\\2023_12_22_Storm\\Data\\DataProcess\\Clawing\\Meteorology.db"
+folder_path = "D:/1study/Work/2023_12_22_Storm/stormPrediction/data/气象产品"
+db_path = "D:/1study/Work/2023_12_22_Storm/stormPrediction/data/DataProcess/Clawing/Meteorology.db"
 # 删除当前日期前天的数据
 delete_jpg_files(folder_path)
 remove_dbcontent(db_path, "Meteorology")
