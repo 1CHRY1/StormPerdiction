@@ -49,19 +49,19 @@ public class MeteorologyController {
 
     @GetMapping("/radar")
     public JsonResult getRadar() {
-        /* 获取卫星云图 */
+        /* 获取雷达拼图 */
         return ResultUtils.success(meteorologyService.getRadar());
     }
 
     @GetMapping("/rainfall")
     public JsonResult getRainfall() {
-        /* 获取卫星云图 */
+        /* 获取降水量实况图 */
         return ResultUtils.success(meteorologyService.getRainfall());
     }
 
     @GetMapping("/rainfallpre")
     public JsonResult getRainfallpre() {
-        /* 获取卫星云图 */
+        /* 获取降水量预报图 */
         return ResultUtils.success(meteorologyService.getRainfallpre());
     }
 
