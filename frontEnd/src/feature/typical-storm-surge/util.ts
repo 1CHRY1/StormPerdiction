@@ -1297,7 +1297,7 @@ export const addStormLayer = async (
     source: 'storm-line',
     type: 'line',
     paint: {
-      'line-color': '#2563eb',
+      'line-color': '#60a5fa',
       'line-width': 1.5,
     },
   })
