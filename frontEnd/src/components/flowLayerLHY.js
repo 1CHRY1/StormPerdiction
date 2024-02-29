@@ -575,7 +575,7 @@ const tickLogic = (mapbox_matrix, mercatorCenter, ogMatrix) => {
             bindingIndex = nowPhase % flowTextureArrSize
             simulation_pass.empty()
             simulation_pass.add(simulation_pipeline, simuBindArr[bindingIndex])
-            updateReparse(flowTextureArr[updatePhase % flowTextureArrSize], parser.flowFieldResourceArray[updatePhase]);
+            // updateReparse(flowTextureArr[updatePhase % flowTextureArrSize], parser.flowFieldResourceArray[updatePhase]);
             
             // single texture test
             // simulation_pass.empty()

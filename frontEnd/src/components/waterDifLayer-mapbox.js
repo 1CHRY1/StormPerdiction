@@ -16,7 +16,6 @@ export default class WaterDifLayer {
     }
 
     async onAdd(map, gl) {
-        console.log('loading 增水厂');
         this.map = map
         this.canvas = document.querySelector('#WebGPUFrame')
         this.prepare = await init(this.canvas)

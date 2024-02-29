@@ -25,13 +25,11 @@ onMounted(() => {
   // flowLayer = new FlowLayer()
   // windLayer = new WindLayer()
   // waterDifLayer = new WaterDifLayer()
-  window.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
-      console.log(mapstore.map?.getStyle().layers)
-      // mapstore.map?.addLayer(new WaterDifLayer())
-      // console.log(mapstore.map);
-    }
-  })
+  // window.addEventListener('keydown', (e) => {
+  //   if (e.key === 'Enter') {
+  //     console.log(mapstore.map?.getStyle().layers)
+  //   }
+  // })
 })
 
 const myRemoveLayer = (map: mapboxgl.Map, id: string) => {
@@ -42,7 +40,7 @@ const myRemoveLayer = (map: mapboxgl.Map, id: string) => {
 }
 const myAddLayer = (map: mapboxgl.Map, layer: mapboxgl.AnyLayer) => {
   if (map.loaded()) {
-    console.log('add layer', layer.id)
+    // console.log('add layer', layer.id)
     map.addLayer(layer)
 
   }
@@ -50,9 +48,8 @@ const myAddLayer = (map: mapboxgl.Map, layer: mapboxgl.AnyLayer) => {
 }
 
 watch(radio, (newV, oldV) => {
-  console.log(mapstore.map === null ? 'map not load' : 'ok')
   if (mapstore.map && mapstore.map?.loaded()) {
-    console.log(IDMap[newV])
+    // console.log(IDMap[newV])
     switch (newV) {
       case '风场':
         console.log('加载风场')
