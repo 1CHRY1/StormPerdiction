@@ -18,7 +18,7 @@ public interface LevelMapper {
 
     List<Map<String, Object>> getTyphAllByStation(@Param("station") String station);
 
-    Integer ifTyph(@Param("station") String station, @Param("time") String time);
+    Integer ifTyph(@Param("time") String time);
 
     List<Map<String, Double>> getBefore72ByStation(@Param("station") String station, @Param("beforetime") String beforetime, @Param("currenttime") String currenttime);
 

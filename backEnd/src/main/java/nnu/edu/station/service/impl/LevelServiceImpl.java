@@ -35,6 +35,11 @@ public class LevelServiceImpl implements LevelService {
     String station_path;
 
     @Override
+    public Integer ifTyph(String time) {
+        return levelMapper.ifTyph(time);
+    }
+
+    @Override
     public String getAllRealInfoByStation(String station) throws IOException {
         // 获取站点实测数据信息
         Path currentPath = Paths.get(System.getProperty("user.dir"));
@@ -104,7 +109,7 @@ public class LevelServiceImpl implements LevelService {
 //        LocalDateTime time = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String time_str = time.format(formatter);
-        Integer ifTyph = levelMapper.ifTyph(station,time_str);
+        Integer ifTyph = ifTyph(time_str);
         try{
             if ( ifTyph == 1){
                 return getTyph72ByStation(station);

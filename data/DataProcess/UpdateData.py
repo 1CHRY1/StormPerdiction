@@ -121,6 +121,18 @@ def insert_NCdata(db_path, time, type, path, name, manual):
     conn.commit()
     conn.close()
 
+def insert_iftyph(db_path, time, iftyph):
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+    updatetime = datetime.now()
+    # 插入数据
+    cursor.execute(f'''
+                    INSERT INTO typh ( updatetime, time, iftyph )
+                    VALUES ('{updatetime}', '{time}', '{iftyph}' )
+                ''')
+    conn.commit()
+    conn.close()
+
 def get_prefix_before_digits(input_str):
     # 获取数字前的所有字符
     prefix = ""
@@ -143,12 +155,14 @@ def main():
         if (len(folder) != 8 or folder != current_time):
             continue
         Path = folderPath + "//" + folder
+        print("****************" + folder + " begin!" + "****************")
         time = datetime.strptime(folder, "%Y%m%d")
         manual = 0
         try:
             txtPath = os.path.join(Path, "ifTyph.txt")
             if (JudgeIfTyph(txtPath) == True):
                 # 存在台风
+                insert_iftyph(db_path_Forcasting, time, 1)
                 files = os.listdir(Path)
                 hyubao = []
                 hpre = []
@@ -173,17 +187,26 @@ def main():
                     #         insert_typhdata(db_path_Forcasting, name, time, addwind, hyubao, manual)
                     #     except Exception as e:
                     #         print(e)
+
+                    # 处理精度评定结果数据
+                    if os.path.basename(file) == "result.txt":
+                        path = Path + "/" + file
+                        filename = "result.txt"
+                        type = "result"
+                        insert_NCdata(db_path_NC, time, type, path, filename, manual)
+
                     # 处理nc数据
                     if file.endswith(".nc"):
                         path = Path + "/" + file
-                        zeta = nc2array(path)
                         filename = os.path.basename(file)
                         if name == "adcirc_addwind":
                             type = "adcirc"
+                            zeta = nc2array(path)
                             insert_NCdata(db_path_NC, time, type, path, filename, manual)
                             hyubao = getZetaFromArray(zeta, stations)
                         if name == "fort.63_nowind":
                             type = "fort63"
+                            zeta = nc2array(path)
                             insert_NCdata(db_path_NC, time, type, path, filename, manual)
                             hpre = getZetaFromArray(zeta, stations)
                         if hyubao != [] and hpre != []:
@@ -194,15 +217,13 @@ def main():
                                 hadd_data = hyubao_data - hpre_data
                                 insert_typhdata(db_path_Forcasting, name, time, hpre_data.tolist(),
                                                 hyubao_data.tolist(), hadd_data.tolist(), manual)
+                            break
 
-                    # 处理精度评定结果数据
-                    if os.path.basename(file) == "result.txt":
-                        path = Path + "/" + file
-                        filename = "result.txt"
-                        type = "result"
-                        insert_NCdata(db_path_NC, time, type, path, filename, manual)
+                    print(os.path.basename(file))
+
             else:
                 # 不存在台风
+                insert_iftyph(db_path_Forcasting, time, 0)
                 files = os.listdir(Path)
                 for file in files:
                     # 文件名称
@@ -244,8 +265,13 @@ def main():
                         type = "result"
                         insert_NCdata(db_path_NC, time, type, path, filename, manual)
 
+                    print(os.path.basename(file))
+
+            print("****************" + folder + " finished!" + "****************")
+            print()
+
         except Exception as e:
-            print(e)
+            print(folder + f" accidentally break because of {e}")
             continue
 
 if __name__ == "__main__":
