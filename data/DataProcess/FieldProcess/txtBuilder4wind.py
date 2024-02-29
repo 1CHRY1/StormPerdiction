@@ -2,6 +2,7 @@
 ## 条目数
 ## 字段名
 ## x  y windx  windy
+import os
 
 import netCDF4 as nc
 import numpy as np
@@ -25,8 +26,8 @@ VvelArr = dataset.variables['v-vel'][:]
 WxArr = dataset.variables['windx'][:]
 WyArr = dataset.variables['windy'][:]
 
-allTime = 144
-rootPath = './output'
+allTime = 2
+rootPath = os.path.dirname(__file__) + '/output'
 space = '    '
 abnormal = UvelArr[0][25969]
 

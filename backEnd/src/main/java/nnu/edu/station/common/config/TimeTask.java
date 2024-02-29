@@ -104,7 +104,7 @@ public class TimeTask {
         }
     }
 
-    @Scheduled(cron = "0 5 */2 * * ?")
+    @Scheduled(cron = "0 10 */2 * * ?")
     public void executePythonClawingCloudData() {
         // 爬取卫星云图数据
         try {
@@ -121,7 +121,7 @@ public class TimeTask {
         }
     }
 
-    @Scheduled(cron = "0 20 */2 * * ?")
+    @Scheduled(cron = "0 30 */2 * * ?")
     public void executePythonClawingRadarData() {
         // 爬取雷达拼图数据
         try {
@@ -138,7 +138,7 @@ public class TimeTask {
         }
     }
 
-    @Scheduled(cron = "0 35 */2 * * ?")
+    @Scheduled(cron = "0 50 */2 * * ?")
     public void executePythonClawingRainfallData() {
         // 爬取降水量实况数据
         try {
@@ -155,7 +155,7 @@ public class TimeTask {
         }
     }
 
-    @Scheduled(cron = "00 50 */2 * * ?")
+    @Scheduled(cron = "0 0 9 * * ?")
     public void executePythonClawingRainfallpreData() {
         // 爬取降水量预报数据
         try {
@@ -189,21 +189,22 @@ public class TimeTask {
         }
     }
 
-    @Scheduled(cron = "0 0 5 * * ?")
+    @Scheduled(cron = "00 00 05 * * ?")
     public void executePythonFieldProcessingData() {
         // 删除上一天流场数据(当前文件夹所存储的)
         FieldUtil.executePythonDeleteFieldData(python, logPath, deleteFileData);
         // 计算当天流场数据
-        LocalDateTime time = LocalDateTime.now();
+        LocalDateTime time = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0);
+        time = time.withYear(2023).withMonth(8).withDayOfMonth(31);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String time_str = time.format(formatter);
         Integer iftyph = levelService.ifTyph(time_str);
-        String acdirc_path = ncService.getPathByTimeAndType(time_str, "acdirc");
+        String acdirc_path = '"' + ncService.getPathByTimeAndType(time_str, "adcirc") + '"';
         // 执行py文件生成txt
         FieldUtil.executePythonTxtBuilder4flow(python ,logPath ,txtBuilder4flow, acdirc_path);
         if ( iftyph == 1 ) {
             FieldUtil.executePythonTxtBuilder4wind(python ,logPath ,txtBuilder4wind, acdirc_path);
-            String fort_path = ncService.getPathByTimeAndType(time_str, "fort63");
+            String fort_path =  '"' + ncService.getPathByTimeAndType(time_str, "fort63") + '"';
             FieldUtil.executePythonTxtBuilder4add(python ,logPath ,txtBuilder4add, acdirc_path, fort_path);
             FieldUtil.executePythonTriangle(python, logPath, triangle);
         }

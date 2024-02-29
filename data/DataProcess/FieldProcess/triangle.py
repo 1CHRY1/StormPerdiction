@@ -56,7 +56,7 @@ def writeToJson(txtpath, jsonpath):
 def writeAlltoJson():
     for i in range(0, 144):
         txtpath = f"./output/Add/zeta_XYDIF_{i}.txt"
-        jsonpath = f"../../Field/Add/1zetaTri_{i}.json"
+        jsonpath = f"../../Field/Add/zetaTri_{i}.json"
         writeToJson(txtpath, jsonpath)
 
 

@@ -10,12 +10,16 @@ def delete_jpg_files(folder_path):
             if file.endswith(".jpg"):
                 file_path = os.path.join(root, file)
                 time = os.path.basename(file_path).split('.')[0]
-                if len(time) == 4:
-                    os.remove(file_path) #特殊情况处理，直接删去降水预报如图
-                    continue
                 current_year = datetime.now().year
+                # 对于降水预报如图time_obj早于明天的时间，则删去
+                if len(time) == 4:
+                    time_obj = datetime.strptime(str(current_year) + time, "%Y%m%d").replace(year=current_year)
+                    tomorrow = datetime.now() + timedelta(days=1)
+                    if ( time_obj.date() < tomorrow.date() ):
+                        os.remove(file_path)
+                    continue
+                # 对于其他，如果time_obj早于前天的时间，则删去
                 time_obj = datetime.strptime(str(current_year)+time, "%Y%m%d %H%M").replace(year=current_year)
-                # 如果time_obj早于前天的时间，则删去
                 yesterday = datetime.now() - timedelta(days=1)
                 if ( time_obj.date() < yesterday.date()):
                     os.remove(file_path)
@@ -27,13 +31,18 @@ def remove_dbcontent(db_path, name):
     # 计算昨天的日期
     yesterday = datetime.now() - timedelta(days=1)
     yesterday_str = yesterday.strftime('%Y-%m-%d')
+    # 计算明天的日期
+    tommorrow = datetime.now() + timedelta(days=1)
+    tommorrow_str = tommorrow.strftime('%Y-%m-%d')
+    # 删去所有日期在昨天之前的数据
     cursor.execute(f"DELETE FROM {name} WHERE time < ?", (yesterday_str,))
     # 删去数据库中字段time没有不含小时的字段
     cursor.execute(f"SELECT type1 FROM {name}")
     rows = cursor.fetchall()
     for row in rows:
         if (row[0] == "降水量预报"):
-            cursor.execute(f"DELETE FROM {name} WHERE type1 = ?", row)
+            typename = '"降水量预报"'
+            cursor.execute(f"DELETE FROM {name} WHERE type1 = {typename} and time < ?", (tommorrow_str,))
     conn.commit()
     conn.close()
 

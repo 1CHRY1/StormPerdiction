@@ -141,7 +141,12 @@ public class NCController {
         }
     }
 
-    @GetMapping("/time&type")
+    @GetMapping("/path/time&type")
+    public String getPathByTimeAndType(@RequestParam String time, @RequestParam String type) {
+        return ncService.getPathByTimeAndType(time,type);
+    }
+
+    @GetMapping("content/time&type")
     public ResponseEntity<FileSystemResource> getInfoByTimeAndType(@RequestParam String time, @RequestParam String type) {
         Map<String,String> fileInfo = (Map<String,String>) ncService.getInfoByTimeAndType(time, type);
         String filePath = fileInfo.get("path");
