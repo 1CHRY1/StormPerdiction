@@ -8,7 +8,15 @@ const path = computed(() => route.path)
 </script>
 
 <template>
-  <el-menu :default-active="path" router unique-opened class="w-56">
+  <el-menu
+    :default-active="path"
+    router
+    unique-opened
+    class="w-56 border-0"
+    background-color="#1f2937"
+    text-color="#cbd5e1"
+    active-text-color="#0ea5e9"
+  >
     <el-sub-menu index="/weather">
       <template #title>
         <el-icon><icon-menu /></el-icon>
@@ -84,9 +92,21 @@ const path = computed(() => route.path)
         ></el-menu-item
       >
     </el-sub-menu>
-    <el-menu-item index="/typical-storm-surge">
-      <el-icon><icon-menu /></el-icon>
-      <router-link to="/typical-storm-surge">历史典型风暴潮</router-link>
-    </el-menu-item>
+    <el-sub-menu index="/typical-storm-surge">
+      <template #title>
+        <el-icon><icon-menu /></el-icon>
+        <span>历史典型风暴潮</span>
+      </template>
+      <el-menu-item index="/typical-storm-surge/map"
+        ><router-link to="/typical-storm-surge/map"
+          >地图底图</router-link
+        ></el-menu-item
+      >
+      <el-menu-item index="/typical-storm-surge/data"
+        ><router-link to="/typical-storm-surge/data"
+          >站点数据</router-link
+        ></el-menu-item
+      >
+    </el-sub-menu>
   </el-menu>
 </template>

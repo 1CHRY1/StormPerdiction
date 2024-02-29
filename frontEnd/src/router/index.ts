@@ -6,6 +6,7 @@ import WaterMapView from '../feature/real-time-situation/WaterMapView.vue'
 import WaterSituationDetail from '../feature/real-time-situation/WaterSituationDetail.vue'
 import TideDetail from '../feature/tide-forecast/TideDetail.vue'
 import TideMapView from '../feature/tide-forecast/TideMapView.vue'
+import StormDetail from '../feature/typical-storm-surge/StormDetail.vue'
 import StormMapView from '../feature/typical-storm-surge/StormMapView.vue'
 import Observation from '../feature/weather/Observation.vue'
 import Precipitation from '../feature/weather/Precipitation.vue'
@@ -120,8 +121,20 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/typical-storm-surge',
-    component: StormMapView,
-    meta: { index: 5 },
+    children: [
+      {
+        path: 'map',
+        name: 'StormMapView',
+        component: StormMapView,
+        meta: { index: 5 },
+      },
+      {
+        path: 'data',
+        name: 'StormDetail',
+        component: StormDetail,
+        meta: { index: 5 },
+      },
+    ],
   },
 ]
 

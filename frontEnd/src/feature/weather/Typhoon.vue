@@ -110,7 +110,7 @@ onMounted(async () => {
     <div ref="mapContainerRef" class="map-container h-full w-full" />
     <div class="bg-white w-[21rem]">
       <div class="h-48 m-2 border border-zinc-300 bg-white">
-        <div class="h-10 leading-10 px-3 bg-blue-500 text-white">实时信息</div>
+        <div class="h-10 leading-10 px-3 bg-[#1b6ec8] text-white">实时信息</div>
         <div class="mx-2 my-1 flex flex-col">
           <div>
             <span class="inline-block pr-2">台风名称:</span>
@@ -157,7 +157,7 @@ onMounted(async () => {
         </div>
       </div>
       <div class="m-2 mt-3 w-80 bg-white">
-        <div class="h-10 leading-10 px-3 bg-blue-500 text-white">实时台风</div>
+        <div class="h-10 leading-10 px-3 bg-[#1b6ec8] text-white">实时台风</div>
         <div class="border border-zinc-300">
           <el-table
             stripe
@@ -174,7 +174,7 @@ onMounted(async () => {
         </div>
       </div>
       <div class="m-2 mt-3 w-80 bg-white">
-        <div class="h-10 leading-10 px-3 bg-blue-500 text-white">历史路径</div>
+        <div class="h-10 leading-10 px-3 bg-[#1b6ec8] text-white">历史路径</div>
         <div class="border border-zinc-300">
           <el-table
             stripe

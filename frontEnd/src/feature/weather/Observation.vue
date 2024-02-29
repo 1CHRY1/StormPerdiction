@@ -96,11 +96,11 @@ const handlePlayClick = () => {
 <template>
   <div class="flex h-full">
     <div class="flex flex-auto justify-center items-center bg-zinc-200">
-      <img class="flex-auto m-4 max-h-[38rem] object-contain" :src="imageUrl" />
+      <img class="flex-auto m-4 max-h-[85vh] object-contain" :src="imageUrl" />
     </div>
-    <div class="flex flex-col w-[300px] bg-white">
+    <div class="flex flex-col w-[18rem] bg-white">
       <div class="h-24 relative m-2 top-1 border border-zinc-300">
-        <div class="h-8 leading-8 px-2 bg-blue-500 text-white">图片类型</div>
+        <div class="h-8 leading-8 px-2 bg-[#1b6ec8] text-white">图片类型</div>
         <el-select
           v-model="selectType"
           class="m-2 w-[90%]"
@@ -117,7 +117,7 @@ const handlePlayClick = () => {
         </el-select>
       </div>
       <div class="h-24 relative m-2 top-1 border border-zinc-300">
-        <div class="h-8 leading-8 px-2 bg-blue-500 text-white">时间范围</div>
+        <div class="h-8 leading-8 px-2 bg-[#1b6ec8] text-white">时间范围</div>
         <div class="mb-2 flex flex-col text-sm">
           <el-radio-group v-model="timeRange">
             <el-radio :label="24" size="large" class="m-2">24 小时</el-radio>
@@ -127,7 +127,7 @@ const handlePlayClick = () => {
         </div>
       </div>
       <div class="flex-auto h-24 relative m-2 top-1 border border-zinc-300">
-        <div class="h-8 leading-8 px-2 bg-blue-500 text-white">图片列表</div>
+        <div class="h-8 leading-8 px-2 bg-[#1b6ec8] text-white">图片列表</div>
         <el-table
           v-loading="tableLoading"
           :data="tableData"
@@ -141,7 +141,7 @@ const handlePlayClick = () => {
         </el-table>
       </div>
       <div class="flex flex-col h-24 relative m-2 top-1 border border-zinc-300">
-        <div class="h-8 leading-8 px-2 bg-blue-500 text-white">图片动画</div>
+        <div class="h-8 leading-8 px-2 bg-[#1b6ec8] text-white">图片动画</div>
         <div class="flex flex-auto items-center">
           <el-input-number
             v-model="playRate"
@@ -151,10 +151,18 @@ const handlePlayClick = () => {
             class="m-3"
           />
           <div class="m-3">
-            <el-button v-if="!isPlay" type="primary" @click="handlePlayClick"
+            <el-button
+              v-if="!isPlay"
+              type="primary"
+              class="bg-[#1b6ec8]"
+              @click="handlePlayClick"
               >播放动画</el-button
             >
-            <el-button v-else type="danger" @click="handlePlayClick"
+            <el-button
+              v-else
+              type="danger"
+              class="bg-[#1b6ec8]"
+              @click="handlePlayClick"
               >停止动画</el-button
             >
           </div>

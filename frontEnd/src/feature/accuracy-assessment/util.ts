@@ -145,6 +145,9 @@ export const addLayer = async (map: mapbox.Map) => {
       'text-offset': [0, 1.25],
       'text-anchor': 'top',
     },
+    paint: {
+      'text-color': '#e2e8f0',
+    },
   })
 }
 
