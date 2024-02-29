@@ -15,5 +15,7 @@ public interface NCMapper {
 
     List<Object> getAll();
 
+    String getPathByTimeAndType(@Param("time") String time, @Param("type") String type);
+
     Object getInfoByTimeAndType(@Param("time") String time, @Param("type") String type);
 }
