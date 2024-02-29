@@ -38,13 +38,15 @@ const myRemoveLayer = (map: mapboxgl.Map, id: string) => {
   if (id && map.getLayer(id)) {
     map.removeLayer(id)
   }
+
 }
 const myAddLayer = (map: mapboxgl.Map, layer: mapboxgl.AnyLayer) => {
   if (map.loaded()) {
     console.log('add layer', layer.id)
-
     map.addLayer(layer)
+
   }
+
 }
 
 watch(radio, (newV, oldV) => {
@@ -81,8 +83,12 @@ watch(radio, (newV, oldV) => {
       <el-radio-button label="风场" />
       <el-radio-button label="增水场" />
     </el-radio-group>
-    <h3>test::{{ radio }}</h3>
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+
+#radio{
+  z-index: 2;
+}
+</style>

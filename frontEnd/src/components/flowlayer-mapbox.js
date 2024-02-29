@@ -49,7 +49,7 @@ export default class FlowLayer {
             this.screen.swap()
             tickLogic(undefined, [mapCenter.lng, mapCenter.lat],matrix)
             Scratch.director.tick()
-            if(this.frameCount>110){
+            if(this.frameCount===10){
                 // showFlowField(true)
                 Scratch.director.addStage({
                     name: 'Flow Field Shower',

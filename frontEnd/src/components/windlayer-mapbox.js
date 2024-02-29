@@ -4,8 +4,8 @@ import { tickLogic, init, showFlowField } from './windLayerLHY' //main
 import * as Scratch from './scratch/scratch.js'
 
 export default class WindLayer {
-    
-    
+
+
     constructor() {
         this.id = 'WindLayer';
         this.type = 'custom';
@@ -14,9 +14,9 @@ export default class WindLayer {
         this.frameCount = 0;
         this.simulation_gpu = undefined;
         this.render_gpu = undefined;
-        
+
     }
-    
+
 
     async onAdd(map, gl) {
 
@@ -45,11 +45,11 @@ export default class WindLayer {
     render(gl, matrix) {
         const mapCenter = this.map.getCenter()
 
-        if(this.ready){
+        if (this.ready) {
             this.screen.swap()
-            tickLogic(undefined, [mapCenter.lng, mapCenter.lat],matrix)
+            tickLogic(undefined, [mapCenter.lng, mapCenter.lat], matrix)
             Scratch.director.tick()
-            if(this.frameCount>110){
+            if (this.frameCount === 10) {
                 // showFlowField(true)
                 Scratch.director.addStage({
                     name: 'Flow Field Shower',
@@ -61,7 +61,7 @@ export default class WindLayer {
             }
         }
         this.map.triggerRepaint();
-        this.frameCount ++;
+        this.frameCount++;
 
     }
 }

@@ -26,7 +26,7 @@ class DescriptionParser {
         this.upTextureSize = [0.0, 0.0]
     }
 
-    async Parsing() {
+    async testParsing() {
 
         await axios.get(this.url)
             .then(async (response) => {
@@ -47,13 +47,13 @@ class DescriptionParser {
                 this.extent[3] = response.data["extent"][3]
 
                 for (const url of response.data["flow_fields"]) {
-                    this.flowFieldResourceArray.push(url)
+                    this.flowFieldResourceArray.push(rootPath+ url)
                 }
                 this.flowFieldTextureSize[0] = response.data["texture_size"]["flow_field"][0]
                 this.flowFieldTextureSize[1] = response.data["texture_size"]["flow_field"][1]
 
                 for (const url of response.data["area_masks"]) {
-                    this.seedingResourceArray.push(url)
+                    this.seedingResourceArray.push(rootPath+ url)
                 }
                 this.seedingTextureSize[0] = response.data["texture_size"]["area_mask"][0]
                 this.seedingTextureSize[1] = response.data["texture_size"]["area_mask"][1]
@@ -61,7 +61,7 @@ class DescriptionParser {
                 // this.transform2DHighResource = response.data["projection"]["2D"]["high"]
                 // this.transform2DLowResource = response.data["projection"]["2D"]["low"]
                 // this.transform2DResource = response.data["projection"]["2D"]["normal"]
-                this.transform2DResource = response.data["projection"][0]
+                this.transform2DResource =rootPath+ response.data["projection"][0]
 
                 // this.transform3DResource = response.data["projection"]["3D"]
                 this.transformTextureSize[0] = response.data["texture_size"]["projection"][0]
@@ -132,6 +132,8 @@ class FrameTimer {
 
 
 let parser
+let testParser
+let rootPath = `/api/v1/data/nc/field/flow/pic?name=`
 let controller
 let frameTimer
 
@@ -171,6 +173,7 @@ const setGUI = (controller) => {
 
     gui = new GUI()
 
+    gui.domElement.style.display = "none"
     gui.domElement.style.position = "absolute"
     gui.domElement.style.right = "100px"
     gui.domElement.style.top = "100px"
@@ -191,16 +194,11 @@ const setGUI = (controller) => {
 
 
 const init = async (sceneTexture) => {
-    // /json/flow_field_description.json
-    // parser = new DescriptionParser("/json/flow_field_description.json")
-    
-    // ============main================
 
-    // parser = new DescriptionParser("/json/new_windfield.json")
-    // note:: speedfactor in shader
-    parser = new DescriptionParser("/json/new_flowfield.json")
+    testParser = new DescriptionParser("/api/v1/data/nc/field/flow/json?name=new_flowfield.json")
+    await testParser.testParsing()
 
-    await parser.Parsing()
+    parser = testParser
 
     controller = new DynamicController({
         MAX_TEXTURE_SIZE: parser.maxTextureSize,
@@ -218,7 +216,7 @@ const init = async (sceneTexture) => {
     frameTimer.phaseCount = parser.flowFieldResourceArray.length
     frameTimer.progress = 0.0
     frameTimer.timeCount = 0
-    frameTimer.tickPerPhase = 60
+    frameTimer.tickPerPhase = 150
     frameTimer.timeLast = frameTimer.phaseCount * frameTimer.tickPerPhase // 200 tick per phase
     frameTimer.totalPrograseRate = 0.0
 
@@ -279,6 +277,7 @@ const init = async (sceneTexture) => {
     flowTextureArr[0] = Scratch.imageLoader.load('flowTexture0', parser.flowFieldResourceArray[0], undefined, 'rg32float')
     flowTextureArr[1] = Scratch.imageLoader.load('flowTexture1', parser.flowFieldResourceArray[1], undefined, 'rg32float')
     flowTextureArr[2] = Scratch.imageLoader.load('flowTexture2', parser.flowFieldResourceArray[2], undefined, 'rg32float')
+
 
     const transformTex = Scratch.imageLoader.load('transformTex', parser.transform2DResource, undefined, 'rg32float')
 
@@ -606,12 +605,12 @@ export function showFlowField(visibility) {
     if (visibility) {
         // controller.stop = false
         Scratch.director.showStage('Flow Field Shower')
-        gui.show()
+        // gui.show()
     }
     else {
         // controller.stop = true
         Scratch.director.hideStage('Flow Field Shower')
-        gui.hide()
+        // gui.hide()
     }
 }
 
