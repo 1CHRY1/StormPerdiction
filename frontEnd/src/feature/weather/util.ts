@@ -1318,7 +1318,7 @@ export const addStormLayer = async (map: mapbox.Map, stormID: string) => {
     source: `storm-${stormID}-line`,
     type: 'line',
     paint: {
-      'line-color': '#2563eb',
+      'line-color': '#60a5fa',
       'line-width': 1.5,
     },
   })
