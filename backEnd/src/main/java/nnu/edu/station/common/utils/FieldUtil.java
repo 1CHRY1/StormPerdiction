@@ -105,4 +105,36 @@ public class FieldUtil {
             log.error(e.getMessage());
         }
     }
+
+    public static void executeCppFlowField(String exe, String inputPath, String outputPath, String logPath) {
+        // 执行流场纹理数据生成
+        try {
+            Runtime.getRuntime().exec(exe + " " + inputPath + " " + outputPath);
+            // 添加日志输出
+            log.info("Flow field data generated successfully! Python script execution scheduled at: {}", LocalDateTime.now());
+            // 创建日志文件
+            try (PrintWriter writer = new PrintWriter(new FileWriter(logPath, true))) {
+                writer.println("Log message: Flow field data generated successfully! Python script execution scheduled at " + LocalDateTime.now());
+            }
+            System.out.println("Flow field data generated successfully!");
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+    }
+
+    public static void executeCppWindField(String exe, String inputPath, String outputPath, String logPath) {
+        // 执行风场纹理数据生成
+        try {
+            Runtime.getRuntime().exec(exe + " " + inputPath + " " + outputPath);
+            // 添加日志输出
+            log.info("Wind field data generated successfully! Python script execution scheduled at: {}", LocalDateTime.now());
+            // 创建日志文件
+            try (PrintWriter writer = new PrintWriter(new FileWriter(logPath, true))) {
+                writer.println("Log message: Wind field data generated successfully! Python script execution scheduled at " + LocalDateTime.now());
+            }
+            System.out.println("Wind field data generated successfully!");
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+    }
 }
