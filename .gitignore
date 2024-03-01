@@ -2,8 +2,10 @@
 
 .vscode/
 mask/
-/data/forecastData
-/data/气象产品
+
+# data
+/data/forecastData/
+/data/气象产品/
 
 # dependencies
 node_modules/
