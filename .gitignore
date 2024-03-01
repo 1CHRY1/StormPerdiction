@@ -4,6 +4,7 @@
 mask/
 /data/
 /forecastData
+/气象产品
 
 # dependencies
 node_modules/
