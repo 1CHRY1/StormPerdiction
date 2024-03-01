@@ -4,10 +4,10 @@
 mask/
 
 # data
-/data/forecastData
-/data/气象产品
-/data/Field
-/data/DataProcess/FieldProcess/output·
+data/forecastData
+data/气象产品
+data/Field
+data/DataProcess/FieldProcess/output·
 
 # database
 Forcasting.db
