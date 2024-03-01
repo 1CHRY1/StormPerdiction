@@ -7,7 +7,12 @@ mask/
 /data/forecastData/
 /data/气象产品/
 /data/Field/
-/data/DataProcess/FieldProcess/output
+/data/DataProcess/FieldProcess/output·
+
+# database
+Forcasting.db
+NC.db
+Meteorology.db
 
 # dependencies
 node_modules/
