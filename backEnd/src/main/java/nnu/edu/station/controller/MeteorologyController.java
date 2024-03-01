@@ -67,22 +67,26 @@ public class MeteorologyController {
 
     @GetMapping("/time&type")
     public ResponseEntity<FileSystemResource> getInfoByTimeAndType(@RequestParam String time, @RequestParam String type1, @RequestParam String type2, @RequestParam String type3) {
-        Map<String,String> fileInfo = (Map<String,String>) meteorologyService.getInfoByTimeAndType(time, type1, type2, type3);
-        String filePath = fileInfo.get("path");
-        File file = new File(filePath);
-        String fileName = file.getName();
-        if (file.exists()){
-            HttpHeaders headers = new HttpHeaders();
-            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; ftiilename=" + fileName);
-            headers.add(HttpHeaders.CONTENT_TYPE, "application/image/jpeg"); // 根据实际文件类型设置
+        try {
+            Map<String, String> fileInfo = (Map<String, String>) meteorologyService.getInfoByTimeAndType(time, type1, type2, type3);
+            String filePath = fileInfo.get("path");
+            File file = new File(filePath);
+            String fileName = file.getName();
+            if (file.exists()){
+                HttpHeaders headers = new HttpHeaders();
+                headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; ftiilename=" + fileName);
+                headers.add(HttpHeaders.CONTENT_TYPE, "application/image/jpeg"); // 根据实际文件类型设置
 
-            return ResponseEntity
-                    .ok()
-                    .headers(headers)
-                    .contentLength(file.length())
-                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
-                    .body(new FileSystemResource(file));
-        } else {
+                return ResponseEntity
+                        .ok()
+                        .headers(headers)
+                        .contentLength(file.length())
+                        .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                        .body(new FileSystemResource(file));
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch ( Exception e ){
             return ResponseEntity.notFound().build();
         }
     }
