@@ -78,7 +78,7 @@ onMounted(async () => {
     <div class="flex-auto">
       <el-tabs v-model="activeName" type="border-card" class="bg-white h-full">
         <el-tab-pane label="折线图" name="graph">
-          <div ref="echartsRef" class="h-[36rem] w-[60rem]"></div>
+          <div ref="echartsRef" class="h-[86vh]"></div>
         </el-tab-pane>
         <el-tab-pane
           label="数据表"
@@ -90,7 +90,7 @@ onMounted(async () => {
           </div>
           <el-table
             :data="stationTable"
-            class="w-[60rem] h-[34rem]"
+            class="h-[84vh]"
             :highlight-current-row="true"
           >
             <el-table-column prop="time" label="时间" />
@@ -104,7 +104,7 @@ onMounted(async () => {
       </el-tabs>
     </div>
     <div class="flex flex-col w-[18rem] bg-white">
-      <div class="h-44 relative m-2 top-1 border border-zinc-300">
+      <div class="h-44 m-2 border border-zinc-300">
         <div class="h-8 leading-8 px-2 bg-[#1b6ec8] text-white">站点详情</div>
         <div class="mx-3 my-2 flex flex-col">
           <div class="my-1">
@@ -132,7 +132,7 @@ onMounted(async () => {
         <div class="h-8 leading-8 px-2 bg-[#1b6ec8] text-white">站点列表</div>
         <el-radio-group
           v-model="stationStore.currentStationID"
-          class="py-2 px-4 block overflow-auto h-[25rem]"
+          class="py-2 px-4 block overflow-auto h-[66vh]"
         >
           <el-radio
             v-for="item in treeData"

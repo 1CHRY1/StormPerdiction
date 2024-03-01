@@ -118,7 +118,7 @@ onMounted(async () => {
       </div>
       <div ref="mapContainerRef" class="map-container h-full w-full" />
     </div>
-    <div class="bg-white w-[21rem]">
+    <div class="bg-white w-[21rem] flex flex-col">
       <div class="h-24 m-2 border border-zinc-300 bg-white">
         <div class="h-10 leading-10 px-3 bg-[#1b6ec8] text-white">
           历史风暴潮
@@ -173,7 +173,7 @@ onMounted(async () => {
           </div>
         </div>
       </div>
-      <div class="m-2 mt-3 w-80 bg-white">
+      <div class="m-2 mt-2 w-80 bg-white">
         <div class="h-10 leading-10 px-3 bg-[#1b6ec8] text-white">历史路径</div>
         <div class="border border-zinc-300">
           <el-table
@@ -181,7 +181,7 @@ onMounted(async () => {
             border
             table-layout="auto"
             :data="tableData"
-            class="h-[20rem]"
+            class="h-[56vh]"
             @current-change="handleTableSelectionChange"
           >
             <el-table-column prop="time" label="时间" />

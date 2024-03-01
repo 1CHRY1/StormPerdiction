@@ -108,7 +108,7 @@ onMounted(async () => {
 <template>
   <div class="flex h-full">
     <div ref="mapContainerRef" class="map-container h-full w-full" />
-    <div class="bg-white w-[21rem]">
+    <div class="bg-white w-[21rem] flex flex-col">
       <div class="h-48 m-2 border border-zinc-300 bg-white">
         <div class="h-10 leading-10 px-3 bg-[#1b6ec8] text-white">实时信息</div>
         <div class="mx-2 my-1 flex flex-col">
@@ -164,7 +164,7 @@ onMounted(async () => {
             border
             table-layout="auto"
             :data="activateStormTableData"
-            class="h-[10rem]"
+            class="h-[12rem]"
             @current-change="handleActivateTableSelectionChange"
           >
             <el-table-column prop="name" label="名称" />
@@ -173,15 +173,15 @@ onMounted(async () => {
           </el-table>
         </div>
       </div>
-      <div class="m-2 mt-3 w-80 bg-white">
+      <div class="m-2 mt-3 w-80 bg-white flex flex-col flex-auto">
         <div class="h-10 leading-10 px-3 bg-[#1b6ec8] text-white">历史路径</div>
-        <div class="border border-zinc-300">
+        <div class="border border-zinc-300 flex-auto">
           <el-table
             stripe
             border
             table-layout="auto"
             :data="selectHistoryTableData"
-            class="h-[11rem]"
+            class="h-[37vh]"
             @current-change="handleHistoryTableSelectionChange"
           >
             <el-table-column prop="time" label="时间" />
