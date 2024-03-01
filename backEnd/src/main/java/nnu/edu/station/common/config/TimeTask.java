@@ -71,6 +71,24 @@ public class TimeTask {
     @Value("${DeleteFileData}")
     String deleteFileData;
 
+    @Value("${CppExecution}")
+    String cppExecution;
+
+    @Value("${CppFlowFieldInputPath}")
+    String cppFlowFieldInputPath;
+
+    @Value("${CppWindFieldInputPath}")
+    String cppWindFieldInputPath;
+
+    @Value("${FlowField}")
+    String FlowField;
+
+    @Value("${WindField}")
+    String WindField;
+
+    @Value("${AddField}")
+    String AddField;
+
     @Value("${DataProcessLog}")
     String logPath;
 
@@ -200,15 +218,19 @@ public class TimeTask {
         String time_str = time.format(formatter);
         Integer iftyph = levelService.ifTyph(time_str);
         String acdirc_path = '"' + ncService.getPathByTimeAndType(time_str, "adcirc") + '"';
-        // 执行py文件生成txt
+        // 执行py文件生成流场txt
         FieldUtil.executePythonTxtBuilder4flow(python ,logPath ,txtBuilder4flow, acdirc_path);
+        // 执行cpp文件生成流场纹理
+        FieldUtil.executeCppFlowField(cppExecution, cppFlowFieldInputPath, FlowField, logPath);
         if ( iftyph == 1 ) {
             FieldUtil.executePythonTxtBuilder4wind(python ,logPath ,txtBuilder4wind, acdirc_path);
             String fort_path =  '"' + ncService.getPathByTimeAndType(time_str, "fort63") + '"';
+            // 执行py文件生成风场txt
             FieldUtil.executePythonTxtBuilder4add(python ,logPath ,txtBuilder4add, acdirc_path, fort_path);
+            // 执行cpp文件生成风场纹理
+            FieldUtil.executeCppWindField(cppExecution, cppWindFieldInputPath, WindField, logPath);
             FieldUtil.executePythonTriangle(python, logPath, triangle);
         }
-        // 执行c++文件生成json
     }
 
 }
