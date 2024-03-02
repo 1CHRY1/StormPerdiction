@@ -18,11 +18,13 @@ let uniformBindGroup
 let indexData
 let uniformData
 
-const init = async (cvs) => {
+// /api/v1/data/nc/field/add/json?name=zetaTri_1.json
 
+const init = async (cvs) => {
+    
     canvas = cvs
     // const { vertex, attrib, index, attribBoundary } = (await axios.get("/json/testTri.json")).data
-    const { vertex, attrib, index, attribBoundary } = (await axios.get("/json/zetaTri/zetaTri_3.json")).data
+    const { vertex, attrib, index, attribBoundary } = (await axios.get("/api/v1/data/nc/field/add/json?name=zetaTri_1.json")).data
 
 
     // const vertex = [[0.5, 0.5], [0.0, 0.5], [0.0, 0.0], [0.3, 0.1], [0.7, 0.2]]
