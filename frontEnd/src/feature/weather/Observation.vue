@@ -132,7 +132,7 @@ const handlePlayClick = () => {
           v-loading="tableLoading"
           :data="tableData"
           stripe
-          class="w-full h-[30rem]"
+          class="w-full h-[52vh]"
           :highlight-current-row="true"
           @current-change="handleTableSelectionChange"
         >

@@ -181,7 +181,7 @@ onMounted(async () => {
             border
             table-layout="auto"
             :data="selectHistoryTableData"
-            class="h-full"
+            class="h-[37vh]"
             @current-change="handleHistoryTableSelectionChange"
           >
             <el-table-column prop="time" label="时间" />
