@@ -1,30 +1,56 @@
 spring:
   datasource:
     level:
-      jdbc-url: jdbc:sqlite:D:\1study\Work\2023_12_22_Storm\Data\DataProcess\Forcasting.db
+      jdbc-url: jdbc:sqlite:D:/1study/Work/2023_12_22_Storm/stormPrediction/data/DataProcess/Forcasting.db
       driver-class-name: org.sqlite.JDBC
     nc:
-      jdbc-url: jdbc:sqlite:D:\1study\Work\2023_12_22_Storm\Data\DataProcess\NC.db
+      jdbc-url: jdbc:sqlite:D:/1study/Work/2023_12_22_Storm/stormPrediction/data/DataProcess/NC.db
       driver-class-name: org.sqlite.JDBC
     meteorology:
-      jdbc-url: jdbc:sqlite:D:\1study\Work\2023_12_22_Storm\Data\DataProcess\Clawing\Meteorology.db
+      jdbc-url: jdbc:sqlite:D:/1study/Work/2023_12_22_Storm/stormPrediction/data/DataProcess/Clawing/Meteorology.db
       driver-class-name: org.sqlite.JDBC
+
+stations:
+  "data/DataProcess/station.json"
 
 python:
   D:/1tools/Miniconda/envs/Env1/python.exe
 updateData:
-  D:/1study/Work/2023_12_22_Storm/Data/DataProcess/UpdateData.py
+  D:/1study/Work/2023_12_22_Storm/stormPrediction/data/DataProcess/UpdateData.py
 
 clawingCloud:
-  D:/1study/Work/2023_12_22_Storm/Data/DataProcess/Clawing/Cloud.py
+  D:/1study/Work/2023_12_22_Storm/stormPrediction/data/DataProcess/Clawing/Cloud.py
 clawingRadar:
-  D:/1study/Work/2023_12_22_Storm/Data/DataProcess/Clawing/Radar.py
+  D:/1study/Work/2023_12_22_Storm/stormPrediction/data/DataProcess/Clawing/Radar.py
 clawingRainfall:
-  D:/1study/Work/2023_12_22_Storm/Data/DataProcess/Clawing/Rainfall.py
+  D:/1study/Work/2023_12_22_Storm/stormPrediction/data/DataProcess/Clawing/Rainfall.py
 clawingRainfallpre:
-  D:/1study/Work/2023_12_22_Storm/Data/DataProcess/Clawing/Rainfall_pre.py
+  D:/1study/Work/2023_12_22_Storm/stormPrediction/data/DataProcess/Clawing/Rainfall_pre.py
 deleteClawingData:
-  D:/1study/Work/2023_12_22_Storm/Data/DataProcess/Clawing/DeleteData.py
+  D:/1study/Work/2023_12_22_Storm/stormPrediction/data/DataProcess/Clawing/DeleteData.py
 
 DataProcessLog:
-  D:/1study/Work/2023_12_22_Storm/Data/DataProcess/logfile.log
+  D:/1study/Work/2023_12_22_Storm/stormPrediction/data/DataProcess/logfile.log
+
+TxtBuilder4flow:
+  D:/1study/Work/2023_12_22_Storm/stormPrediction/data/DataProcess/FieldProcess/txtBuilder4flow.py
+TxtBuilder4wind:
+  D:/1study/Work/2023_12_22_Storm/stormPrediction/data/DataProcess/FieldProcess/txtBuilder4wind.py
+TxtBuilder4zeta:
+  D:/1study/Work/2023_12_22_Storm/stormPrediction/data/DataProcess/FieldProcess/txtBuilder4zeta.py
+Triangle:
+  D:/1study/Work/2023_12_22_Storm/stormPrediction/data/DataProcess/FieldProcess/triangle.py
+CppExecution:
+  D:/1study/Work/2023_12_22_Storm/stormPrediction/data/DataProcess/FieldProcess/Debug.exe
+CppFlowFieldInputPath:
+  D:/1study/Work/2023_12_22_Storm/stormPrediction/data/DataProcess/FieldProcess/output/Flow
+CppWindFieldInputPath:
+  D:/1study/Work/2023_12_22_Storm/stormPrediction/data/DataProcess/FieldProcess/output/Wind
+FlowField:
+  D:/1study/Work/2023_12_22_Storm/stormPrediction/data/Field/Flow
+WindField:
+  D:/1study/Work/2023_12_22_Storm/stormPrediction/data/Field/Wind
+AddField:
+  D:/1study/Work/2023_12_22_Storm/stormPrediction/data/Field/Add
+DeleteFileData:
+  D:/1study/Work/2023_12_22_Storm/stormPrediction/data/DataProcess/FieldProcess/DeleteFileData.py

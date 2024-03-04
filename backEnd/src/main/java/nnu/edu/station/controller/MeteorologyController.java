@@ -49,40 +49,44 @@ public class MeteorologyController {
 
     @GetMapping("/radar")
     public JsonResult getRadar() {
-        /* 获取卫星云图 */
+        /* 获取雷达拼图 */
         return ResultUtils.success(meteorologyService.getRadar());
     }
 
     @GetMapping("/rainfall")
     public JsonResult getRainfall() {
-        /* 获取卫星云图 */
+        /* 获取降水量实况图 */
         return ResultUtils.success(meteorologyService.getRainfall());
     }
 
     @GetMapping("/rainfallpre")
     public JsonResult getRainfallpre() {
-        /* 获取卫星云图 */
+        /* 获取降水量预报图 */
         return ResultUtils.success(meteorologyService.getRainfallpre());
     }
 
     @GetMapping("/time&type")
     public ResponseEntity<FileSystemResource> getInfoByTimeAndType(@RequestParam String time, @RequestParam String type1, @RequestParam String type2, @RequestParam String type3) {
-        Map<String,String> fileInfo = (Map<String,String>) meteorologyService.getInfoByTimeAndType(time, type1, type2, type3);
-        String filePath = fileInfo.get("path");
-        File file = new File(filePath);
-        String fileName = file.getName();
-        if (file.exists()){
-            HttpHeaders headers = new HttpHeaders();
-            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; ftiilename=" + fileName);
-            headers.add(HttpHeaders.CONTENT_TYPE, "application/image/jpeg"); // 根据实际文件类型设置
+        try {
+            Map<String, String> fileInfo = (Map<String, String>) meteorologyService.getInfoByTimeAndType(time, type1, type2, type3);
+            String filePath = fileInfo.get("path");
+            File file = new File(filePath);
+            String fileName = file.getName();
+            if (file.exists()){
+                HttpHeaders headers = new HttpHeaders();
+                headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; ftiilename=" + fileName);
+                headers.add(HttpHeaders.CONTENT_TYPE, "application/image/jpeg"); // 根据实际文件类型设置
 
-            return ResponseEntity
-                    .ok()
-                    .headers(headers)
-                    .contentLength(file.length())
-                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
-                    .body(new FileSystemResource(file));
-        } else {
+                return ResponseEntity
+                        .ok()
+                        .headers(headers)
+                        .contentLength(file.length())
+                        .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                        .body(new FileSystemResource(file));
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch ( Exception e ){
             return ResponseEntity.notFound().build();
         }
     }
