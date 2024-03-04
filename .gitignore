@@ -8,7 +8,6 @@ forecastData/
 气象产品/
 Field/
 output/
-backup/
 
 # database
 Forcasting.db
