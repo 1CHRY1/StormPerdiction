@@ -7,7 +7,7 @@ mask/
 forecastData/
 气象产品/
 Field/
-data/DataProcess/FieldProcess/output/*
+output/
 
 # database
 Forcasting.db
