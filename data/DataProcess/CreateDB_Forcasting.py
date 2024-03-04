@@ -23,9 +23,9 @@ def createStationtable(db_path, tablename):
                 updatetime DATETIME,
                 time DATETIME,
                 iftyph INTEGER,
-                addwind INTEGER,
                 hpre FLOAT,
                 hyubao FLOAT,
+                hadd FLOAT,
                 manual INTEGER
             )
         ''')
@@ -42,6 +42,20 @@ def  createHZtable(db_path, tablename):
                     updatetime DATETIME,
                     time DATETIME,
                     hz_value FLOAT
+                )
+            ''')
+    conn.commit()
+    conn.close()
+
+def  createTyphtable(db_path):
+    # 创建站点历史所有潮位表
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+    cursor.execute(f'''
+                CREATE TABLE IF NOT EXISTS typh (
+                    updatetime DATETIME,
+                    time DATETIME,
+                    iftyph INTEGER
                 )
             ''')
     conn.commit()
@@ -77,6 +91,7 @@ def main():
         station_hz = station + "_hz"
         createStationtable(db_path, station)
         createHZtable(db_path, station_hz)
+        createTyphtable(db_path)
 
 if __name__ == "__main__":
     main()
