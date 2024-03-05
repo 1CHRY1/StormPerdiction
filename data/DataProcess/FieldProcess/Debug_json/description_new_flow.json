@@ -1,0 +1,61 @@
+{
+    "input_url": "resource/newdata/flow/",
+    "output_url": "resource/newresult_flow/",
+    "column_num": 4,
+    "headings": ["x", "y", "u", "v"],
+    "coordinates": ["x", "y"],
+    "velocities": ["u", "v"],
+    "attribute": "",
+    "boundary": [117.5613189999999975,25.1339000000000006, 129.3471999999999866,40.9207969799999987],
+    "resolution": 1024,
+    "outlier": -99999.0,
+    "vector_mask": "resource/newdata/wind/shp/tinOutPolygon.shp",
+    "source_space": "4326",
+    "target_space": ["mapbox"],
+    "files": [
+        {
+            "in": "flow_XYUV_0.txt",
+            "sn": "0"
+        },
+        {
+            "in": "flow_XYUV_1.txt",
+            "sn": "1"
+        },
+        {
+            "in": "flow_XYUV_2.txt",
+            "sn": "2"
+        },
+        {
+            "in": "flow_XYUV_3.txt",
+            "sn": "3"
+        },
+		{
+            "in": "flow_XYUV_4.txt",
+            "sn": "4"
+        },
+		{
+            "in": "flow_XYUV_5.txt",
+            "sn": "5"
+        },
+		{
+            "in": "flow_XYUV_6.txt",
+            "sn": "6"
+        },
+		{
+            "in": "flow_XYUV_7.txt",
+            "sn": "7"
+        },
+		{
+            "in": "flow_XYUV_8.txt",
+            "sn": "8"
+        },
+		{
+            "in": "flow_XYUV_9.txt",
+            "sn": "9"
+        },
+		{
+            "in": "flow_XYUV_10.txt",
+            "sn": "10"
+        }
+    ]
+}

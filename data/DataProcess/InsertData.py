@@ -149,6 +149,7 @@ def main():
     with open(stations_path, 'r', encoding='utf-8') as file:
         stations = json.load(file)
     folderPath = os.path.abspath(os.pardir) + "/forecastData"
+    folderPath = folderPath.replace(os.sep, '/')
     folders = os.listdir(folderPath)
     for folder in folders:
         # 遍历每个文件夹中的数据

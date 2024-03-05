@@ -6,10 +6,7 @@ import com.alibaba.fastjson2.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import nnu.edu.station.common.exception.MyException;
 import nnu.edu.station.common.result.ResultEnum;
-import nnu.edu.station.common.utils.FieldUtil;
-import nnu.edu.station.common.utils.FileUtil;
-import nnu.edu.station.common.utils.PredictionUtil;
-import nnu.edu.station.common.utils.ProcessUtil;
+import nnu.edu.station.common.utils.*;
 import nnu.edu.station.dao.level.*;
 import nnu.edu.station.service.LevelService;
 import nnu.edu.station.service.NCService;
@@ -77,8 +74,14 @@ public class TimeTask {
     @Value("${CppFlowFieldInputPath}")
     String cppFlowFieldInputPath;
 
+    @Value("${CppFlowFieldJsonPath}")
+    String cppFlowFieldJsonPath;
+
     @Value("${CppWindFieldInputPath}")
     String cppWindFieldInputPath;
+
+    @Value("${CppWindFieldJsonPath}")
+    String cppWindFieldJsonPath;
 
     @Value("${FlowField}")
     String FlowField;
@@ -100,115 +103,43 @@ public class TimeTask {
 
 //    @Scheduled(cron = "0/5 * * * * *")
     @Scheduled(cron = "0 0 4 * * ?")
-    public void executePythonUpdateData() {
+    public void executePythonUpdateData() throws IOException {
         // 每日更新站点数据
-        try {
-//            List<String> commands = new ArrayList<>();
-//            commands.add(python);
-//            commands.add(DataProcess + "DataProcess.py");
-//            Process start = ProcessUtil.exeProcess(commands);
-//            ProcessUtil.readProcessOutput(start.getInputStream(), System.out);
-//            start.waitFor();
-            Runtime.getRuntime().exec(python + " "  + updateData);
-            // 添加日志输出
-            log.info("Data updated successfully! Python script execution scheduled at: {}", LocalDateTime.now());
-            // 创建日志文件
-            try (PrintWriter writer = new PrintWriter(new FileWriter(logPath, true))) {
-                writer.println("Log message: Data updated successfully! Python script execution scheduled at " + LocalDateTime.now());
-            }
-            System.out.println("Data updated successfully");
-        } catch (Exception e) {
-            log.error(e.getMessage());
-        }
+        UpdateUtil.DataUpdating(python, updateData, logPath);
     }
 
     @Scheduled(cron = "0 10 */2 * * ?")
-    public void executePythonClawingCloudData() {
+    public void executePythonClawingCloudData() throws IOException {
         // 爬取卫星云图数据
-        try {
-            Runtime.getRuntime().exec(python + " " + clawingCloud);
-            // 添加日志输出
-            log.info("Cloud Data clawed successfully! Python script execution scheduled at: {}", LocalDateTime.now());
-            // 创建日志文件
-            try (PrintWriter writer = new PrintWriter(new FileWriter(logPath, true))) {
-                writer.println("Log message: Data updated successfully! Python script execution scheduled at " + LocalDateTime.now());
-            }
-            System.out.println("Cloud Data clawed successfully!");
-        } catch (Exception e) {
-            log.error(e.getMessage());
-        }
+        ClawingUtil.ClawingCloudData(python, clawingCloud, logPath);
     }
 
     @Scheduled(cron = "0 30 */2 * * ?")
-    public void executePythonClawingRadarData() {
+    public void executePythonClawingRadarData() throws IOException {
         // 爬取雷达拼图数据
-        try {
-            Runtime.getRuntime().exec(python + " " + clawingRadar);
-            // 添加日志输出
-            log.info("Radar Data clawed successfully! Python script execution scheduled at: {}", LocalDateTime.now());
-            // 创建日志文件
-            try (PrintWriter writer = new PrintWriter(new FileWriter(logPath, true))) {
-                writer.println("Log message: Data updated successfully! Python script execution scheduled at " + LocalDateTime.now());
-            }
-            System.out.println("Radar Data clawed successfully!");
-        } catch (Exception e) {
-            log.error(e.getMessage());
-        }
+        ClawingUtil.ClawingRadarData(python, clawingRadar, logPath);
     }
 
     @Scheduled(cron = "0 50 */2 * * ?")
-    public void executePythonClawingRainfallData() {
+    public void executePythonClawingRainfallData() throws IOException {
         // 爬取降水量实况数据
-        try {
-            Runtime.getRuntime().exec(python + " " + clawingRainfall);
-            // 添加日志输出
-            log.info("Rainfall Data clawed successfully! Python script execution scheduled at: {}", LocalDateTime.now());
-            // 创建日志文件
-            try (PrintWriter writer = new PrintWriter(new FileWriter(logPath, true))) {
-                writer.println("Log message: Data updated successfully! Python script execution scheduled at " + LocalDateTime.now());
-            }
-            System.out.println("Rainfall Data clawed successfully!");
-        } catch (Exception e) {
-            log.error(e.getMessage());
-        }
+        ClawingUtil.ClawingRainfallData(python, clawingRainfall, logPath);
     }
 
     @Scheduled(cron = "0 0 9 * * ?")
-    public void executePythonClawingRainfallpreData() {
+    public void executePythonClawingRainfallpreData() throws IOException {
         // 爬取降水量预报数据
-        try {
-            Runtime.getRuntime().exec(python + " " + clawingRainfallpre);
-            // 添加日志输出
-            log.info("Rainfallpre Data clawed successfully! Python script execution scheduled at: {}", LocalDateTime.now());
-            // 创建日志文件
-            try (PrintWriter writer = new PrintWriter(new FileWriter(logPath, true))) {
-                writer.println("Log message: Data updated successfully! Python script execution scheduled at " + LocalDateTime.now());
-            }
-            System.out.println("Rainfallpre Data clawed successfully!");
-        } catch (Exception e) {
-            log.error(e.getMessage());
-        }
+        ClawingUtil.ClawingRainfallpreData(python, clawingRainfallpre, logPath);
     }
 
     @Scheduled(cron = "00 55 5 * * ?")
-    public void executePythonDeleteClawingData() {
+    public void executePythonDeleteClawingData() throws IOException {
         // 删除过期数据
-        try {
-            Runtime.getRuntime().exec(python + " " + deleteClawingData);
-            // 添加日志输出
-            log.info("Data deleted successfully! Python script execution scheduled at: {}", LocalDateTime.now());
-            // 创建日志文件
-            try (PrintWriter writer = new PrintWriter(new FileWriter(logPath, true))) {
-                writer.println("Log message: Data deleted successfully! Python script execution scheduled at " + LocalDateTime.now());
-            }
-            System.out.println("Data deleted clawed successfully!");
-        } catch (Exception e) {
-            log.error(e.getMessage());
-        }
+        ClawingUtil.DeleteClawingData(python, deleteClawingData, logPath);
     }
 
-    @Scheduled(cron = "00 00 05 * * ?")
-    public void executePythonFieldProcessingData() {
+    @Scheduled(cron = "10 40 09 * * ?")
+    public void executePythonFieldProcessingData() throws IOException {
         // 删除上一天流场数据(当前文件夹所存储的)
         FieldUtil.executePythonDeleteFieldData(python, logPath, deleteFileData);
         // 计算当天流场数据
@@ -219,18 +150,30 @@ public class TimeTask {
         Integer iftyph = levelService.ifTyph(time_str);
         String acdirc_path = '"' + ncService.getPathByTimeAndType(time_str, "adcirc") + '"';
         // 执行py文件生成流场txt
-        FieldUtil.executePythonTxtBuilder4flow(python ,logPath ,txtBuilder4flow, acdirc_path);
-        // 执行cpp文件生成流场纹理
-        FieldUtil.executeCppFlowField(cppExecution, cppFlowFieldInputPath, FlowField, logPath);
-        if ( iftyph == 1 ) {
-            FieldUtil.executePythonTxtBuilder4wind(python ,logPath ,txtBuilder4wind, acdirc_path);
-            String fort_path =  '"' + ncService.getPathByTimeAndType(time_str, "fort63") + '"';
-            // 执行py文件生成风场txt
-            FieldUtil.executePythonTxtBuilder4add(python ,logPath ,txtBuilder4add, acdirc_path, fort_path);
-            // 执行cpp文件生成风场纹理
-            FieldUtil.executeCppWindField(cppExecution, cppWindFieldInputPath, WindField, logPath);
-            FieldUtil.executePythonTriangle(python, logPath, triangle);
+        int TxtBuilder4flowResult = FieldUtil.executePythonTxtBuilder4flow(python ,logPath ,txtBuilder4flow, acdirc_path);
+        if ( TxtBuilder4flowResult == 0 ){
+            // 执行cpp文件生成流场纹理
+            FieldUtil.executeCppFlowField(cppExecution, cppFlowFieldJsonPath, cppFlowFieldInputPath, FlowField, logPath);
+        } else {
+            return;
         }
+        if ( iftyph == 1 ) {
+            // 执行py文件生成风场txt
+            int TxtBuilder4windResult = FieldUtil.executePythonTxtBuilder4wind(python ,logPath ,txtBuilder4wind, acdirc_path);
+            if ( TxtBuilder4windResult == 0 ) {
+                // 执行cpp文件生成风场纹理
+                FieldUtil.executeCppWindField(cppExecution, cppWindFieldJsonPath, cppWindFieldInputPath, WindField, logPath);
+            }
+            String fort_path =  '"' + ncService.getPathByTimeAndType(time_str, "fort63") + '"';
+            // 执行py文件生成憎水场txt
+            int TxtBuilder4addResult = FieldUtil.executePythonTxtBuilder4add(python ,logPath ,txtBuilder4add, acdirc_path, fort_path);
+            if ( TxtBuilder4addResult == 0 ){
+                FieldUtil.executePythonTriangle(python, logPath, triangle, AddField);
+            }
+        }
+        PrintWriter writer = new PrintWriter(new FileWriter(logPath, true));
+        writer.println("Log message: Field data processed successfully at " + LocalDateTime.now());
+        writer.println("Log message: Field data processed successfully at " + LocalDateTime.now());
     }
 
 }

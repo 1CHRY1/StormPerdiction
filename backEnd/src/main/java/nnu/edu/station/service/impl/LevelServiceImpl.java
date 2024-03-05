@@ -43,8 +43,8 @@ public class LevelServiceImpl implements LevelService {
     public String getAllRealInfoByStation(String station) throws IOException {
         // 获取站点实测数据信息
         Path currentPath = Paths.get(System.getProperty("user.dir"));
-        Path parentPath = currentPath.getParent();
-        Path fullPath = parentPath.resolve(station_path);
+//        Path parentPath = currentPath.getParent();
+        Path fullPath = currentPath.resolve(station_path);
         JSONObject stations = FileUtil.readJsonObjectFile(fullPath.toString());
         // 处理json
         Set<String> keys = stations.keySet();
@@ -54,13 +54,14 @@ public class LevelServiceImpl implements LevelService {
             if (key.equals(station)) {
                 url_time = stations.getJSONObject(key).getString("api_time");
                 name = stations.getJSONObject(key).getString("name");
+                break;
             }
         }
         LocalDateTime currentTime = LocalDateTime.now();
         LocalDateTime threeDaysAgo = currentTime.minusDays(3);
         String url = url_time + "/" + name + "/" + threeDaysAgo + "/" + currentTime;
         // 获取实时监测数据
-        String response = HttpUtil.getResponseByUrl(url);
+        String response = HttpUtil.sendGet(url,"");
         return response;
     }
 

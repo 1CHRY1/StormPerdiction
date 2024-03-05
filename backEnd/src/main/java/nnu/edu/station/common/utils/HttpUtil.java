@@ -1,13 +1,23 @@
 package nnu.edu.station.common.utils;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.ParseException;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicHeader;
+import org.apache.http.util.EntityUtils;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
+import java.net.ConnectException;
+import java.net.SocketTimeoutException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.net.URLConnection;
+import java.util.*;
 
 /**
  * @projectName: backEnd
@@ -20,48 +30,45 @@ import java.util.Map;
  */
 public class HttpUtil {
 
-    public static String getResponseByUrl(String url) throws IOException {
-        HttpURLConnection connection = null;
-        BufferedReader reader = null;
+    public static String sendGet(String url, String param) {
+        // 暂时使用不了这个玩意
+        StringBuilder result = new StringBuilder();
+        BufferedReader in = null;
         try {
-            URL requestUrl = new URL(url);
-            connection = (HttpURLConnection) requestUrl.openConnection();
-            connection.setRequestMethod("GET");
-
-            List<String> cookies = connection.getHeaderFields().get("Set-Cookie");
-//            String cookie = String.join("; ", cookies);
-            HttpURLConnection connection1 = (HttpURLConnection) requestUrl.openConnection();
-            connection1.setRequestMethod("GET");
-            connection1.setRequestProperty("Cookie", cookies.toString());
-
-            cookies = connection.getHeaderFields().get("Set-Cookie");
-//            cookie = String.join("; ", cookies);
-            HttpURLConnection connection2 = (HttpURLConnection) requestUrl.openConnection();
-            connection1.setRequestMethod("GET");
-            connection1.setRequestProperty("Cookie", cookies.toString());
-
-            int responseCode = connection.getResponseCode();
-            if (responseCode == HttpURLConnection.HTTP_OK) {
-                reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                StringBuilder response = new StringBuilder();
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    response.append(line);
-                }
-                System.out.println(response.toString());
-            } else {
-                System.out.println("Error: " + responseCode);
+            String urlNameString = url + "?" + param;
+            URL realUrl = new URL(urlNameString);
+            URLConnection connection = realUrl.openConnection();
+            connection.setRequestProperty("accept", "*/*");
+            connection.setRequestProperty("connection", "Keep-Alive");
+            connection.setRequestProperty("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
+            connection.connect();
+            in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String line;
+            while ((line = in.readLine()) != null) {
+                result.append(line);
             }
+        } catch (ConnectException e) {
+            //此处转成自己的日志记录
+            System.out.println("调用HttpUtils.sendGet ConnectException, url=" + url + ",param=" + param);
+        } catch (SocketTimeoutException e) {
+            //此处转成自己的日志记录
+            System.out.println("调用HttpUtils.sendGet SocketTimeoutException, url=" + url + ",param=" + param);
         } catch (IOException e) {
-            e.printStackTrace();
+            //此处转成自己的日志记录
+            System.out.println("调用HttpUtils.sendGet IOException, url=" + url + ",param=" + param);
+        } catch (Exception e) {
+            //此处转成自己的日志记录
+            System.out.println("调用HttpsUtil.sendGet Exception, url=" + url + ",param=" + param);
         } finally {
-            if (reader != null) {
-                reader.close();
-            }
-            if (connection != null) {
-                connection.disconnect();
+            try {
+                if (in != null) {
+                    in.close();
+                }
+            } catch (Exception ex) {
+                //此处转成自己的日志记录
+                System.out.println("调用in.close Exception, url=" + url + ",param=" + param);
             }
         }
-        return "asdf";
+        return result.toString();
     }
 }

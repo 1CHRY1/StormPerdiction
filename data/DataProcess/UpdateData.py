@@ -149,12 +149,13 @@ def main():
     with open(stations_path, 'r', encoding='utf-8') as file:
         stations = json.load(file)
     folderPath = os.path.abspath(os.pardir) + "/forecastData"
+    folderPath = folderPath.replace(os.sep, '/')
     folders = os.listdir(folderPath)
     for folder in folders:
         current_time = datetime.now().strftime("%Y%m%d")
         if (len(folder) != 8 or folder != current_time):
             continue
-        Path = folderPath + "//" + folder
+        Path = folderPath + "/" + folder
         print("****************" + folder + " begin!" + "****************")
         time = datetime.strptime(folder, "%Y%m%d")
         manual = 0
@@ -238,7 +239,8 @@ def main():
                         mat_path = os.path.join(Path, file)
                         mat_data = loadmat(mat_path)
                         try:
-                            hpre = list_process(mat_data['hpre'])
+                            hpre_list = list_process(mat_data['hpre'])
+                            hpre = [0.0 if value is None else value for value in hpre_list]
                             hz = mat_data['hz']
                             # 将预报数据存入数据库
                             insert_Nottyphdata(db_path_Forcasting, name, time, hpre, manual)

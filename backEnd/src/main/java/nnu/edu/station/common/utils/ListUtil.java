@@ -24,7 +24,12 @@ public class ListUtil {
         String[] elements = string.split(",");
         List<Double> result = new ArrayList<>();
         for (String element : elements) {
-            result.add(Double.parseDouble(element));
+            if ( element.equals("None") ) {
+                result.add(0.0);
+            }
+            else {
+                result.add(Double.parseDouble(element));
+            }
         }
         return result;
     }
