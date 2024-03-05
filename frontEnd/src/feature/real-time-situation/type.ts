@@ -8,8 +8,12 @@ export interface IStationInfo {
 }
 
 export interface IRealTideSituationResponse {
-  time: string
-  hpre: number[]
+  code: string
+  data: {
+    station: string
+    time: string
+    waterLevel: number
+  }[]
 }
 
 export interface IRealTideSituation {

@@ -1,7 +1,7 @@
 import * as echarts from 'echarts'
 import mapbox from 'mapbox-gl'
 import { Ref } from 'vue'
-import { stationInfo } from './api'
+import { stationInfo } from '../../asset/stationInfo'
 import { IRealTideSituation, IStationInfo, Tree } from './type'
 
 export const generateTreeDataOfStation = (): Tree[] => {

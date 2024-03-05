@@ -12,10 +12,13 @@ export interface IStormData {
 }
 
 export interface IStormTableRow {
-  id: string
-  time: string
-  powerAndStrong: string
-  speed: number
+  name: string
+  'mae(m)': string
+  'mae(m)-aftercorrection': string
+  'rmse(m)': string
+  'rmse(m)-aftercorrection': string
+  'hegelv(%)': string
+  'hegelv(%)-aftercorrection': string
 }
 
 export interface IStormDataOfPoint {
@@ -38,13 +41,18 @@ export interface IStationInfo {
 }
 
 export interface IHistoryTideResponse {
-  time: string
-  hpre: number[]
+  time: string[]
+  hpre: (number | null)[]
+  hyubao: (number | null)[]
+  hadd: (number | null)[]
 }
 
 export interface IHistoryTide {
+  isTyphoon: boolean
   time: string[]
   hpre: number[]
+  hyubao: number[]
+  hadd: number[]
 }
 
 export interface Tree {

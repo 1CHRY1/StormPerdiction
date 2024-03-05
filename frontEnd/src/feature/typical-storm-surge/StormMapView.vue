@@ -25,16 +25,16 @@ const selectPointID: Ref<string> = ref('0')
 const selectPointData: Ref<null | IStormDataOfPoint> = ref(null)
 const stormData: Ref<null | IStormData> = ref(null)
 const tableData: Ref<null | IStormTableRow[]> = ref(null)
-const selectStormType: Ref<'199711' | '200012'> = ref('199711')
+const selectStormType: Ref<'199711'> = ref('199711')
 const mapStore = useMapStore()
 
 const handleTableSelectionChange = (selection: any) => {
   selectPointID.value = selection.id
 }
 
-const handleSelectChange = () => {
+const handleSelectChange = async () => {
   selectPointID.value = '0'
-  stormData.value = getStormData(selectStormType.value)
+  stormData.value = await getStormData(selectStormType.value)
   tableData.value = generateStormTableData(stormData.value)
   selectPointData.value = stormData.value!.dataList[Number(selectPointID.value)]
   updateStormLayer(mapStore.map!, selectStormType.value)
@@ -61,7 +61,7 @@ watch(selectPointID, () => {
 })
 
 onMounted(async () => {
-  stormData.value = getStormData(selectStormType.value)
+  stormData.value = await getStormData(selectStormType.value)
   tableData.value = generateStormTableData(stormData.value)
   selectPointData.value = stormData.value!.dataList[Number(selectPointID.value)]
 
@@ -131,7 +131,7 @@ onMounted(async () => {
           @change="handleSelectChange"
         >
           <el-option key="199711" label="温妮 (199711)" value="199711" />
-          <el-option key="200012" label="派比安 (200012)" value="200012" />
+          <!-- <el-option key="200012" label="派比安 (200012)" value="200012" /> -->
         </el-select>
       </div>
       <div class="h-40 m-2 border border-zinc-300 bg-white">

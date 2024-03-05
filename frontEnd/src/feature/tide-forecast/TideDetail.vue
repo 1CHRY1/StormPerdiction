@@ -2,8 +2,8 @@
 import * as echarts from 'echarts'
 import { Ref, computed, onMounted, ref, watch } from 'vue'
 import { useStationStore } from '../../store/stationStore'
-import { ITideSituation } from '../accuracy-assessment/type'
 import { getStationInfo, getStationPredictionTideSituation } from './api'
+import { ITideSituation } from './type'
 import { drawEcharts, generateTreeDataOfStation, initEcharts } from './util'
 
 let echart: echarts.ECharts | null = null
