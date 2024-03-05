@@ -4,6 +4,7 @@ import 'mapbox-gl/dist/mapbox-gl.css'
 import { Ref, computed, onMounted, ref, watch } from 'vue'
 import { useMapStore } from '../../store/mapStore'
 import { initMap } from '../../util/initMap'
+import { getStormDataMap } from './api'
 import { IStormDataMap, IStormDataOfPoint, IStormTableRow } from './type'
 import {
   addStormLayer,
@@ -11,19 +12,15 @@ import {
   decimalToDMS,
   formatDate,
   generateStormTableData,
-  getActiveStormList,
-  getStormDataMap,
 } from './util'
 
 const mapContainerRef: Ref<HTMLDivElement | null> = ref(null)
 const selectStormID: Ref<string | null> = ref(null)
-const activateStormList: Ref<null | IStormDataOfPoint[]> = ref(null)
 const activateStormDataMap: Ref<null | IStormDataMap> = ref(null)
 const selectPointID: Ref<string> = ref('0')
 const selectPointData: Ref<null | IStormDataOfPoint> = ref(null)
 const mapStore = useMapStore()
 const activateStormTableData: Ref<null | IStormTableRow[]> = ref(null)
-
 const selectHistoryTableData = computed(() => {
   if (selectStormID.value && activateStormDataMap.value) {
     return generateStormTableData(
@@ -34,9 +31,21 @@ const selectHistoryTableData = computed(() => {
   }
 })
 
+const activateStormList = computed(() => {
+  const result: IStormDataOfPoint[] = []
+  if (!activateStormDataMap.value) {
+    return result
+  }
+  for (const key in activateStormDataMap.value) {
+    const storm = activateStormDataMap.value[key]
+    result.push(storm[storm.length - 1])
+  }
+  return result
+})
+
 const handleActivateTableSelectionChange = (selection: any) => {
   if (selection) {
-    const currentStormData = activateStormList.value!.filter(
+    const currentStormData = activateStormList!.value.filter(
       (value) => value.id === selection.id,
     )[0]
     selectStormID.value = selection.id
@@ -68,8 +77,7 @@ watch(selectPointID, () => {
 })
 
 onMounted(async () => {
-  activateStormList.value = getActiveStormList()
-  activateStormDataMap.value = getStormDataMap()
+  activateStormDataMap.value = await getStormDataMap()
   activateStormTableData.value = generateStormTableData(activateStormList.value)
 
   const map: mapbox.Map = await initMap(
@@ -80,7 +88,7 @@ onMounted(async () => {
     },
   )
   const mapboxLayerNames: string[] = []
-  activateStormList.value.forEach(async (storm) => {
+  activateStormList!.value.forEach(async (storm) => {
     mapboxLayerNames.push(`storm-${storm.id}-point`)
     mapboxLayerNames.push(`storm-${storm.id}-line`)
     await addStormLayer(map, storm.id)

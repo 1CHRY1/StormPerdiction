@@ -1,4 +1,10 @@
-import { IImageTypeAndTime, IImageTypeAndTimeResponse, ImageType } from './type'
+import {
+  IImageTypeAndTime,
+  IImageTypeAndTimeResponse,
+  IStormDataMap,
+  IStormDataResponse,
+  ImageType,
+} from './type'
 
 export const getSatelliteTypeAndTime = async (
   imageType: ImageType,
@@ -44,4 +50,31 @@ export const getSatelliteImage = async (
     .then((blob) => blob)
   const imageUrl = URL.createObjectURL(imageBlob)
   return imageUrl
+}
+
+export const getStormDataMap = async (): Promise<IStormDataMap> => {
+  const result: IStormDataMap = {}
+
+  const url = `/api/v1/data/meteorology/typhoon`
+  const response = (await fetch(url)
+    .then((res) => res.json())
+    .then((json) => json)) as IStormDataResponse
+
+  const data = response.data
+  const points = response.data.point.map((value, index) => ({
+    id: index.toString(),
+    name: data.name,
+    time: value.time,
+    lng: value.lng,
+    lat: value.lat,
+    strong: value.strong,
+    power: value.power,
+    speed: value.speed,
+    pressure: value.pressure,
+    moveSpeed: value.movespeed,
+    moveDirection: value.movedirection,
+  }))
+  result[data.name] = points
+
+  return result
 }

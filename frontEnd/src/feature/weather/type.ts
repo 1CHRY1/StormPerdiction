@@ -21,16 +21,38 @@ export interface IImageTypeAndTime {
 }
 export type ImageType = 'cloud' | 'radar' | 'rainfall' | 'rainfallpre'
 
+export interface IStormDataResponse {
+  code: '0'
+  data: {
+    name: string
+    point: {
+      time: string
+      lng: number
+      lat: number
+      strong: string
+      power: string
+      speed: string
+      pressure: string
+      movespeed: string
+      movedirection: string
+    }[]
+  }
+}
+
 export interface IStormDataOfPoint {
   id: string
   name: string
   time: string
+  lng: number
+  lat: number
   strong: string
   power: string
   speed: string
-  lng: number
-  lat: number
+  pressure: string
+  moveSpeed: string
+  moveDirection: string
 }
+
 export interface IStormTableRow {
   id: string
   name: string
