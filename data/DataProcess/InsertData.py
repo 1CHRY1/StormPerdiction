@@ -143,12 +143,13 @@ def get_prefix_before_digits(input_str):
     return prefix
 
 def main():
-    db_path_Forcasting = os.getcwd() + '/Forcasting.db'
-    db_path_NC = os.getcwd() + '/NC.db'
+    db_path_Forcasting = os.path.dirname(__file__) + '/Forcasting.db'
+    db_path_NC =  os.path.dirname(__file__) + '/NC.db'
     stations_path = 'station.json'
     with open(stations_path, 'r', encoding='utf-8') as file:
         stations = json.load(file)
     folderPath = os.path.abspath(os.pardir) + "/forecastData"
+    folderPath = folderPath.replace(os.sep, '/')
     folders = os.listdir(folderPath)
     for folder in folders:
         # 遍历每个文件夹中的数据

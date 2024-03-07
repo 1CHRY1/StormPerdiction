@@ -12,9 +12,11 @@ spring:
 
 stations:
   "data/DataProcess/station.json"
+Typhoon:
+  D:/1study/Work/2023_12_22_Storm/stormPrediction/data/DataProcess/Clawing/typhoon.json
 
 python:
-  D:/1tools/Miniconda/envs/Env1/python.exe
+  C:/Users/22171/.conda/envs/Env1/python.exe
 updateData:
   D:/1study/Work/2023_12_22_Storm/stormPrediction/data/DataProcess/UpdateData.py
 
@@ -26,12 +28,16 @@ clawingRainfall:
   D:/1study/Work/2023_12_22_Storm/stormPrediction/data/DataProcess/Clawing/Rainfall.py
 clawingRainfallpre:
   D:/1study/Work/2023_12_22_Storm/stormPrediction/data/DataProcess/Clawing/Rainfall_pre.py
+clawingTyphoon:
+  D:/1study/Work/2023_12_22_Storm/stormPrediction/data/DataProcess/Clawing/Typhoon.py
 deleteClawingData:
   D:/1study/Work/2023_12_22_Storm/stormPrediction/data/DataProcess/Clawing/DeleteData.py
 
 DataProcessLog:
   D:/1study/Work/2023_12_22_Storm/stormPrediction/data/DataProcess/logfile.log
 
+DeleteFileData:
+  D:/1study/Work/2023_12_22_Storm/stormPrediction/data/DataProcess/FieldProcess/DeleteFieldData.py
 TxtBuilder4flow:
   D:/1study/Work/2023_12_22_Storm/stormPrediction/data/DataProcess/FieldProcess/txtBuilder4flow.py
 TxtBuilder4wind:
@@ -41,16 +47,18 @@ TxtBuilder4zeta:
 Triangle:
   D:/1study/Work/2023_12_22_Storm/stormPrediction/data/DataProcess/FieldProcess/triangle.py
 CppExecution:
-  D:/1study/Work/2023_12_22_Storm/stormPrediction/data/DataProcess/FieldProcess/Debug.exe
+  D:/1study/Work/2023_12_22_Storm/stormPrediction/data/DataProcess/FieldProcess/Debug/FlowField_Builder.exe
 CppFlowFieldInputPath:
-  D:/1study/Work/2023_12_22_Storm/stormPrediction/data/DataProcess/FieldProcess/output/Flow
+  "D:/1study/Work/2023_12_22_Storm/stormPrediction/data/DataProcess/FieldProcess/output/Flow"
+CppFlowFieldJsonPath:
+  "D:/1study/Work/2023_12_22_Storm/stormPrediction/data/DataProcess/FieldProcess/Debug_json/description_new_flow.json"
 CppWindFieldInputPath:
-  D:/1study/Work/2023_12_22_Storm/stormPrediction/data/DataProcess/FieldProcess/output/Wind
+  "D:/1study/Work/2023_12_22_Storm/stormPrediction/data/DataProcess/FieldProcess/output/Wind"
+CppWindFieldJsonPath:
+  "D:/1study/Work/2023_12_22_Storm/stormPrediction/data/DataProcess/FieldProcess/Debug_json/description_new_wind.json"
 FlowField:
-  D:/1study/Work/2023_12_22_Storm/stormPrediction/data/Field/Flow
+  "D:/1study/Work/2023_12_22_Storm/stormPrediction/data/Field/Flow"
 WindField:
-  D:/1study/Work/2023_12_22_Storm/stormPrediction/data/Field/Wind
+  "D:/1study/Work/2023_12_22_Storm/stormPrediction/data/Field/Wind"
 AddField:
-  D:/1study/Work/2023_12_22_Storm/stormPrediction/data/Field/Add
-DeleteFileData:
-  D:/1study/Work/2023_12_22_Storm/stormPrediction/data/DataProcess/FieldProcess/DeleteFileData.py
+  "D:/1study/Work/2023_12_22_Storm/stormPrediction/data/Field/Add"

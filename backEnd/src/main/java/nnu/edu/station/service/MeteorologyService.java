@@ -13,5 +13,7 @@ public interface MeteorologyService {
 
     List<Object> getRainfallpre();
 
+    Object getTyphoon();
+
     Object getInfoByTimeAndType(String time, String type1, String type2, String type3);
 }

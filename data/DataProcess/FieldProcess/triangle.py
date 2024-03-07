@@ -1,5 +1,6 @@
 import math
 import json
+import os
 
 import numpy as np
 from scipy.spatial import Delaunay, distance
@@ -54,9 +55,11 @@ def writeToJson(txtpath, jsonpath):
 
 
 def writeAlltoJson():
+    rootPath = os.path.dirname(__file__) + '/output'
     for i in range(0, 144):
-        txtpath = f"./output/Add/zeta_XYDIF_{i}.txt"
-        jsonpath = f"../../Field/Add/zetaTri_{i}.json"
+        txtpath = rootPath + f"/Add/zeta_XYDIF_{i}.txt"
+        parentDir = os.path.dirname(os.path.dirname(os.path.dirname(rootPath)))
+        jsonpath = parentDir + f"/Field/Add/zetaTri_{i}.json"
         writeToJson(txtpath, jsonpath)
 
 

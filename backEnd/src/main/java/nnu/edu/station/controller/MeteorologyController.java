@@ -65,6 +65,12 @@ public class MeteorologyController {
         return ResultUtils.success(meteorologyService.getRainfallpre());
     }
 
+    @GetMapping("/typhoon")
+    public JsonResult getTyphoon() {
+        /* 获取实时台风数据 */
+        return ResultUtils.success(meteorologyService.getTyphoon());
+    }
+
     @GetMapping("/time&type")
     public ResponseEntity<FileSystemResource> getInfoByTimeAndType(@RequestParam String time, @RequestParam String type1, @RequestParam String type2, @RequestParam String type3) {
         try {
