@@ -36,6 +36,9 @@ public class TimeTask {
     @Value("${python}")
     String python;
 
+    @Value("${webdriver}")
+    String webdriver;
+
     @Value("${updateData}")
     String updateData;
 
@@ -56,6 +59,21 @@ public class TimeTask {
 
     @Value("${deleteClawingData}")
     String deleteClawingData;
+
+    @Value("${meteorology.file.cloud}")
+    String cloudfile;
+
+    @Value("${meteorology.file.radar}")
+    String radarfile;
+
+    @Value("${meteorology.file.rainfall}")
+    String rainfallfile;
+
+    @Value("${meteorology.file.rainfallpre}")
+    String rainfallprefile;
+
+    @Value("${meteorology.db}")
+    String meteorologydb;
 
     @Value("${TxtBuilder4flow}")
     String txtBuilder4flow;
@@ -115,25 +133,25 @@ public class TimeTask {
     @Scheduled(cron = "0 10 */2 * * ?")
     public void executePythonClawingCloudData() throws IOException {
         // 爬取卫星云图数据
-        ClawingUtil.ClawingCloudData(python, clawingCloud, logPath);
+        ClawingUtil.ClawingCloudData(python, clawingCloud, meteorologydb, cloudfile, webdriver, logPath);
     }
 
     @Scheduled(cron = "0 30 */2 * * ?")
     public void executePythonClawingRadarData() throws IOException {
         // 爬取雷达拼图数据
-        ClawingUtil.ClawingRadarData(python, clawingRadar, logPath);
+        ClawingUtil.ClawingRadarData(python, clawingRadar, meteorologydb, radarfile, webdriver, logPath);
     }
 
     @Scheduled(cron = "0 50 */2 * * ?")
     public void executePythonClawingRainfallData() throws IOException {
         // 爬取降水量实况数据
-        ClawingUtil.ClawingRainfallData(python, clawingRainfall, logPath);
+        ClawingUtil.ClawingRainfallData(python, clawingRainfall, meteorologydb, rainfallfile, webdriver, logPath);
     }
 
     @Scheduled(cron = "0 0 9 * * ?")
     public void executePythonClawingRainfallpreData() throws IOException {
         // 爬取降水量预报数据
-        ClawingUtil.ClawingRainfallpreData(python, clawingRainfallpre, logPath);
+        ClawingUtil.ClawingRainfallpreData(python, clawingRainfallpre, meteorologydb, rainfallprefile, webdriver, logPath);
     }
 
     @Scheduled(cron = "0 0 10 * * ?")

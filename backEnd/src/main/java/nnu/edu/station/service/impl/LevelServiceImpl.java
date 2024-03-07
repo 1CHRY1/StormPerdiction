@@ -43,9 +43,10 @@ public class LevelServiceImpl implements LevelService {
     @Override
     public JSONArray getAllRealInfoByStation(String station) throws IOException {
         // 获取站点实测数据信息
-        Path currentPath = Paths.get(System.getProperty("user.dir"));
+//        Path currentPath = Paths.get(System.getProperty("user.dir"));
 //        Path parentPath = currentPath.getParent();
-        Path fullPath = currentPath.resolve(station_path);
+//        Path fullPath = currentPath.resolve(station_path);
+        Path fullPath = Paths.get(station_path);
         JSONObject stations = FileUtil.readJsonObjectFile(fullPath.toString());
         // 处理json
         Set<String> keys = stations.keySet();
