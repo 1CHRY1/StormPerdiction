@@ -1,9 +1,9 @@
 python:
   C:/Users/22171/.conda/envs/Env1/python.exe
 data:
-  D:/1study/Work/2023_12_22_Storm/stormPrediction/data
+  /home/ps/ForecastPlatform
 dataprocess:
-  D:/1study/Work/2023_12_22_Storm/stormPrediction/data/DataProcess
+  /home/ps/ForecastPlatform/DataProcess
 webdriver:
   "D:/1tools/chromedriver/chromedriver.exe"
 

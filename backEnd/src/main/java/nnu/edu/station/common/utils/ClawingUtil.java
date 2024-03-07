@@ -16,11 +16,11 @@ import java.time.LocalDateTime;
  */
 public class ClawingUtil {
 
-    public static void ClawingCloudData(String python, String clawingCloud, String logPath) throws IOException {
+    public static void ClawingCloudData(String python, String clawingCloud, String db, String cloudfile, String webdriver ,String logPath) throws IOException {
         PrintWriter writer = new PrintWriter(new FileWriter(logPath, true));
         // 爬取卫星云图数据
         try {
-            Process process = Runtime.getRuntime().exec(python + " " + clawingCloud);
+            Process process = Runtime.getRuntime().exec(python + " " + clawingCloud + " " + db + " " + cloudfile + " " + webdriver);
             // 添加日志输出
             System.out.println("Cloud Data clawing scheduled at " + LocalDateTime.now());
             writer.println("Log message: Cloud Data clawing scheduled at " + LocalDateTime.now());
@@ -41,11 +41,11 @@ public class ClawingUtil {
         }
     }
 
-    public static void ClawingRadarData(String python, String clawingCloud, String logPath) throws IOException {
+    public static void ClawingRadarData(String python, String clawingRadar, String db, String radarfile, String webdriver, String logPath) throws IOException {
         PrintWriter writer = new PrintWriter(new FileWriter(logPath, true));
         // 爬取雷达拼图数据
         try {
-            Process process = Runtime.getRuntime().exec(python + " " + clawingCloud);
+            Process process = Runtime.getRuntime().exec(python + " " + clawingRadar + " " + db + " " + radarfile + " " + webdriver);
             // 添加日志输出
             System.out.println("Radar Data clawing scheduled at " + LocalDateTime.now());
             writer.println("Log message: Radar Data clawing scheduled at " + LocalDateTime.now());
@@ -66,11 +66,11 @@ public class ClawingUtil {
         }
     }
 
-    public static void ClawingRainfallData(String python, String clawingCloud, String logPath) throws IOException {
+    public static void ClawingRainfallData(String python, String clawingRainfall, String db, String rainfallfile, String webdriver, String logPath) throws IOException {
         PrintWriter writer = new PrintWriter(new FileWriter(logPath, true));
         // 爬取降水量实况数据
         try {
-            Process process = Runtime.getRuntime().exec(python + " " + clawingCloud);
+            Process process = Runtime.getRuntime().exec(python + " " + clawingRainfall + " " + db + " " + rainfallfile + " " + webdriver);
             // 添加日志输出
             System.out.println("Rainfall Data clawing scheduled at " + LocalDateTime.now());
             writer.println("Log message: Rainfall Data clawing scheduled at " + LocalDateTime.now());
@@ -91,11 +91,11 @@ public class ClawingUtil {
         }
     }
 
-    public static void ClawingRainfallpreData(String python, String clawingCloud, String logPath) throws IOException {
+    public static void ClawingRainfallpreData(String python, String clawingRainfallpre, String db, String rainfallprefile, String webdriver, String logPath) throws IOException {
         PrintWriter writer = new PrintWriter(new FileWriter(logPath, true));
         // 爬取降水量实况数据
         try {
-            Process process = Runtime.getRuntime().exec(python + " " + clawingCloud);
+            Process process = Runtime.getRuntime().exec(python + " " + clawingRainfallpre + " " + db + " " + rainfallprefile + " " + webdriver);
             // 添加日志输出
             System.out.println("Rainfallpre Data clawing scheduled at " + LocalDateTime.now());
             writer.println("Log message: Rainfallpre Data clawing scheduled at " + LocalDateTime.now());

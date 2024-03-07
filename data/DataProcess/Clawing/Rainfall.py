@@ -1,6 +1,7 @@
 import os
 import sqlite3
 import time
+import sys
 
 from datetime import datetime
 
@@ -31,7 +32,7 @@ def insertData(db_path, name, Time, type1, type2, type3, path):
     conn.commit()
     conn.close()
 
-def Rainfall_clawing(Path, name, url, type1, type2, type3):
+def Rainfall_clawing(Path, name, url, type1, type2, type3, webdriverpath):
     # 已有图片
     folderpath = Path + '/' + name
     filenames = []
@@ -42,8 +43,7 @@ def Rainfall_clawing(Path, name, url, type1, type2, type3):
     # 图片爬取
     options = Options()
     options.add_argument('--headless')  # 不打开浏览器
-    chromedriver_path = "D:/1tools/Miniconda/envs/Crawling/chromedriver.exe"
-    chromedriver_service = Service(executable_path=chromedriver_path)
+    chromedriver_service = Service(executable_path=webdriverpath)
     driver = webdriver.Chrome(options=options, service=chromedriver_service)
     wait = WebDriverWait(driver, 10)
     try:
@@ -79,7 +79,7 @@ def Rainfall_clawing(Path, name, url, type1, type2, type3):
     except Exception as e:
         print(e)
         driver.close()
-        Rainfall_clawing(Path, name, url, type1, type2, type3)
+        Rainfall_clawing(Path, name, url, type1, type2, type3, webdriverpath)
         return
     finally:
         driver.close()
@@ -99,8 +99,19 @@ datatypes = [
         {"name":"近30天降水量距平百分率","url":"http://www.nmc.cn/publish/observations/precipitation-30pa.html"}
     ]}
 ]
-db_path = "D:/1study/Work/2023_12_22_Storm/stormPrediction/data/DataProcess/Clawing/Meteorology.db"
-Path = "D:/1study/Work/2023_12_22_Storm/stormPrediction/data/气象产品/降水量实况"
+
+# db_path = "D:/1study/Work/2023_12_22_Storm/stormPrediction/data/DataProcess/Clawing/Meteorology.db"
+# Path = "D:/1study/Work/2023_12_22_Storm/stormPrediction/data/气象产品/降水量实况"
+# webdriverpath = "D:/1tools/chromedriver/chromedriver.exe"
+
+args = sys.argv
+if len(args) < 3:
+    print("未传入正确数量参数")
+    sys.exit(1)
+db_path = args[1]
+Path = args[2]
+webdriverpath = args[3]
+
 type1 = "降水量实况"
 for datatype in datatypes:
     name = datatype["name"]
@@ -113,6 +124,6 @@ for datatype in datatypes:
             name = item["name"]
             url = item["url"]
             type3 = name
-            Rainfall_clawing(Path_, name, url, type1, type2, type3)
+            Rainfall_clawing(Path_, name, url, type1, type2, type3, webdriverpath)
     else:
-        Rainfall_clawing(Path, name, url, type1, type2, "")
+        Rainfall_clawing(Path, name, url, type1, type2, "", webdriverpath)

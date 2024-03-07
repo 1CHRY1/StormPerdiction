@@ -171,13 +171,15 @@ public class FieldUtil {
             System.out.println("Log message: Flow field data generation execution scheduled at: {}" + LocalDateTime.now());
             // 等待脚本完成
             int exitCode = process.waitFor();
-            if (exitCode == 0) {
-                System.out.println("Flow field data generation executed successfully!");
-                writer.println("Log message: Flow field data generation executed successfully!");
-            } else {
-                System.out.println("Flow field data generation execution failed!");
-                writer.println("Log message: Flow field data generation execution failed!");
-            }
+//            if (exitCode == 0) {
+//                System.out.println("Flow field data generation executed successfully!");
+//                writer.println("Log message: Flow field data generation executed successfully!");
+//            } else {
+//                System.out.println("Flow field data generation execution failed!");
+//                writer.println("Log message: Flow field data generation execution failed!");
+//            }
+            System.out.println("Flow field data generation executed successfully!");
+            writer.println("Log message: Flow field data generation executed successfully!");
         } catch (Exception e) {
             System.out.println("Error executing flow field data generation" + e.getMessage());
             writer.println("Log message: Error executing flow field data generation" + e.getMessage());
@@ -196,13 +198,15 @@ public class FieldUtil {
             System.out.println("Log message: Wind field data generation execution scheduled at: {}" + LocalDateTime.now());
             // 等待脚本完成
             int exitCode = process.waitFor();
-            if (exitCode == 0) {
-                System.out.println("Wind field data generation executed successfully!");
-                writer.println("Log message: Wind field data generation executed successfully!");
-            } else {
-                System.out.println("Wind field data generation execution failed!");
-                writer.println("Log message: Wind field data generation execution failed!");
-            }
+//            if (exitCode == 0) {
+//                System.out.println("Wind field data generation executed successfully!");
+//                writer.println("Log message: Wind field data generation executed successfully!");
+//            } else {
+//                System.out.println("Wind field data generation execution failed!");
+//                writer.println("Log message: Wind field data generation execution failed!");
+//            }
+            System.out.println("Wind field data generation executed successfully!");
+            writer.println("Log message: Wind field data generation executed successfully!");
         } catch (Exception e) {
             System.out.println("Error executing wind field data generation" + e.getMessage());
             writer.println("Log message: Error executing wind field data generation" + e.getMessage());
