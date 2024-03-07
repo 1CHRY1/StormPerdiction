@@ -1,5 +1,7 @@
 package nnu.edu.station.common.utils;
 
+import com.alibaba.fastjson2.JSONArray;
+import com.alibaba.fastjson2.JSONObject;
 import org.apache.http.HttpEntity;
 import org.apache.http.ParseException;
 import org.apache.http.client.ClientProtocolException;
@@ -13,11 +15,11 @@ import org.apache.http.util.EntityUtils;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.ConnectException;
-import java.net.SocketTimeoutException;
-import java.net.URL;
-import java.net.URLConnection;
+import java.io.UnsupportedEncodingException;
+import java.net.*;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @projectName: backEnd
@@ -30,45 +32,54 @@ import java.util.*;
  */
 public class HttpUtil {
 
-    public static String sendGet(String url, String param) {
-        // 暂时使用不了这个玩意
-        StringBuilder result = new StringBuilder();
-        BufferedReader in = null;
+    public static String encodeChineseURL(String url) {
         try {
-            String urlNameString = url + "?" + param;
-            URL realUrl = new URL(urlNameString);
-            URLConnection connection = realUrl.openConnection();
-            connection.setRequestProperty("accept", "*/*");
-            connection.setRequestProperty("connection", "Keep-Alive");
-            connection.setRequestProperty("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
-            connection.connect();
-            in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            String line;
-            while ((line = in.readLine()) != null) {
-                result.append(line);
+            // 使用正则表达式匹配中文字符
+            String regEx = "[\\u4e00-\\u9fa5]";
+            Pattern pattern = Pattern.compile(regEx);
+            Matcher matcher = pattern.matcher(url);
+            StringBuffer sb = new StringBuffer();
+
+            // 替换中文字符为编码后的字符
+            while (matcher.find()) {
+                String chineseChar = matcher.group(0);
+                String encodedChar = URLEncoder.encode(chineseChar, "UTF-8");
+                matcher.appendReplacement(sb, encodedChar);
             }
-        } catch (ConnectException e) {
-            //此处转成自己的日志记录
-            System.out.println("调用HttpUtils.sendGet ConnectException, url=" + url + ",param=" + param);
-        } catch (SocketTimeoutException e) {
-            //此处转成自己的日志记录
-            System.out.println("调用HttpUtils.sendGet SocketTimeoutException, url=" + url + ",param=" + param);
-        } catch (IOException e) {
-            //此处转成自己的日志记录
-            System.out.println("调用HttpUtils.sendGet IOException, url=" + url + ",param=" + param);
+            matcher.appendTail(sb);
+
+            // 将编码后的字符拼接回原始 URL 中的其它部分
+            String encodedURL = sb.toString();
+            return encodedURL;
         } catch (Exception e) {
-            //此处转成自己的日志记录
-            System.out.println("调用HttpsUtil.sendGet Exception, url=" + url + ",param=" + param);
-        } finally {
-            try {
-                if (in != null) {
-                    in.close();
-                }
-            } catch (Exception ex) {
-                //此处转成自己的日志记录
-                System.out.println("调用in.close Exception, url=" + url + ",param=" + param);
-            }
+            return url; // 返回原始 URL，表示编码失败
         }
-        return result.toString();
+    }
+
+    public static JSONObject GetRealData(String url) {
+        try {
+            String encodedURL = encodeChineseURL(url);
+            URL Url = new URL(encodedURL);
+            HttpURLConnection connection = (HttpURLConnection) Url.openConnection();
+            connection.setRequestMethod("GET");
+            int responseCode = connection.getResponseCode();
+            StringBuilder response = new StringBuilder();
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    response.append(line);
+                }
+                reader.close();
+            } else {
+                System.out.println("GET request failed with response code " + responseCode);
+                return new JSONObject();
+            }
+            connection.disconnect();
+            return JSONObject.parseObject(response.toString());
+        } catch (Exception e) {
+            System.out.println(e);
+            return new JSONObject();
+        }
     }
 }

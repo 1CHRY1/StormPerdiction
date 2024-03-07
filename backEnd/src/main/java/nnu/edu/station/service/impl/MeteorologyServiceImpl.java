@@ -1,8 +1,11 @@
 package nnu.edu.station.service.impl;
 
+import com.alibaba.fastjson2.JSONObject;
+import nnu.edu.station.common.utils.FileUtil;
 import nnu.edu.station.dao.meteorology.MeteorologyMapper;
 import nnu.edu.station.service.MeteorologyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,6 +22,9 @@ import java.util.List;
 
 @Service
 public class MeteorologyServiceImpl implements MeteorologyService {
+
+    @Value("${Typhoon}")
+    String typhoon;
 
     @Autowired
     MeteorologyMapper meteorologyMapper;
@@ -48,6 +54,16 @@ public class MeteorologyServiceImpl implements MeteorologyService {
         return meteorologyMapper.getRainfallpre();
     }
 
+    @Override
+    public Object getTyphoon() {
+        JSONObject typhoonJson = new JSONObject();
+        try {
+            typhoonJson = FileUtil.readJsonObjectFile(typhoon);
+        } catch (Exception e) {
+            return typhoonJson;
+        }
+        return typhoonJson;
+    }
 
     @Override
     public Object getInfoByTimeAndType(String time, String type1, String type2, String type3){

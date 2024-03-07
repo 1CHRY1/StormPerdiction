@@ -3,6 +3,7 @@ package nnu.edu.station.common.config;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import lombok.extern.slf4j.Slf4j;
 import nnu.edu.station.common.exception.MyException;
 import nnu.edu.station.common.result.ResultEnum;
@@ -49,6 +50,9 @@ public class TimeTask {
 
     @Value("${clawingRainfallpre}")
     String clawingRainfallpre;
+
+    @Value("${clawingTyphoon}")
+    String clawingTyphoon;
 
     @Value("${deleteClawingData}")
     String deleteClawingData;
@@ -132,6 +136,12 @@ public class TimeTask {
         ClawingUtil.ClawingRainfallpreData(python, clawingRainfallpre, logPath);
     }
 
+    @Scheduled(cron = "0 0 10 * * ?")
+    public void  executePythonClawingTyphoonData() throws IOException {
+        // 爬取当日台风数据
+        ClawingUtil.ClawingTyphoonData(python, clawingTyphoon, logPath);
+    }
+
     @Scheduled(cron = "00 55 5 * * ?")
     public void executePythonDeleteClawingData() throws IOException {
         // 删除过期数据
@@ -173,7 +183,7 @@ public class TimeTask {
         }
         PrintWriter writer = new PrintWriter(new FileWriter(logPath, true));
         writer.println("Log message: Field data processed successfully at " + LocalDateTime.now());
-        writer.println("Log message: Field data processed successfully at " + LocalDateTime.now());
+        System.out.println("Log message: Field data processed successfully at " + LocalDateTime.now());
     }
 
 }

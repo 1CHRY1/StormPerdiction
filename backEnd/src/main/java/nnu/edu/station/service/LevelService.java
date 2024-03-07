@@ -1,5 +1,7 @@
 package nnu.edu.station.service;
 
+import com.alibaba.fastjson2.JSONArray;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -10,7 +12,7 @@ public interface LevelService {
 
     List<Map<String, Object>> getAllInfoByStation(String station);
 
-    String getAllRealInfoByStation(String station) throws IOException;
+    JSONArray getAllRealInfoByStation(String station) throws IOException;
 
     List<Map<String, Object>> getNoTyphAllByStation(String station);
 

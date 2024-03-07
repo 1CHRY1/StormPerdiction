@@ -12,6 +12,8 @@ spring:
 
 stations:
   "data/DataProcess/station.json"
+Typhoon:
+  D:/1study/Work/2023_12_22_Storm/stormPrediction/data/DataProcess/Clawing/typhoon.json
 
 python:
   C:/Users/22171/.conda/envs/Env1/python.exe
@@ -26,6 +28,8 @@ clawingRainfall:
   D:/1study/Work/2023_12_22_Storm/stormPrediction/data/DataProcess/Clawing/Rainfall.py
 clawingRainfallpre:
   D:/1study/Work/2023_12_22_Storm/stormPrediction/data/DataProcess/Clawing/Rainfall_pre.py
+clawingTyphoon:
+  D:/1study/Work/2023_12_22_Storm/stormPrediction/data/DataProcess/Clawing/Typhoon.py
 deleteClawingData:
   D:/1study/Work/2023_12_22_Storm/stormPrediction/data/DataProcess/Clawing/DeleteData.py
 

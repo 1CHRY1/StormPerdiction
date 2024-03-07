@@ -1,5 +1,6 @@
 package nnu.edu.station.service.impl;
 import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 import net.sf.jsqlparser.expression.DateTimeLiteralExpression;
@@ -40,7 +41,7 @@ public class LevelServiceImpl implements LevelService {
     }
 
     @Override
-    public String getAllRealInfoByStation(String station) throws IOException {
+    public JSONArray getAllRealInfoByStation(String station) throws IOException {
         // 获取站点实测数据信息
         Path currentPath = Paths.get(System.getProperty("user.dir"));
 //        Path parentPath = currentPath.getParent();
@@ -61,8 +62,9 @@ public class LevelServiceImpl implements LevelService {
         LocalDateTime threeDaysAgo = currentTime.minusDays(3);
         String url = url_time + "/" + name + "/" + threeDaysAgo + "/" + currentTime;
         // 获取实时监测数据
-        String response = HttpUtil.sendGet(url,"");
-        return response;
+        JSONObject jsonResponse = HttpUtil.GetRealData(url);
+        JSONArray realDataList = (JSONArray) jsonResponse.get("data");
+        return ListUtil.realDataProcessing(realDataList);
     }
 
     @Override

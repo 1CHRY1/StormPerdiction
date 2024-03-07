@@ -123,7 +123,7 @@ public class ClawingUtil {
             Process process = Runtime.getRuntime().exec(python + " " + clawingCloud);
             // 添加日志输出
             System.out.println("Clawed data deleting scheduled at " + LocalDateTime.now());
-            writer.println("Log message: Clawed data deleting clawing scheduled at " + LocalDateTime.now());
+            writer.println("Log message: Clawed data deleting scheduled at " + LocalDateTime.now());
             // 等待脚本完成
             int exitCode = process.waitFor();
             if (exitCode == 0) {
@@ -136,6 +136,31 @@ public class ClawingUtil {
         } catch (Exception e) {
             System.out.println("Error executing deleting clawed data" + e.getMessage());
             writer.println("Log message: Error executing deleting clawed data" + e.getMessage());
+        } finally {
+            writer.close();
+        }
+    }
+
+    public static void ClawingTyphoonData(String python, String clawingTyphoon, String logPath) throws IOException {
+        PrintWriter writer = new PrintWriter(new FileWriter(logPath, true));
+        //爬取台风数据
+        try {
+            Process process = Runtime.getRuntime().exec(python + " " + clawingTyphoon);
+            // 添加日志输出
+            System.out.println("Typhoon Data clawing scheduled at " + LocalDateTime.now());
+            writer.println("Log message: Typhoon Data clawing scheduled at " + LocalDateTime.now());
+            // 等待脚本完成
+            int exitCode = process.waitFor();
+            if (exitCode == 0) {
+                System.out.println("Typhoon Data clawing executed successfully!");
+                writer.println("Log message: Typhoon Data clawing executed successfully!");
+            } else {
+                System.out.println("Typhoon Data clawing execution failed!");
+                writer.println("Log message: Typhoon Data clawing execution failed!");
+            }
+        } catch (Exception e) {
+            System.out.println("Error executing clawing Typhoon Data" + e.getMessage());
+            writer.println("Log message: Error executing clawing Typhoon Data" + e.getMessage());
         } finally {
             writer.close();
         }
