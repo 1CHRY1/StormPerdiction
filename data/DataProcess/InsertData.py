@@ -143,8 +143,8 @@ def get_prefix_before_digits(input_str):
     return prefix
 
 def main():
-    db_path_Forcasting = os.getcwd() + '/Forcasting.db'
-    db_path_NC = os.getcwd() + '/NC.db'
+    db_path_Forcasting = os.path.dirname(__file__) + '/Forcasting.db'
+    db_path_NC =  os.path.dirname(__file__) + '/NC.db'
     stations_path = 'station.json'
     with open(stations_path, 'r', encoding='utf-8') as file:
         stations = json.load(file)
@@ -253,8 +253,7 @@ def main():
                         mat_path = os.path.join(Path, file)
                         mat_data = loadmat(mat_path)
                         try:
-                            hpre_list = list_process(mat_data['hpre'])
-                            hpre = [0.0 if value is None else value for value in hpre_list]
+                            hpre = list_process(mat_data['hpre'])
                             hz = mat_data['hz']
                             # 将预报数据存入数据库
                             insert_Nottyphdata(db_path_Forcasting, name, time, hpre, manual)

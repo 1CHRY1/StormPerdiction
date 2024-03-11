@@ -89,9 +89,9 @@ public class LevelServiceImpl implements LevelService {
     @Override
     public Map<String, Object> getBefore72ByStation(String station) {
         station = station + "_hz";
-//        LocalDateTime currenttime = LocalDateTime.now().withYear(2023).withMonth(8).withDayOfMonth(30).withHour(0).withMinute(0).withSecond(0).withNano(0).minusSeconds(1);
-        LocalDateTime currenttime = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0).minusSeconds(1);
+        LocalDateTime currenttime = LocalDateTime.now().withYear(2023).withMonth(8).withDayOfMonth(30).withHour(0).withMinute(0).withSecond(0).withNano(0).minusSeconds(1);
         LocalDateTime beforetime = currenttime.minusDays(3);
+//        LocalDateTime time = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0).minusSeconds(1);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String currenttime_str = currenttime.format(formatter);
         String beforetime_str = beforetime.format(formatter);
@@ -109,8 +109,8 @@ public class LevelServiceImpl implements LevelService {
 
     @Override
     public Map<String, Object> get72ByStation(String station) {
-//        LocalDateTime time = LocalDateTime.now().withYear(2023).withMonth(8).withDayOfMonth(30).withHour(0).withMinute(0).withSecond(0).withNano(0);
-        LocalDateTime time = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0);
+        LocalDateTime time = LocalDateTime.now().withYear(2023).withMonth(8).withDayOfMonth(30).withHour(0).withMinute(0).withSecond(0).withNano(0);
+//        LocalDateTime time = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String time_str = time.format(formatter);
         Integer ifTyph = ifTyph(time_str);
@@ -128,8 +128,8 @@ public class LevelServiceImpl implements LevelService {
 
     @Override
     public Map<String, Object> getNoTyph72ByStation(String station) {
-//        LocalDateTime time = LocalDateTime.now().withYear(2023).withMonth(8).withDayOfMonth(30).withHour(0).withMinute(0).withSecond(0).withNano(0);
-        LocalDateTime time = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0);
+        LocalDateTime time = LocalDateTime.now().withYear(2023).withMonth(8).withDayOfMonth(30).withHour(0).withMinute(0).withSecond(0).withNano(0);
+//        LocalDateTime time = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String time_str = time.format(formatter);
         try{
@@ -145,8 +145,8 @@ public class LevelServiceImpl implements LevelService {
 
     @Override
     public Map<String, Object> getTyph72ByStation(String station) {
-//        LocalDateTime time = LocalDateTime.now().withYear(2023).withMonth(8).withDayOfMonth(31).withHour(0).withMinute(0).withSecond(0).withNano(0);
-        LocalDateTime time = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0);
+        LocalDateTime time = LocalDateTime.now().withYear(2023).withMonth(8).withDayOfMonth(31).withHour(0).withMinute(0).withSecond(0).withNano(0);
+//        LocalDateTime time = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String time_str = time.format(formatter);
         try {

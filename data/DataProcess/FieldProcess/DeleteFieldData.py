@@ -7,7 +7,7 @@ def delete_all_files(folder_path):
             file_path = os.path.join(root, file)
             os.remove(file_path)
 
-current_path = os.getcwd()
+current_path = os.path.dirname(__file__)
 folder_path_txt = current_path + '/output'
 folder_path_use = os.path.dirname(os.path.dirname(current_path)) + '/Field'
 

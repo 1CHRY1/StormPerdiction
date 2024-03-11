@@ -83,9 +83,7 @@ def getZetaFromArray(array, stations):
 
 
 def list_process(hpre):
-    data = []
-    for item in hpre:
-        data.append(item[0])
+    data = hpre
     return data
 
 def get_hzdata(hz, start_time):
@@ -145,8 +143,8 @@ def get_prefix_before_digits(input_str):
     return prefix
 
 def main():
-    db_path_Forcasting = os.getcwd() + '/Forcasting.db'
-    db_path_NC = os.getcwd() + '/NC.db'
+    db_path_Forcasting = os.path.dirname(__file__) + '/Forcasting.db'
+    db_path_NC = os.path.dirname(__file__) + '/NC.db'
     stations_path = 'station.json'
     with open(stations_path, 'r', encoding='utf-8') as file:
         stations = json.load(file)
@@ -218,15 +216,9 @@ def main():
                                 hyubao_data = hyubao[i].get("data")
                                 hpre_data = hpre[i].get("data")
                                 hadd_data = hyubao_data - hpre_data
-                                insert_typhdata(db_path_Forcasting, name, time, hpre_data.tolist(), hyubao_data.tolist(), hadd_data.tolist(), manual)
+                                insert_typhdata(db_path_Forcasting, name, time, hpre_data.tolist(),
+                                                hyubao_data.tolist(), hadd_data.tolist(), manual)
                             break
-
-                    # 处理精度评定结果数据
-                    if os.path.basename(file) == "result.txt":
-                        path = Path + "/" + file
-                        filename = "result.txt"
-                        type = "result"
-                        insert_NCdata(db_path_NC, time, type, path, filename, manual)
 
                     print(os.path.basename(file))
 
