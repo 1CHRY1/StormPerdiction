@@ -83,8 +83,11 @@ def getZetaFromArray(array, stations):
 
 
 def list_process(hpre):
-    data = hpre
+    data = []
+    for item in hpre:
+        data.append(item[0])
     return data
+
 
 def get_hzdata(hz, start_time):
     result = []
@@ -143,8 +146,8 @@ def get_prefix_before_digits(input_str):
     return prefix
 
 def main():
-    db_path_Forcasting = os.path.dirname(__file__) + '/Forcasting.db'
-    db_path_NC = os.path.dirname(__file__) + '/NC.db'
+    db_path_Forcasting = os.getcwd() + '/Forcasting.db'
+    db_path_NC = os.getcwd() + '/NC.db'
     stations_path = 'station.json'
     with open(stations_path, 'r', encoding='utf-8') as file:
         stations = json.load(file)
