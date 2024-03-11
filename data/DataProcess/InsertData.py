@@ -151,6 +151,7 @@ def main():
     folderPath = os.path.abspath(os.pardir) + "/forecastData"
     folderPath = folderPath.replace(os.sep, '/')
     folders = os.listdir(folderPath)
+    folders = sorted(folders, key=str.lower)
     for folder in folders:
         # 遍历每个文件夹中的数据
         Path = folderPath + "/" + folder
