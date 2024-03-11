@@ -55,7 +55,7 @@ def writeToJson(txtpath, jsonpath):
 
 
 def writeAlltoJson():
-    rootPath = os.path.dirname(__file__) + '/output'
+    rootPath = os.getcwd() + '/output'
     for i in range(0, 144):
         txtpath = rootPath + f"/Add/zeta_XYDIF_{i}.txt"
         parentDir = os.path.dirname(os.path.dirname(os.path.dirname(rootPath)))

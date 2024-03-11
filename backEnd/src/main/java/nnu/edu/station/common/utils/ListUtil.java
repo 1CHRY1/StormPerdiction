@@ -33,7 +33,11 @@ public class ListUtil {
                 result.add(0.0);
             }
             else {
-                result.add(Double.parseDouble(element));
+                try {
+                    result.add(Double.parseDouble(element));
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
             }
         }
         return result;
