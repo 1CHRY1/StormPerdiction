@@ -42,7 +42,7 @@ export const getStationCurrentWaterSituation = async (
     })
     .then((data) => data)) as IRealTideSituationResponse
 
-  if (dataMap.data.length === 0) {
+  if (!dataMap.data || dataMap.data.length === 0) {
     return {
       time: [],
       hpre: [],

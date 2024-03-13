@@ -25,10 +25,10 @@ export interface IStormDataResponse {
   code: '0'
   data: {
     name: string
-    point: {
+    points: {
       time: string
-      lng: number
-      lat: number
+      lng: string
+      lat: string
       strong: string
       power: string
       speed: string

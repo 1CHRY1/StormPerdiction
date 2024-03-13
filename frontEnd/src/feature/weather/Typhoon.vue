@@ -8,53 +8,36 @@ import { getStormDataMap } from './api'
 import { IStormDataMap, IStormDataOfPoint, IStormTableRow } from './type'
 import {
   addStormLayer,
-  addTyphoonSymbol,
+  addTyphoonSymbolSource,
   decimalToDMS,
   formatDate,
   generateStormTableData,
+  updateTyphoonSymbol,
 } from './util'
 
 const mapContainerRef: Ref<HTMLDivElement | null> = ref(null)
-const selectStormID: Ref<string | null> = ref(null)
+const selectStormName: Ref<string | null> = ref(null)
 const activateStormDataMap: Ref<null | IStormDataMap> = ref(null)
 const selectPointID: Ref<string> = ref('0')
 const selectPointData: Ref<null | IStormDataOfPoint> = ref(null)
 const mapStore = useMapStore()
 const activateStormTableData: Ref<null | IStormTableRow[]> = ref(null)
 const selectHistoryTableData = computed(() => {
-  if (selectStormID.value && activateStormDataMap.value) {
+  if (selectStormName.value && activateStormDataMap.value) {
     return generateStormTableData(
-      activateStormDataMap.value[selectStormID.value],
+      activateStormDataMap.value[selectStormName.value].toReversed(),
     )
   } else {
     return []
   }
 })
 
-const activateStormList = computed(() => {
-  const result: IStormDataOfPoint[] = []
-  if (!activateStormDataMap.value) {
-    return result
-  }
-  for (const key in activateStormDataMap.value) {
-    const storm = activateStormDataMap.value[key]
-    result.push(storm[storm.length - 1])
-  }
-  return result
-})
-
 const handleActivateTableSelectionChange = (selection: any) => {
   if (selection) {
-    const currentStormData = activateStormList!.value.filter(
-      (value) => value.id === selection.id,
-    )[0]
-    selectStormID.value = selection.id
+    selectStormName.value = selection.name
     selectPointID.value = (
-      activateStormDataMap.value![selection.id].length - 1
+      activateStormDataMap.value![selection.name].length - 1
     ).toString()
-    mapStore.map?.flyTo({
-      center: [currentStormData.lng, currentStormData.lat],
-    })
   }
 }
 
@@ -66,19 +49,26 @@ const handleHistoryTableSelectionChange = (selection: any) => {
 
 watch(selectPointID, () => {
   selectPointData.value =
-    activateStormDataMap.value![selectStormID.value!][
+    activateStormDataMap.value![selectStormName.value!][
       Number(selectPointID.value)
     ]
   if (mapStore.map) {
     mapStore.map.flyTo({
       center: [selectPointData.value.lng, selectPointData.value.lat],
     })
+    updateTyphoonSymbol(mapStore.map, [
+      selectPointData.value.lng,
+      selectPointData.value.lat,
+    ])
   }
 })
 
 onMounted(async () => {
   activateStormDataMap.value = await getStormDataMap()
-  activateStormTableData.value = generateStormTableData(activateStormList.value)
+  selectStormName.value = Object.keys(activateStormDataMap.value)[0]
+  activateStormTableData.value = generateStormTableData(
+    Object.values(activateStormDataMap.value).map((value) => value[0]),
+  )
 
   const map: mapbox.Map = await initMap(
     mapContainerRef.value as HTMLDivElement,
@@ -88,12 +78,11 @@ onMounted(async () => {
     },
   )
   const mapboxLayerNames: string[] = []
-  activateStormList!.value.forEach(async (storm) => {
-    mapboxLayerNames.push(`storm-${storm.id}-point`)
-    mapboxLayerNames.push(`storm-${storm.id}-line`)
-    await addStormLayer(map, storm.id)
-    await addTyphoonSymbol(map, [storm.lng, storm.lat], storm.id)
+  Object.values(activateStormDataMap.value).forEach((storm) => {
+    mapboxLayerNames.push(`storm-${storm[0].name}-point`)
+    addStormLayer(map, storm)
   })
+  addTyphoonSymbolSource(map)
 
   map.on('click', (event: mapbox.MapMouseEvent) => {
     const box: [[number, number], [number, number]] = [
@@ -107,15 +96,22 @@ onMounted(async () => {
     if (point && point[0]) {
       const id = point[0].properties!.id as string
       selectPointID.value = id
-      selectStormID.value = point[0].source.split('-')[1]
+      selectStormName.value = point[0].source.split('-')[1]
     }
   })
 })
 </script>
 
 <template>
-  <div class="flex h-full">
-    <div ref="mapContainerRef" class="map-container h-full w-full" />
+  <div class="relative flex h-full">
+    <div class="flex h-full flex-auto relative justify-center">
+      <div
+        class="absolute z-10 top-3 py-1 px-16 text-yellow-400 font-bold text-2xl flex justify-center bg-slate-700/50 rounded"
+      >
+        {{ '实时台风路径' }}
+      </div>
+      <div ref="mapContainerRef" class="map-container h-full w-full" />
+    </div>
     <div class="bg-white w-[21rem] flex flex-col">
       <div class="h-48 m-2 border border-zinc-300 bg-white">
         <div class="h-10 leading-10 px-3 bg-[#1b6ec8] text-white">实时信息</div>
