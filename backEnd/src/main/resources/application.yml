@@ -6,10 +6,11 @@ spring:
   servlet:
     multipart:
       enabled: true
-      max-file-size: 10MB
-      max-request-size: 10MB
+      max-file-size: 25MB
+      max-request-size: 25MB
+
 server:
-  port: 9999
+  port: 9989
 
 mybatis:
   configuration:
