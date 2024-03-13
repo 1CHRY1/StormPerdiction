@@ -31,7 +31,7 @@ export const decimalToDMS = (decimal: number): string => {
   return degrees + '° ' + minutes + "'"
 }
 
-export const generateGeoJSONByCoord = (coord: [number, number]) => {
+export const generatePointByCoord = (coord: [number, number]) => {
   const result = {
     type: 'Feature',
     name: '',
@@ -45,20 +45,61 @@ export const generateGeoJSONByCoord = (coord: [number, number]) => {
   return result
 }
 
-export const addStormLayer = async (map: mapbox.Map, stormID: string) => {
-  map.addSource(`storm-${stormID}-point`, {
+export const generateStormOfPoint = (storm: IStormDataOfPoint[]) => {
+  const pointList = storm.map((point, index) => ({
+    type: 'Feature',
+    name: '',
+    properties: {
+      power: point.power,
+      id: index,
+    },
+    geometry: {
+      type: 'Point',
+      coordinates: [point.lng, point.lat],
+    },
+  }))
+
+  const result = {
+    type: 'FeatureCollection',
+    features: pointList,
+  }
+
+  return result
+}
+
+export const generateStormOfLine = (storm: IStormDataOfPoint[]) => {
+  const result = {
+    type: 'Feature',
+    name: '',
+    properties: {},
+    geometry: {
+      type: 'LineString',
+      coordinates: storm.map((point) => [point.lng, point.lat]),
+    },
+  }
+
+  return result
+}
+
+export const addStormLayer = async (
+  map: mapbox.Map,
+  storm: IStormDataOfPoint[],
+) => {
+  const pointFeatureCollection = generateStormOfPoint(storm)
+  const lineString = generateStormOfLine(storm)
+  console.log(lineString)
+
+  map.addSource(`storm-${storm[0].name}-point`, {
     type: 'geojson',
-    data: `/geojson/${stormID}-point.geojson`,
-    attribution: 'name',
+    data: pointFeatureCollection as any,
   })
-  map.addSource(`storm-${stormID}-line`, {
+  map.addSource(`storm-${storm[0].name}-line`, {
     type: 'geojson',
-    data: `/geojson/${stormID}-line.geojson`,
-    attribution: 'name',
+    data: lineString as any,
   })
   map.addLayer({
-    id: `storm-${stormID}-line`,
-    source: `storm-${stormID}-line`,
+    id: `storm-${storm[0].name}-line`,
+    source: `storm-${storm[0].name}-line`,
     type: 'line',
     paint: {
       'line-color': '#60a5fa',
@@ -66,8 +107,8 @@ export const addStormLayer = async (map: mapbox.Map, stormID: string) => {
     },
   })
   map.addLayer({
-    id: `storm-${stormID}-point`,
-    source: `storm-${stormID}-point`,
+    id: `storm-${storm[0].name}-point`,
+    source: `storm-${storm[0].name}-point`,
     type: 'circle',
     paint: {
       'circle-stroke-color': '#71717a',
@@ -96,28 +137,16 @@ export const addStormLayer = async (map: mapbox.Map, stormID: string) => {
   })
 }
 
-export const addTyphoonSymbol = async (
-  map: mapbox.Map,
-  coord: [number, number],
-  stormID: string,
-) => {
+export const addTyphoonSymbolSource = async (map: mapbox.Map) => {
   const image = await new Promise((resolve) => {
     map.loadImage('/png/typhoon.png', (_, image) => {
       resolve(image)
     })
   })
-  map.addImage(`typhoon-${stormID}-icon`, image as any)
-  map.addSource(`typhoon-${stormID}`, {
+  map.addImage(`typhoon-icon`, image as any)
+  map.addSource(`typhoon`, {
     type: 'geojson',
-    data: generateGeoJSONByCoord(coord) as any,
-  })
-  map.addLayer({
-    id: `typhoon-${stormID}`,
-    source: `typhoon-${stormID}`,
-    type: 'symbol',
-    layout: {
-      'icon-image': `typhoon-${stormID}-icon`,
-    },
+    data: generatePointByCoord([0, 0]) as any,
   })
 }
 
@@ -126,5 +155,15 @@ export const updateTyphoonSymbol = (
   coord: [number, number],
 ) => {
   const source = map.getSource('typhoon') as mapbox.GeoJSONSource
-  source.setData(generateGeoJSONByCoord(coord) as any)
+  source.setData(generatePointByCoord(coord) as any)
+  if (!map.getLayer('typhoon')) {
+    map.addLayer({
+      id: 'typhoon',
+      source: 'typhoon',
+      type: 'symbol',
+      layout: {
+        'icon-image': 'typhoon-icon',
+      },
+    })
+  }
 }

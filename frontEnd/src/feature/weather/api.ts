@@ -58,12 +58,12 @@ export const getStormDataMap = async (): Promise<IStormDataMap> => {
     .then((json) => json)) as IStormDataResponse
 
   const data = response.data
-  const points = response.data.point.map((value, index) => ({
+  const points = response.data.points.map((value, index) => ({
     id: index.toString(),
     name: data.name,
     time: value.time,
-    lng: value.lng,
-    lat: value.lat,
+    lng: Number(value.lng),
+    lat: Number(value.lat),
     strong: value.strong,
     power: value.power,
     speed: value.speed,

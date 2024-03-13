@@ -137,4 +137,10 @@ export const stationInfo = {
     pinyin: 'yanguan',
     type: 'sea',
   },
+  '23': {
+    coord: [121.179, 30.645],
+    name: '金桥',
+    pinyin: 'jinqiao',
+    type: 'sea',
+  },
 }
