@@ -103,8 +103,15 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="flex h-full">
-    <div ref="mapContainerRef" class="map-container h-full w-full" />
+  <div class="relative flex h-full">
+    <div class="flex h-full flex-auto relative justify-center">
+      <div
+        class="absolute z-10 top-3 py-1 px-16 text-yellow-400 font-bold text-2xl flex justify-center bg-slate-700/50 rounded"
+      >
+        {{ '实时台风路径' }}
+      </div>
+      <div ref="mapContainerRef" class="map-container h-full w-full" />
+    </div>
     <div class="bg-white w-[21rem] flex flex-col">
       <div class="h-48 m-2 border border-zinc-300 bg-white">
         <div class="h-10 leading-10 px-3 bg-[#1b6ec8] text-white">实时信息</div>
