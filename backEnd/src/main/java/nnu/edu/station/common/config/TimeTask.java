@@ -3,7 +3,6 @@ package nnu.edu.station.common.config;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import lombok.extern.slf4j.Slf4j;
 import nnu.edu.station.common.exception.MyException;
 import nnu.edu.station.common.result.ResultEnum;
@@ -154,7 +153,7 @@ public class TimeTask {
         ClawingUtil.ClawingRainfallpreData(python, clawingRainfallpre, meteorologydb, rainfallprefile, webdriver, logPath);
     }
 
-    @Scheduled(cron = "0 0 10 * * ?")
+    @Scheduled(cron = "20 01 21 * * ?")
     public void  executePythonClawingTyphoonData() throws IOException {
         // 爬取当日台风数据
         ClawingUtil.ClawingTyphoonData(python, clawingTyphoon, logPath);

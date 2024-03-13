@@ -51,7 +51,7 @@ def deleteCurrentJson(file_path):
     if os.path.exists(file_path):
         os.remove(file_path)
 
-rootPath = os.path.dirname(__file__)
+rootPath = os.getcwd()
 file_path = rootPath + "/typhoon.json"
 deleteCurrentJson(file_path)
 current_time = datetime.date.today().strftime("%Y%m%d")

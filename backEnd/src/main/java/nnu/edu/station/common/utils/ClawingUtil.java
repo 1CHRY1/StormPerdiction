@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
  */
 public class ClawingUtil {
 
+    // python /home/ps/ForecastPlatform/DataProcess/Clawing/Cloud.py "/home/ps/ForecastPlatform/DataProcess/Clawing/Meteorology.db" "/home/ps/ForecastPlatform/气象产品/卫星云图" "/home/ps/apps/webdriver/geckodriver"
     public static void ClawingCloudData(String python, String clawingCloud, String db, String cloudfile, String webdriver ,String logPath) throws IOException {
         PrintWriter writer = new PrintWriter(new FileWriter(logPath, true));
         // 爬取卫星云图数据
@@ -52,11 +53,11 @@ public class ClawingUtil {
             // 等待脚本完成
             int exitCode = process.waitFor();
             if (exitCode == 0) {
-                System.out.println("Radar Data clawing  executed successfully!");
-                writer.println("Log message: Cloud Data clawing executed successfully!");
+                System.out.println("Radar Data clawing executed successfully!");
+                writer.println("Log message: Radar Data clawing executed successfully!");
             } else {
                 System.out.println("Radar Data clawing execution failed!");
-                writer.println("Log message: Cloud Data clawing execution failed!");
+                writer.println("Log message: Radar Data clawing execution failed!");
             }
         } catch (Exception e) {
             System.out.println("Error executing radar Data clawing" + e.getMessage());

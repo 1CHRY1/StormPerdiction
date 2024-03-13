@@ -52,11 +52,11 @@ def deleteCurrentJson(file_path):
     if os.path.exists(file_path):
         os.remove(file_path)
 
-rootPath = os.path.dirname(__file__)
+rootPath = os.getcwd()
 file_path = rootPath + "/typhoon.json"
 deleteCurrentJson(file_path)
-# current_time = datetime.date.today().strftime("%Y%m%d")
-current_time = "202306"
+current_time = datetime.date.today().strftime("%Y%m%d")
+# current_time = "202306"
 url = 'http://typhoon.zjwater.gov.cn/Api/TyphoonInfo' + "/" + current_time
 result = getSourceFromURL(url)
 with open(file_path, "w", encoding="utf-8") as json_file:
