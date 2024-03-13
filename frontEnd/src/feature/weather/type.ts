@@ -17,7 +17,7 @@ export interface IImageTypeAndTimeResponse {
 export interface IImageTypeAndTime {
   imageType: string
   type: Set<string>
-  time: Record<string, Set<string>>
+  time: Set<string>
 }
 export type ImageType = 'cloud' | 'radar' | 'rainfall' | 'rainfallpre'
 

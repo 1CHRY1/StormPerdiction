@@ -92,6 +92,7 @@ export const drawEcharts = async (
         type: 'line',
         smooth: true,
         data: waterSituationData.hpre,
+        connectNulls: true,
       },
     ],
   }

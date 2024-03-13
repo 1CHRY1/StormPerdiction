@@ -12,13 +12,10 @@ export interface IStormData {
 }
 
 export interface IStormTableRow {
-  name: string
-  'mae(m)': string
-  'mae(m)-aftercorrection': string
-  'rmse(m)': string
-  'rmse(m)-aftercorrection': string
-  'hegelv(%)': string
-  'hegelv(%)-aftercorrection': string
+  id: string
+  time: string
+  powerAndStrong: string
+  speed: number
 }
 
 export interface IStormDataOfPoint {

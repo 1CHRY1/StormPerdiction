@@ -10,9 +10,8 @@ export interface IStationInfo {
 export interface IRealTideSituationResponse {
   code: string
   data: {
-    station: string
     time: string
-    waterLevel: number
+    level: number
   }[]
 }
 

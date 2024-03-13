@@ -3,10 +3,9 @@ import { Ref, computed, onMounted, ref, watch } from 'vue'
 import { getSatelliteImage, getSatelliteTypeAndTime } from './api'
 
 const options: Ref<Record<string, string>[]> = ref([])
-const timeListMap: Ref<Record<string, Record<number, string[]>>> = ref({})
+const timeListArray: Ref<string[]> = ref([])
 const currentImageType = ref()
 const selectType = ref()
-const timeRange = ref(24)
 const currentTime = ref()
 const tableLoading = ref(true)
 const isPlay = ref(false)
@@ -14,17 +13,8 @@ const playRate = ref(300)
 const playTag = ref(0)
 const imageUrl = ref()
 
-const timeListOfType = computed(() => {
-  if (timeListMap.value[selectType.value]) {
-    return timeListMap.value[selectType.value][timeRange.value]
-      .toSorted()
-      .toReversed()
-  } else {
-    return []
-  }
-})
 const tableData = computed(() => {
-  return timeListOfType.value.map((value: any) => ({ time: value }))
+  return timeListArray.value.map((value) => ({ time: value }))
 })
 
 onMounted(async () => {
@@ -35,17 +25,9 @@ onMounted(async () => {
     label: value,
   }))
 
-  for (const key in time) {
-    const timeList = [...time[key]]
-    timeListMap.value[key] = {
-      24: timeList.slice(0, 24),
-      48: timeList.slice(0, 48),
-      72: timeList.slice(0, 72),
-    }
-  }
-
+  timeListArray.value = [...time].sort().reverse()
   selectType.value = options.value[0].value
-  currentTime.value = timeListMap.value[selectType.value][24][0]
+  currentTime.value = timeListArray.value[0]
   imageUrl.value = await getSatelliteImage(
     currentImageType.value,
     selectType.value,
@@ -66,28 +48,28 @@ watch([selectType, currentTime], async () => {
 watch(tableData, () => {
   isPlay.value = false
   clearInterval(playTag.value)
-  currentTime.value = timeListMap.value[selectType.value][24][0]
+  currentTime.value = timeListArray.value[0]
 })
 
 const handleTableSelectionChange = (selection: any) => {
   if (selection) {
     currentTime.value = selection.time
   } else {
-    currentTime.value = timeListMap.value[selectType.value][24][0]
+    currentTime.value = timeListArray.value[0]
   }
 }
 
 const handlePlayClick = () => {
   if (!isPlay.value) {
-    const length = timeListOfType.value.length
+    const length = timeListArray.value.length
     let index = length - 1
     playTag.value = setInterval(() => {
-      currentTime.value = timeListOfType.value[index]
+      currentTime.value = timeListArray.value[index]
       index === 0 ? (index = length - 1) : (index -= 1)
     }, playRate.value)
   } else {
     clearInterval(playTag.value)
-    currentTime.value = timeListMap.value[selectType.value][24][0]
+    currentTime.value = timeListArray.value[0]
   }
   isPlay.value = !isPlay.value
 }
@@ -116,23 +98,13 @@ const handlePlayClick = () => {
           />
         </el-select>
       </div>
-      <div class="h-24 relative m-2 top-1 border border-zinc-300">
-        <div class="h-8 leading-8 px-2 bg-[#1b6ec8] text-white">时间范围</div>
-        <div class="mb-2 flex flex-col text-sm">
-          <el-radio-group v-model="timeRange">
-            <el-radio :label="24" size="large" class="m-2">24 小时</el-radio>
-            <el-radio :label="48" size="large" class="m-2">48 小时</el-radio>
-            <el-radio :label="72" size="large" class="m-2">72 小时</el-radio>
-          </el-radio-group>
-        </div>
-      </div>
       <div class="flex-auto h-24 relative m-2 top-1 border border-zinc-300">
         <div class="h-8 leading-8 px-2 bg-[#1b6ec8] text-white">图片列表</div>
         <el-table
           v-loading="tableLoading"
           :data="tableData"
           stripe
-          class="w-full h-[52vh]"
+          class="w-full h-[64vh]"
           :highlight-current-row="true"
           @current-change="handleTableSelectionChange"
         >

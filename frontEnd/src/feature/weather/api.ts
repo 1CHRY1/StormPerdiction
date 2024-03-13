@@ -15,15 +15,12 @@ export const getSatelliteTypeAndTime = async (
 
   const typeName = data[0].type1
   const typeMap: Set<string> = new Set()
-  const timeMap: Record<string, Set<string>> = {}
+  const timeMap: Set<string> = new Set()
   data.forEach((value) => {
     const type =
       value.type3.length === 0 ? value.type2 : value.type2 + ' - ' + value.type3
     typeMap.add(type)
-    if (!timeMap[type]) {
-      timeMap[type] = new Set()
-    }
-    timeMap[type].add(value.time)
+    timeMap.add(value.time)
   })
 
   return {

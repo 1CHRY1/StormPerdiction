@@ -23,7 +23,7 @@ export const getStationInfo = (id: keyof typeof stationInfo): IStationInfo => {
 export const getStationPredictionTideSituation = async (
   id: keyof typeof stationInfo,
 ): Promise<ITideSituation> => {
-  const url = `/api/v1/data/level/station/typh/72?station=${stationInfo[id].pinyin}`
+  const url = `/api/v1/data/level/station/72?station=${stationInfo[id].pinyin}`
   const dataMap = (await fetch(url)
     .then((res) => res.json())
     .then((data) => data.data)) as ITideSituationResponse
