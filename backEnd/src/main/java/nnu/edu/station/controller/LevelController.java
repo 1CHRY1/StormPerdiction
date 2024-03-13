@@ -24,9 +24,9 @@ public class LevelController {
     }
 
     @GetMapping(value = "/station/real")
-    public JsonResult getAllRealInfoByStation(@RequestParam String station) throws IOException {
+    public JsonResult get72RealInfoByStation(@RequestParam String station) throws IOException {
         /* 根据名称获取站点72小时实测潮位预报信息 */
-        return ResultUtils.success(levelService.getAllRealInfoByStation(station));
+        return ResultUtils.success(levelService.get72RealInfoByStation(station));
     }
 
     @GetMapping(value = "/station/before/72")

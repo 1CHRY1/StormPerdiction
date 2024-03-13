@@ -41,7 +41,7 @@ public class LevelServiceImpl implements LevelService {
     }
 
     @Override
-    public JSONArray getAllRealInfoByStation(String station) throws IOException {
+    public JSONArray get72RealInfoByStation(String station) throws IOException {
         // 获取站点实测数据信息
 //        Path currentPath = Paths.get(System.getProperty("user.dir"));
 //        Path parentPath = currentPath.getParent();
@@ -58,6 +58,9 @@ public class LevelServiceImpl implements LevelService {
                 name = stations.getJSONObject(key).getString("name");
                 break;
             }
+        }
+        if (url_time == null) {
+            return null;
         }
         LocalDateTime currentTime = LocalDateTime.now();
         LocalDateTime threeDaysAgo = currentTime.minusDays(3);

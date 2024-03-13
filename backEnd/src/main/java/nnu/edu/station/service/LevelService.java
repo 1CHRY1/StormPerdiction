@@ -12,7 +12,7 @@ public interface LevelService {
 
     List<Map<String, Object>> getAllInfoByStation(String station);
 
-    JSONArray getAllRealInfoByStation(String station) throws IOException;
+    JSONArray get72RealInfoByStation(String station) throws IOException;
 
     List<Map<String, Object>> getNoTyphAllByStation(String station);
 
