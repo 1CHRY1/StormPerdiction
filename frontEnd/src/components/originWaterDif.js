@@ -24,6 +24,7 @@ const init = async (cvs) => {
     
     canvas = cvs
     // const { vertex, attrib, index, attribBoundary } = (await axios.get("/json/testTri.json")).data
+    console.log('shift')
     const { vertex, attrib, index, attribBoundary } = (await axios.get("/api/v1/data/nc/field/add/json?name=zetaTri_1.json")).data
 
 
