@@ -29,6 +29,7 @@ import mapboxgl from 'mapbox-gl';
 
 const stationStore = useStationStore()
 const mapContainerRef: Ref<HTMLDivElement | null> = ref(null)
+const radio: Ref<HTMLDivElement | null> = ref(null)
 const selectPointID: Ref<string> = ref('0')
 const selectPointData: Ref<null | IStormDataOfPoint> = ref(null)
 const stormData: Ref<null | IStormData> = ref(null)
@@ -67,47 +68,52 @@ const handleSelectChange = async () => {
 window.addEventListener('keydown', async (e) => {
   if (e.key == 'Enter') {
     // ElMessage('hell')
-    console.log(mapStore.map?.getZoom());
+    // console.log(mapStore.map?.getZoom());
+    // (radio.value![0]! as any).checked = false
+    // (radio.value![1]! as any).checked = false
+    // (radio.value![2]! as any).checked = false
+
+    
     // await clearWebGPUCanvas()
   }
 })
 
-let adwtTicker:number|null;
-const adwtHandeler = () => {
-  let addwaterCount = 3;
-  const ticker = setInterval(async() => {
+// let adwtTicker:number|null;
+// const adwtHandeler = () => {
+//   let addwaterCount = 3;
+//   const ticker = setInterval(async() => {
 
-    console.log('!!!!:',addwaterCount);
-    
-    // remove
-    if (mapStore.map!.getLayer('addWater'))
-      mapStore.map!.removeLayer('addWater')
-    if (mapStore.map!.getLayer('contourLayer'))
-      mapStore.map!.removeLayer('contourLayer')
-    if (mapStore.map!.getLayer('contourLabel'))
-      mapStore.map!.removeLayer('contourLabel')
+//     console.log('!!!!:',addwaterCount);
 
-
-    
-    // add
-    let addWaterID = addwaterCount
-    let addWaterSrcIds = ['pngsource', 'contourSrc']
-    if (mapStore.map!.getSource(addWaterSrcIds[0]) && mapStore.map!.getSource(addWaterSrcIds[1]))
-      addWaterLayer(mapStore.map!, addWaterID)
-    else {
-      mapStore.map!.getSource(addWaterSrcIds[0]) && mapStore.map!.removeSource(addWaterSrcIds[0])
-      mapStore.map!.getSource(addWaterSrcIds[1]) && mapStore.map!.removeSource(addWaterSrcIds[1])
-      await prepareAddWaterLayer(mapStore.map!, addWaterID)
-      addWaterLayer(mapStore.map!, addWaterID)
-    }
+//     // remove
+//     if (mapStore.map!.getLayer('addWater'))
+//       mapStore.map!.removeLayer('addWater')
+//     if (mapStore.map!.getLayer('contourLayer'))
+//       mapStore.map!.removeLayer('contourLayer')
+//     if (mapStore.map!.getLayer('contourLabel'))
+//       mapStore.map!.removeLayer('contourLabel')
 
 
-    addwaterCount += 1;
 
-  }, 2000)
+//     // add
+//     let addWaterID = addwaterCount
+//     let addWaterSrcIds = ['pngsource', 'contourSrc']
+//     if (mapStore.map!.getSource(addWaterSrcIds[0]) && mapStore.map!.getSource(addWaterSrcIds[1]))
+//       addWaterLayer(mapStore.map!, addWaterID)
+//     else {
+//       mapStore.map!.getSource(addWaterSrcIds[0]) && mapStore.map!.removeSource(addWaterSrcIds[0])
+//       mapStore.map!.getSource(addWaterSrcIds[1]) && mapStore.map!.removeSource(addWaterSrcIds[1])
+//       await prepareAddWaterLayer(mapStore.map!, addWaterID)
+//       addWaterLayer(mapStore.map!, addWaterID)
+//     }
 
-  return ticker;
-}
+
+//     addwaterCount += 1;
+
+//   }, 2000)
+
+//   return ticker;
+// }
 
 
 watch(selectedLayer, async (now: null | Number, old: null | Number) => {
@@ -131,7 +137,7 @@ watch(selectedLayer, async (now: null | Number, old: null | Number) => {
       if (mapStore.map!.getLayer('contourLabel'))
         mapStore.map!.removeLayer('contourLabel')
 
-        adwtTicker&&clearInterval(adwtTicker)
+      // adwtTicker&&clearInterval(adwtTicker)
 
       break;
     default:
@@ -160,7 +166,7 @@ watch(selectedLayer, async (now: null | Number, old: null | Number) => {
 
       mapStore.map!.flyTo({
         center: [122.92069384160902, 32.0063086220937],
-        zoom: 6.912044631152661,
+        zoom: 7.512044631152661,
         duration: 5000
       })
       break;
@@ -173,31 +179,44 @@ watch(selectedLayer, async (now: null | Number, old: null | Number) => {
         duration: 5000
       })
 
-      adwtTicker = adwtHandeler()
+      // adwtTicker = adwtHandeler()
 
 
-      // // static 
-      // let addWaterID = 20
-      // let addWaterSrcIds = ['pngsource', 'contourSrc']
-      // if (mapStore.map!.getSource(addWaterSrcIds[0]) && mapStore.map!.getSource(addWaterSrcIds[1]))
-      //   addWaterLayer(mapStore.map!, addWaterID)
-      // else {
-      //   mapStore.map!.getSource(addWaterSrcIds[0]) && mapStore.map!.removeSource(addWaterSrcIds[0])
-      //   mapStore.map!.getSource(addWaterSrcIds[1]) && mapStore.map!.removeSource(addWaterSrcIds[1])
-      //   await prepareAddWaterLayer(mapStore.map!, addWaterID)
-      //   addWaterLayer(mapStore.map!, addWaterID)
-      // }
+      // static 
+      let addWaterID = 26
+      let addWaterSrcIds = ['pngsource', 'contourSrc']
+      if (mapStore.map!.getSource(addWaterSrcIds[0]) && mapStore.map!.getSource(addWaterSrcIds[1]))
+        addWaterLayer(mapStore.map!, addWaterID)
+      else {
+        mapStore.map!.getSource(addWaterSrcIds[0]) && mapStore.map!.removeSource(addWaterSrcIds[0])
+        mapStore.map!.getSource(addWaterSrcIds[1]) && mapStore.map!.removeSource(addWaterSrcIds[1])
+        await prepareAddWaterLayer(mapStore.map!, addWaterID)
+        addWaterLayer(mapStore.map!, addWaterID)
+      }
 
       break;
     default:
       break;
-
-
   }
-
-
 })
 
+const closeHandeler = () => {
+
+  if (mapStore.map!.getLayer('WindLayer9711'))
+    mapStore.map!.removeLayer('WindLayer9711')
+  if (mapStore.map!.getLayer('FlowLayer9711'))
+    mapStore.map!.removeLayer('FlowLayer9711')
+  if (mapStore.map!.getLayer('addWater'))
+    mapStore.map!.removeLayer('addWater')
+  if (mapStore.map!.getLayer('contourLayer'))
+    mapStore.map!.removeLayer('contourLayer')
+  if (mapStore.map!.getLayer('contourLabel'))
+    mapStore.map!.removeLayer('contourLabel')
+
+  selectedLayer.value = null
+
+
+}
 
 
 
@@ -278,12 +297,14 @@ onMounted(async () => {
         <div class="Description">
           <div class="radio-buttons">
             <label class="radio-button" v-for="opt in radioOptions" :key="opt.value">
-              <input type="radio" name="option" :value="opt.value">
+              <input type="radio" name="option" :value="opt.value" ref="radio">
               <div class="radio-circle" @click="selectedLayer = opt.value;"></div>
               <span class="radio-label" @click="selectedLayer = opt.value;">{{ opt.label }}</span>
             </label>
           </div>
-
+        </div>
+        <div class="imge2">
+          <div class='close' @click="closeHandeler">关闭所有</div>
         </div>
       </div>
 
@@ -372,7 +393,7 @@ onMounted(async () => {
   margin-top: 2vh;
   right: 20vw;
   width: 6vw;
-  height: 17vh;
+  height: 20vh;
   background: rgb(38, 38, 38);
   box-shadow: 7px 5px 10px rgba(0, 0, 0, 0.333);
   z-index: 1;
@@ -383,6 +404,23 @@ onMounted(async () => {
   font-weight: bolder;
   text-align: center;
   line-height: 3rem;
+  color: white;
+}
+
+.imge2 {
+  margin-top: 10px;
+  height: 1.5rem;
+  display: fixed;
+  background-color: #3d6796;
+  width: 100%;
+  cursor: pointer;
+}
+
+.close {
+  font-size: smaller;
+  font-weight: bolder;
+  text-align: center;
+  line-height: 1.5rem;
   color: white;
 }
 
@@ -400,7 +438,7 @@ onMounted(async () => {
   background-color: #414141;
   transform: translate(5%, 8%);
   width: 90%;
-  height: 60%;
+  height: 55%;
   border-radius: 5px;
 }
 
