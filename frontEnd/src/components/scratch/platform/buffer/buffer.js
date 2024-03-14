@@ -162,7 +162,6 @@ class Buffer {
                 break;
 
             case 'texture'://GPUTexture
-                console.log('update by texture',this.name);
                 let texture = this.resource.data()
                 if (!texture) return;
                 encoder.copyTextureToBuffer(

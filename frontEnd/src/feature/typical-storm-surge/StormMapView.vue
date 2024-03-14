@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import mapbox from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
+import { ElMessage } from 'element-plus'
 import { Ref, onMounted, ref, watch } from 'vue'
 import { router } from '../../router'
 import { useMapStore } from '../../store/mapStore'
@@ -18,6 +19,13 @@ import {
   updateStormLayer,
   updateTyphoonSymbol,
 } from './util'
+import {
+  WindLayer9711, FlowLayer9711, addWaterLayer, prepareAddWaterLayer
+} from '../../components/LayerFromWebGPU'
+import mapboxgl from 'mapbox-gl';
+
+
+
 
 const stationStore = useStationStore()
 const mapContainerRef: Ref<HTMLDivElement | null> = ref(null)
@@ -27,6 +35,14 @@ const stormData: Ref<null | IStormData> = ref(null)
 const tableData: Ref<null | IStormTableRow[]> = ref(null)
 const selectStormType: Ref<'199711'> = ref('199711')
 const mapStore = useMapStore()
+
+const radioOptions = [
+  { label: '风场', value: 0 },
+  { label: '流场', value: 1 },
+  { label: '增水场', value: 2 }
+]
+const selectedLayer: Ref<null | Number> = ref(null)
+
 
 const handleTableSelectionChange = (selection: any) => {
   selectPointID.value = selection.id
@@ -46,6 +62,144 @@ const handleSelectChange = async () => {
     center: [selectPointData.value.lng, selectPointData.value.lat],
   })
 }
+
+
+window.addEventListener('keydown', async (e) => {
+  if (e.key == 'Enter') {
+    // ElMessage('hell')
+    console.log(mapStore.map?.getZoom());
+    // await clearWebGPUCanvas()
+  }
+})
+
+let adwtTicker:number|null;
+const adwtHandeler = () => {
+  let addwaterCount = 3;
+  const ticker = setInterval(async() => {
+
+    console.log('!!!!:',addwaterCount);
+    
+    // remove
+    if (mapStore.map!.getLayer('addWater'))
+      mapStore.map!.removeLayer('addWater')
+    if (mapStore.map!.getLayer('contourLayer'))
+      mapStore.map!.removeLayer('contourLayer')
+    if (mapStore.map!.getLayer('contourLabel'))
+      mapStore.map!.removeLayer('contourLabel')
+
+
+    
+    // add
+    let addWaterID = addwaterCount
+    let addWaterSrcIds = ['pngsource', 'contourSrc']
+    if (mapStore.map!.getSource(addWaterSrcIds[0]) && mapStore.map!.getSource(addWaterSrcIds[1]))
+      addWaterLayer(mapStore.map!, addWaterID)
+    else {
+      mapStore.map!.getSource(addWaterSrcIds[0]) && mapStore.map!.removeSource(addWaterSrcIds[0])
+      mapStore.map!.getSource(addWaterSrcIds[1]) && mapStore.map!.removeSource(addWaterSrcIds[1])
+      await prepareAddWaterLayer(mapStore.map!, addWaterID)
+      addWaterLayer(mapStore.map!, addWaterID)
+    }
+
+
+    addwaterCount += 1;
+
+  }, 2000)
+
+  return ticker;
+}
+
+
+watch(selectedLayer, async (now: null | Number, old: null | Number) => {
+  console.log(now, old);
+  // clear 
+  switch (old) {
+    case 0:
+      if (mapStore.map!.getLayer('WindLayer9711'))
+        mapStore.map!.removeLayer('WindLayer9711')
+
+      break;
+    case 1:
+      if (mapStore.map!.getLayer('FlowLayer9711'))
+        mapStore.map!.removeLayer('FlowLayer9711')
+      break;
+    case 2:
+      if (mapStore.map!.getLayer('addWater'))
+        mapStore.map!.removeLayer('addWater')
+      if (mapStore.map!.getLayer('contourLayer'))
+        mapStore.map!.removeLayer('contourLayer')
+      if (mapStore.map!.getLayer('contourLabel'))
+        mapStore.map!.removeLayer('contourLabel')
+
+        adwtTicker&&clearInterval(adwtTicker)
+
+      break;
+    default:
+      break;
+  }
+
+
+
+
+
+  // addding
+  switch (now) {
+    case 0:
+      ElMessage("正在加载风场...")
+      mapStore.map!.addLayer(new WindLayer9711() as mapboxgl.AnyLayer);
+
+      mapStore.map!.flyTo({
+        center: [122.92069384160902, 32.0063086220937],
+        zoom: 5.084918089769568,
+        duration: 5000
+      })
+      break;
+    case 1:
+      ElMessage("正在加载流场...")
+      mapStore.map!.addLayer(new FlowLayer9711() as mapboxgl.AnyLayer);
+
+      mapStore.map!.flyTo({
+        center: [122.92069384160902, 32.0063086220937],
+        zoom: 6.912044631152661,
+        duration: 5000
+      })
+      break;
+    case 2:
+      ElMessage("正在加载增水场...")
+
+      mapStore.map!.flyTo({
+        center: [122.92069384160902, 32.0063086220937],
+        zoom: 6.912044631152661,
+        duration: 5000
+      })
+
+      adwtTicker = adwtHandeler()
+
+
+      // // static 
+      // let addWaterID = 20
+      // let addWaterSrcIds = ['pngsource', 'contourSrc']
+      // if (mapStore.map!.getSource(addWaterSrcIds[0]) && mapStore.map!.getSource(addWaterSrcIds[1]))
+      //   addWaterLayer(mapStore.map!, addWaterID)
+      // else {
+      //   mapStore.map!.getSource(addWaterSrcIds[0]) && mapStore.map!.removeSource(addWaterSrcIds[0])
+      //   mapStore.map!.getSource(addWaterSrcIds[1]) && mapStore.map!.removeSource(addWaterSrcIds[1])
+      //   await prepareAddWaterLayer(mapStore.map!, addWaterID)
+      //   addWaterLayer(mapStore.map!, addWaterID)
+      // }
+
+      break;
+    default:
+      break;
+
+
+  }
+
+
+})
+
+
+
 
 watch(selectPointID, () => {
   selectPointData.value = stormData.value!.dataList[Number(selectPointID.value)]
@@ -112,24 +266,40 @@ onMounted(async () => {
   <div class="flex h-full">
     <div class="flex h-full flex-auto relative justify-center">
       <div
-        class="absolute z-10 top-3 py-1 px-16 text-yellow-400 font-bold text-2xl flex justify-center bg-slate-700/50 rounded"
-      >
+        class="absolute z-10 top-3 py-1 px-16 text-yellow-400 font-bold text-2xl flex justify-center bg-slate-700/50 rounded">
         {{ stormData?.name }}
       </div>
-      <div ref="mapContainerRef" class="map-container h-full w-full" />
+
+      <div class="card">
+        <div class="imge">
+          <div class='title'>图层控制</div>
+        </div>
+
+        <div class="Description">
+          <div class="radio-buttons">
+            <label class="radio-button" v-for="opt in radioOptions" :key="opt.value">
+              <input type="radio" name="option" :value="opt.value">
+              <div class="radio-circle" @click="selectedLayer = opt.value;"></div>
+              <span class="radio-label" @click="selectedLayer = opt.value;">{{ opt.label }}</span>
+            </label>
+          </div>
+
+        </div>
+      </div>
+
+
+      <div ref="mapContainerRef" class="map-container h-full w-full"></div>
+      <canvas id="WebGPUFrame" class="playground"></canvas>
+
+
     </div>
     <div class="bg-white w-[21rem] flex flex-col">
       <div class="h-24 m-2 border border-zinc-300 bg-white">
         <div class="h-10 leading-10 px-3 bg-[#1b6ec8] text-white">
           历史风暴潮
         </div>
-        <el-select
-          v-model="selectStormType"
-          class="m-2 w-[90%]"
-          placeholder="Select"
-          size="large"
-          @change="handleSelectChange"
-        >
+        <el-select v-model="selectStormType" class="m-2 w-[90%]" placeholder="Select" size="large"
+          @change="handleSelectChange">
           <el-option key="199711" label="温妮 (199711)" value="199711" />
           <!-- <el-option key="200012" label="派比安 (200012)" value="200012" /> -->
         </el-select>
@@ -176,14 +346,8 @@ onMounted(async () => {
       <div class="m-2 mt-2 w-80 bg-white">
         <div class="h-10 leading-10 px-3 bg-[#1b6ec8] text-white">历史路径</div>
         <div class="border border-zinc-300">
-          <el-table
-            stripe
-            border
-            table-layout="auto"
-            :data="tableData"
-            class="h-[56vh]"
-            @current-change="handleTableSelectionChange"
-          >
+          <el-table stripe border table-layout="auto" :data="tableData" class="h-[56vh]"
+            @current-change="handleTableSelectionChange">
             <el-table-column prop="time" label="时间" />
             <el-table-column prop="powerAndStrong" label="强度" />
             <el-table-column prop="speed" label="风速" />
@@ -201,5 +365,104 @@ onMounted(async () => {
 
 :deep(.el-table tbody tr:nth-child(2n) td) {
   background: #eff6ff !important;
+}
+
+.card {
+  position: fixed;
+  margin-top: 2vh;
+  right: 20vw;
+  width: 6vw;
+  height: 17vh;
+  background: rgb(38, 38, 38);
+  box-shadow: 7px 5px 10px rgba(0, 0, 0, 0.333);
+  z-index: 1;
+}
+
+.title {
+  font-size: larger;
+  font-weight: bolder;
+  text-align: center;
+  line-height: 3rem;
+  color: white;
+}
+
+.imge {
+  height: 3rem;
+  display: fixed;
+  background-color: #3d6796;
+}
+
+.Description {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-color: #141414;
+  background-color: #414141;
+  transform: translate(5%, 8%);
+  width: 90%;
+  height: 60%;
+  border-radius: 5px;
+}
+
+.radio-buttons {
+  display: flex;
+  flex-direction: column;
+  color: white;
+}
+
+.radio-button {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+}
+
+.radio-button input[type="radio"] {
+  display: none;
+}
+
+.radio-circle {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid #aaa;
+  position: relative;
+  margin-right: 10px;
+}
+
+.radio-circle::before {
+  content: "";
+  display: block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #ddd;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  transition: all 0.2s ease-in-out;
+}
+
+.radio-button input[type="radio"]:checked+.radio-circle::before {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.radio-button input[type="radio"]:checked+.radio-circle::before {
+  background-color: #ffffff;
+}
+
+.radio-label {
+  font-size: 14px;
+  /*   font-weight: bold; */
+}
+
+#WebGPUFrame {
+  z-index: 2;
+  pointer-events: none;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0px;
 }
 </style>

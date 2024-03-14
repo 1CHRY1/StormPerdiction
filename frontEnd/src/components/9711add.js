@@ -1,8 +1,12 @@
-const addWaterLayer = async (map,id) => {
+import axios from "axios"
 
-    map.addSource('tifsource', {
+const prepareAddWaterLayer = async(map,id) =>{
+    const jsonPrefix = `/api/v1/data/nc/field/add/9711/json?name=contour_`
+    const picPrefix =  `/api/v1/data/nc/field/add/9711/pic?name=addWater_`
+
+    map.addSource('pngsource', {
         "type": "image",
-        "url": `/myBackEnd/addWaterOut9711/addWater_${id}.png`,
+        "url": picPrefix+`${id}.png`,
         "coordinates": [
             [117.6008663, 29.00020341 - 0.02],
             [124.9706147773, 29.00020341 - 0.02],
@@ -11,17 +15,24 @@ const addWaterLayer = async (map,id) => {
         ]
     })
 
-    const contourGJ = (await axios.get(`/myBackEnd/addWaterOut9711/contour_${id}.geojson`)).data
+    const contourGJ = (await axios.get(jsonPrefix+`${id}.geojson`)).data
     map.addSource('contourSrc', {
         type: "geojson",
         data: contourGJ
     })
+}
 
+const addWaterLayer = (map,id) => {
+
+    /**
+     *  `/api/v1/data/nc/field/add/9711/json?name=contour_23.geojson`,
+     *  `/api/v1/data/nc/field/add/9711/pic?name=addWater_23.png`,
+     */
 
     map.addLayer({
-        id: 'tifLayer',
+        id: 'addWater',
         type: "raster",
-        source: 'tifsource',
+        source: 'pngsource',
         paint: {
             "raster-fade-duration": 0
         }
@@ -48,4 +59,9 @@ const addWaterLayer = async (map,id) => {
         }
     })
 
+}
+
+export {
+    prepareAddWaterLayer,
+    addWaterLayer
 }

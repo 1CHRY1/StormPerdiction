@@ -58,5 +58,10 @@ export default class WindLayer9711{
 
     }
 
+    onRemove(map,gl){
+        showFlowField(false)
+        this.screen.swap()
+    }
+
 
 }

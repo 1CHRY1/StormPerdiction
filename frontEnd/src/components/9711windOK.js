@@ -176,6 +176,9 @@ let prefix = '/myBackEnd/9711/'
 // let prefix = '/myBackEnd/smallFlow/'
 // let prefix = '/myBackEnd/9711flow/'
 
+let jsonPrefix = '/api/v1/data/nc/field/wind/9711/json?name='
+let picPrefix = '/api/v1/data/nc/field/wind/9711/pic?name='
+
 
 const setGUI = (controller) => {
 
@@ -205,7 +208,7 @@ const init = async (sceneTexture) => {
 
 
     // parser = new DescriptionParser("/images/9711/9711.json")
-    parser = new DescriptionParser(prefix+'flow_field_description.json')
+    parser = new DescriptionParser(jsonPrefix+'flow_field_description.json')
 
 
     await parser.Parsing()
@@ -286,9 +289,9 @@ const init = async (sceneTexture) => {
     flowTextureArr = new Array(flowTextureArrSize)
 
 
-    flowTextureArr[0] = Scratch.imageLoader.load('flowTexture0', prefix + parser.flowFieldResourceArray[0], undefined, 'rg32float')
-    flowTextureArr[1] = Scratch.imageLoader.load('flowTexture1', prefix + parser.flowFieldResourceArray[0], undefined, 'rg32float')
-    flowTextureArr[2] = Scratch.imageLoader.load('flowTexture2', prefix + parser.flowFieldResourceArray[0], undefined, 'rg32float')
+    flowTextureArr[0] = Scratch.imageLoader.load('flowTexture0', picPrefix + parser.flowFieldResourceArray[0], undefined, 'rg32float')
+    flowTextureArr[1] = Scratch.imageLoader.load('flowTexture1', picPrefix + parser.flowFieldResourceArray[0], undefined, 'rg32float')
+    flowTextureArr[2] = Scratch.imageLoader.load('flowTexture2', picPrefix + parser.flowFieldResourceArray[0], undefined, 'rg32float')
 
     // utex = Scratch.imageLoader.load('utex', "/images/9711/texU.png", undefined, 'rg32float')
     // vtex = Scratch.imageLoader.load('vtex', "/images/9711/texV.png", undefined, 'rg32float')
@@ -296,9 +299,9 @@ const init = async (sceneTexture) => {
 
 
 
-    const transformTex = Scratch.imageLoader.load('transformTex',prefix + parser.transform2DResource, undefined, 'rg32float')
+    const transformTex = Scratch.imageLoader.load('transformTex',picPrefix + parser.transform2DResource, undefined, 'rg32float')
 
-    const seedTexture = Scratch.imageLoader.load('seedTexture',prefix + parser.seedingResourceArray[0])
+    const seedTexture = Scratch.imageLoader.load('seedTexture',picPrefix + parser.seedingResourceArray[0])
 
     const groupNum = Math.ceil(Math.sqrt(parser.maxTrajectoryNum / 16 / 16))
 
@@ -510,12 +513,12 @@ const init = async (sceneTexture) => {
     simulation_pipeline = Scratch.ComputePipeline.create({
         name: 'simulation_pipeline',
         constants: { blockSize: 16 },
-        shader: Scratch.shaderLoader.load('FFsimu', '/shaders/9711simu.wgsl')
+        shader: Scratch.shaderLoader.load('FFsimu', '/shader/9711simu.wgsl')
     })
 
     let render_pipeline = Scratch.RenderPipeline.create({
         name: 'render_pipeline',
-        shader: { module: Scratch.shaderLoader.load('FFrendLHY', '/shaders/9711rend.wgsl') },
+        shader: { module: Scratch.shaderLoader.load('FFrendLHY', '/shader/9711rend.wgsl') },
         colorTargetStates: [{ blend: Scratch.PremultipliedBlending }],
         primitive: { topology: 'triangle-strip' },
     })
@@ -602,7 +605,7 @@ const tickLogic = (mapbox_matrix, mercatorCenter, ogMatrix) => {
             simulation_pass.empty()
             simulation_pass.add(simulation_pipeline, simuBindArr[bindingIndex])
             // simulation_pass.add(simulation_pipeline, singleTestBinding)
-            updateReparse(flowTextureArr[updatePhase % flowTextureArrSize],prefix+ parser.flowFieldResourceArray[updatePhase]);
+            updateReparse(flowTextureArr[updatePhase % flowTextureArrSize],picPrefix+ parser.flowFieldResourceArray[updatePhase]);
 
             // single texture test
             // simulation_pass.empty()
@@ -631,12 +634,13 @@ export function showFlowField(visibility) {
 
     if (visibility) {
         // controller.stop = false
-        Scratch.director.showStage('Flow Field Shower')
-        gui.show()
+        Scratch.director.showStage('WindLayer9711 Shower')
+        // gui.show()
+        gui.hide()
     }
     else {
         // controller.stop = true
-        Scratch.director.hideStage('Flow Field Shower')
+        Scratch.director.hideStage('WindLayer9711 Shower')
         gui.hide()
     }
 }

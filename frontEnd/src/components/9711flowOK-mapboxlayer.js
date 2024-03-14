@@ -56,4 +56,9 @@ export default class FlowLayer9711{
         this.map.triggerRepaint();
         this.frameCount++;
     }
+
+    onRemove(map,gl){
+        showFlowField(false)
+        this.screen.swap()
+    }
 }
