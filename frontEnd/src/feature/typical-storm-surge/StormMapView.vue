@@ -122,11 +122,12 @@ watch(selectedLayer, async (now: null | Number, old: null | Number) => {
       clearInterval(adwtTicker.value)
       let addWaterSrcIds = ['pngsource', 'contourSrc', 'pngsource2', 'contourSrc2']
       let addWaterLayerIds = ['addWater', 'contourLayer', 'contourLabel', 'addWater2', 'contourLayer2', 'contourLabel2']
-      addWaterSrcIds.forEach((srcid) => {
-        mapStore.map!.getSource(srcid) && mapStore.map!.removeSource(srcid)
-      })
+
       addWaterLayerIds.forEach(layerid => {
         mapStore.map!.getLayer(layerid) && mapStore.map!.removeLayer(layerid)
+      })
+      addWaterSrcIds.forEach((srcid) => {
+        mapStore.map!.getSource(srcid) && mapStore.map!.removeSource(srcid)
       })
 
       // adwtTicker&&clearInterval(adwtTicker)
@@ -141,8 +142,8 @@ watch(selectedLayer, async (now: null | Number, old: null | Number) => {
   switch (now) {
     case 0:
       ElMessage({
-        offset:50,
-        message:"正在加载风场..."
+        offset: 50,
+        message: "正在加载风场..."
       })
       mapStore.map!.addLayer(new WindLayer9711() as mapboxgl.AnyLayer);
 
@@ -154,8 +155,8 @@ watch(selectedLayer, async (now: null | Number, old: null | Number) => {
       break;
     case 1:
       ElMessage({
-        offset:50,
-        message:"正在加载流场..."
+        offset: 50,
+        message: "正在加载流场..."
       })
       mapStore.map!.addLayer(new FlowLayer9711() as mapboxgl.AnyLayer);
 
@@ -167,8 +168,8 @@ watch(selectedLayer, async (now: null | Number, old: null | Number) => {
       break;
     case 2:
       ElMessage({
-        offset:50,
-        message:"正在加载增水场..."
+        offset: 50,
+        message: "正在加载增水场..."
       })
 
       mapStore.map!.flyTo({
@@ -191,8 +192,6 @@ watch(selectedLayer, async (now: null | Number, old: null | Number) => {
       // }
       adwtid = 4
       adwtTicker.value = setInterval(() => {
-        ElMessage(adwtid + ' adwt')
-
         adwtid % 2 && adwtHandler(adwtid)
         !(adwtid % 2) && adwtHandler2(adwtid)
 
@@ -210,11 +209,11 @@ const closeHandeler = () => {
   adwtTicker.value && clearInterval(adwtTicker.value)
   let addWaterSrcIds = ['pngsource', 'contourSrc', 'pngsource2', 'contourSrc2']
   let addWaterLayerIds = ['addWater', 'contourLayer', 'contourLabel', 'addWater2', 'contourLayer2', 'contourLabel2']
-  addWaterSrcIds.forEach((srcid) => {
-    mapStore.map!.getSource(srcid) && mapStore.map!.removeSource(srcid)
-  })
   addWaterLayerIds.forEach(layerid => {
     mapStore.map!.getLayer(layerid) && mapStore.map!.removeLayer(layerid)
+  })
+  addWaterSrcIds.forEach((srcid) => {
+    mapStore.map!.getSource(srcid) && mapStore.map!.removeSource(srcid)
   })
 
 
