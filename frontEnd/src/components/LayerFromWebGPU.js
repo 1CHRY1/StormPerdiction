@@ -3,7 +3,7 @@ import WaterDifLayer from './waterDifLayer-mapbox'
 import WindLayer from './windlayer-mapbox'
 import WindLayer9711 from './9711windOK-mapboxlayer'
 import FlowLayer9711 from './9711flowOK-mapboxlayer'
-import {prepareAddWaterLayer,addWaterLayer} from './9711add'
+import {prepareAddWaterLayer,addWaterLayer,prepareAddWaterLayer2,addWaterLayer2} from './9711add'
 
 // const clearWebGPUCanvas = async ()=>{
 //  // 初始化 WebGPU
@@ -121,5 +121,6 @@ export{
     FlowLayer9711,
     prepareAddWaterLayer,
     addWaterLayer,
+    prepareAddWaterLayer2,addWaterLayer2,
     clearWebGPUCanvas
 }

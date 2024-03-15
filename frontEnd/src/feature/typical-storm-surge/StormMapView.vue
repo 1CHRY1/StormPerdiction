@@ -20,7 +20,7 @@ import {
   updateTyphoonSymbol,
 } from './util'
 import {
-  WindLayer9711, FlowLayer9711, addWaterLayer, prepareAddWaterLayer
+  WindLayer9711, FlowLayer9711, addWaterLayer, prepareAddWaterLayer, addWaterLayer2, prepareAddWaterLayer2
 } from '../../components/LayerFromWebGPU'
 import mapboxgl from 'mapbox-gl';
 import adwtLegend from './adwtLegend.vue'
@@ -45,7 +45,7 @@ const radioOptions = [
 ]
 const selectedLayer: Ref<null | Number> = ref(null)
 
-let contourDATA:Ref<null| Object> = ref(null);
+let contourDATA: Ref<null | Object> = ref(null);
 
 
 const handleTableSelectionChange = (selection: any) => {
@@ -68,42 +68,42 @@ const handleSelectChange = async () => {
 }
 
 
-// let adwtTicker:number|null;
-// const adwtHandeler = () => {
-//   let addwaterCount = 3;
-//   const ticker = setInterval(async() => {
+let adwtid = 0;
+let adwtTicker: Ref<number> = ref(0);
+const adwtHandler = async (addwaterCount: number) => {
 
-//     console.log('!!!!:',addwaterCount);
+  let addWaterID = addwaterCount
+  let addWaterSrcIds = ['pngsource', 'contourSrc']
+  // remove
+  let addWaterLayerIds = ['addWater', 'contourLayer', 'contourLabel']
+  // remove
+  addWaterLayerIds.forEach(layerid => {
+    mapStore.map!.getLayer(layerid) && mapStore.map!.removeLayer(layerid)
+  })
+  addWaterSrcIds.forEach((srcid) => {
+    mapStore.map!.getSource(srcid) && mapStore.map!.removeSource(srcid)
+  })
+  // add
+  contourDATA.value = await prepareAddWaterLayer(mapStore.map!, addWaterID)
+  addWaterLayer(mapStore.map!, addWaterID)
+}
+const adwtHandler2 = async (addwaterCount: number) => {
 
-//     // remove
-//     if (mapStore.map!.getLayer('addWater'))
-//       mapStore.map!.removeLayer('addWater')
-//     if (mapStore.map!.getLayer('contourLayer'))
-//       mapStore.map!.removeLayer('contourLayer')
-//     if (mapStore.map!.getLayer('contourLabel'))
-//       mapStore.map!.removeLayer('contourLabel')
+  let addWaterID = addwaterCount
+  let addWaterSrcIds = ['pngsource2', 'contourSrc2']
+  let addWaterLayerIds = ['addWater2', 'contourLayer2', 'contourLabel2']
+  // remove
+  addWaterLayerIds.forEach(layerid => {
+    mapStore.map!.getLayer(layerid) && mapStore.map!.removeLayer(layerid)
+  })
+  addWaterSrcIds.forEach((srcid) => {
+    mapStore.map!.getSource(srcid) && mapStore.map!.removeSource(srcid)
+  })
+  // add
+  contourDATA.value = await prepareAddWaterLayer2(mapStore.map!, addWaterID)
+  addWaterLayer2(mapStore.map!, addWaterID)
+}
 
-
-
-//     // add
-//     let addWaterID = addwaterCount
-//     let addWaterSrcIds = ['pngsource', 'contourSrc']
-//     if (mapStore.map!.getSource(addWaterSrcIds[0]) && mapStore.map!.getSource(addWaterSrcIds[1]))
-//       addWaterLayer(mapStore.map!, addWaterID)
-//     else {
-//       mapStore.map!.getSource(addWaterSrcIds[0]) && mapStore.map!.removeSource(addWaterSrcIds[0])
-//       mapStore.map!.getSource(addWaterSrcIds[1]) && mapStore.map!.removeSource(addWaterSrcIds[1])
-//       await prepareAddWaterLayer(mapStore.map!, addWaterID)
-//       addWaterLayer(mapStore.map!, addWaterID)
-//     }
-
-
-//     addwaterCount += 1;
-
-//   }, 2000)
-
-//   return ticker;
-// }
 
 
 watch(selectedLayer, async (now: null | Number, old: null | Number) => {
@@ -119,12 +119,15 @@ watch(selectedLayer, async (now: null | Number, old: null | Number) => {
         mapStore.map!.removeLayer('FlowLayer9711')
       break;
     case 2:
-      if (mapStore.map!.getLayer('addWater'))
-        mapStore.map!.removeLayer('addWater')
-      if (mapStore.map!.getLayer('contourLayer'))
-        mapStore.map!.removeLayer('contourLayer')
-      if (mapStore.map!.getLayer('contourLabel'))
-        mapStore.map!.removeLayer('contourLabel')
+      clearInterval(adwtTicker.value)
+      let addWaterSrcIds = ['pngsource', 'contourSrc', 'pngsource2', 'contourSrc2']
+      let addWaterLayerIds = ['addWater', 'contourLayer', 'contourLabel', 'addWater2', 'contourLayer2', 'contourLabel2']
+      addWaterSrcIds.forEach((srcid) => {
+        mapStore.map!.getSource(srcid) && mapStore.map!.removeSource(srcid)
+      })
+      addWaterLayerIds.forEach(layerid => {
+        mapStore.map!.getLayer(layerid) && mapStore.map!.removeLayer(layerid)
+      })
 
       // adwtTicker&&clearInterval(adwtTicker)
 
@@ -134,13 +137,13 @@ watch(selectedLayer, async (now: null | Number, old: null | Number) => {
   }
 
 
-
-
-
   // addding
   switch (now) {
     case 0:
-      ElMessage("正在加载风场...")
+      ElMessage({
+        offset:50,
+        message:"正在加载风场..."
+      })
       mapStore.map!.addLayer(new WindLayer9711() as mapboxgl.AnyLayer);
 
       mapStore.map!.flyTo({
@@ -150,7 +153,10 @@ watch(selectedLayer, async (now: null | Number, old: null | Number) => {
       })
       break;
     case 1:
-      ElMessage("正在加载流场...")
+      ElMessage({
+        offset:50,
+        message:"正在加载流场..."
+      })
       mapStore.map!.addLayer(new FlowLayer9711() as mapboxgl.AnyLayer);
 
       mapStore.map!.flyTo({
@@ -160,7 +166,10 @@ watch(selectedLayer, async (now: null | Number, old: null | Number) => {
       })
       break;
     case 2:
-      ElMessage("正在加载增水场...")
+      ElMessage({
+        offset:50,
+        message:"正在加载增水场..."
+      })
 
       mapStore.map!.flyTo({
         center: [122.92069384160902, 32.0063086220937],
@@ -169,19 +178,26 @@ watch(selectedLayer, async (now: null | Number, old: null | Number) => {
       })
 
       // adwtTicker = adwtHandeler()
-
-
       // static 
-      let addWaterID = 26
-      let addWaterSrcIds = ['pngsource', 'contourSrc']
-      if (mapStore.map!.getSource(addWaterSrcIds[0]) && mapStore.map!.getSource(addWaterSrcIds[1]))
-        addWaterLayer(mapStore.map!, addWaterID)
-      else {
-        mapStore.map!.getSource(addWaterSrcIds[0]) && mapStore.map!.removeSource(addWaterSrcIds[0])
-        mapStore.map!.getSource(addWaterSrcIds[1]) && mapStore.map!.removeSource(addWaterSrcIds[1])
-        contourDATA.value = await prepareAddWaterLayer(mapStore.map!, addWaterID)        
-        addWaterLayer(mapStore.map!, addWaterID)
-      }
+      // let addWaterID = 26
+      // let addWaterSrcIds = ['pngsource', 'contourSrc']
+      // if (mapStore.map!.getSource(addWaterSrcIds[0]) && mapStore.map!.getSource(addWaterSrcIds[1]))
+      //   addWaterLayer(mapStore.map!, addWaterID)
+      // else {
+      //   mapStore.map!.getSource(addWaterSrcIds[0]) && mapStore.map!.removeSource(addWaterSrcIds[0])
+      //   mapStore.map!.getSource(addWaterSrcIds[1]) && mapStore.map!.removeSource(addWaterSrcIds[1])
+      //   contourDATA.value = await prepareAddWaterLayer(mapStore.map!, addWaterID)
+      //   addWaterLayer(mapStore.map!, addWaterID)
+      // }
+      adwtid = 4
+      adwtTicker.value = setInterval(() => {
+        ElMessage(adwtid + ' adwt')
+
+        adwtid % 2 && adwtHandler(adwtid)
+        !(adwtid % 2) && adwtHandler2(adwtid)
+
+        adwtid = (adwtid + 1) % 195
+      }, 3000)
 
       break;
     default:
@@ -191,23 +207,23 @@ watch(selectedLayer, async (now: null | Number, old: null | Number) => {
 
 const closeHandeler = () => {
 
-  if (mapStore.map!.getLayer('WindLayer9711'))
-    mapStore.map!.removeLayer('WindLayer9711')
-  if (mapStore.map!.getLayer('FlowLayer9711'))
-    mapStore.map!.removeLayer('FlowLayer9711')
-  if (mapStore.map!.getLayer('addWater'))
-    mapStore.map!.removeLayer('addWater')
-  if (mapStore.map!.getLayer('contourLayer'))
-    mapStore.map!.removeLayer('contourLayer')
-  if (mapStore.map!.getLayer('contourLabel'))
-    mapStore.map!.removeLayer('contourLabel')
+  adwtTicker.value && clearInterval(adwtTicker.value)
+  let addWaterSrcIds = ['pngsource', 'contourSrc', 'pngsource2', 'contourSrc2']
+  let addWaterLayerIds = ['addWater', 'contourLayer', 'contourLabel', 'addWater2', 'contourLayer2', 'contourLabel2']
+  addWaterSrcIds.forEach((srcid) => {
+    mapStore.map!.getSource(srcid) && mapStore.map!.removeSource(srcid)
+  })
+  addWaterLayerIds.forEach(layerid => {
+    mapStore.map!.getLayer(layerid) && mapStore.map!.removeLayer(layerid)
+  })
+
 
   selectedLayer.value = null
 
   radio!.value!.forEach(item => {
 
     item.checked = false
-    
+
   });
 
 
@@ -307,7 +323,7 @@ onMounted(async () => {
         </div>
       </div>
 
-      <adwtLegend v-show="selectedLayer==2" :contourData="contourDATA"></adwtLegend>
+      <adwtLegend v-show="selectedLayer == 2" :contourData="contourDATA"></adwtLegend>
 
       <div ref="mapContainerRef" class="map-container h-full w-full"></div>
       <canvas id="WebGPUFrame" class="playground"></canvas>
@@ -388,7 +404,7 @@ onMounted(async () => {
   background: #eff6ff !important;
 }
 
-.adwtLegend{
+.adwtLegend {
   position: fixed;
   bottom: 10vh;
   right: 20vw;
@@ -403,7 +419,7 @@ onMounted(async () => {
   height: 20vh;
   background: rgb(38, 38, 38);
   box-shadow: 7px 5px 10px rgba(0, 0, 0, 0.333);
-  z-index: 2;
+  z-index: 3;
 }
 
 .title {

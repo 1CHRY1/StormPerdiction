@@ -18,7 +18,7 @@ const getCountourArr = (geojson: any) => {
     // contorArr.
     contorArr.sort()
     contorArr.reverse()
-    console.log(contorArr);
+    // console.log(contorArr);
 
     return contorArr
 }
@@ -87,7 +87,8 @@ onMounted(() => {
 .rampColor {
     width: 30px;
     margin-left: 25px;
-    background: rgb(9, 1, 145);
-    background: linear-gradient(0deg, rgba(9, 1, 145, 1) 0%, rgba(70, 184, 3, 1) 50%, rgba(255, 0, 0, 1) 100%);
+    background: rgb(0, 0, 127);
+    background: linear-gradient(0deg, rgba(0, 0, 127, 1) 0%, rgba(0, 255, 0, 0.9416141456582633) 50%, rgba(127, 0, 0, 1) 100%);
+
 }
 </style>
