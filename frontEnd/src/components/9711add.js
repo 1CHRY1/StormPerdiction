@@ -20,6 +20,8 @@ const prepareAddWaterLayer = async(map,id) =>{
         type: "geojson",
         data: contourGJ
     })
+
+    return contourGJ
 }
 
 const addWaterLayer = (map,id) => {

@@ -23,6 +23,7 @@ import {
   WindLayer9711, FlowLayer9711, addWaterLayer, prepareAddWaterLayer
 } from '../../components/LayerFromWebGPU'
 import mapboxgl from 'mapbox-gl';
+import adwtLegend from './adwtLegend.vue'
 
 
 
@@ -44,6 +45,8 @@ const radioOptions = [
 ]
 const selectedLayer: Ref<null | Number> = ref(null)
 
+let contourDATA:Ref<null| Object> = ref(null);
+
 
 const handleTableSelectionChange = (selection: any) => {
   selectPointID.value = selection.id
@@ -64,19 +67,6 @@ const handleSelectChange = async () => {
   })
 }
 
-
-window.addEventListener('keydown', async (e) => {
-  if (e.key == 'Enter') {
-    // ElMessage('hell')
-    // console.log(mapStore.map?.getZoom());
-    // (radio.value![0]! as any).checked = false
-    // (radio.value![1]! as any).checked = false
-    // (radio.value![2]! as any).checked = false
-
-    
-    // await clearWebGPUCanvas()
-  }
-})
 
 // let adwtTicker:number|null;
 // const adwtHandeler = () => {
@@ -117,7 +107,6 @@ window.addEventListener('keydown', async (e) => {
 
 
 watch(selectedLayer, async (now: null | Number, old: null | Number) => {
-  console.log(now, old);
   // clear 
   switch (old) {
     case 0:
@@ -190,7 +179,7 @@ watch(selectedLayer, async (now: null | Number, old: null | Number) => {
       else {
         mapStore.map!.getSource(addWaterSrcIds[0]) && mapStore.map!.removeSource(addWaterSrcIds[0])
         mapStore.map!.getSource(addWaterSrcIds[1]) && mapStore.map!.removeSource(addWaterSrcIds[1])
-        await prepareAddWaterLayer(mapStore.map!, addWaterID)
+        contourDATA.value = await prepareAddWaterLayer(mapStore.map!, addWaterID)        
         addWaterLayer(mapStore.map!, addWaterID)
       }
 
@@ -215,6 +204,16 @@ const closeHandeler = () => {
 
   selectedLayer.value = null
 
+  radio!.value!.forEach(item => {
+
+    item.checked = false
+    
+  });
+
+
+  // (radio.value![0]! as any).checked = false
+  // (radio.value![1]! as any).checked = false
+  // (radio.value![2]! as any).checked = false
 
 }
 
@@ -308,6 +307,7 @@ onMounted(async () => {
         </div>
       </div>
 
+      <adwtLegend v-show="selectedLayer==2" :contourData="contourDATA"></adwtLegend>
 
       <div ref="mapContainerRef" class="map-container h-full w-full"></div>
       <canvas id="WebGPUFrame" class="playground"></canvas>
@@ -388,6 +388,13 @@ onMounted(async () => {
   background: #eff6ff !important;
 }
 
+.adwtLegend{
+  position: fixed;
+  bottom: 10vh;
+  right: 20vw;
+  z-index: 2;
+}
+
 .card {
   position: fixed;
   margin-top: 2vh;
@@ -396,7 +403,7 @@ onMounted(async () => {
   height: 20vh;
   background: rgb(38, 38, 38);
   box-shadow: 7px 5px 10px rgba(0, 0, 0, 0.333);
-  z-index: 1;
+  z-index: 2;
 }
 
 .title {
@@ -484,11 +491,9 @@ onMounted(async () => {
 
 .radio-button input[type="radio"]:checked+.radio-circle::before {
   transform: translate(-50%, -50%) scale(1);
-}
-
-.radio-button input[type="radio"]:checked+.radio-circle::before {
   background-color: #ffffff;
 }
+
 
 .radio-label {
   font-size: 14px;
