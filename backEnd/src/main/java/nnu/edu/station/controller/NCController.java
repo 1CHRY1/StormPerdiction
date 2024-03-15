@@ -299,7 +299,7 @@ public class NCController {
 
     @GetMapping("/field/add/9711/pic")
     public ResponseEntity<FileSystemResource> get9711AddPic(@RequestParam String name) {
-        String filePath = AddField + "/" + name;
+        String filePath = AddField9711 + "/" + name;
         File file = new File(filePath);
         if (file.exists()){
             HttpHeaders headers = new HttpHeaders();

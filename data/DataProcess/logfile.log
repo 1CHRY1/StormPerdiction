@@ -227,3 +227,7 @@ Log message: Radar Data clawing scheduled at 2024-03-13T16:30:00.016
 Log message: Error executing radar Data clawingnull
 Log message: Rainfall Data clawing scheduled at 2024-03-13T16:50:00.017
 Log message: Error executing rainfall Data clawingnull
+Log message: Cloud Data clawing scheduled at 2024-03-14T16:10:00.055
+Log message: Error executing cloud Data clawingnull
+Log message: Cloud Data clawing scheduled at 2024-03-14T18:10:00.063
+Log message: Cloud Data clawing executed successfully!
