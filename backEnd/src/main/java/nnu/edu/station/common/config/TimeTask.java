@@ -123,7 +123,7 @@ public class TimeTask {
     NCService ncService;
 
 //    @Scheduled(cron = "0/5 * * * * *")
-    @Scheduled(cron = "0 0 4 * * ?")
+    @Scheduled(cron = "0 0 16 * * ?")
     public void executePythonUpdateData() throws IOException {
         // 每日更新站点数据
         UpdateUtil.DataUpdating(python, updateData, logPath);
@@ -153,7 +153,7 @@ public class TimeTask {
         ClawingUtil.ClawingRainfallpreData(python, clawingRainfallpre, meteorologydb, rainfallprefile, webdriver, logPath);
     }
 
-    @Scheduled(cron = "20 01 21 * * ?")
+    @Scheduled(cron = "0 20 10 * * ?")
     public void  executePythonClawingTyphoonData() throws IOException {
         // 爬取当日台风数据
         ClawingUtil.ClawingTyphoonData(python, clawingTyphoon, logPath);

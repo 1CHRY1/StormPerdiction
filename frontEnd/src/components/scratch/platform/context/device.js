@@ -24,11 +24,11 @@ export class Device {
 
         const adapterFeatures = adapter.features;
         // Iterate through all the set values using values()
-        // console.log("Features supported by the adapter");
+        console.log("Features supported by the adapter");
         const valueIterator = adapterFeatures.values();
-        // for (const value of valueIterator) {
-        //     console.log(value);
-        // }
+        for (const value of valueIterator) {
+            console.log(value);
+        }
 
         deviceInstance.device = await adapter.requestDevice();
         deviceInstance.device.lost.then((info) => {
@@ -42,7 +42,7 @@ export class Device {
         });
         
         deviceInstance.isPrepared = true;
-        // console.log(deviceInstance.device);
+        console.log(deviceInstance.device);
 
         return deviceInstance;
     }
