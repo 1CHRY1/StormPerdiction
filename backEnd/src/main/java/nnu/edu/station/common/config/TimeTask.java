@@ -41,6 +41,9 @@ public class TimeTask {
     @Value("${updateData}")
     String updateData;
 
+    @Value("${dataprocess}")
+    String dataprocess;
+
     @Value("${clawingCloud}")
     String clawingCloud;
 
@@ -126,7 +129,7 @@ public class TimeTask {
     @Scheduled(cron = "0 0 16 * * ?")
     public void executePythonUpdateData() throws IOException {
         // 每日更新站点数据
-        UpdateUtil.DataUpdating(python, updateData, logPath);
+        UpdateUtil.DataUpdating(python, updateData, dataprocess, logPath);
     }
 
     @Scheduled(cron = "0 10 */2 * * ?")

@@ -1,3 +1,5 @@
+import sys
+
 from scipy.io import loadmat
 import json
 import netCDF4 as nc
@@ -6,18 +8,6 @@ import os
 import schedule
 import time
 from datetime import datetime, timedelta
-
-def getStationInfo():
-    # 获取所有站点信息
-    filePath = "station.json"
-    with open(filePath, 'r', encoding='utf-8') as file:
-        data = json.load(file)
-    return data
-
-def ReadMatfile(filePath):
-    # 读取mat文件
-    matData = loadmat(filePath)
-    return matData
 
 def JudgeIfTyph(filePath):
     # 判断是否有台风
@@ -146,12 +136,17 @@ def get_prefix_before_digits(input_str):
     return prefix
 
 def main():
-    db_path_Forcasting = os.getcwd() + '/Forcasting.db'
-    db_path_NC = os.getcwd() + '/NC.db'
-    stations_path = 'station.json'
+    args = sys.argv
+    if len(args) < 2:
+        print("未传入正确数量参数")
+        sys.exit(1)
+    dataprocess_path = args[1]
+    db_path_Forcasting = dataprocess_path + '/Forcasting.db'
+    db_path_NC = dataprocess_path + '/NC.db'
+    stations_path = dataprocess_path + '/station.json'
     with open(stations_path, 'r', encoding='utf-8') as file:
         stations = json.load(file)
-    folderPath = os.path.abspath(os.pardir) + "/forecastData"
+    folderPath = os.path.dirname(dataprocess_path) + "/forecastData"
     folderPath = folderPath.replace(os.sep, '/')
     folders = os.listdir(folderPath)
     for folder in folders:

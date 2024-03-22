@@ -13,11 +13,11 @@ import java.time.LocalDateTime;
  * @Description:
  */
 public class UpdateUtil {
-    public static void DataUpdating(String python, String updateData, String logPath) throws IOException {
+    public static void DataUpdating(String python, String updateData, String dataprocessPath, String logPath) throws IOException {
         PrintWriter writer = new PrintWriter(new FileWriter(logPath, true));
         // 每日更新站点数据
         try {
-            Process process = Runtime.getRuntime().exec(python + " " + updateData);
+            Process process = Runtime.getRuntime().exec(python + " " + updateData + " " + dataprocessPath);
             // 添加日志输出
             System.out.println("Data updating scheduled at " + LocalDateTime.now());
             writer.println("Log message: Data updating scheduled at " + LocalDateTime.now());
