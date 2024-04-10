@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.swing.text.html.HTMLDocument;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
@@ -16,6 +18,14 @@ public class LevelController {
 
     @Autowired
     LevelService levelService;
+
+    @GetMapping(value = "/typh")
+    public JsonResult getIfTyph() {
+        LocalDateTime time = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String time_str = time.format(formatter);
+        return ResultUtils.success(levelService.ifTyph(time_str));
+    }
 
     @GetMapping(value = "/station")
     public JsonResult getAllInfoByStation(@RequestParam String station) {
