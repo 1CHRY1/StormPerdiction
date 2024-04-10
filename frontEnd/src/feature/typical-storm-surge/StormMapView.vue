@@ -6,7 +6,7 @@ import { Ref, onMounted, ref, watch } from 'vue'
 import { router } from '../../router'
 import { useMapStore } from '../../store/mapStore'
 import { useStationStore } from '../../store/stationStore'
-import { initMap } from '../../util/initMap'
+import { initMap,initScratchMap } from '../../util/initMap'
 import { IStormData, IStormDataOfPoint, IStormTableRow } from './type'
 import {
   addStationLayer,
@@ -20,7 +20,8 @@ import {
   updateTyphoonSymbol,
 } from './util'
 import {
-  WindLayer9711, FlowLayer9711, addWaterLayer, prepareAddWaterLayer, addWaterLayer2, prepareAddWaterLayer2
+  WindLayer9711, FlowLayer9711, addWaterLayer, prepareAddWaterLayer, addWaterLayer2, prepareAddWaterLayer2,
+  flow9711,wind9711,flow,wind
 } from '../../components/LayerFromWebGPU'
 import mapboxgl from 'mapbox-gl';
 import adwtLegend from './adwtLegend.vue'
@@ -105,18 +106,22 @@ const adwtHandler2 = async (addwaterCount: number) => {
 }
 
 
+const wind = new wind9711() as mapboxgl.AnyLayer
+const flow = new flow9711() as mapboxgl.AnyLayer
 
 watch(selectedLayer, async (now: null | Number, old: null | Number) => {
   // clear 
   switch (old) {
     case 0:
-      if (mapStore.map!.getLayer('WindLayer9711'))
-        mapStore.map!.removeLayer('WindLayer9711')
+      // if (mapStore.map!.getLayer('WindLayer9711'))
+      //   mapStore.map!.removeLayer('WindLayer9711')
+      wind.hide()
 
       break;
     case 1:
-      if (mapStore.map!.getLayer('FlowLayer9711'))
-        mapStore.map!.removeLayer('FlowLayer9711')
+      // if (mapStore.map!.getLayer('FlowLayer9711'))
+      //   mapStore.map!.removeLayer('FlowLayer9711')
+      flow.hide()
       break;
     case 2:
       clearInterval(adwtTicker.value)
@@ -145,7 +150,10 @@ watch(selectedLayer, async (now: null | Number, old: null | Number) => {
         offset: 50,
         message: "正在加载风场..."
       })
-      mapStore.map!.addLayer(new WindLayer9711() as mapboxgl.AnyLayer);
+      // mapStore.map!.addLayer(new WindLayer9711() as mapboxgl.AnyLayer);
+      // mapStore.map!.addLayer(new wind9711() as mapboxgl.AnyLayer)
+      // mapStore.map!.addLayer(new wind() as mapboxgl.AnyLayer)
+      wind.show()
 
       mapStore.map!.flyTo({
         center: [122.92069384160902, 32.0063086220937],
@@ -158,7 +166,10 @@ watch(selectedLayer, async (now: null | Number, old: null | Number) => {
         offset: 50,
         message: "正在加载流场..."
       })
-      mapStore.map!.addLayer(new FlowLayer9711() as mapboxgl.AnyLayer);
+      // mapStore.map!.addLayer(new FlowLayer9711() as mapboxgl.AnyLayer);
+      // mapStore.map!.addLayer(new flow9711() as mapboxgl.AnyLayer)
+      // mapStore.map!.addLayer(new flow() as mapboxgl.AnyLayer)
+      flow.show()
 
       mapStore.map!.flyTo({
         center: [122.92069384160902, 32.0063086220937],
@@ -206,6 +217,9 @@ watch(selectedLayer, async (now: null | Number, old: null | Number) => {
 
 const closeHandeler = () => {
 
+  wind.hide()
+  flow.hide()
+
   adwtTicker.value && clearInterval(adwtTicker.value)
   let addWaterSrcIds = ['pngsource', 'contourSrc', 'pngsource2', 'contourSrc2']
   let addWaterLayerIds = ['addWater', 'contourLayer', 'contourLabel', 'addWater2', 'contourLayer2', 'contourLabel2']
@@ -252,13 +266,19 @@ onMounted(async () => {
   tableData.value = generateStormTableData(stormData.value)
   selectPointData.value = stormData.value!.dataList[Number(selectPointID.value)]
 
-  const map: mapbox.Map = await initMap(
-    mapContainerRef.value as HTMLDivElement,
-    {
-      center: [131, 30],
-      zoom: 3,
-    },
-  )
+  // const map: mapbox.Map = await initMap(
+  //   mapContainerRef.value as HTMLDivElement,
+  //   {
+  //     center: [131, 30],
+  //     zoom: 3,
+  //   },
+  // )
+  const map:mapbox.Map = await initScratchMap(mapContainerRef.value)
+  map.addLayer(wind)
+  wind.hide()
+  map.addLayer(flow)
+  flow.hide()
+
   addStationLayer(map)
   await addStormLayer(map, selectStormType.value)
   await addTyphoonSymbol(map, [
@@ -325,7 +345,7 @@ onMounted(async () => {
       <adwtLegend v-show="selectedLayer == 2" :contourData="contourDATA"></adwtLegend>
 
       <div ref="mapContainerRef" class="map-container h-full w-full"></div>
-      <canvas id="WebGPUFrame" class="playground"></canvas>
+      <canvas id="GPUFrame" class="playground"></canvas>
 
 
     </div>
@@ -515,7 +535,7 @@ onMounted(async () => {
   /*   font-weight: bold; */
 }
 
-#WebGPUFrame {
+#GPUFrame {
   z-index: 2;
   pointer-events: none;
   position: absolute;

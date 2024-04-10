@@ -1,5 +1,5 @@
 import { Buffer } from "./buffer.js";
-import { ArrayRef } from "../data/arrayRef.js";
+import { ArrayRef } from "../../core/data/arrayRef.js";
 
 function parseArrayType(typedArray) {
 
@@ -102,6 +102,15 @@ class VertexBuffer extends Buffer {
     }
 }
 
+/**
+ * @param {VertexBufferDescription} description 
+ */
+function vertexBuffer(description) {
+
+    return VertexBuffer.create(description)
+}
+
 export {
+    vertexBuffer,
     VertexBuffer,
 }

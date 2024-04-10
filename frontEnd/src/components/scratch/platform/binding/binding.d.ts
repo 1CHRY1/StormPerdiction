@@ -1,4 +1,3 @@
-import { Buffer } from './../buffer/buffer';
 import { IndexBuffer } from "../buffer/indexBuffer";
 import { IndirectBuffer } from "../buffer/indirectBuffer";
 import { VertexBuffer } from "../buffer/vertexBuffer";
@@ -6,19 +5,22 @@ import { Shader } from "../shader/shader";
 import { Texture } from "../texture/texture";
 import { UniformBuffer } from '../buffer/uniformBuffer';
 import { StorageBuffer } from '../buffer/storageBuffer';
-import { BlockValueType } from '../data/blockRef';
+import { BlockValueType } from '../../core/data/blockRef';
+import { Sampler } from "../sampler/sampler";
+import { ScratchObject } from "../../core/object/object";
+import { Numeric } from '../../core/numericType/numericType.js';
 
 export interface UniformBindingDescription {
     name: string,
     dynamic?: boolean,
     visibility?: number,
-    map: {[varName: string]: {type: BlockValueType, value: Function}},
+    map: { [varName: string]: Numeric | { type: string, data: any } },
 };
 
 export interface SharedUniformBindingDescription {
     buffer: UniformBuffer,
     visibility?: number,
-}
+};
 
 export interface StorageBindingDescription {
     buffer: StorageBuffer | VertexBuffer | IndexBuffer | IndirectBuffer,
@@ -35,12 +37,9 @@ export interface IndirectBindingDescription {
 };
 
 export interface SamplerDescription {
-    name: string,
-    addressModeUVW: Array<GPUAddressMode>,
-    filterMinMag: Array<GPUFilterMode>,
+    sampler: Sampler
     visibility?: number,
     bindingType?: GPUSamplerBindingType,
-    maxAnisotropy?: number,
 };
 
 export interface VertexBindingDescription {
@@ -71,14 +70,17 @@ export interface BindingsDescription {
     sharedUniforms?: Array<SharedUniformBindingDescription>,
 };
 
-export class Binding {
+export class Binding extends ScratchObject {
 
     indirectBinding: {buffer: GPUBuffer | undefined, byteOffset: number};
     isComplete: boolean;
+    executable: boolean;
 
     constructor();
 
     static create(description: BindingsDescription): Binding;
+
+    exportLayoutDescriptor(type: 'uniform' | 'storage' | 'texture'): GPUBindGroupLayoutDescriptor;
 
     update(): void;
 
@@ -103,8 +105,6 @@ export class Binding {
     getShader(): GPUShaderModule;
 
     tryMakeComplete(): boolean;
-
-    destroy(): void;
-
-    release(): null;
 }
+
+export function binding(description: BindingsDescription): Binding;

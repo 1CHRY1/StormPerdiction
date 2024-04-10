@@ -11,6 +11,12 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },
+      '/testapi':{
+        target: 'https://172.21.213.47:3001/forecastRouter/flow/',
+        changeOrigin: true,
+        secure:false,
+        rewrite: (path) => path.replace(/^\/testapi/, ''),
+      }
     },
   },
 })

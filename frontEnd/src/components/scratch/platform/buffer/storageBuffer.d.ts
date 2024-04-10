@@ -1,4 +1,3 @@
-import { ArrayRef } from "../data/arrayRef";
 import { Buffer, BufferDescription } from "./buffer";
 import { IndexBuffer } from "./indexBuffer";
 
@@ -22,9 +21,8 @@ class StorageBuffer extends Buffer {
     constructor(description?: BufferDescription);
 
     static create(description: StorageBufferDescription): StorageBuffer;
-    static fromVertexBuffer(vertexBuffer: VertexBuffer): StorageBuffer;
-    static fromIndexBuffer(indexBuffer: IndexBuffer): StorageBuffer;
-    static fromIndirectBuffer(indirectBuffer: IndirectBuffer): StorageBuffer;
 }
 
-export { StorageBuffer };
+function storageBuffer(description: StorageBufferDescription): StorageBuffer;
+
+export { storageBuffer, StorageBuffer };

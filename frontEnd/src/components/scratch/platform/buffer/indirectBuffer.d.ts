@@ -1,5 +1,5 @@
 import { Buffer } from './buffer';
-import { ArrayRef } from "../data/arrayRef"
+import { ArrayRef } from "../../core/data/arrayRef"
 
 export interface IndirectResourceDescription {
     arrayRef: ArrayRef,
@@ -22,3 +22,5 @@ export class IndirectBuffer extends Buffer {
      */
     static create(description: IndirectBufferDescription): IndirectBuffer;
 }
+
+export function indirectBuffer(description: IndirectBufferDescription): IndirectBuffer;

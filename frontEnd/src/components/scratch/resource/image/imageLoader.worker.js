@@ -5,7 +5,7 @@ self.addEventListener('message', (event) => {
 });
   
 function loadImage(url) {
-    // console.log('loading ',url);
+  
     fetch(url)
       .then(response => response.blob())
       .then(blob => createImageBitmap(blob, {imageOrientation: "none", premultiplyAlpha: "none", colorSpaceConversion: "default"}))

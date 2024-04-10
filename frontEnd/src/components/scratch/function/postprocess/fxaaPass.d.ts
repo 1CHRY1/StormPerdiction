@@ -3,7 +3,7 @@ import { RenderPass } from "../../platform/pass/renderPass"
 import { Texture } from "../../platform/texture/texture"
 import shaderLoader from "../../resource/shader/shaderLoader"
 import { BindingsDescription } from "../../platform/binding/binding"
-import { ArrayRef } from "../../platform/data/arrayRef"
+import { ArrayRef } from "../../core/data/arrayRef"
 
 
 export interface FXAAPassDescription {
@@ -24,3 +24,5 @@ export class FXAAPass {
 
     onWindowResize(): void;
 }
+
+export function fxaaPass(description: FXAAPassDescription): FXAAPass;

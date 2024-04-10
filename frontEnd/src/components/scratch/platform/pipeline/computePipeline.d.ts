@@ -7,7 +7,10 @@ import { Shader } from "../shader/shader";
  */
 export interface ComputePipelineDescription {
     name?: string,
-    shader: Shader,
+    shader: {
+        module: Shader,
+        csEntryPoint?: string,
+    },
     constants: { [constantName: string]: number },
 };
 
@@ -19,6 +22,8 @@ export class ComputePipeline {
      * Name of the ComputableBuilder.
      */
     name: string;
+
+    executable: boolean;
 
     /**
      * Pipeline layout associated with the ComputableBuilder.
@@ -52,3 +57,5 @@ export class ComputePipeline {
 
     triggerFiniteTimes(times: number): ComputePipeline;
 }
+
+export function computePipeline(description: ComputePipelineDescription): ComputePipeline;

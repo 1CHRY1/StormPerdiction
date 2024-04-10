@@ -1,9 +1,8 @@
-import { UUID } from "../../core/utils/uuid.js"
-import getDevice from "../context/device.js"
-import { ArrayRef } from "../data/arrayRef.js"
-import { BlockRef } from "../data/blockRef.js"
+import { ArrayRef } from "../../core/data/arrayRef.js"
+import { BlockRef } from "../../core/data/blockRef.js"
 import director from "../director/director.js"
 import monitor from "../monitor/monitor.js"
+import { ScratchObject } from "../../core/object/object.js"
 
 /**
  * @typedef {Object} BufferDescription
@@ -16,43 +15,25 @@ import monitor from "../monitor/monitor.js"
  * @typedef {ArrayRef | BlockRef} Ref
  */
 
-class Buffer {
+class Buffer extends ScratchObject {
 
     /**
-     * @param {BufferDescription} [description] 
+     * @param {BufferDescription} description
      */
     constructor(description) {
 
-        this.uuid = UUID()
+        super()
 
-        this.name = 'Buffer'
-        this.refCount = 0
-        this.device = getDevice()
-        this.onChangeHandlers = []
+        this.name = description.name !== undefined ? description.name : 'Buffer'
 
-        this.resource = {
-            data: undefined,
-            dataType: 'clean'
-        }
-        if (description) {
+        this.buffer = undefined
 
-            this.usage = description.usage ? description.usage : GPUBufferUsage.COPY_DST | GPUBufferUsage.COPY_SRC
-            this.name = description.name ? description.name : 'Buffer'
-            this.resource = description.resource ? description.resource : {
-                data: undefined,
-                dataType: 'clean'
-            }
-            if (description.size) {
-                this.size = description.size
-                this.buffer = this.device.createBuffer({
-                    label: this.name,
-                    size: this.size,
-                    usage: this.usage
-                })
-                monitor.memorySizeInBytes += this.size
-            }
+        this.size = description.size
+        monitor.memorySizeInBytes += this.size
 
-        }
+        this.usage = description.usage
+
+        director.dispatchEvent({type: 'createBuffer', emitter: this})
 
         /**
          * @type {{[mapName: string]: {start: number, length: number, ref: Ref, dataOffset?: number, size?: number, callbackIndex: number}}}
@@ -60,26 +41,22 @@ class Buffer {
         this.areaMap = {}
         this.lastAreaName = null
 
+        this.updatePerFrame = false
         this.dirtyList = new Set()
-        director.addBuffer(this)
+
+        this.needUpdate()
     }
 
-    static create(description) {
-        const buffer = new Buffer(description)
-        return buffer
-    }
+    /**
+     * @returns {GPUBufferDescriptor}
+     */
+    exportDescriptor() {
 
-    use() {
-
-        this.refCount++
-        return this
-    }
-
-    release() {
-
-        if (--this.refCount === 0) this.destroy()
-
-        return null
+        return {
+            label: this.name,
+            size: this.size,
+            usage: this.usage
+        }
     }
 
     /**
@@ -103,7 +80,7 @@ class Buffer {
             alignmentOffset = alignment - (ref.value.byteLength % alignment)
         }
         let length = ref.value.byteLength + alignmentOffset
-
+        
         this.areaMap[ref.name] = {
             start: offset,
             length: length,
@@ -112,7 +89,10 @@ class Buffer {
             ref: ref.use(),
             dataOffset: dataOffset,
             size: size,
-            callbackIndex: ref.registerCallback(() => this.makeDirty(ref.name))
+            callbackIndex: ref.registerCallback(() => {
+                this.makeDirty(ref.name)
+                this.needUpdate()
+            })
         }
 
         this.makeDirty(ref.name)
@@ -128,83 +108,49 @@ class Buffer {
     }
 
     /**
-     * 
+     * @deprecated
      * @param {string} name 
      */
     updateSubArea(name) {
 
         const subArea = this.areaMap[name]
-
+        
         this.device.queue.writeBuffer(this.buffer, subArea.start, subArea.ref.value, subArea.dataOffset, subArea.size)
     }
 
     update() {
-        let encoder = this.device.createCommandEncoder()
-        switch (this.resource.dataType) {
-            case 'clean':
 
-                if (!this.dirtyList.size) return
-                this.dirtyList.forEach((name) => {
-                    this.updateSubArea(name)
-                })
-                this.dirtyList = new Set()
-                break;
+        if (!this.dirtyList.size) return
 
-            case 'size':
+        this.dirtyList.forEach((name) => {
+            // this.updateSubArea(name)
+            director.dispatchEvent({type: 'writeBuffer', emitter: this, subArea: this.areaMap[name]})
+        })
 
-                if (this.buffer) return;
-                this.buffer = this.device.createBuffer({
-                    label: this.name,
-                    size: this.size,
-                    usage: this.usage
-                })
-                monitor.memorySizeInBytes += this.size
-                break;
+        this.dirtyList = new Set()
+    }
 
-            case 'texture'://GPUTexture
-                let texture = this.resource.data()
-                if (!texture) return;
-                encoder.copyTextureToBuffer(
-                    { texture: texture, mipLevel: 0, origin: [0, 0, 0], aspect: 'all' },
-                    { buffer: this.buffer, offset: 0, bytesPerRow: texture.width * 4, rowsPerImage: texture.height },
-                    [texture.width, texture.height]
-                )
-                break;
+    needUpdate() {
 
-            case 'buffer'://GPUBuffer
-                let srcBuffer = this.resource.data()
-                if(!srcBuffer) return
-                //default copy all
-                encoder.copyBuffertoBuffer(
-                    srcBuffer, 0,
-                    this.buffer, 0,
-                    this.buffer.size
-                )
-                break;
-        }
-        this.device.queue.submit([encoder.finish()])
-
-        this.resource.dataType = 'clean'
+        director.addToUpdateList(this)
     }
 
     destroy() {
-
+        
         if (this.buffer) {
             this.buffer.destroy()
             this.buffer = null
         }
 
         if (this.size) monitor.memorySizeInBytes -= this.size
-
-        director.removeBuffer(this.uuid)
-
+        
         this.uuid = null
         this.name = null
         this.refCount = null
         this.size = null
         this.usage = null
         this.lastAreaName = null
-
+    
         for (const key in this.areaMap) {
             let area = this.areaMap[key]
             area.callbackIndex = area.ref.removeCallback(area.callbackIndex)
@@ -215,63 +161,12 @@ class Buffer {
             area.size = null
         }
         this.areaMap = null
-
+    
         this.dirtyList.clear()
         this.dirtyList = null
+
+        super.destroy()
     }
-
-    reset(description) {
-        // if (description && description.size) {
-
-        //     this.size = description.size,
-        //         this.usage = description.usage
-        //     this.name = description.name
-
-        //     this.buffer = this.device.createBuffer({
-        //         label: this.name,
-        //         size: this.size,
-        //         usage: this.usage
-        //     })
-        //     monitor.memorySizeInBytes += this.size
-        // }
-        if (description) {
-
-            this.usage = description.usage ? description.usage : GPUBufferUsage.COPY_DST | GPUBufferUsage.COPY_SRC
-            this.name = description.name ? description.name : 'Buffer'
-            this.resource = description.resource ? description.resource : {
-                data: undefined,
-                dataType: 'clean'
-            }
-            if (description.size) {
-                this.size = description.size
-                if (!this.buffer) {
-                    this.buffer = this.device.createBuffer({
-                        label: this.name,
-                        size: this.size,
-                        usage: this.usage
-                    })
-                    monitor.memorySizeInBytes += this.size
-                }
-
-            }
-
-        }
-        this.update()
-        this.onChangeHandlers.forEach(handler => handler && handler())
-
-    }
-
-    registerCallback(callback) {
-        this.onChangeHandlers.push(callback)
-        return this.onChangeHandlers.length - 1
-
-    }
-    removeCallback(index) {
-        this.onChangeHandlers[index] = null
-        return null
-
-    }
-
 }
 
 export {

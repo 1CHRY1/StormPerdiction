@@ -17,6 +17,8 @@ export interface RenderPipelineDescription {
 
 export class RenderPipeline {
 
+    executable: boolean;
+
     constructor(description: RenderPipelineDescription);
 
     static create(ddescription: RenderPipelineDescription): DrawCommand;
@@ -25,7 +27,11 @@ export class RenderPipeline {
     
     setBinding(binding: Binding): void;
 
+    exportLayoutDescriptor(binding: Binding): GPUPipelineLayoutDescriptor
+
     tryMakeComplete(renderPass: RenderPass, binding: Binding): boolean;
 
     triggerFiniteTimes(times: number): RenderPipeline;
 }
+
+export function renderPipeline(description: RenderPipelineDescription): RenderPipeline;

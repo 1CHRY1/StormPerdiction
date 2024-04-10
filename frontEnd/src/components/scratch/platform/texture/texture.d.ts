@@ -32,9 +32,14 @@ export class Texture {
     /**
      * @param {TextureDescription} description 
      */
-    static create(description: TextureDescription);
+    static create(description: TextureDescription): Texture;
+
+    get width(): number;
+
+    get height(): number;
 
     update(): void;
+    needUpdate(): void;
 
     use(): Texture;
 
@@ -49,6 +54,9 @@ export class Texture {
     destroy(): void;
 }
 
+function texture(description: TextureDescription): Texture;
+
 export {
+    texture,
     Texture
 }

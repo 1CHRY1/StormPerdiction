@@ -1,4 +1,4 @@
-import { ArrayRef } from "../data/arrayRef.js";
+import { ArrayRef } from "../../core/data/arrayRef.js";
 import { Buffer } from "./buffer.js";
 
 /**
@@ -42,6 +42,8 @@ class IndexBuffer extends Buffer {
         }
         super(bufferDesc)
 
+        this.length = description.resource.arrayRef.value.length
+
         this.type = parseArrayType(description.resource.arrayRef.value)
 
         this.registerStrutureMap(description.resource.arrayRef, description.resource.dataOffset, description.resource.size)
@@ -57,11 +59,21 @@ class IndexBuffer extends Buffer {
 
     destroy() {
 
+        this.length = null
         this.type = null
         super.destroy()
     }
 }
 
+/**
+ * @param {IndexBufferDescription} description 
+ */
+function indexBuffer(description) {
+    
+    return IndexBuffer.create(description)
+}
+
 export {
+    indexBuffer,
     IndexBuffer,
 }

@@ -1,10 +1,10 @@
-import { ArrayRef } from "../data/arrayRef";
+import { ArrayRef } from "../../core/data/arrayRef";
 import { Buffer } from "./buffer";
 
 export interface VertexResourceDescription {
     arrayRef: ArrayRef, // must provide TypedArray
     dataOffset?: number, // in bytes
-    size?: number, // element lenght of the TypedArray
+    size?: number, // element lengh of the TypedArray
     structure: Array<{components: number}>,
 }
 
@@ -30,4 +30,6 @@ class VertexBuffer extends Buffer {
     getComponentsPerElement(): number;
 }
 
-export { VertexBuffer };
+function vertexBuffer(description: VertexBufferDescription): VertexBuffer;
+
+export { vertexBuffer, VertexBuffer };

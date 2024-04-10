@@ -29,6 +29,7 @@ export interface RenderPassDescription {
 export class RenderPass {
     
     pass: GPURenderPassEncoder;
+    executable: boolean;
 
     constructor(description: RenderPassDescription);
     static create(description: RenderPassDescription): RenderPass;
@@ -65,3 +66,5 @@ export class RenderPass {
      */
     updateSwapChain(canvasTextureIndex = 0)
 }
+
+export function renderPass(description: RenderPassDescription): RenderPass;

@@ -1,4 +1,4 @@
-import { ArrayRef } from "../data/arrayRef.js";
+import { ArrayRef } from "../../core/data/arrayRef.js";
 import { Buffer } from "./buffer.js";
 
 /**
@@ -49,6 +49,15 @@ class IndirectBuffer extends Buffer {
     }
 }
 
+/**
+ * @param {IndirectBufferDescription} description 
+ */
+function indirectBuffer(description) {
+
+    return IndirectBuffer.create(description)
+}
+
 export {
+    indirectBuffer,
     IndirectBuffer,
 }

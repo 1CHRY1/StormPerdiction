@@ -1,4 +1,4 @@
-import { BlockRef } from "../data/blockRef";
+import { BlockRef } from "../../core/data/blockRef";
 import { Buffer } from "./buffer";
 
 export interface UniformBufferDescription {
@@ -16,4 +16,9 @@ class UniformBuffer extends Buffer {
     static create(description: UniformBufferDescription): UniformBuffer;
 }
 
-export { UniformBuffer };
+function uniformBuffer(description: UniformBufferDescription): UniformBuffer;
+
+export { 
+    uniformBuffer,
+    UniformBuffer,
+};

@@ -1,9 +1,9 @@
-import { UUID } from '../../core/utils/uuid.js';
-import { Binding } from '../binding/binding.js';
-import { NoBlending } from '../blending/blending.js';
-import getDevice from '../context/device.js'
-import { RenderPass } from '../pass/renderPass.js';
-import { Shader } from '../shader/shader.js';
+import { UUID } from '../../core/utils/uuid.js'
+import { Binding } from '../binding/binding.js'
+import { NoBlending } from '../blending/blending.js'
+import director from '../director/director.js'
+import { RenderPass } from '../pass/renderPass.js'
+import { Shader } from '../shader/shader.js'
 
 /**
  * @typedef {Object} RenderPipelineDescription
@@ -23,8 +23,8 @@ class RenderPipeline {
     constructor(description) {
 
         this.uuid = UUID()
-        this.shader = description.shader.module
-        this.name = description.name || 'Drawable builder'
+        this.shader = description.shader.module.use()
+        this.name = description.name || 'Render Pipeline'
         this.vsEntryPoint = description.shader.vsEntryPoint || 'vMain'
         this.fsEntryPoint = description.shader.fsEntryPoint || 'fMain'
 
@@ -46,9 +46,8 @@ class RenderPipeline {
             cullMode: 'none',
             topology: 'triangle-list',
         }
-
-        this.depthTest = true
-        this.depthTest = description.depthTest !== undefined ? this.depthTest : description.depthTest
+        
+        this.depthTest = description.depthTest
 
         this.pipelineLayout = undefined
         this.pipeline = undefined
@@ -61,6 +60,8 @@ class RenderPipeline {
 
         this.isFinite = false
         this.triggerCount = 0
+
+        this.executable = true
     }
 
     /**
@@ -71,53 +72,32 @@ class RenderPipeline {
     }
 
     /**
+     * @deprecated
+     * @param {GPUDevice} device
      * @param {Binding} binding 
      */
-    createPipelineLayout(binding) {
+    createPipelineLayout(device, binding) {
 
-        const device = getDevice()
+        // const device = getDevice()
         this.pipelineLayout = device.createPipelineLayout({
-            label: `rendering pipline layout (${this.name})`,
+            label: `Rendering pipline layout (${this.name})`,
             bindGroupLayouts: binding.getBindGroupLayouts(),
         })
     }
 
-    /**
-     * @param {RenderPass} pass
-     */
-    createTargetState(pass) {
+    exportLayoutDescriptor(binding) {
 
-        const colorFormats = pass.makeColorFormats()
-        this.colorTargetStates = new Array(colorFormats.length)
-        colorFormats.forEach((format, index) => {
-            this.colorTargetStates[index] = {
-                format: format,
-                blend: this.colorTargetStateDescriptions !== undefined ? this.colorTargetStateDescriptions[index].blend : NoBlending,
-                writeMask: this.colorTargetStateDescriptions !== undefined ? this.colorTargetStateDescriptions[index].writeMask: undefined,
-            }
-        })
+        if (this.layout) return this.layout
 
-        const depthStencilFormat = pass.makeDepthStencilFormat()
-        depthStencilFormat && (this.depthStencilState = {
+        this.layout = {
+            label: `Rendering pipline layout (${this.name})`,
+            bindGroupLayouts: binding.getBindGroupLayouts(),
+        }
 
-            depthWriteEnabled: this.depthTest,
-            depthCompare: 'less',
-            format: depthStencilFormat
-        })
+        return this.layout
     }
 
-    /**
-     * @param {RenderPass} renderPass 
-     * @param {Binding} binding 
-     */
-    createPipeline(renderPass, binding) {
-
-        const device = getDevice()
-
-        this.pipelineCreating = true
-
-        this.createPipelineLayout(binding)
-        this.createTargetState(renderPass)
+    exportDescriptor(binding) {
 
         /**
          * @type {GPUPrimitiveState}
@@ -132,8 +112,8 @@ class RenderPipeline {
             })
         }
 
-        device.createRenderPipelineAsync({
-            label: `rendering pipeline (${this.name})`,
+        return {
+            label: `Rendering pipeline (${this.name})`,
             layout: this.pipelineLayout,
             vertex: {
                 module: this.shader.shaderModule,
@@ -147,14 +127,82 @@ class RenderPipeline {
             },
             primitive: primitiveState,
             depthStencil: this.depthStencilState,
+        }
+    }
+
+    /**
+     * @param {RenderPass} pass
+     */
+    createTargetState(pass) {
+
+        const colorFormats = pass.makeColorFormats()
+        this.colorTargetStates = new Array(colorFormats.length)
+        colorFormats.forEach((format, index) => {
+            this.colorTargetStates[index] = {
+                format: format,
+                blend: this.colorTargetStateDescriptions !== undefined ? this.colorTargetStateDescriptions[index].blend : undefined,
+                writeMask: this.colorTargetStateDescriptions !== undefined ? this.colorTargetStateDescriptions[index].writeMask: undefined,
+            }
         })
-        .then(pipeline => {
-            this.pipeline = pipeline
-            this.pipelineCreating = false
-        })
-        .catch(error => {
-            console.error(`Error::Rendering Pipeline (${this.name}) Creation FAILED!`, error);
-        });
+
+        const depthStencilFormat = pass.makeDepthStencilFormat()
+        if (depthStencilFormat !== undefined) {
+            this.depthTest === undefined && (this.depthTest = true)
+
+            this.depthStencilState = {
+                depthWriteEnabled: this.depthTest,
+                depthCompare: 'less',
+                format: depthStencilFormat
+            }
+        }
+    }
+
+    /**
+     * @param {RenderPass} renderPass 
+     * @param {Binding} binding 
+     */
+    createPipeline(renderPass, binding) {
+
+        // const device = getDevice()
+
+        this.pipelineCreating = true
+
+        // this.createPipelineLayout(device, binding)
+
+        director.dispatchEvent({type: 'createPipelineLayout', emitter: this, binding})
+        this.createTargetState(renderPass)
+        director.dispatchEvent({type: 'createRenderPipelineAsync', emitter: this, binding})
+
+
+        // /**
+        //  * @type {GPUPrimitiveState}
+        //  */
+        // const primitiveState = {
+        //     topology: this.primitive.topology,
+        //     frontFace: this.primitive.frontFace,
+        //     cullMode: this.primitive.cullMode,
+        //     unclippedDepth: this.primitive.unclippedDepth,
+        //     ...(binding.indexBinding && (this.primitive.topology === 'line-strip' || this.primitive.topology === 'triangle-strip') && {
+        //         stripIndexFormat: binding.indexBinding.buffer.type
+        //     })
+        // }
+
+        // device.createRenderPipelineAsync({
+        //     label: `rendering pipeline (${this.name})`,
+        //     layout: this.pipelineLayout,
+        //     vertex: {
+        //         module: this.shader.shaderModule,
+        //         entryPoint: this.vsEntryPoint,
+        //         buffers: binding.getVertexLayouts(),
+        //     },
+        //     fragment: {
+        //         module: this.shader.shaderModule,
+        //         entryPoint: this.fsEntryPoint,
+        //         targets: this.colorTargetStates,
+        //     },
+        //     primitive: primitiveState,
+        //     depthStencil: this.depthStencilState,
+        // })
     }
 
     /**
@@ -165,9 +213,7 @@ class RenderPipeline {
 
         if (this.pipeline) return true
 
-        if (!this.shader.isComplete()) return false
-
-        !this.pipelineCreating && this.createPipeline(renderPass, binding)
+        this.shader.isComplete() && !this.pipelineCreating && this.createPipeline(renderPass, binding)
         return false
     }
 
@@ -178,14 +224,16 @@ class RenderPipeline {
      */
     makeRenderBundle(renderPass, binding) {
 
-        const device = getDevice()
-        const renderBundleEncoder = device.createRenderBundleEncoder({
-            colorFormats: renderPass.makeColorFormats(),
-            depthStencilFormat: renderPass.makeDepthStencilFormat(),
-        })
-        this.executeRenderPass(renderBundleEncoder, binding)
-        this.renderBundle = renderBundleEncoder.finish()
-        this.bundleDirty = false
+        // const device = getDevice()
+
+        director.dispatchEvent({type: 'createRenderBundle', emitter: this, renderPass, binding})
+        // const renderBundleEncoder = device.createRenderBundleEncoder({
+        //     colorFormats: renderPass.makeColorFormats(),
+        //     depthStencilFormat: renderPass.makeDepthStencilFormat(),
+        // })
+        // this.executeRenderPass(renderBundleEncoder, binding)
+        // this.renderBundle = renderBundleEncoder.finish()
+        // this.bundleDirty = false
     }
 
     /**
@@ -229,6 +277,8 @@ class RenderPipeline {
 
         if (this.isFinite && (!this.triggerCount)) return
         else this.triggerCount = Math.max(this.triggerCount - 1, 0)
+
+        if (!this.executable) return
         
         if (this.asBundle) {
             if (this.bundleDirty) this.makeRenderBundle(renderPass, binding)
@@ -238,6 +288,15 @@ class RenderPipeline {
     }
 }
 
+/**
+ * @param {RenderPipelineDescription} description 
+ */
+function renderPipeline(description) {
+
+    return RenderPipeline.create(description)
+}
+
 export {
+    renderPipeline,
     RenderPipeline
 }

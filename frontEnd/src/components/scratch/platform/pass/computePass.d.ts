@@ -14,6 +14,9 @@ export interface ComputePassDescription {
  * Represents a render pass that can be used in a graphics rendering pipeline.
  */
 export class ComputePass {
+
+    executable: boolean;
+
     constructor(description: ComputePassDescription);
     static create(description: ComputePassDescription): ComputePass;
 
@@ -34,3 +37,5 @@ export class ComputePass {
      */
     execute(encoder: GPUCommandEncoder): void;
 }
+
+export function computePass(description: ComputePassDescription): ComputePass;

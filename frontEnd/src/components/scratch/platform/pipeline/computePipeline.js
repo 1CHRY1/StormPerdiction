@@ -7,7 +7,7 @@ import { Shader } from "../shader/shader.js"
 /**
  * @typedef {Object} ComputePipelineDescription
  * @property {string} [name]
- * @property {Shader} shader
+ * @property {{module: Shader, csEntryPoint?: string}} shader
  * @property {{[constantName: string]: number}} constants
  */
 
@@ -21,7 +21,8 @@ class ComputePipeline {
         this.uuid = UUID()
 
         this.name = description.name ? description.name : 'Computable builder'
-        this.shader = description.shader
+        this.shader = description.shader.module.use()
+        this.csEntryPoint = description.shader.csEntryPoint || 'cMain'
 
         this.constants = description.constants
         
@@ -35,6 +36,8 @@ class ComputePipeline {
 
         this.isFinite = false
         this.triggerCount = 0
+
+        this.executable = true
     }
 
     /**
@@ -74,7 +77,7 @@ class ComputePipeline {
             layout: this.pipelineLayout,
             compute: {
                 module: this.shader.shaderModule,
-                entryPoint: "cMain",
+                entryPoint: this.csEntryPoint,
                 constants: this.constants
             }
         })
@@ -133,6 +136,8 @@ class ComputePipeline {
         if (this.isFinite && (!this.triggerCount)) return
         else this.triggerCount = Math.max(this.triggerCount - 1, 0)
 
+        if (!this.executable) return
+
         binding.setBindGroups(computePass.pass)
         computePass.pass.setPipeline(this.pipeline)
         if (binding.isIndirect) computePass.pass.dispatchWorkgroupsIndirect(binding.indirectBinding.buffer.buffer, binding.indirectBinding.byteOffset)
@@ -140,6 +145,15 @@ class ComputePipeline {
     }
 }
 
+/**
+ * @param {ComputePipelineDescription} description 
+ */
+function computePipeline(description) {
+
+    return ComputePipeline.create(description)
+}
+
 export {
+    computePipeline,
     ComputePipeline
 }

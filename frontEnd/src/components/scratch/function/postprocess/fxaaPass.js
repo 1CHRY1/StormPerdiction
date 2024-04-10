@@ -1,9 +1,8 @@
-import { aRef } from "../../platform/data/arrayRef.js"
+import { f32, i32 } from '../../core/numericType/numericType.js'
 import { Binding } from "../../platform/binding/binding.js"
 import { Texture } from "../../platform/texture/texture.js"
 import { ComputePass } from "../../platform/pass/computePass.js"
 import shaderLoader from "../../resource/shader/shaderLoader.js"
-import { StorageBuffer } from "../../platform/buffer/storageBuffer.js"
 import { ComputePipeline } from "../../platform/pipeline/computePipeline.js"
 
 /**
@@ -20,15 +19,15 @@ export class FXAAPass {
      */
     constructor(description) {
 
-        this.threshold = description.threshold
-        this.searchStep = description.searchStep
+        this.threshold = f32(description.threshold)
+        this.searchStep = i32(description.searchStep)
         this.inputColorAttachment = description.inputColorAttachment
 
         this.fxaaTexture = Texture.create({
             name: 'Texture (FXAA)',
             format: 'rgba16float', 
             computable: true,
-            resource: {size: () => [description.inputColorAttachment.texture.width, description.inputColorAttachment.texture.height]}
+            resource: { size: () => [ description.inputColorAttachment.width, description.inputColorAttachment.height ] }
         })
 
         this.blockSizeX = 16
@@ -36,19 +35,13 @@ export class FXAAPass {
         // FXAA binding
         this.fxaaBinding = Binding.create({
             name: 'FXAA',
-            range: () => [Math.ceil(this.fxaaTexture.texture.width / this.blockSizeX), Math.ceil(this.fxaaTexture.texture.height / this.blockSizeY)],
+            range: () => [ Math.ceil(this.fxaaTexture.width / this.blockSizeX), Math.ceil(this.fxaaTexture.height / this.blockSizeY) ],
             uniforms: [
                 {
                     name: 'staticUniform',
                     map: {
-                        threshold: {
-                            type: 'f32',
-                            value: () => this.threshold,
-                        },
-                        searchStep: {
-                            type: 'i32',
-                            value: () => this.searchStep,
-                        },
+                        threshold: this.threshold,
+                        searchStep: this.searchStep,
                     }
                 }
             ],
@@ -63,7 +56,7 @@ export class FXAAPass {
          */
         this.fxaaPipeline = ComputePipeline.create({
             name: 'Compute Pipeline (FXAA)',
-            shader: shaderLoader.load('Shader (FXAA)', '/shaders/fxaa.compute.wgsl'),
+            shader: { module: shaderLoader.load('Shader (FXAA)', '/shaders/postprocess/fxaa/fxaa.compute.wgsl') },
             constants: { blockSize: 16 },
         })
 
@@ -98,14 +91,16 @@ export class FXAAPass {
     }
 
     onWindowResize() {
-
-        const width = this.inputColorAttachment.texture.width
-        const height = this.inputColorAttachment.texture.height
-
-        this.fxaaTexture.reset({
-            resource: {
-                size: () => [width, height]
-            }
-        })
+        
+        this.fxaaTexture.reset()
+        this.fxaaBinding.range = () => [ Math.ceil(this.fxaaTexture.width / this.blockSizeX), Math.ceil(this.fxaaTexture.height / this.blockSizeY) ]
     }
+}
+
+/**
+ * @param {FXAAPassDescription} description 
+ */
+export function fxaaPass(description) {
+
+    return FXAAPass.create(description)
 }

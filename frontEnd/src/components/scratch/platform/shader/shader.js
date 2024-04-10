@@ -1,30 +1,31 @@
-import { UUID } from "../../core/utils/uuid.js";
-import getDevice from "../context/device.js";
-import { makeShaderDataDefinitions } from "../../core/utils/webgpu-utils.module.js";
+import { ScratchObject } from "../../core/object/object.js";
+import director from "../director/director.js";
 /**
  * @typedef {Object} ShaderDescription
  * @property {string} name
  * @property {Function} [codeFunc]
  */
 
-class Shader {
+class Shader extends ScratchObject {
 
     /**
-     * 
      * @param {ShaderDescription} description 
      */
     constructor(description) {
 
-        this.uuid = UUID()
+        super()
 
         this.name = description.name
-        this.code = description.codeFunc
+
+        /**
+         * @type {GPUShaderModule}
+         */
         this.shaderModule = undefined
-        this.dirty = true
+        this.code = description.codeFunc
+        this.code() && this.needUpdate()
     }
 
     /**
-     * 
      * @param {ShaderDescription} description 
      */
     static create(description) {
@@ -32,32 +33,49 @@ class Shader {
         return new Shader(description)
     }
 
-    update() {
-        if (!this.dirty) return
-        
-        const device = getDevice()
+    needUpdate() {
 
-        const code = this.code()
-        if (code) {
-            this.shaderModule = device.createShaderModule({
-                label: this.name,
-                code: code
-            })
-            this.defs = makeShaderDataDefinitions(code)
+        director.addToUpdateList(this)
+    }
 
-            this.dirty = false
+    exportDescriptor() {
+
+        return {
+
+            label: this.name,
+            code: this.code()
         }
+    }
+
+    update() {
+
+        director.dispatchEvent({type: 'createShader', emitter: this})
     }
 
     isComplete() {
 
         if (this.shaderModule) return true
-
-        this.update()
         return false
+    }
+
+    destroy() {
+
+        this.code = null
+        this.shaderModule = null
+
+        super.destroy()
     }
 }
 
+/**
+ * @param {ShaderDescription} description 
+ */
+function shader(description) {
+
+    return Shader.create(description)
+}
+
 export {
+    shader,
     Shader
 }

@@ -1,5 +1,5 @@
 import { Buffer } from "./buffer.js"
-import { BlockRef } from "../data/blockRef.js"
+import { BlockRef } from "../../core/data/blockRef.js"
 
 /**
  * @typedef {Object} UniformBufferDescription
@@ -36,18 +36,18 @@ class UniformBuffer extends Buffer {
             size: byteLength
         }
         super(bufferDesc)
-        
+
         this.alignSize = alignSize
         this.dynamicBlocks = []
         description.blocks.forEach((block) => {
             this.addBlock(block)
         })
+        this.dynamicBlocks.length && (this.updatePerFrame = true)
         this.isInitialized = false
-    
     }
 
     /**
-     * @param {VertexBufferDescription} description 
+     * @param {UniformBufferDescription} description 
      */
     static create(description) {
 
@@ -65,7 +65,8 @@ class UniformBuffer extends Buffer {
     }
 
     update() {
-        if (this.dynamicBlocks && (this.dynamicBlocks.length || !this.isInitialized) ) {
+
+        if (this.dynamicBlocks.length || !this.isInitialized ) {
 
             this.dynamicBlocks.forEach(block => block.update()) 
             this.isInitialized = true
@@ -82,6 +83,15 @@ class UniformBuffer extends Buffer {
     }
 }
 
+/**
+ * @param {UniformBufferDescription} description 
+ */
+function uniformBuffer(description) {
+
+    return UniformBuffer.create(description)
+}
+
 export {
+    uniformBuffer,
     UniformBuffer,
 }

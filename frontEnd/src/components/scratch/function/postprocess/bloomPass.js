@@ -1,4 +1,5 @@
-import { aRef } from "../../platform/data/arrayRef.js"
+import { asU32, f32 } from '../../core/numericType/numericType.js'
+import { aRef } from "../../core/data/arrayRef.js"
 import { Binding } from "../../platform/binding/binding.js"
 import { Texture } from "../../platform/texture/texture.js"
 import { ComputePass } from "../../platform/pass/computePass.js"
@@ -27,29 +28,29 @@ export class BloomPass {
      */
     constructor(description) {
 
-        this.strength = description.strength
-        this.threshold = description.threshold
+        this.strength = f32(description.strength)
+        this.threshold = f32(description.threshold)
         this.blurCount = description.blurCount
         this.inputColorAttachment = description.inputColorAttachment
 
         this.gaussianKernel = aRef(new Float32Array(4 + (this.blurCount - 1) * 2), 'gaussian kernel')
         this.gaussianSigma = (3 + (this.blurCount - 1) * 2) / 2.0
         for (let i = 0; i < 4 + (this.blurCount - 1) * 2; i++) {
-            this.gaussianKernel.elements(i, gaussian(i, this.gaussianSigma))
+            this.gaussianKernel.element(i, gaussian(i, this.gaussianSigma))
         }
 
         this.highlightTexture = Texture.create({
             name: 'Texture (Bloom highlight)',
             format: 'rgba16float', 
             computable: true,
-            resource: {size: () => [description.inputColorAttachment.texture.width, description.inputColorAttachment.texture.height]}
+            resource: { size: () => [ description.inputColorAttachment.width, description.inputColorAttachment.height ] }
         })
 
         this.outputTexture = Texture.create({
             name: 'Texture (Bloom output)',
             format: 'rgba16float', 
             computable: true,
-            resource: {size: () => [description.inputColorAttachment.texture.width, description.inputColorAttachment.texture.height]}
+            resource: { size: () => [ description.inputColorAttachment.width, description.inputColorAttachment.height ] }
         })
 
         /**
@@ -67,33 +68,26 @@ export class BloomPass {
         this.blurYTextures = new Array(this.blurCount)
 
         for (let i = 0; i < this.blurCount; i++) {
-            let scaleFactor = Math.pow(2, i + 1)
-            let width = Math.floor(description.inputColorAttachment.texture.width / scaleFactor)
-            let height = Math.floor(description.inputColorAttachment.texture.height / scaleFactor)
 
             this.dHighlightTextures[i] = Texture.create({
                 name: `Texture (Highlight ${i})`,
                 format: 'rgba16float',
                 computable: true,
-                resource: {size: () => [width, height]}
+                resource: { size: () => [ description.inputColorAttachment.width / Math.pow(2, i + 1), description.inputColorAttachment.height / Math.pow(2, i + 1) ] }
             })
-
-            scaleFactor = Math.pow(2, i)
-            width = Math.floor(description.inputColorAttachment.texture.width / scaleFactor)
-            height = Math.floor(description.inputColorAttachment.texture.height / scaleFactor)
 
             this.blurXTextures[i] = Texture.create({
                 name: `Texture (blurX ${i})`,
                 format: 'rgba16float', 
                 computable: true,
-                resource: { size: () => [width, height] }
+                resource: { size: () => [ description.inputColorAttachment.width / Math.pow(2, i), description.inputColorAttachment.height / Math.pow(2, i) ] }
             });
 
             this.blurYTextures[i] = Texture.create({
                 name: `Texture (blurY ${i})`,
                 format: 'rgba16float', 
                 computable: true,
-                resource: { size: () => [width, height] }
+                resource: { size: () => [ description.inputColorAttachment.width / Math.pow(2, i), description.inputColorAttachment.height / Math.pow(2, i) ] }
             });
         }
 
@@ -150,7 +144,7 @@ export class BloomPass {
                 {
                     name: 'staticUniform',
                     map: {
-                        threshold: () => this.threshold,
+                        threshold: this.threshold,
                     }
                 }
             ],
@@ -162,11 +156,11 @@ export class BloomPass {
 
         this.downSampleBindings = new Array(this.blurCount)
         for (let i = 0; i < this.blurCount; i++) {
-            let groupX = Math.ceil(this.dHighlightTextures[i].texture.width / this.blockSizeX)
-            let groupY = Math.ceil(this.dHighlightTextures[i].texture.height / this.blockSizeY)
+            let groupX = Math.ceil(this.dHighlightTextures[i].width / this.blockSizeX)
+            let groupY = Math.ceil(this.dHighlightTextures[i].height / this.blockSizeY)
             this.downSampleBindings[i] = Binding.create({
                 name: `Binding (Highlight ${i})`,
-                range: () => [groupX, groupY],
+                range: () => [ groupX, groupY ],
                 textures: [
                     { texture: this.downSamplerPassInputColor[i] },
                     { texture: this.dHighlightTextures[i], asStorage: true },
@@ -184,17 +178,16 @@ export class BloomPass {
          */
         this.blurUpYBindings = new Array(this.blurCount)
         for (let i = 0; i < this.blurCount; i++) {
-            let groupX = Math.ceil(this.blurXTextures[i].texture.width / this.blockSizeX)
-            let groupY = Math.ceil(this.blurXTextures[i].texture.height / this.blockSizeY)
+            let groupX = Math.ceil(this.blurXTextures[i].width / this.blockSizeX)
+            let groupY = Math.ceil(this.blurXTextures[i].height / this.blockSizeY)
 
             this.blurUpXBindings[i] = Binding.create({
-                range: () => [groupX, groupY],
+                range: () => [ groupX, groupY] ,
                 uniforms: [
                     {
                         name: 'staticUniform',
                         map: {
-                            steps: () => 3 + i * 2,
-                            direction: () => [0.0, 1.0],
+                            steps: asU32(3 + i * 2),
                         }
                     }
                 ],
@@ -207,13 +200,12 @@ export class BloomPass {
             })
 
             this.blurUpYBindings[i] = Binding.create({
-                range: () => [groupX, groupY],
+                range: () => [ groupX, groupY ],
                 uniforms: [
                     {
                         name: 'staticUniform',
                         map: {
-                            steps: () => 3 + i * 2,
-                            direction: () => [1.0, 0.0],
+                            steps: asU32(3 + i * 2),
                         }
                     }
                 ],
@@ -227,15 +219,15 @@ export class BloomPass {
         }
 
         // Output binding 
-        let groupX = Math.ceil(this.outputTexture.texture.width / this.blockSizeX)
-        let groupY = Math.ceil(this.outputTexture.texture.height / this.blockSizeY)
+        let groupX = Math.ceil(this.outputTexture.width / this.blockSizeX)
+        let groupY = Math.ceil(this.outputTexture.height / this.blockSizeY)
         this.outputBinding = Binding.create({
-            range: () => [groupX, groupY],
+            range: () => [ groupX, groupY ],
             uniforms: [
                 {
                     name: 'staticUniform',
                     map: {
-                        strength: () => this.strength
+                        strength: this.strength
                     }
                 }
             ],
@@ -251,7 +243,7 @@ export class BloomPass {
          */
         this.highlight = ComputePipeline.create({
             name: 'Computable builder (Highlight extraction)',
-            shader: shaderLoader.load('Shader (Hightlight)', '/shaders/highlight.compute.wgsl'),
+            shader: { module: shaderLoader.load('Shader (Hightlight)', '/shaders/postprocess/bloom/highlight.compute.wgsl') },
             constants: { blockSize: 16 },
         })
 
@@ -260,7 +252,7 @@ export class BloomPass {
          */
         this.downSample = ComputePipeline.create({
             name: 'Computable builder (Highlight downsample)',
-            shader: shaderLoader.load('Shader (Down Sampling)', '/shaders/downsample.compute.wgsl'),
+            shader: { module: shaderLoader.load('Shader (Down Sampling)', '/shaders/postprocess/bloom/downsample.compute.wgsl') },
             constants: { blockSize: 16 },
         })
 
@@ -269,7 +261,7 @@ export class BloomPass {
          */
         this.blurUpX = ComputePipeline.create({
             name: 'Computable builder (Blur up X)',
-            shader: shaderLoader.load('Shader (Blur Up X)', '/shaders/gaussianBlurX.compute.wgsl'),
+            shader: { module: shaderLoader.load('Shader (Blur Up X)', '/shaders/postprocess/bloom/gaussianBlurX.compute.wgsl') },
             constants: { blockSize: 16 },
         })
 
@@ -278,7 +270,7 @@ export class BloomPass {
          */
         this.blurUpY = ComputePipeline.create({
             name: 'Computable builder (Blur up Y)',
-            shader: shaderLoader.load('Shader (Blur Up Y)', '/shaders/gaussianBlurY.compute.wgsl'),
+            shader: { module: shaderLoader.load('Shader (Blur Up Y)', '/shaders/postprocess/bloom/gaussianBlurY.compute.wgsl') },
             constants: { blockSize: 16 },
         })
 
@@ -287,7 +279,7 @@ export class BloomPass {
          */
         this.output = ComputePipeline.create({
             name: 'Computable builder (Output)',
-            shader: shaderLoader.load('Shader (Texture Add)', '/shaders/bloomOutput.compute.wgsl'),
+            shader: { module: shaderLoader.load('Shader (Texture Add)', '/shaders/postprocess/bloom/bloomOutput.compute.wgsl') },
             constants: { blockSize: 16 },
         })
 
@@ -331,24 +323,32 @@ export class BloomPass {
 
     onWindowResize() {
 
-        const width = this.inputColorAttachment.texture.width
-        const height = this.inputColorAttachment.texture.height
-
-        this.outputTexture.reset({
-            resource: {
-                size: () => [width, height]
-            }
-        })
-
+        this.highlightTexture.reset()
+        this.highlightBinding.range = () => [ Math.ceil(this.highlightTexture.texture.width / this.blockSizeX), Math.ceil(this.highlightTexture.texture.height / this.blockSizeY) ]
+        
+        this.dHighlightTextures.forEach(texture => texture.reset())
         for (let i = 0; i < this.blurCount; i++) {
-
-            let w = width
-            let h = height
-
-            if (i) {
-                w /= 2.0 * i;
-                h /= 2.0 * i;
-            }
+            this.downSampleBindings[i].range = () => [ Math.ceil(this.dHighlightTextures[i].width / this.blockSizeX), Math.ceil(this.dHighlightTextures[i].height / this.blockSizeY) ]
         }
+
+        this.blurXTextures.concat(this.blurYTextures).forEach(texture => texture.reset())
+        for (let i = 0; i < this.blurCount; i++) {
+            let groupX = Math.ceil(this.blurXTextures[i].width / this.blockSizeX)
+            let groupY = Math.ceil(this.blurXTextures[i].height / this.blockSizeY)
+
+            this.blurUpXBindings[i].range = () => [ groupX, groupY]
+            this.blurUpYBindings[i].range = () => [ groupX, groupY]
+        }
+
+        this.outputTexture.reset()
+        this.outputBinding.range = () => [ Math.ceil(this.outputTexture.width / this.blockSizeX), Math.ceil(this.outputTexture.height / this.blockSizeY) ]
     }
+}
+
+/**
+ * @param {BloomPassDescription} description 
+ */
+export function bloomPass(description) {
+
+    return BloomPass.create(description)
 }

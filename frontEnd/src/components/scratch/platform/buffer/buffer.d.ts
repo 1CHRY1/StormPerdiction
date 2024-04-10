@@ -1,4 +1,4 @@
-import { DataRef } from '../data/arrayRef';
+import { DataRef } from '../../core/data/arrayRef';
 export type BufferDescription = {
     name: string;
     usage?: number;
@@ -6,16 +6,19 @@ export type BufferDescription = {
 };
 
 export class Buffer {
-    constructor(description: BufferDescription);
 
-    static create(description: BufferDescription):Buffer;
+    constructor(description: BufferDescription);
 
     name: string;
 
     buffer: GPUBuffer;
+    
+    updatePerFrame: boolean;
 
     areaMap: {[mapName: string]: {start: number, length: number, arrayRef: ArrayRef, dataOffset?: number, size?: number}};
  
+    exportDescriptor(): GPUBufferDescriptor;
+
     registerStrutureMap(dataRef: DataRef, dataOffset?: number, size?: number, alignment = 1): void;
 
     updateSubArea(name: string): void;
@@ -24,6 +27,8 @@ export class Buffer {
 
     update(): void;
 
+    needUpdate(): void;
+
     isComplete(): boolean;
 
     use(): Buffer;
@@ -31,6 +36,4 @@ export class Buffer {
     release(): null;
 
     destroy(): void;
-
-    reset(): void;
 }
