@@ -3,6 +3,7 @@ import { Ref, computed, onMounted, ref, watch } from 'vue'
 import { getSatelliteImage, getSatelliteTypeAndTime } from './api'
 
 const options: Ref<Record<string, string>[]> = ref([])
+const timeMap: Ref<Map<string, Set<string>>> = ref(new Map())
 const timeListArray: Ref<string[]> = ref([])
 const currentImageType = ref()
 const selectType = ref()
@@ -25,7 +26,8 @@ onMounted(async () => {
     label: value,
   }))
 
-  timeListArray.value = [...time].sort().reverse()
+  timeMap.value = time
+  timeListArray.value = [...(time.get(options.value[0].value) as Set<string>)]
   selectType.value = options.value[0].value
   currentTime.value = timeListArray.value[0]
   imageUrl.value = await getSatelliteImage(
@@ -35,6 +37,12 @@ onMounted(async () => {
   )
 
   tableLoading.value = false
+})
+watch([selectType], async () => {
+  timeListArray.value = [
+    ...(timeMap.value.get(selectType.value) as Set<string>),
+  ]
+  currentTime.value = timeListArray.value[0]
 })
 
 watch([selectType, currentTime], async () => {

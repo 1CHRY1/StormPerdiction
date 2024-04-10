@@ -15,12 +15,17 @@ export const getSatelliteTypeAndTime = async (
 
   const typeName = data[0].type1
   const typeMap: Set<string> = new Set()
-  const timeMap: Set<string> = new Set()
+  const timeMap: Map<string, Set<string>> = new Map()
   data.forEach((value) => {
     const type =
       value.type3.length === 0 ? value.type2 : value.type2 + ' - ' + value.type3
     typeMap.add(type)
-    timeMap.add(value.time)
+    const timeSet = timeMap.get(type)
+    if (timeSet) {
+      timeSet.add(value.time)
+    } else {
+      timeMap.set(type, new Set())
+    }
   })
 
   return {
@@ -52,26 +57,38 @@ export const getSatelliteImage = async (
 export const getStormDataMap = async (): Promise<IStormDataMap> => {
   const result: IStormDataMap = {}
 
-  const url = `/api/v1/data/meteorology/typhoon`
+  const month = new Date(Date.now() + 8 * 3600 * 1000)
+    .getMonth()
+    .toString()
+    .padStart(2, '0')
+
+  const year = new Date(Date.now() + 8 * 3600 * 1000).getFullYear().toString()
+  const url = `http://typhoon.zjwater.gov.cn/Api/TyphoonInfo/${year}${month}`
+  console.log(url)
   const response = (await fetch(url)
     .then((res) => res.json())
-    .then((json) => json)) as IStormDataResponse
+    .then((json) => json)
+    .catch(() => {
+      return null
+    })) as IStormDataResponse | null
 
-  const data = response.data
-  const points = response.data.points.map((value, index) => ({
-    id: index.toString(),
-    name: data.name,
-    time: value.time,
-    lng: Number(value.lng),
-    lat: Number(value.lat),
-    strong: value.strong,
-    power: value.power,
-    speed: value.speed,
-    pressure: value.pressure,
-    moveSpeed: value.movespeed,
-    moveDirection: value.movedirection,
-  }))
-  result[data.name] = points
+  if (response?.name) {
+    const points = response.points.map((value, index) => ({
+      id: index.toString(),
+      name: response.name,
+      time: value.time,
+      lng: Number(value.lng),
+      lat: Number(value.lat),
+      strong: value.strong,
+      power: value.power,
+      speed: value.speed,
+      pressure: value.pressure,
+      moveSpeed: value.movespeed,
+      moveDirection: value.movedirection,
+    }))
+    result[response.name] = points
 
-  return result
+    return result
+  }
+  return {}
 }

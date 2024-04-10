@@ -22,10 +22,11 @@ const selectPointID: Ref<string> = ref('0')
 const selectPointData: Ref<null | IStormDataOfPoint> = ref(null)
 const mapStore = useMapStore()
 const activateStormTableData: Ref<null | IStormTableRow[]> = ref(null)
+
 const selectHistoryTableData = computed(() => {
   if (selectStormName.value && activateStormDataMap.value) {
     return generateStormTableData(
-      activateStormDataMap.value[selectStormName.value].toReversed(),
+      activateStormDataMap.value[selectStormName.value].slice().reverse(),
     )
   } else {
     return []
@@ -113,51 +114,56 @@ onMounted(async () => {
       <div ref="mapContainerRef" class="map-container h-full w-full" />
     </div>
     <div class="bg-white w-[21rem] flex flex-col">
-      <div class="h-48 m-2 border border-zinc-300 bg-white">
+      <div class="h-48 m-2 border border-zinc-300 bg-white flex flex-col">
         <div class="h-10 leading-10 px-3 bg-[#1b6ec8] text-white">实时信息</div>
-        <div class="mx-2 my-1 flex flex-col">
-          <div>
-            <span class="inline-block pr-2">台风名称:</span>
-            <span class="inline-block pr-3">{{
-              selectPointData && selectPointData.name
-            }}</span>
+        <div v-if="activateStormTableData?.length !== 0">
+          <div class="mx-2 my-1 flex flex-col">
+            <div>
+              <span class="inline-block pr-2">台风名称:</span>
+              <span class="inline-block pr-3">{{
+                selectPointData && selectPointData.name
+              }}</span>
+            </div>
+          </div>
+          <div class="mx-2 my-1 flex flex-col">
+            <div>
+              <span class="inline-block pr-2">当前时间:</span>
+              <span class="inline-block pr-3">{{
+                selectPointData && formatDate(selectPointData.time)
+              }}</span>
+            </div>
+          </div>
+          <div class="mx-2 my-1 flex flex-col">
+            <div>
+              <span class="inline-block pr-2">中心位置:</span>
+              <span class="inline-block pr-3">{{
+                selectPointData && decimalToDMS(selectPointData.lng)
+              }}</span>
+              <span class="inline-block pr-3">{{
+                selectPointData && decimalToDMS(selectPointData.lat)
+              }}</span>
+            </div>
+          </div>
+          <div class="mx-2 my-1 flex flex-col">
+            <div>
+              <span class="inline-block pr-2">当前强度:</span>
+              <span class="inline-block pr-3">{{
+                selectPointData &&
+                `${selectPointData?.power}级 (${selectPointData?.strong})`
+              }}</span>
+            </div>
+          </div>
+          <div class="mx-2 my-1 flex flex-col">
+            <div>
+              <span class="inline-block pr-2">当前风速:</span>
+              <span class="inline-block pr-3">{{
+                selectPointData && selectPointData?.speed + 'm/s'
+              }}</span>
+            </div>
           </div>
         </div>
-        <div class="mx-2 my-1 flex flex-col">
-          <div>
-            <span class="inline-block pr-2">当前时间:</span>
-            <span class="inline-block pr-3">{{
-              selectPointData && formatDate(selectPointData.time)
-            }}</span>
-          </div>
-        </div>
-        <div class="mx-2 my-1 flex flex-col">
-          <div>
-            <span class="inline-block pr-2">中心位置:</span>
-            <span class="inline-block pr-3">{{
-              selectPointData && decimalToDMS(selectPointData.lng)
-            }}</span>
-            <span class="inline-block pr-3">{{
-              selectPointData && decimalToDMS(selectPointData.lat)
-            }}</span>
-          </div>
-        </div>
-        <div class="mx-2 my-1 flex flex-col">
-          <div>
-            <span class="inline-block pr-2">当前强度:</span>
-            <span class="inline-block pr-3">{{
-              selectPointData &&
-              `${selectPointData?.power}级 (${selectPointData?.strong})`
-            }}</span>
-          </div>
-        </div>
-        <div class="mx-2 my-1 flex flex-col">
-          <div>
-            <span class="inline-block pr-2">当前风速:</span>
-            <span class="inline-block pr-3">{{
-              selectPointData && selectPointData?.speed + 'm/s'
-            }}</span>
-          </div>
+        <div v-else class="flex justify-center items-center flex-1 text-lg">
+          当前无台风
         </div>
       </div>
       <div class="m-2 mt-3 w-80 bg-white">

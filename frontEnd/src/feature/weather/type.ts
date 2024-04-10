@@ -17,26 +17,23 @@ export interface IImageTypeAndTimeResponse {
 export interface IImageTypeAndTime {
   imageType: string
   type: Set<string>
-  time: Set<string>
+  time: Map<string, Set<string>>
 }
 export type ImageType = 'cloud' | 'radar' | 'rainfall' | 'rainfallpre'
 
 export interface IStormDataResponse {
-  code: '0'
-  data: {
-    name: string
-    points: {
-      time: string
-      lng: string
-      lat: string
-      strong: string
-      power: string
-      speed: string
-      pressure: string
-      movespeed: string
-      movedirection: string
-    }[]
-  }
+  name: string
+  points: {
+    time: string
+    lng: string
+    lat: string
+    strong: string
+    power: string
+    speed: string
+    pressure: string
+    movespeed: string
+    movedirection: string
+  }[]
 }
 
 export interface IStormDataOfPoint {
