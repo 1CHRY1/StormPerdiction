@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc && vite build",
+    "build:no-vue-tsc": "vite build",
     "preview": "vite preview",
     "lint": "eslint src/**/* --max-warnings 0",
     "prettier": "prettier src/**/* --write",
