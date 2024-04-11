@@ -1,8 +1,9 @@
 import {
   IAccurateAssessmentTableRow,
+  IForecastTideSituationResponse,
+  IRealTideSituationResponse,
   IStationInfo,
   ITideSituation,
-  ITideSituationResponse,
 } from './type'
 
 import { stationInfo } from '../../asset/stationInfo'
@@ -26,15 +27,50 @@ export const getStationInfo = (id: keyof typeof stationInfo): IStationInfo => {
   return result
 }
 
+export const getStationCurrentWaterSituation = async (
+  id: keyof typeof stationInfo,
+) => {
+  const url = `/api/v1/data/level/station/real?station=${stationInfo[id].pinyin}`
+  const dataMap = (await fetch(url)
+    .then((res) => {
+      if (res.status === 200) {
+        return res.json()
+      } else {
+        return {
+          code: '',
+          data: [],
+        }
+      }
+    })
+    .then((data) => data)) as IRealTideSituationResponse
+
+  if (!dataMap.data || dataMap.data.length === 0) {
+    return {
+      time: [],
+      hpre: [],
+    }
+  }
+  const time: string[] = []
+  const hpre: number[] = []
+  dataMap.data.forEach((value) => {
+    time.push(value.time)
+    hpre.push(value.level)
+  })
+
+  return {
+    time,
+    hpre,
+  }
+}
+
 export const getStationPredictionTideSituation = async (
   id: keyof typeof stationInfo,
 ): Promise<ITideSituation> => {
-  const url = `/api/v1/data/level/station/typh/72?station=${stationInfo[id].pinyin}`
+  const url = `/api/v1/data/level/station/before/72?station=${stationInfo[id].pinyin}`
   const dataMap = (await fetch(url)
     .then((res) => res.json())
-    .then((data) => data.data)) as ITideSituationResponse
-
-  if (!dataMap.hpre) {
+    .then((data) => data.data)) as IForecastTideSituationResponse
+  if (dataMap.hz.length === 0) {
     return {
       time: [],
       hpre: [],
@@ -44,24 +80,30 @@ export const getStationPredictionTideSituation = async (
     }
   }
 
+  const realSituation = await getStationCurrentWaterSituation(id)
+
   const time: string[] = []
-  const isTyphoon = Boolean(dataMap.hadd)
-  const hpre = dataMap.hpre
-  const hyubao = dataMap.hyubao || []
-  const hadd = dataMap.hadd || []
-  const length = dataMap.hpre.length
-  const startTime = new Date(dataMap.time)
+  const isTyphoon = true
+  const length = Math.min(realSituation.hpre.length, dataMap.hz.length)
+  const hpre = realSituation.hpre.slice(0, length)
+  const hyubao = dataMap.hz.splice(0, length) || []
+  const hadd =
+    hpre.map((value, index) => {
+      const result = value - hyubao[index]
+      return result
+    }) || []
+  const endTime = new Date(dataMap.time)
   for (let i = 0; i < length; i++) {
-    const nextHour = new Date(startTime.getTime() + i * 60 * 60 * 1000)
-    time.push(nextHour.toLocaleString().replace(/:\d\d$/, ''))
+    const nextHour = new Date(endTime.getTime() - i * 60 * 60 * 1000)
+    time.unshift(nextHour.toLocaleString().replace(/:\d\d$/, ''))
   }
   return { time, isTyphoon, hyubao, hpre, hadd }
 }
 
-const getAccurateAssessmentTable = async (
-  time: string,
-): Promise<IAccurateAssessmentTableRow[]> => {
-  const response = await fetch(`/api/v1/data/nc/txt?time=${time}`)
+const getAccurateAssessmentTable = async (): Promise<
+  IAccurateAssessmentTableRow[]
+> => {
+  const response = await fetch(`/api/v1/data/nc/txt`)
     .then((res) => {
       return res.json()
     })

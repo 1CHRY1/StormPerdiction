@@ -34,7 +34,6 @@ watch(stationStore, async () => {
   waterSituationData.value = await getStationPredictionTideSituation(
     stationStore.currentStationID as any,
   )
-  stationTable.value = await getAccurateAssessmentTable('2023-08-30 00:00:00')
   if (echart) {
     echart.clear()
     drawEcharts(
@@ -50,7 +49,7 @@ onMounted(async () => {
   waterSituationData.value = await getStationPredictionTideSituation(
     stationStore.currentStationID as any,
   )
-  stationTable.value = await getAccurateAssessmentTable('2023-08-30 00:00:00')
+  stationTable.value = await getAccurateAssessmentTable()
   if (isStationDataExist.value) {
     echart = initEcharts(echartsRef)
     drawEcharts(
