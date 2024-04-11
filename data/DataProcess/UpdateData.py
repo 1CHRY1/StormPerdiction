@@ -135,6 +135,8 @@ def get_prefix_before_digits(input_str):
         prefix += char
     return prefix
 
+# dataprocess_path = "D:/1study/Work/2023_12_22_Storm/stormPerdiction/data/DataProcess"
+
 def main():
     args = sys.argv
     if len(args) < 2:

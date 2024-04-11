@@ -89,8 +89,8 @@ datatypes = [
     {"name":"西北","url":"http://www.nmc.cn/publish/radar/xibei.html"}
 ]
 
-# db_path = "D:/1study/Work/2023_12_22_Storm/stormPrediction/data/DataProcess/Clawing/Meteorology.db"
-# Path = "D:/1study/Work/2023_12_22_Storm/stormPrediction/data/气象产品/雷达拼图"
+# db_path = "D:/1study/Work/2023_12_22_Storm/stormPerdiction/data/DataProcess/Clawing/Meteorology.db"
+# Path = "D:/1study/Work/2023_12_22_Storm/stormPerdiction/data/气象产品/雷达拼图"
 # webdriverpath = "D:/1tools/chromedriver/chromedriver.exe"
 
 args = sys.argv

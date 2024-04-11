@@ -117,6 +117,12 @@ public class LevelServiceImpl implements LevelService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String time_str = time.format(formatter);
         Integer ifTyph = ifTyph(time_str);
+        // 若当天数据未更新，则获取前一天的数据
+        if (ifTyph == null) {
+            time = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0).minusDays(1);
+            time_str = time.format(formatter);
+            ifTyph = ifTyph(time_str);
+        }
         try{
             if ( ifTyph == 1){
                 return getTyph72ByStation(station);
