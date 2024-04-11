@@ -194,7 +194,7 @@ export default class floww {
       this.map.screen.createScreenDependentTexture("Texture(Mask)");
 
     //PASS 0
-    await this.getMask("/ffvsrc/flowbound.geojson");
+    await this.getMask("/ffvsrc/flowbound2.geojson");
     this.maskPass = scr
       .renderPass({
         name: "mask render pass",
@@ -620,14 +620,18 @@ export default class floww {
     });
   }
   async getMask(url) {
-    const json = (await axios.get(url)).data;
-    let coordinate = json["features"][0]["geometry"]["coordinates"];
-    coordinate = coordinate[0][0].flat();
-    var triangle = earcut(coordinate);
+    // const json = (await axios.get(url)).data;
+    // let coordinate = json["features"][0]["geometry"]["coordinates"];
+    // coordinate = coordinate[0][0].flat();
+    // var triangle = earcut(coordinate);
 
-    // var data = earcut.flatten(geojson.geometry.coordinates);
-    // var triangle = earcut(data.vertices, data.holes, data.dimensions);
+    const geojson = (await axios.get(url)).data;
+    let coordinate = geojson.features[0].geometry.coordinates[0];
 
+    var data = earcut.flatten(coordinate);
+    var triangle = earcut(data.vertices, data.holes, data.dimensions);
+
+    coordinate = data.vertices.flat()
     //test
     // coordinate = [0.0,0.0,  0.0,0.5,  0.5,0.0,  0.5,0.5]
     // triangle = [0,1,2,1,2,3]
