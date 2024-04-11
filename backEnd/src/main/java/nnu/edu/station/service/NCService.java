@@ -7,7 +7,7 @@ public interface NCService {
 
     List<Object> getAll();
 
-    List<List<String>> getTxtDataByTime(String time);
+    List<List<String>> getTxtDataByTime();
 
     String getPathByTimeAndType(String time, String type);
 

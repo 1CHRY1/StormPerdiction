@@ -41,8 +41,8 @@ public class NCController {
     NCService ncService;
 
     @GetMapping("/txt")
-    public JsonResult getTxtDataByTime(@RequestParam String time) {
-        return ResultUtils.success(ncService.getTxtDataByTime(time));
+    public JsonResult getTxtDataByTime() {
+        return ResultUtils.success(ncService.getTxtDataByTime());
     }
 
     @GetMapping

@@ -117,6 +117,12 @@ public class LevelServiceImpl implements LevelService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String time_str = time.format(formatter);
         Integer ifTyph = ifTyph(time_str);
+        // 若当天数据未更新，则获取前一天的数据
+        if (ifTyph == null) {
+            time = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0).minusDays(1);
+            time_str = time.format(formatter);
+            ifTyph = ifTyph(time_str);
+        }
         try{
             if ( ifTyph == 1){
                 return getTyph72ByStation(station);
@@ -137,6 +143,10 @@ public class LevelServiceImpl implements LevelService {
         String time_str = time.format(formatter);
         try{
             Map<String, Object> obj = levelMapper.getNoTyph72ByStation(station, time_str);
+            if ( obj == null ) {
+                time_str = time.minusDays(1).format(formatter);
+                obj = levelMapper.getNoTyph72ByStation(station, time_str);
+            }
             obj.put("time",time_str);
             return ListUtil.StringObj2ArrayObj(obj);
         }
@@ -154,6 +164,10 @@ public class LevelServiceImpl implements LevelService {
         String time_str = time.format(formatter);
         try {
             Map<String, Object> obj = ListUtil.StringObj2ArrayObj(levelMapper.getTyph72ByStation(station, time_str));
+            if ( obj == null ) {
+                time_str = time.minusDays(1).format(formatter);
+                obj = levelMapper.getNoTyph72ByStation(station, time_str);
+            }
             List<Double> hadd = (List<Double>) obj.get("hadd");
             List<Double> hpre = (List<Double>) obj.get("hpre");
             List<Double> hyubao = (List<Double>) obj.get("hyubao");
