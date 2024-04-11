@@ -76,7 +76,8 @@ onMounted(async () => {
           class="flex flex-col items-center"
         >
           <div class="text-lg font-semibold text-[#406abf]">
-            {{ `${stationInfo.name}站点 ${stationInfo.time} 精度统计表` }}
+            <!-- {{ `${stationInfo.name}站点 ${stationInfo.time} 精度统计表` }} -->
+            {{ '潮位预报精度统计表' }}
           </div>
           <el-table
             :data="stationTable"

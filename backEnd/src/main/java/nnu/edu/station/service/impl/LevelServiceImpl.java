@@ -143,6 +143,10 @@ public class LevelServiceImpl implements LevelService {
         String time_str = time.format(formatter);
         try{
             Map<String, Object> obj = levelMapper.getNoTyph72ByStation(station, time_str);
+            if ( obj == null ) {
+                time_str = time.minusDays(1).format(formatter);
+                obj = levelMapper.getNoTyph72ByStation(station, time_str);
+            }
             obj.put("time",time_str);
             return ListUtil.StringObj2ArrayObj(obj);
         }
@@ -160,6 +164,10 @@ public class LevelServiceImpl implements LevelService {
         String time_str = time.format(formatter);
         try {
             Map<String, Object> obj = ListUtil.StringObj2ArrayObj(levelMapper.getTyph72ByStation(station, time_str));
+            if ( obj == null ) {
+                time_str = time.minusDays(1).format(formatter);
+                obj = levelMapper.getNoTyph72ByStation(station, time_str);
+            }
             List<Double> hadd = (List<Double>) obj.get("hadd");
             List<Double> hpre = (List<Double>) obj.get("hpre");
             List<Double> hyubao = (List<Double>) obj.get("hyubao");
