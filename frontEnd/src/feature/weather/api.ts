@@ -25,6 +25,8 @@ export const getSatelliteTypeAndTime = async (
       timeSet.add(value.time)
     } else {
       timeMap.set(type, new Set())
+      const timeSet = timeMap.get(type) as Set<string>
+      timeSet.add(value.time)
     }
   })
 

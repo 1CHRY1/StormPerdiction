@@ -25,6 +25,7 @@ onMounted(async () => {
     value,
     label: value,
   }))
+  console.log(time)
 
   timeMap.value = time
   timeListArray.value = [...(time.get(options.value[0].value) as Set<string>)]
