@@ -81,8 +81,8 @@ datatypes = [
     ]}
 ]
 
-# db_path = "D:/1study/Work/2023_12_22_Storm/stormPrediction/data/DataProcess/Clawing/Meteorology.db"
-# Path = "D:/1study/Work/2023_12_22_Storm/stormPrediction/data/气象产品/降水量预报"
+# db_path = "D:/1study/Work/2023_12_22_Storm/stormPerdiction/data/DataProcess/Clawing/Meteorology.db"
+# Path = "D:/1study/Work/2023_12_22_Storm/stormPerdiction/data/气象产品/降水量预报"
 # webdriverpath = "D:/1tools/chromedriver/chromedriver.exe"
 
 args = sys.argv
