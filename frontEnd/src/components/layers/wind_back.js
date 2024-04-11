@@ -3,46 +3,61 @@ import { Delaunay } from "d3-delaunay";
 import axios from "axios";
 import earcut from "earcut";
 
-//normal
-const resourceUrl = [
-  "/ffvsrc/flow/uv_10.bin",
-  "/ffvsrc/flow/uv_11.bin",
-  "/ffvsrc/flow/uv_12.bin",
-  "/ffvsrc/flow/uv_13.bin",
-  "/ffvsrc/flow/uv_14.bin",
-  "/ffvsrc/flow/uv_15.bin",
-  "/ffvsrc/flow/uv_16.bin",
-  "/ffvsrc/flow/uv_17.bin",
-  "/ffvsrc/flow/uv_18.bin",
-  "/ffvsrc/flow/uv_19.bin",
-  "/ffvsrc/flow/uv_20.bin",
-  "/ffvsrc/flow/uv_21.bin",
-  "/ffvsrc/flow/uv_22.bin",
-  "/ffvsrc/flow/uv_23.bin",
-  "/ffvsrc/flow/uv_24.bin",
-  "/ffvsrc/flow/uv_25.bin",
-  "/ffvsrc/flow/uv_26.bin",
-  "/ffvsrc/flow/uv_27.bin",
-  "/ffvsrc/flow/uv_28.bin",
-  "/ffvsrc/flow/uv_29.bin",
-  "/ffvsrc/flow/uv_30.bin",
-  "/ffvsrc/flow/uv_31.bin",
-  "/ffvsrc/flow/uv_32.bin",
-  "/ffvsrc/flow/uv_33.bin",
-  "/ffvsrc/flow/uv_34.bin",
-  "/ffvsrc/flow/uv_35.bin",
-  "/ffvsrc/flow/uv_36.bin",
-  "/ffvsrc/flow/uv_37.bin",
-  "/ffvsrc/flow/uv_38.bin",
-  "/ffvsrc/flow/uv_39.bin",
+//9711 wind
+const prefix = '/testapi/wind/'
+let resourceUrl = [
+  "uv_0.bin",
+  "uv_1.bin",
+  "uv_2.bin",
+  "uv_3.bin",
+  "uv_4.bin",
+  "uv_5.bin",
+  "uv_6.bin",
+  "uv_7.bin",
+  "uv_8.bin",
+  "uv_9.bin",
+  "uv_10.bin",
+  "uv_11.bin",
+  "uv_12.bin",
+  "uv_13.bin",
+  "uv_14.bin",
+  "uv_15.bin",
+  "uv_16.bin",
+  "uv_17.bin",
+  "uv_18.bin",
+  "uv_19.bin",
+  "uv_20.bin",
+  "uv_21.bin",
+  "uv_22.bin",
+  "uv_23.bin",
+  "uv_24.bin",
+  "uv_25.bin",
+  "uv_26.bin",
+  "uv_27.bin",
+  "uv_28.bin",
+  "uv_29.bin",
+  "uv_30.bin",
+  "uv_31.bin",
+  "uv_32.bin",
+  "uv_33.bin",
+  "uv_34.bin",
+  "uv_35.bin",
+  "uv_36.bin",
+  "uv_37.bin",
+  "uv_38.bin",
+  "uv_39.bin",
+  "uv_40.bin",
 ];
+for(let i=0;i<resourceUrl.length;i++){
+  resourceUrl[i] = prefix+resourceUrl[i]
+}
 
-export default class floww {
+export default class windd {
   constructor() {
     // Layer
     this.type = "custom";
     this.map = undefined;
-    this.id = "flow";
+    this.id = "wind";
     this.renderingMode = "3d";
 
     // Attributes
@@ -56,10 +71,10 @@ export default class floww {
 
     // Control
     this.progress = 0.0;
-    this.framesPerPhase = 300;
+    this.framesPerPhase = 100;
     this.maxSpeed = scr.f32();
     this.currentResourceUrl = 0;
-    this.maxParticleNum = 262144;
+    this.maxParticleNum = 65536;
     this.progressRate = scr.f32();
     this.particleNum = scr.u32(65536);
 
@@ -142,7 +157,7 @@ export default class floww {
     //   121.00010037560567,
     //   32.08267764177068
     // );
-    this.extent.reset(117.6008663, 29.00020341, 124.9995024, 33.99616132);
+    this.extent.reset(117.0, 22.0, 131.5, 41.5);
 
     // Buffer-related resource
     this.storageBuffer_particle = scr.storageBuffer({
@@ -190,25 +205,23 @@ export default class floww {
       "Texture (Velocity)",
       "rg32float"
     );
-    this.maskTexture =
-      this.map.screen.createScreenDependentTexture("Texture(Mask)");
+    // this.maskTexture =
+    //   this.map.screen.createScreenDependentTexture("Texture(Mask)");
 
-    //PASS 0
-    await this.getMask("/ffvsrc/flowbound2.geojson");
-    this.maskPass = scr
-      .renderPass({
-        name: "mask render pass",
-        colorAttachments: [{ colorResource: this.maskTexture }],
-      })
-      .add(this.maskPipline, this.maskBinding);
+    // //PASS 0
+    // await this.getMask("/风暴潮边界fill.geojson");
+    // this.maskPass = scr.renderPass({
+    //   name: "mask render pass",
+    //   colorAttachments: [{ colorResource: this.maskTexture }],
+    // }).add(this.maskPipline,this.maskBinding)
 
     // PASS - 1: flow textures (mix(from -> to)) generation ////////////////////////////////////////////////
     // station ---> coordinates
 
-    await this.getVoronoi("/ffvsrc/flow/station.bin");
-    await this.addVoronoiBindingSync("/ffvsrc/flow/uv_20.bin");
+    await this.getVoronoi("/ffvsrc/wind/station.bin");
+    await this.addVoronoiBindingSync("/ffvsrc/wind/uv_0.bin");
     this.swapVoronoiBinding();
-    await this.addVoronoiBindingSync("/ffvsrc/flow/uv_21.bin");
+    await this.addVoronoiBindingSync("/ffvsrc/wind/uv_1.bin");
     this.currentResourceUrl = 1;
     this.nextPrepared = true;
 
@@ -217,7 +230,7 @@ export default class floww {
       shader: {
         module: scr.shaderLoader.load(
           "Shader (Flow Voronoi)",
-          "/shader/flowshader/flowVoronoi.wgsl"
+          "/shader/windshader/flowVoronoi.wgsl"
         ),
       },
     });
@@ -259,7 +272,7 @@ export default class floww {
       shader: {
         module: scr.shaderLoader.load(
           "Shader (Particle Simulation)",
-          "/shader/flowshader/simulation.compute.wgsl"
+          "/shader/windshader/simulation.compute.wgsl"
         ),
       },
       constants: { blockSize: 16 },
@@ -289,7 +302,7 @@ export default class floww {
       shader: {
         module: scr.shaderLoader.load(
           "Shader (Background Swap)",
-          "/shader/flowshader/swap.wgsl"
+          "/shader/windshader/swap.wgsl"
         ),
       },
       primitive: { topology: "triangle-strip" },
@@ -311,7 +324,7 @@ export default class floww {
       shader: {
         module: scr.shaderLoader.load(
           "Shader (Particles)",
-          "/shader/flowshader/particles.wgsl"
+          "/shader/windshader/particles.wgsl"
         ),
       },
       primitive: { topology: "line-list" },
@@ -366,7 +379,7 @@ export default class floww {
       shader: {
         module: scr.shaderLoader.load(
           "Shader (Flow Layer Rendering)",
-          "/shader/flowshader/flowLayer.wgsl"
+          "/shader/windshader/flowLayer.wgsl"
         ),
       },
       primitive: { topology: "triangle-strip" },
@@ -379,7 +392,8 @@ export default class floww {
       range: () => [4],
       textures: [
         { texture: this.flowTexture, sampleType: "unfilterable-float" },
-        { texture: this.maskTexture, sampleType: "unfilterable-float" },
+        // { texture: this.maskTexture, sampleType: "unfilterable-float" },
+        
       ],
       sharedUniforms: [{ buffer: this.uniformBuffer_frame }],
     });
@@ -388,7 +402,7 @@ export default class floww {
       shader: {
         module: scr.shaderLoader.load(
           "Shader (Flow Show)",
-          "/shader/flowshader/flowShow.wgsl"
+          "/shader/windshader/flowShow.wgsl"
         ),
       },
       primitive: { topology: "triangle-strip" },
@@ -399,7 +413,7 @@ export default class floww {
       shader: {
         module: scr.shaderLoader.load(
           "Shader (Flow Show)",
-          "/shader/flowshader/arrow.wgsl"
+          "/shader/windshader/arrow.wgsl"
         ),
       },
       primitive: { topology: "triangle-strip" },
@@ -422,7 +436,7 @@ export default class floww {
         .add2RenderPass(this.layerPipeline, this.layerBindings[0])
         .add2RenderPass(this.layerPipeline, this.layerBindings[1]);
     this.map
-      .add2PreProcess(this.maskPass)
+    //   .add2PreProcess(this.maskPass)
       .add2PreProcess(this.voronoiPass)
       .add2PreProcess(this.simulationPass)
       .add2PreProcess(this.swapPasses[0])
@@ -463,7 +477,7 @@ export default class floww {
 
     // Swap
     this.showBinding.executable = false;
-    this.maskBinding.executable = true;
+    // this.maskBinding.executable = true
 
     this.swapPasses[0].executable = this.swapPointer;
     this.layerBindings[0].executable = this.swapPointer;
@@ -587,13 +601,12 @@ export default class floww {
       },
     });
 
+
     this.voronoiBinding = scr.binding({
       name: `Binding (Flow-Field Voronoi)`,
       range: () => [this.indexBuffer_voronoi.length],
       index: { buffer: this.indexBuffer_voronoi },
-      textures: [
-        { texture: this.maskTexture, sampleType: "unfilterable-float" },
-      ],
+    //   textures: [{ texture: this.maskTexture, sampleType: "unfilterable-float" }],
       vertices: [
         { buffer: this.vertexBuffer_voronoi },
         {
@@ -619,128 +632,122 @@ export default class floww {
       ],
     });
   }
-  async getMask(url) {
-    // const json = (await axios.get(url)).data;
-    // let coordinate = json["features"][0]["geometry"]["coordinates"];
-    // coordinate = coordinate[0][0].flat();
-    // var triangle = earcut(coordinate);
+//   async getMask(url) {
+//     const json = (await axios.get(url)).data;
+//     let coordinate = json["features"][0]["geometry"]["coordinates"];
+//     coordinate = coordinate[0][0].flat();
+//     var triangle = earcut(coordinate);
 
-    const geojson = (await axios.get(url)).data;
-    //geojson.features[0].geometry.coordinates[0]
-    let coordinate = geojson.features[0].geometry.coordinates[0];
+ 
+//     //test
+//     // coordinate = [0.0,0.0,  0.0,0.5,  0.5,0.0,  0.5,0.5]
+//     // triangle = [0,1,2,1,2,3]
 
-    var data = earcut.flatten(coordinate);
-    var triangle = earcut(data.vertices, data.holes, data.dimensions);
+//     const shaderSource = `
+//         struct Vinput{
+//             @builtin(vertex_index) vertexIndex: u32,
+//             @location(0) position: vec2f,
+//         }
+//         struct Voutput {
+//             @builtin(position) position: vec4f,
+//         }
 
-    coordinate = data.vertices.flat()
-    //test
-    // coordinate = [0.0,0.0,  0.0,0.5,  0.5,0.0,  0.5,0.5]
-    // triangle = [0,1,2,1,2,3]
-
-    const shaderSource = `
-        struct Vinput{
-            @builtin(vertex_index) vertexIndex: u32,
-            @location(0) position: vec2f,
-        }
-        struct Voutput {
-            @builtin(position) position: vec4f,
-        }
-
-        struct FrameUniformBlock {
-            randomSeed: f32,
-            viewPort: vec2f,
-            mapBounds: vec4f,
-            zoomLevel: f32,
-            progressRate: f32,
-            maxSpeed: f32,
-        };
+//         struct FrameUniformBlock {
+//             randomSeed: f32,
+//             viewPort: vec2f,
+//             mapBounds: vec4f,
+//             zoomLevel: f32,
+//             progressRate: f32,
+//             maxSpeed: f32,
+//         };
         
-        struct StaticUniformBlock {
-            groupSize: vec2u,
-            extent: vec4f,
-        };
+//         struct StaticUniformBlock {
+//             groupSize: vec2u,
+//             extent: vec4f,
+//         };
         
-        struct DynamicUniformBlock {
-            far: f32,
-            near: f32,
-            uMatrix: mat4x4f,
-            centerLow: vec3f,
-            centerHigh: vec3f,
-        };
+//         struct DynamicUniformBlock {
+//             far: f32,
+//             near: f32,
+//             uMatrix: mat4x4f,
+//             centerLow: vec3f,
+//             centerHigh: vec3f,
+//         };
         
-        // Uniform Bindings
-        @group(0) @binding(0) var<uniform> frameUniform: FrameUniformBlock;
-        @group(0) @binding(1) var<uniform> staticUniform: StaticUniformBlock;
-        @group(0) @binding(2) var<uniform> dynamicUniform: DynamicUniformBlock;
+//         // Uniform Bindings
+//         @group(0) @binding(0) var<uniform> frameUniform: FrameUniformBlock;
+//         @group(0) @binding(1) var<uniform> staticUniform: StaticUniformBlock;
+//         @group(0) @binding(2) var<uniform> dynamicUniform: DynamicUniformBlock;
 
         
-        fn translateRelativeToEye(high: vec3f, low: vec3f) -> vec3f {
+//         fn translateRelativeToEye(high: vec3f, low: vec3f) -> vec3f {
 
-            let highDiff = high - dynamicUniform.centerHigh;
-            let lowDiff = low - dynamicUniform.centerLow;
+//             let highDiff = high - dynamicUniform.centerHigh;
+//             let lowDiff = low - dynamicUniform.centerLow;
 
-            return highDiff + lowDiff;
-        }
+//             return highDiff + lowDiff;
+//         }
 
-        @vertex
-        fn vMain(in: Vinput) -> Voutput {
+//         @vertex
+//         fn vMain(in: Vinput) -> Voutput {
             
-            let pos = vec4f(in.position,0.0,1.0);
-            let cs_pos = dynamicUniform.uMatrix * vec4f(translateRelativeToEye(vec3f(in.position, 0.0), vec3f(0.0)), 1.0);
+//             let pos = vec4f(in.position,0.0,1.0);
+//             let cs_pos = dynamicUniform.uMatrix * vec4f(translateRelativeToEye(vec3f(in.position, 0.0), vec3f(0.0)), 1.0);
 
-            var out: Voutput;
-            out.position = cs_pos;
-            return out;
-        }
+//             var out: Voutput;
+//             out.position = cs_pos;
+//             return out;
+//         }
     
-        @fragment
-        fn fMain(in: Voutput) -> @location(0) vec4f {
-            return vec4f(1.0,0.0,0.0,0.3);
-        }
-    `;
-    let vertexData = [];
-    for (let i = 0; i < coordinate.length; i += 2) {
-      let [x, y] = lnglat2Mercator(coordinate[i], coordinate[i + 1]);
-      //   let x = coordinate[i]
-      //   let y = coordinate[i+1]
-      vertexData.push(x);
-      vertexData.push(y);
-    }
-    let vertexBuffer = scr.vertexBuffer({
-      name: "vertexbuffer",
-      resource: {
-        arrayRef: scr.aRef(new Float32Array(vertexData)),
-        structure: [{ components: 2 }],
-      },
-    });
-    let indexBuffer = scr.indexBuffer({
-      name: "indexbuffer",
-      resource: {
-        arrayRef: scr.aRef(new Uint32Array(triangle)),
-      },
-    });
-    this.maskBinding = scr.binding({
-      name: "binding",
-      range: () => [triangle.length],
-      vertices: [{ buffer: vertexBuffer }],
-      index: { buffer: indexBuffer },
-      sharedUniforms: [
-        { buffer: this.uniformBuffer_frame },
-        { buffer: this.uniformBuffer_static },
-        { buffer: this.map.dynamicUniformBuffer },
-      ],
-    });
+//         @fragment
+//         fn fMain(in: Voutput) -> @location(0) vec4f {
+//             return vec4f(1.0,0.0,0.0,0.3);
+//         }
+//     `;
+//     let vertexData = [];
+//     for (let i = 0; i < coordinate.length; i += 2) {
+//       let [x, y] = lnglat2Mercator(coordinate[i], coordinate[i + 1]);
+//     //   let x = coordinate[i]
+//     //   let y = coordinate[i+1]
+//       vertexData.push(x);
+//       vertexData.push(y);
+//     }
+//     console.log(vertexData,triangle);
+//     let vertexBuffer = scr.vertexBuffer({
+//       name: "vertexbuffer",
+//       resource: {
+//         arrayRef: scr.aRef(new Float32Array(vertexData)),
+//         structure: [{ components: 2 }],
+//       },
+//     });
+//     let indexBuffer = scr.indexBuffer({
+//       name: "indexbuffer",
+//       resource: {
+//         arrayRef: scr.aRef(new Uint32Array(triangle)),
+//       },
+//     });
+//     this.maskBinding = scr.binding({
+//       name: "binding",
+//       range: () => [triangle.length],
+//       vertices: [{ buffer: vertexBuffer }],
+//       index: { buffer: indexBuffer },
+//       sharedUniforms: [
+//         { buffer: this.uniformBuffer_frame },
+//         { buffer: this.uniformBuffer_static },
+//         { buffer: this.map.dynamicUniformBuffer },
+//       ],
+//     });
 
-    this.maskPipline = scr.renderPipeline({
-      name: "mask pipline",
-      shader: {
-        module: scr.shader({
-          name: "shader",
-          codeFunc: () => shaderSource,
-        }),
-      },
-    });
-  }
+//     this.maskPipline = scr.renderPipeline({
+//       name: "mask pipline",
+//       shader: {
+//         module: scr.shader({
+//           name: "shader",
+//           codeFunc: () => shaderSource,
+//         }),
+//       },
+//     });
+//   }
 
   async addVoronoiBindingSync(url) {
     this.nextPreparing = true;
@@ -797,6 +804,8 @@ export default class floww {
   }
 }
 
+
+
 // Helpers //////////////////////////////////////////////////////////////////////////////////////////////////////
 function encodeFloatToDouble(value) {
   const result = new Float32Array(2);
@@ -808,11 +817,11 @@ function encodeFloatToDouble(value) {
 }
 
 function lnglat2Mercator(lng, lat) {
-  let x = (180 + lng) / 360;
-  let y =
-    (180 -
-      (180 / Math.PI) *
-        Math.log(Math.tan(Math.PI / 4 + (lat * Math.PI) / 360))) /
-    360;
-  return [x, y];
-}
+    let x = (180 + lng) / 360;
+    let y =
+      (180 -
+        (180 / Math.PI) *
+          Math.log(Math.tan(Math.PI / 4 + (lat * Math.PI) / 360))) /
+      360;
+    return [x, y];
+  }

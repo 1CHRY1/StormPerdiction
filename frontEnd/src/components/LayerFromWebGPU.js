@@ -8,8 +8,12 @@ import {prepareAddWaterLayer,addWaterLayer,prepareAddWaterLayer2,addWaterLayer2}
 // import SteadyFlowLayer from './layers/flow'
 import flow9711 from './layers/9711flow'
 import wind9711 from './layers/9711wind'
-import windd from './layers/wind'
-import floww from './layers/flow'
+
+
+import windd from './layers/wind_front'
+import floww from './layers/flow_front'
+// import windd from './layers/wind_back'
+// import floww from './layers/flow_back'
 
 
 

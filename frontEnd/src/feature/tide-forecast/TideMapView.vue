@@ -16,7 +16,7 @@ import { ElMessage } from 'element-plus';
 import axios from 'axios';
 
 const radio: Ref<HTMLDivElement | null> = ref(null)
-const radio2:Ref<HTMLDivElement | null> = ref(null)
+const radio2: Ref<HTMLDivElement | null> = ref(null)
 const mapStore = useMapStore()
 const stationStore = useStationStore()
 const mapContainerRef: Ref<HTMLDivElement | null> = ref(null)
@@ -71,6 +71,15 @@ const flow = new floww() as mapboxgl.AnyLayer
 
 watch(selectedLayer, async (now: null | Number, old: null | Number) => {
   // clear 
+  if (!mapStore.map) {
+    ElMessage({
+      message: '地图尚未加载完毕，请等待..',
+      type: 'warning',
+    })
+    return;
+  }
+
+
   switch (old) {
     case 0:
       // if (mapStore.map!.getLayer('WindLayer9711'))
@@ -195,7 +204,7 @@ const closeHandeler = () => {
 
   radio2!.value!.checked = false
   radio.value.forEach(element => {
-    element.checked=false
+    element.checked = false
   });
 
 
@@ -209,8 +218,8 @@ const typh: Ref<Number> = ref(0)
 // const text = computed(typh,()=>{
 //   return typh==1?"当前有台风":"当前无台风"
 // })
-const text =computed(()=>{
-  return typh.value==1?"当前有台风":"当前无台风"
+const text = computed(() => {
+  return typh.value == 1 ? "当前有台风" : "当前无台风"
 })
 
 onMounted(async () => {
@@ -227,7 +236,10 @@ onMounted(async () => {
 
 
   const map: mapbox.Map = await initScratchMap2(mapContainerRef.value)
-
+  ElMessage({
+      message: '地图加载完毕',
+      type: 'success',
+    })
   map.addLayer(wind)
   wind.hide()
   map.addLayer(flow)
@@ -269,14 +281,14 @@ onMounted(async () => {
     </div>
 
     <div class="Description">
-      <div class="typh">{{text}}</div>
+      <div class="typh">{{ text }}</div>
       <div class="radio-buttons">
         <label class="radio-button" v-for="opt in radioOptions" :key="opt.value">
           <input type="radio" name="option" :value="opt.value" ref="radio">
           <div class="radio-circle" @click="selectedLayer = opt.value;"></div>
           <span class="radio-label" @click="selectedLayer = opt.value;">{{ opt.label }}</span>
         </label>
-         <label class="radio-button" v-show="typh">
+        <label class="radio-button" v-show="typh">
           <input type="radio" name="option" :value="optt.value" ref="radio2">
           <div class="radio-circle" @click="selectedLayer = optt.value;"></div>
           <span class="radio-label" @click="selectedLayer = optt.value;">{{ optt.label }}</span>
@@ -291,8 +303,6 @@ onMounted(async () => {
 </template>
 
 <style scoped>
-
-
 .adwtLegend {
   position: absolute;
   bottom: 5vh;
@@ -364,10 +374,11 @@ onMounted(async () => {
   height: 60%;
   border-radius: 5px;
 }
-.typh{
+
+.typh {
   font-size: 1.8vh;
   height: 30%;
-  color:#ffffff
+  color: #ffffff
 }
 
 .radio-buttons {

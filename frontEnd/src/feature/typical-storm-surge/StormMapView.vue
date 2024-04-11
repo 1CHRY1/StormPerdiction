@@ -6,7 +6,7 @@ import { Ref, onMounted, ref, watch } from 'vue'
 import { router } from '../../router'
 import { useMapStore } from '../../store/mapStore'
 import { useStationStore } from '../../store/stationStore'
-import { initMap,initScratchMap } from '../../util/initMap'
+import { initMap, initScratchMap } from '../../util/initMap'
 import { IStormData, IStormDataOfPoint, IStormTableRow } from './type'
 import {
   addStationLayer,
@@ -21,7 +21,7 @@ import {
 } from './util'
 import {
   WindLayer9711, FlowLayer9711, addWaterLayer, prepareAddWaterLayer, addWaterLayer2, prepareAddWaterLayer2,
-  flow9711,wind9711,flow,wind
+  flow9711, wind9711, flow, wind
 } from '../../components/LayerFromWebGPU'
 import mapboxgl from 'mapbox-gl';
 import adwtLegend from './adwtLegend.vue'
@@ -111,6 +111,13 @@ const flow = new flow9711() as mapboxgl.AnyLayer
 
 watch(selectedLayer, async (now: null | Number, old: null | Number) => {
   // clear 
+  if (!mapStore.map) {
+    ElMessage({
+      message: '地图尚未加载完毕，请等待..',
+      type: 'warning',
+    })
+    return;
+  }
   switch (old) {
     case 0:
       // if (mapStore.map!.getLayer('WindLayer9711'))
@@ -273,7 +280,11 @@ onMounted(async () => {
   //     zoom: 3,
   //   },
   // )
-  const map:mapbox.Map = await initScratchMap(mapContainerRef.value)
+  const map: mapbox.Map = await initScratchMap(mapContainerRef.value)
+  ElMessage({
+    message: '地图加载完毕',
+    type: 'success',
+  })
   map.addLayer(wind)
   wind.hide()
   map.addLayer(flow)
