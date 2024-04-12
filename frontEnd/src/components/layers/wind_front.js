@@ -202,15 +202,15 @@ export default class windd {
       "Texture (Velocity)",
       "rg32float"
     );
-    // this.maskTexture =
-    //   this.map.screen.createScreenDependentTexture("Texture(Mask)");
+    this.maskTexture =
+      this.map.screen.createScreenDependentTexture("Texture(Mask)");
 
     // //PASS 0
-    // await this.getMask("/风暴潮边界fill.geojson");
-    // this.maskPass = scr.renderPass({
-    //   name: "mask render pass",
-    //   colorAttachments: [{ colorResource: this.maskTexture }],
-    // }).add(this.maskPipline,this.maskBinding)
+    await this.getMask("/ffvsrc/windBound.geojson");
+    this.maskPass = scr.renderPass({
+      name: "mask render pass",
+      colorAttachments: [{ colorResource: this.maskTexture }],
+    }).add(this.maskPipline,this.maskBinding)
 
     // PASS - 1: flow textures (mix(from -> to)) generation ////////////////////////////////////////////////
     // station ---> coordinates
@@ -227,8 +227,8 @@ export default class windd {
       shader: {
         module: scr.shaderLoader.load(
           "Shader (Flow Voronoi)",
-          "/shader/windshader/flowVoronoi.wgsl"
-        ),
+          "/shader/flowshader/flowVoronoi.wgsl"
+        ),//note!
       },
     });
     this.voronoiPass = scr
@@ -389,7 +389,7 @@ export default class windd {
       range: () => [4],
       textures: [
         { texture: this.flowTexture, sampleType: "unfilterable-float" },
-        // { texture: this.maskTexture, sampleType: "unfilterable-float" },
+        { texture: this.maskTexture, sampleType: "unfilterable-float" },
         
       ],
       sharedUniforms: [{ buffer: this.uniformBuffer_frame }],
@@ -433,7 +433,7 @@ export default class windd {
         .add2RenderPass(this.layerPipeline, this.layerBindings[0])
         .add2RenderPass(this.layerPipeline, this.layerBindings[1]);
     this.map
-    //   .add2PreProcess(this.maskPass)
+      .add2PreProcess(this.maskPass)
       .add2PreProcess(this.voronoiPass)
       .add2PreProcess(this.simulationPass)
       .add2PreProcess(this.swapPasses[0])
@@ -474,7 +474,7 @@ export default class windd {
 
     // Swap
     this.showBinding.executable = false;
-    // this.maskBinding.executable = true
+    this.maskBinding.executable = true
 
     this.swapPasses[0].executable = this.swapPointer;
     this.layerBindings[0].executable = this.swapPointer;
@@ -603,7 +603,7 @@ export default class windd {
       name: `Binding (Flow-Field Voronoi)`,
       range: () => [this.indexBuffer_voronoi.length],
       index: { buffer: this.indexBuffer_voronoi },
-    //   textures: [{ texture: this.maskTexture, sampleType: "unfilterable-float" }],
+      textures: [{ texture: this.maskTexture, sampleType: "unfilterable-float" }],
       vertices: [
         { buffer: this.vertexBuffer_voronoi },
         {
@@ -629,122 +629,123 @@ export default class windd {
       ],
     });
   }
-//   async getMask(url) {
-//     const json = (await axios.get(url)).data;
-//     let coordinate = json["features"][0]["geometry"]["coordinates"];
-//     coordinate = coordinate[0][0].flat();
-//     var triangle = earcut(coordinate);
+  async getMask(url) {
+    const json = (await axios.get(url)).data;
+    console.log(json);
+    let coordinate = json["features"][0]["geometry"]["coordinates"];
+    coordinate = coordinate[0][0].flat();
+    var triangle = earcut(coordinate);
 
  
-//     //test
-//     // coordinate = [0.0,0.0,  0.0,0.5,  0.5,0.0,  0.5,0.5]
-//     // triangle = [0,1,2,1,2,3]
+    //test
+    // coordinate = [0.0,0.0,  0.0,0.5,  0.5,0.0,  0.5,0.5]
+    // triangle = [0,1,2,1,2,3]
 
-//     const shaderSource = `
-//         struct Vinput{
-//             @builtin(vertex_index) vertexIndex: u32,
-//             @location(0) position: vec2f,
-//         }
-//         struct Voutput {
-//             @builtin(position) position: vec4f,
-//         }
+    const shaderSource = `
+        struct Vinput{
+            @builtin(vertex_index) vertexIndex: u32,
+            @location(0) position: vec2f,
+        }
+        struct Voutput {
+            @builtin(position) position: vec4f,
+        }
 
-//         struct FrameUniformBlock {
-//             randomSeed: f32,
-//             viewPort: vec2f,
-//             mapBounds: vec4f,
-//             zoomLevel: f32,
-//             progressRate: f32,
-//             maxSpeed: f32,
-//         };
+        struct FrameUniformBlock {
+            randomSeed: f32,
+            viewPort: vec2f,
+            mapBounds: vec4f,
+            zoomLevel: f32,
+            progressRate: f32,
+            maxSpeed: f32,
+        };
         
-//         struct StaticUniformBlock {
-//             groupSize: vec2u,
-//             extent: vec4f,
-//         };
+        struct StaticUniformBlock {
+            groupSize: vec2u,
+            extent: vec4f,
+        };
         
-//         struct DynamicUniformBlock {
-//             far: f32,
-//             near: f32,
-//             uMatrix: mat4x4f,
-//             centerLow: vec3f,
-//             centerHigh: vec3f,
-//         };
+        struct DynamicUniformBlock {
+            far: f32,
+            near: f32,
+            uMatrix: mat4x4f,
+            centerLow: vec3f,
+            centerHigh: vec3f,
+        };
         
-//         // Uniform Bindings
-//         @group(0) @binding(0) var<uniform> frameUniform: FrameUniformBlock;
-//         @group(0) @binding(1) var<uniform> staticUniform: StaticUniformBlock;
-//         @group(0) @binding(2) var<uniform> dynamicUniform: DynamicUniformBlock;
+        // Uniform Bindings
+        @group(0) @binding(0) var<uniform> frameUniform: FrameUniformBlock;
+        @group(0) @binding(1) var<uniform> staticUniform: StaticUniformBlock;
+        @group(0) @binding(2) var<uniform> dynamicUniform: DynamicUniformBlock;
 
         
-//         fn translateRelativeToEye(high: vec3f, low: vec3f) -> vec3f {
+        fn translateRelativeToEye(high: vec3f, low: vec3f) -> vec3f {
 
-//             let highDiff = high - dynamicUniform.centerHigh;
-//             let lowDiff = low - dynamicUniform.centerLow;
+            let highDiff = high - dynamicUniform.centerHigh;
+            let lowDiff = low - dynamicUniform.centerLow;
 
-//             return highDiff + lowDiff;
-//         }
+            return highDiff + lowDiff;
+        }
 
-//         @vertex
-//         fn vMain(in: Vinput) -> Voutput {
+        @vertex
+        fn vMain(in: Vinput) -> Voutput {
             
-//             let pos = vec4f(in.position,0.0,1.0);
-//             let cs_pos = dynamicUniform.uMatrix * vec4f(translateRelativeToEye(vec3f(in.position, 0.0), vec3f(0.0)), 1.0);
+            let pos = vec4f(in.position,0.0,1.0);
+            let cs_pos = dynamicUniform.uMatrix * vec4f(translateRelativeToEye(vec3f(in.position, 0.0), vec3f(0.0)), 1.0);
 
-//             var out: Voutput;
-//             out.position = cs_pos;
-//             return out;
-//         }
+            var out: Voutput;
+            out.position = cs_pos;
+            return out;
+        }
     
-//         @fragment
-//         fn fMain(in: Voutput) -> @location(0) vec4f {
-//             return vec4f(1.0,0.0,0.0,0.3);
-//         }
-//     `;
-//     let vertexData = [];
-//     for (let i = 0; i < coordinate.length; i += 2) {
-//       let [x, y] = lnglat2Mercator(coordinate[i], coordinate[i + 1]);
-//     //   let x = coordinate[i]
-//     //   let y = coordinate[i+1]
-//       vertexData.push(x);
-//       vertexData.push(y);
-//     }
-//     console.log(vertexData,triangle);
-//     let vertexBuffer = scr.vertexBuffer({
-//       name: "vertexbuffer",
-//       resource: {
-//         arrayRef: scr.aRef(new Float32Array(vertexData)),
-//         structure: [{ components: 2 }],
-//       },
-//     });
-//     let indexBuffer = scr.indexBuffer({
-//       name: "indexbuffer",
-//       resource: {
-//         arrayRef: scr.aRef(new Uint32Array(triangle)),
-//       },
-//     });
-//     this.maskBinding = scr.binding({
-//       name: "binding",
-//       range: () => [triangle.length],
-//       vertices: [{ buffer: vertexBuffer }],
-//       index: { buffer: indexBuffer },
-//       sharedUniforms: [
-//         { buffer: this.uniformBuffer_frame },
-//         { buffer: this.uniformBuffer_static },
-//         { buffer: this.map.dynamicUniformBuffer },
-//       ],
-//     });
+        @fragment
+        fn fMain(in: Voutput) -> @location(0) vec4f {
+            return vec4f(1.0,0.0,0.0,0.3);
+        }
+    `;
+    let vertexData = [];
+    for (let i = 0; i < coordinate.length; i += 2) {
+      let [x, y] = lnglat2Mercator(coordinate[i], coordinate[i + 1]);
+    //   let x = coordinate[i]
+    //   let y = coordinate[i+1]
+      vertexData.push(x);
+      vertexData.push(y);
+    }
+    console.log(vertexData,triangle);
+    let vertexBuffer = scr.vertexBuffer({
+      name: "vertexbuffer",
+      resource: {
+        arrayRef: scr.aRef(new Float32Array(vertexData)),
+        structure: [{ components: 2 }],
+      },
+    });
+    let indexBuffer = scr.indexBuffer({
+      name: "indexbuffer",
+      resource: {
+        arrayRef: scr.aRef(new Uint32Array(triangle)),
+      },
+    });
+    this.maskBinding = scr.binding({
+      name: "binding",
+      range: () => [triangle.length],
+      vertices: [{ buffer: vertexBuffer }],
+      index: { buffer: indexBuffer },
+      sharedUniforms: [
+        { buffer: this.uniformBuffer_frame },
+        { buffer: this.uniformBuffer_static },
+        { buffer: this.map.dynamicUniformBuffer },
+      ],
+    });
 
-//     this.maskPipline = scr.renderPipeline({
-//       name: "mask pipline",
-//       shader: {
-//         module: scr.shader({
-//           name: "shader",
-//           codeFunc: () => shaderSource,
-//         }),
-//       },
-//     });
-//   }
+    this.maskPipline = scr.renderPipeline({
+      name: "mask pipline",
+      shader: {
+        module: scr.shader({
+          name: "shader",
+          codeFunc: () => shaderSource,
+        }),
+      },
+    });
+  }
 
   async addVoronoiBindingSync(url) {
     this.nextPreparing = true;
