@@ -192,7 +192,7 @@ fn cMain(@builtin(global_invocation_id) id: vec3<u32>) {
     // let vCurrent = mix(vLast, vNext, frameUniform.progressRate);
     let vCurrent = getVelocity(fromTexture, uv);
     var velocity = mix(vCurrent, vPast, FACTOR);
-    let offset = velocity * 1000.0 * controllerUniform.speedFactor;
+    let offset = velocity * 500.0 * controllerUniform.speedFactor;
     let nextCoords = clamp(calculateDisplacedLonLat(x, y, offset.x, offset.y), cExtent.xy, cExtent.zw);
 
     let nextPos = vec2f(

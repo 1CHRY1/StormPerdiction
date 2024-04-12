@@ -125,9 +125,9 @@ watch(selectedLayer, async (now: null | Number, old: null | Number) => {
       wind.show()
 
       mapStore.map!.flyTo({
-        center: [122.92069384160902, 32.0063086220937],
-        zoom: 5.084918089769568,
-        duration: 5000
+        center: [122.92069384160902, 33.5063086220937],
+        zoom: 5.184918089769568,
+        duration: 500
       })
       break;
     case 1:
@@ -143,7 +143,7 @@ watch(selectedLayer, async (now: null | Number, old: null | Number) => {
       mapStore.map!.flyTo({
         center: [122.92069384160902, 32.0063086220937],
         zoom: 7.512044631152661,
-        duration: 5000
+        duration: 500
       })
       break;
     case 2:
@@ -155,7 +155,7 @@ watch(selectedLayer, async (now: null | Number, old: null | Number) => {
       mapStore.map!.flyTo({
         center: [122.92069384160902, 32.0063086220937],
         zoom: 6.912044631152661,
-        duration: 5000
+        duration: 500
       })
 
       // adwtTicker = adwtHandeler()
