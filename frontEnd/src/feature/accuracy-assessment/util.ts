@@ -39,7 +39,7 @@ export const drawEcharts = async (
       trigger: 'axis',
     },
     legend: {
-      data: ['实测数据', '预报数据'],
+      data: ['预报数据', '实测数据'],
       right: '15%',
       top: '1%',
     },
