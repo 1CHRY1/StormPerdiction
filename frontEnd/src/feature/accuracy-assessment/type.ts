@@ -7,11 +7,17 @@ export interface IStationInfo {
   type: string
 }
 
-export interface ITideSituationResponse {
+export interface IRealTideSituationResponse {
+  code: string
+  data: {
+    time: string
+    level: number
+  }[]
+}
+
+export interface IForecastTideSituationResponse {
+  hz: number[]
   time: string
-  hpre: number[]
-  hyubao?: number[]
-  hadd?: number[]
 }
 
 export interface ITideSituation {
