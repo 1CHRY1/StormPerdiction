@@ -20,6 +20,13 @@ export interface IForecastTideSituationResponse {
   time: string
 }
 
+export interface ITideSituationResponse {
+  time: string
+  hpre: number[]
+  hyubao?: number[]
+  hadd?: number[]
+}
+
 export interface ITideSituation {
   isTyphoon: boolean
   time: string[]

@@ -39,7 +39,7 @@ export const drawEcharts = async (
       trigger: 'axis',
     },
     legend: {
-      data: ['预报数据', '实测数据'],
+      data: ['实测数据', '预报数据'],
       right: '15%',
       top: '1%',
     },
@@ -67,8 +67,8 @@ export const drawEcharts = async (
     },
     yAxis: {
       type: 'value',
-      min: min - range * 0.05,
-      max: max + range * 0.05,
+      min: min - range * 0.3,
+      max: max + range * 0.3,
       axisLabel: {
         formatter: function (value: number) {
           return value.toFixed(2)

@@ -1,9 +1,9 @@
 import {
   IAccurateAssessmentTableRow,
-  IForecastTideSituationResponse,
   IRealTideSituationResponse,
   IStationInfo,
   ITideSituation,
+  ITideSituationResponse,
 } from './type'
 
 import { stationInfo } from '../../asset/stationInfo'
@@ -63,14 +63,15 @@ export const getStationCurrentWaterSituation = async (
   }
 }
 
-export const getStationPredictionTideSituation = async (
+export const getFakeData = async (
   id: keyof typeof stationInfo,
 ): Promise<ITideSituation> => {
-  const url = `/api/v1/data/level/station/before/72?station=${stationInfo[id].pinyin}`
+  const url = `/api/v1/data/level/station/72?station=${stationInfo[id].pinyin}`
   const dataMap = (await fetch(url)
     .then((res) => res.json())
-    .then((data) => data.data)) as IForecastTideSituationResponse
-  if (dataMap.hz.length === 0) {
+    .then((data) => data.data)) as ITideSituationResponse
+
+  if (!dataMap.hpre) {
     return {
       time: [],
       hpre: [],
@@ -80,24 +81,49 @@ export const getStationPredictionTideSituation = async (
     }
   }
 
-  const realSituation = await getStationCurrentWaterSituation(id)
-
   const time: string[] = []
+  const isTyphoon = Boolean(dataMap.hadd)
+  const hpre = dataMap.hpre
+  const hyubao = dataMap.hyubao || []
+  const hadd = dataMap.hadd || []
+  const length = dataMap.hpre.length
+  const startTime = new Date(dataMap.time)
+  for (let i = 0; i < length; i++) {
+    const nextHour = new Date(startTime.getTime() - i * 60 * 60 * 1000)
+    time.push(nextHour.toLocaleString().replace(/:\d\d$/, ''))
+  }
+  return { time, isTyphoon, hyubao, hpre, hadd }
+}
+
+export const getStationPredictionTideSituation = async (
+  id: keyof typeof stationInfo,
+): Promise<ITideSituation> => {
+  const fakeStation = await getFakeData(id)
+  const relaStation = await getStationCurrentWaterSituation(id)
+  const timeList = fakeStation.time.slice().reverse()
   const isTyphoon = true
-  const length = Math.min(realSituation.hpre.length, dataMap.hz.length)
-  const hpre = realSituation.hpre.slice(0, length)
-  const hyubao = dataMap.hz.splice(0, length) || []
+  let realIndex = 0
+  const hpre = timeList.map((time) => {
+    const currentTime = new Date(time).getTime()
+    let result = 0
+    for (let index = realIndex; index < relaStation.time.length; index++) {
+      const realTime = new Date(relaStation.time[index]).getTime()
+      if (realTime >= currentTime - 3 * 3600 * 1000) {
+        result = relaStation.hpre[index]
+        realIndex = index
+        break
+      }
+    }
+    return result
+  })
+  hpre[hpre.length - 1] = hpre[hpre.length - 2]
+  const hyubao = fakeStation.hpre
   const hadd =
     hpre.map((value, index) => {
       const result = value - hyubao[index]
       return result
     }) || []
-  const endTime = new Date(dataMap.time)
-  for (let i = 0; i < length; i++) {
-    const nextHour = new Date(endTime.getTime() - i * 60 * 60 * 1000)
-    time.unshift(nextHour.toLocaleString().replace(/:\d\d$/, ''))
-  }
-  return { time, isTyphoon, hyubao, hpre, hadd }
+  return { time: timeList, isTyphoon, hyubao, hpre, hadd }
 }
 
 const getAccurateAssessmentTable = async (): Promise<
