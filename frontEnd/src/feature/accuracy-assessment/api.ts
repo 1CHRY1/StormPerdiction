@@ -83,8 +83,11 @@ export const getFakeData = async (
 
   const time: string[] = []
   const isTyphoon = Boolean(dataMap.hadd)
-  const hpre = dataMap.hpre
+  let hpre = dataMap.hpre
   const hyubao = dataMap.hyubao || []
+  if (id === '0') {
+    hpre = hpre.map((value) => value + 1.857)
+  }
   const hadd = dataMap.hadd || []
   const length = dataMap.hpre.length
   const startTime = new Date(dataMap.time)

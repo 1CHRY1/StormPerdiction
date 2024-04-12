@@ -67,8 +67,8 @@ export const drawEcharts = async (
     },
     yAxis: {
       type: 'value',
-      min: min - range * 0.3,
-      max: max + range * 0.3,
+      min: min - range * 0.5,
+      max: max + range * 0.5,
       axisLabel: {
         formatter: function (value: number) {
           return value.toFixed(2)
