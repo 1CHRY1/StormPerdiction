@@ -237,9 +237,9 @@ onMounted(async () => {
 
   const map: mapbox.Map = await initScratchMap2(mapContainerRef.value)
   ElMessage({
-      message: '地图加载完毕',
-      type: 'success',
-    })
+    message: '地图加载完毕',
+    type: 'success',
+  })
   map.addLayer(wind)
   wind.hide()
   map.addLayer(flow)
