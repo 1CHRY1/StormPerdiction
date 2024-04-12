@@ -88,13 +88,13 @@ export const drawEcharts = async (
     ],
     series: [
       {
-        name: '预报数据',
+        name: '实测数据',
         type: 'line',
         smooth: true,
         data: waterSituationData.hpre,
       },
       {
-        name: '实测数据',
+        name: '预报数据',
         type: 'line',
         smooth: true,
         data: waterSituationData.hyubao,
