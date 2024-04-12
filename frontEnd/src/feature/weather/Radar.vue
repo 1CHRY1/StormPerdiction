@@ -28,8 +28,8 @@ onMounted(async () => {
 
   timeMap.value = time
   timeListArray.value = [...(time.get(options.value[0].value) as Set<string>)]
-  selectType.value = options.value[0].value
-  currentTime.value = timeListArray.value[0]
+  selectType.value = options.value[3].value
+  currentTime.value = timeListArray.value[3]
   imageUrl.value = await getSatelliteImage(
     currentImageType.value,
     selectType.value,
@@ -86,7 +86,7 @@ const handlePlayClick = () => {
 <template>
   <div class="flex h-full">
     <div class="flex flex-auto justify-center items-center bg-zinc-200">
-      <img class="flex-auto m-4 max-h-[85vh] object-contain" :src="imageUrl" />
+      <img class="flex-auto m-4 max-h-[90vh] object-contain" :src="imageUrl" />
     </div>
     <div class="flex flex-col w-[18rem] bg-white">
       <div class="h-24 relative m-2 top-1 border border-zinc-300">
