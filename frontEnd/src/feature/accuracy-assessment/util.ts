@@ -33,6 +33,7 @@ export const drawEcharts = async (
       text: `${stationInfo.name}站点 ${stationInfo.time} 精读评定折线图`,
       textStyle: {
         color: 'hsl(220, 50%, 50%)',
+        fontSize: 20,
       },
     },
     tooltip: {
@@ -144,6 +145,7 @@ export const addLayer = async (map: mapbox.Map) => {
       'text-font': ['Open Sans Semibold', 'Arial Unicode MS Bold'],
       'text-offset': [0, 1.25],
       'text-anchor': 'top',
+      'text-size': 18,
     },
     paint: {
       'text-color': '#e2e8f0',

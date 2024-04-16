@@ -24,7 +24,7 @@ const keepAliveComponents = computed(() => {
 </script>
 
 <template>
-  <div class="h-screen w-screen flex flex-col bg-white">
+  <div class="h-screen w-screen flex flex-col bg-white text-xl">
     <!-- <div
       class="h-12 leading-[3rem] text-xl text-white tracking-widest pl-4 bg-[#134d8c]"
       @click="handleClick"

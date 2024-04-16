@@ -1,12 +1,23 @@
 <script setup lang="ts">
-import mapbox from 'mapbox-gl'
-import 'mapbox-gl/dist/mapbox-gl.css'
 import { ElMessage } from 'element-plus'
+import { default as mapbox, default as mapboxgl } from 'mapbox-gl'
+import 'mapbox-gl/dist/mapbox-gl.css'
 import { Ref, onMounted, ref, watch } from 'vue'
+import {
+  addWaterLayer,
+  addWaterLayer2,
+  flow,
+  flow9711,
+  prepareAddWaterLayer,
+  prepareAddWaterLayer2,
+  wind,
+  wind9711,
+} from '../../components/LayerFromWebGPU'
 import { router } from '../../router'
 import { useMapStore } from '../../store/mapStore'
 import { useStationStore } from '../../store/stationStore'
-import { initMap, initScratchMap } from '../../util/initMap'
+import { initScratchMap } from '../../util/initMap'
+import adwtLegend from './adwtLegend.vue'
 import { IStormData, IStormDataOfPoint, IStormTableRow } from './type'
 import {
   addStationLayer,
@@ -19,15 +30,6 @@ import {
   updateStormLayer,
   updateTyphoonSymbol,
 } from './util'
-import {
-  WindLayer9711, FlowLayer9711, addWaterLayer, prepareAddWaterLayer, addWaterLayer2, prepareAddWaterLayer2,
-  flow9711, wind9711, flow, wind
-} from '../../components/LayerFromWebGPU'
-import mapboxgl from 'mapbox-gl';
-import adwtLegend from './adwtLegend.vue'
-
-
-
 
 const stationStore = useStationStore()
 const mapContainerRef: Ref<HTMLDivElement | null> = ref(null)
@@ -42,12 +44,11 @@ const mapStore = useMapStore()
 const radioOptions = [
   { label: '风场', value: 0 },
   { label: '流场', value: 1 },
-  { label: '增水场', value: 2 }
+  { label: '增水场', value: 2 },
 ]
-const selectedLayer: Ref<null | Number> = ref(null)
+const selectedLayer: Ref<null | number> = ref(null)
 
-let contourDATA: Ref<null | Object> = ref(null);
-
+const contourDATA: Ref<null | Object> = ref(null)
 
 const handleTableSelectionChange = (selection: any) => {
   selectPointID.value = selection.id
@@ -68,17 +69,15 @@ const handleSelectChange = async () => {
   })
 }
 
-
-let adwtid = 0;
-let adwtTicker: Ref<number> = ref(0);
+let adwtid = 0
+const adwtTicker: Ref<number> = ref(0)
 const adwtHandler = async (addwaterCount: number) => {
-
-  let addWaterID = addwaterCount
-  let addWaterSrcIds = ['pngsource', 'contourSrc']
+  const addWaterID = addwaterCount
+  const addWaterSrcIds = ['pngsource', 'contourSrc']
   // remove
-  let addWaterLayerIds = ['addWater', 'contourLayer', 'contourLabel']
+  const addWaterLayerIds = ['addWater', 'contourLayer', 'contourLabel']
   // remove
-  addWaterLayerIds.forEach(layerid => {
+  addWaterLayerIds.forEach((layerid) => {
     mapStore.map!.getLayer(layerid) && mapStore.map!.removeLayer(layerid)
   })
   addWaterSrcIds.forEach((srcid) => {
@@ -89,12 +88,11 @@ const adwtHandler = async (addwaterCount: number) => {
   addWaterLayer(mapStore.map!, addWaterID)
 }
 const adwtHandler2 = async (addwaterCount: number) => {
-
-  let addWaterID = addwaterCount
-  let addWaterSrcIds = ['pngsource2', 'contourSrc2']
-  let addWaterLayerIds = ['addWater2', 'contourLayer2', 'contourLabel2']
+  const addWaterID = addwaterCount
+  const addWaterSrcIds = ['pngsource2', 'contourSrc2']
+  const addWaterLayerIds = ['addWater2', 'contourLayer2', 'contourLabel2']
   // remove
-  addWaterLayerIds.forEach(layerid => {
+  addWaterLayerIds.forEach((layerid) => {
     mapStore.map!.getLayer(layerid) && mapStore.map!.removeLayer(layerid)
   })
   addWaterSrcIds.forEach((srcid) => {
@@ -105,18 +103,17 @@ const adwtHandler2 = async (addwaterCount: number) => {
   addWaterLayer2(mapStore.map!, addWaterID)
 }
 
-
 const wind = new wind9711() as mapboxgl.AnyLayer
 const flow = new flow9711() as mapboxgl.AnyLayer
 
-watch(selectedLayer, async (now: null | Number, old: null | Number) => {
-  // clear 
+watch(selectedLayer, async (now: null | number, old: null | number) => {
+  // clear
   if (!mapStore.map) {
     ElMessage({
       message: '地图尚未加载完毕，请等待..',
       type: 'warning',
     })
-    return;
+    return
   }
   switch (old) {
     case 0:
@@ -124,18 +121,30 @@ watch(selectedLayer, async (now: null | Number, old: null | Number) => {
       //   mapStore.map!.removeLayer('WindLayer9711')
       wind.hide()
 
-      break;
+      break
     case 1:
       // if (mapStore.map!.getLayer('FlowLayer9711'))
       //   mapStore.map!.removeLayer('FlowLayer9711')
       flow.hide()
-      break;
+      break
     case 2:
       clearInterval(adwtTicker.value)
-      let addWaterSrcIds = ['pngsource', 'contourSrc', 'pngsource2', 'contourSrc2']
-      let addWaterLayerIds = ['addWater', 'contourLayer', 'contourLabel', 'addWater2', 'contourLayer2', 'contourLabel2']
+      const addWaterSrcIds = [
+        'pngsource',
+        'contourSrc',
+        'pngsource2',
+        'contourSrc2',
+      ]
+      const addWaterLayerIds = [
+        'addWater',
+        'contourLayer',
+        'contourLabel',
+        'addWater2',
+        'contourLayer2',
+        'contourLabel2',
+      ]
 
-      addWaterLayerIds.forEach(layerid => {
+      addWaterLayerIds.forEach((layerid) => {
         mapStore.map!.getLayer(layerid) && mapStore.map!.removeLayer(layerid)
       })
       addWaterSrcIds.forEach((srcid) => {
@@ -144,18 +153,17 @@ watch(selectedLayer, async (now: null | Number, old: null | Number) => {
 
       // adwtTicker&&clearInterval(adwtTicker)
 
-      break;
+      break
     default:
-      break;
+      break
   }
-
 
   // addding
   switch (now) {
     case 0:
       ElMessage({
         offset: 50,
-        message: "正在加载风场..."
+        message: '正在加载风场...',
       })
       // mapStore.map!.addLayer(new WindLayer9711() as mapboxgl.AnyLayer);
       // mapStore.map!.addLayer(new wind9711() as mapboxgl.AnyLayer)
@@ -165,13 +173,13 @@ watch(selectedLayer, async (now: null | Number, old: null | Number) => {
       mapStore.map!.flyTo({
         center: [122.92069384160902, 33.5063086220937],
         zoom: 5.184918089769568,
-        duration: 500
+        duration: 500,
       })
-      break;
+      break
     case 1:
       ElMessage({
         offset: 50,
-        message: "正在加载流场..."
+        message: '正在加载流场...',
       })
       // mapStore.map!.addLayer(new FlowLayer9711() as mapboxgl.AnyLayer);
       // mapStore.map!.addLayer(new flow9711() as mapboxgl.AnyLayer)
@@ -181,23 +189,23 @@ watch(selectedLayer, async (now: null | Number, old: null | Number) => {
       mapStore.map!.flyTo({
         center: [122.92069384160902, 32.0063086220937],
         zoom: 7.512044631152661,
-        duration: 500
+        duration: 500,
       })
-      break;
+      break
     case 2:
       ElMessage({
         offset: 50,
-        message: "正在加载增水场..."
+        message: '正在加载增水场...',
       })
 
       mapStore.map!.flyTo({
         center: [122.92069384160902, 32.0063086220937],
         zoom: 6.912044631152661,
-        duration: 500
+        duration: 500,
       })
 
       // adwtTicker = adwtHandeler()
-      // static 
+      // static
       // let addWaterID = 26
       // let addWaterSrcIds = ['pngsource', 'contourSrc']
       // if (mapStore.map!.getSource(addWaterSrcIds[0]) && mapStore.map!.getSource(addWaterSrcIds[1]))
@@ -216,44 +224,48 @@ watch(selectedLayer, async (now: null | Number, old: null | Number) => {
         adwtid = (adwtid + 1) % 195
       }, 3000)
 
-      break;
+      break
     default:
-      break;
+      break
   }
 })
 
 const closeHandeler = () => {
-
   wind.hide()
   flow.hide()
 
   adwtTicker.value && clearInterval(adwtTicker.value)
-  let addWaterSrcIds = ['pngsource', 'contourSrc', 'pngsource2', 'contourSrc2']
-  let addWaterLayerIds = ['addWater', 'contourLayer', 'contourLabel', 'addWater2', 'contourLayer2', 'contourLabel2']
-  addWaterLayerIds.forEach(layerid => {
+  const addWaterSrcIds = [
+    'pngsource',
+    'contourSrc',
+    'pngsource2',
+    'contourSrc2',
+  ]
+  const addWaterLayerIds = [
+    'addWater',
+    'contourLayer',
+    'contourLabel',
+    'addWater2',
+    'contourLayer2',
+    'contourLabel2',
+  ]
+  addWaterLayerIds.forEach((layerid) => {
     mapStore.map!.getLayer(layerid) && mapStore.map!.removeLayer(layerid)
   })
   addWaterSrcIds.forEach((srcid) => {
     mapStore.map!.getSource(srcid) && mapStore.map!.removeSource(srcid)
   })
 
-
   selectedLayer.value = null
 
-  radio!.value!.forEach(item => {
-
+  radio!.value!.forEach((item) => {
     item.checked = false
-
-  });
-
+  })
 
   // (radio.value![0]! as any).checked = false
   // (radio.value![1]! as any).checked = false
   // (radio.value![2]! as any).checked = false
-
 }
-
-
 
 watch(selectPointID, () => {
   selectPointData.value = stormData.value!.dataList[Number(selectPointID.value)]
@@ -330,60 +342,81 @@ onMounted(async () => {
   <div class="flex h-full">
     <div class="flex h-full flex-auto relative justify-center">
       <div
-        class="absolute z-10 top-3 py-1 px-16 text-yellow-400 font-bold text-2xl flex justify-center bg-slate-700/50 rounded">
+        class="absolute z-10 top-3 py-1 px-16 text-yellow-400 font-bold text-2xl flex justify-center bg-slate-700/50 rounded"
+      >
         {{ stormData?.name }}
       </div>
 
       <div class="card">
         <div class="imge">
-          <div class='title'>图层控制</div>
+          <div class="title">图层控制</div>
         </div>
 
         <div class="Description">
           <div class="radio-buttons">
-            <label class="radio-button" v-for="opt in radioOptions" :key="opt.value">
-              <input type="radio" name="option" :value="opt.value" ref="radio">
-              <div class="radio-circle" @click="selectedLayer = opt.value;"></div>
-              <span class="radio-label" @click="selectedLayer = opt.value;">{{ opt.label }}</span>
+            <label
+              v-for="opt in radioOptions"
+              :key="opt.value"
+              class="radio-button"
+            >
+              <input
+                ref="radio"
+                type="radio"
+                name="option"
+                :value="opt.value"
+              />
+              <div
+                class="radio-circle"
+                @click="selectedLayer = opt.value"
+              ></div>
+              <span class="radio-label" @click="selectedLayer = opt.value">{{
+                opt.label
+              }}</span>
             </label>
           </div>
         </div>
         <div class="imge2">
-          <div class='close' @click="closeHandeler">关闭所有</div>
+          <div class="close" @click="closeHandeler">关闭所有</div>
         </div>
       </div>
 
-      <adwtLegend v-show="selectedLayer == 2" :contourData="contourDATA"></adwtLegend>
+      <adwtLegend
+        v-show="selectedLayer == 2"
+        :contour-data="contourDATA"
+      ></adwtLegend>
 
       <div ref="mapContainerRef" class="map-container h-full w-full"></div>
       <canvas id="GPUFrame" class="playground"></canvas>
-
-
     </div>
-    <div class="bg-white w-[21rem] flex flex-col">
+    <div class="bg-white w-[22rem] flex flex-col">
       <div class="h-24 m-2 border border-zinc-300 bg-white">
         <div class="h-10 leading-10 px-3 bg-[#1b6ec8] text-white">
           历史风暴潮
         </div>
-        <el-select v-model="selectStormType" class="m-2 w-[90%]" placeholder="Select" size="large"
-          @change="handleSelectChange">
+        <el-select
+          v-model="selectStormType"
+          class="m-2 w-[90%]"
+          placeholder="Select"
+          size="large"
+          @change="handleSelectChange"
+        >
           <el-option key="199711" label="温妮 (199711)" value="199711" />
           <!-- <el-option key="200012" label="派比安 (200012)" value="200012" /> -->
         </el-select>
       </div>
-      <div class="h-40 m-2 border border-zinc-300 bg-white">
+      <div class="h-54 m-2 border border-zinc-300 bg-white">
         <div class="h-10 leading-10 px-3 bg-[#1b6ec8] text-white">历史信息</div>
-        <div class="mx-2 my-1 flex flex-col">
+        <div class="mx-2 my-2 flex flex-col">
           <div>
-            <span class="inline-block pr-2">当前时间:</span>
+            <span class="inline-block pr-2 text-lg">当前时间:</span>
             <span class="inline-block pr-3">{{
               selectPointData && formatDate(selectPointData.time)
             }}</span>
           </div>
         </div>
-        <div class="mx-2 my-1 flex flex-col">
+        <div class="mx-2 my-2 flex flex-col">
           <div>
-            <span class="inline-block pr-2">中心位置:</span>
+            <span class="inline-block pr-2 text-lg">中心位置:</span>
             <span class="inline-block pr-3">{{
               selectPointData && decimalToDMS(selectPointData.lng)
             }}</span>
@@ -392,29 +425,35 @@ onMounted(async () => {
             }}</span>
           </div>
         </div>
-        <div class="mx-2 my-1 flex flex-col">
+        <div class="mx-2 my-2 flex flex-col">
           <div>
-            <span class="inline-block pr-2">当前强度:</span>
+            <span class="inline-block pr-2 text-lg">当前强度:</span>
             <span class="inline-block pr-3">{{
               selectPointData &&
               `${selectPointData?.power}级 (${selectPointData?.strong})`
             }}</span>
           </div>
         </div>
-        <div class="mx-2 my-1 flex flex-col">
+        <div class="mx-2 my-2 flex flex-col">
           <div>
-            <span class="inline-block pr-2">当前风速:</span>
+            <span class="inline-block pr-2 text-lg">当前风速:</span>
             <span class="inline-block pr-3">{{
               selectPointData && selectPointData?.speed + 'm/s'
             }}</span>
           </div>
         </div>
       </div>
-      <div class="m-2 mt-2 w-80 bg-white">
+      <div class="m-2 mt-2 w-[21rem] bg-white">
         <div class="h-10 leading-10 px-3 bg-[#1b6ec8] text-white">历史路径</div>
         <div class="border border-zinc-300">
-          <el-table stripe border table-layout="auto" :data="tableData" class="h-[56vh]"
-            @current-change="handleTableSelectionChange">
+          <el-table
+            stripe
+            border
+            table-layout="auto"
+            :data="tableData"
+            class="h-[57vh]"
+            @current-change="handleTableSelectionChange"
+          >
             <el-table-column prop="time" label="时间" />
             <el-table-column prop="powerAndStrong" label="强度" />
             <el-table-column prop="speed" label="风速" />
@@ -432,6 +471,14 @@ onMounted(async () => {
 
 :deep(.el-table tbody tr:nth-child(2n) td) {
   background: #eff6ff !important;
+}
+
+:deep(.el-select--large .el-select__wrapper) {
+  font-size: medium;
+}
+
+:deep(.el-table) {
+  font-size: medium;
 }
 
 .adwtLegend {
@@ -508,7 +555,7 @@ onMounted(async () => {
   cursor: pointer;
 }
 
-.radio-button input[type="radio"] {
+.radio-button input[type='radio'] {
   display: none;
 }
 
@@ -522,7 +569,7 @@ onMounted(async () => {
 }
 
 .radio-circle::before {
-  content: "";
+  content: '';
   display: block;
   width: 12px;
   height: 12px;
@@ -535,11 +582,10 @@ onMounted(async () => {
   transition: all 0.2s ease-in-out;
 }
 
-.radio-button input[type="radio"]:checked+.radio-circle::before {
+.radio-button input[type='radio']:checked + .radio-circle::before {
   transform: translate(-50%, -50%) scale(1);
   background-color: #ffffff;
 }
-
 
 .radio-label {
   font-size: 14px;

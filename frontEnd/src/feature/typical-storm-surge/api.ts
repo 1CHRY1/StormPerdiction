@@ -12,7 +12,7 @@ export const getStationInfo = (id: keyof typeof stationInfo): IStationInfo => {
   const result = {
     name: info.name,
     pinyin: info.pinyin,
-    time: new Date(Date.now()).toLocaleString().replace(/:\d\d$/, ''),
+    time: '1997/8/13',
     lon: decimalToDMS(info.coord[0]),
     lat: decimalToDMS(info.coord[1]),
     type: info.type,

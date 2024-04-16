@@ -41,9 +41,10 @@ export const drawEcharts = async (
     const haddRange = haddMax - haddMin
     option = {
       title: {
-        text: `${stationInfo.name}站点 ${stationInfo.time} 72 小时预报折线图`,
+        text: `${stationInfo.name}站点 ${stationInfo.time} 72 小时逐时潮位预报图`,
         textStyle: {
           color: 'hsl(220, 50%, 50%)',
+          fontSize: 20,
         },
       },
       tooltip: {
@@ -165,9 +166,10 @@ export const drawEcharts = async (
     const range = max - min
     option = {
       title: {
-        text: `${stationInfo.name}站点 ${stationInfo.time} 72 小时预报折线图`,
+        text: `${stationInfo.name}站点 ${stationInfo.time} 72 小时逐时潮位预报图`,
         textStyle: {
           color: 'hsl(220, 50%, 50%)',
+          fontSize: 20,
         },
       },
       tooltip: {
@@ -274,6 +276,7 @@ export const addLayer = async (map: mapbox.Map) => {
       'text-font': ['Open Sans Semibold', 'Arial Unicode MS Bold'],
       'text-offset': [0, 1.25],
       'text-anchor': 'top',
+      'text-size': 18,
     },
     paint: {
       'text-color': '#e2e8f0',

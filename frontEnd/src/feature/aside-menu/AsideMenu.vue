@@ -110,3 +110,13 @@ const path = computed(() => route.path)
     </el-sub-menu>
   </el-menu>
 </template>
+
+<style scoped>
+:deep(.el-sub-menu__title) {
+  font-size: large;
+}
+
+:deep(.el-menu-item) {
+  font-size: medium;
+}
+</style>

@@ -212,4 +212,16 @@ onMounted(async () => {
 :deep(.el-table tbody tr:nth-child(2n) td) {
   background: #eff6ff !important;
 }
+
+:deep(.el-select--large .el-select__wrapper) {
+  font-size: medium;
+}
+
+:deep(.el-table) {
+  font-size: medium;
+}
+
+:deep(.el-button) {
+  font-size: medium;
+}
 </style>

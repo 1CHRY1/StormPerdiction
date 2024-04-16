@@ -1,19 +1,23 @@
 <script setup lang="ts">
+import axios from 'axios'
+import { ElMessage } from 'element-plus'
 import mapbox from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
-import { Ref, onMounted, ref, watch, computed } from 'vue';
-import { router } from '../../router'
-import { useStationStore } from '../../store/stationStore'
-import { useMapStore } from '../../store/mapStore';
-import { initMap, initScratchMap2 } from '../../util/initMap'
-import { addLayer } from './util'
+import { Ref, computed, onMounted, ref, watch } from 'vue'
 import {
-  addWaterLayer, prepareAddWaterLayer, addWaterLayer2, prepareAddWaterLayer2,
-  floww, windd
+  addWaterLayer,
+  addWaterLayer2,
+  floww,
+  prepareAddWaterLayer,
+  prepareAddWaterLayer2,
+  windd,
 } from '../../components/LayerFromWebGPU'
+import { router } from '../../router'
+import { useMapStore } from '../../store/mapStore'
+import { useStationStore } from '../../store/stationStore'
+import { initScratchMap2 } from '../../util/initMap'
 import adwtLegend from '../typical-storm-surge/adwtLegend.vue'
-import { ElMessage } from 'element-plus';
-import axios from 'axios';
+import { addLayer } from './util'
 
 const radio: Ref<HTMLDivElement | null> = ref(null)
 const radio2: Ref<HTMLDivElement | null> = ref(null)
@@ -26,20 +30,18 @@ const radioOptions = [
   // { label: '增水场', value: 2 }
 ]
 const optt = { label: '增水场', value: 2 }
-const selectedLayer: Ref<null | Number> = ref(null)
-let contourDATA: Ref<null | Object> = ref(null);
+const selectedLayer: Ref<null | number> = ref(null)
+const contourDATA: Ref<null | Object> = ref(null)
 
-
-let adwtid = 0;
-let adwtTicker: Ref<number> = ref(0);
+let adwtid = 0
+const adwtTicker: Ref<number> = ref(0)
 const adwtHandler = async (addwaterCount: number) => {
-
-  let addWaterID = addwaterCount
-  let addWaterSrcIds = ['pngsource', 'contourSrc']
+  const addWaterID = addwaterCount
+  const addWaterSrcIds = ['pngsource', 'contourSrc']
   // remove
-  let addWaterLayerIds = ['addWater', 'contourLayer', 'contourLabel']
+  const addWaterLayerIds = ['addWater', 'contourLayer', 'contourLabel']
   // remove
-  addWaterLayerIds.forEach(layerid => {
+  addWaterLayerIds.forEach((layerid) => {
     mapStore.map!.getLayer(layerid) && mapStore.map!.removeLayer(layerid)
   })
   addWaterSrcIds.forEach((srcid) => {
@@ -50,12 +52,11 @@ const adwtHandler = async (addwaterCount: number) => {
   addWaterLayer(mapStore.map!, addWaterID)
 }
 const adwtHandler2 = async (addwaterCount: number) => {
-
-  let addWaterID = addwaterCount
-  let addWaterSrcIds = ['pngsource2', 'contourSrc2']
-  let addWaterLayerIds = ['addWater2', 'contourLayer2', 'contourLabel2']
+  const addWaterID = addwaterCount
+  const addWaterSrcIds = ['pngsource2', 'contourSrc2']
+  const addWaterLayerIds = ['addWater2', 'contourLayer2', 'contourLabel2']
   // remove
-  addWaterLayerIds.forEach(layerid => {
+  addWaterLayerIds.forEach((layerid) => {
     mapStore.map!.getLayer(layerid) && mapStore.map!.removeLayer(layerid)
   })
   addWaterSrcIds.forEach((srcid) => {
@@ -69,16 +70,15 @@ const adwtHandler2 = async (addwaterCount: number) => {
 const wind = new windd() as mapboxgl.AnyLayer
 const flow = new floww() as mapboxgl.AnyLayer
 
-watch(selectedLayer, async (now: null | Number, old: null | Number) => {
-  // clear 
+watch(selectedLayer, async (now: null | number, old: null | number) => {
+  // clear
   if (!mapStore.map) {
     ElMessage({
       message: '地图尚未加载完毕，请等待..',
       type: 'warning',
     })
-    return;
+    return
   }
-
 
   switch (old) {
     case 0:
@@ -86,18 +86,30 @@ watch(selectedLayer, async (now: null | Number, old: null | Number) => {
       //   mapStore.map!.removeLayer('WindLayer9711')
       wind.hide()
 
-      break;
+      break
     case 1:
       // if (mapStore.map!.getLayer('FlowLayer9711'))
       //   mapStore.map!.removeLayer('FlowLayer9711')
       flow.hide()
-      break;
+      break
     case 2:
       clearInterval(adwtTicker.value)
-      let addWaterSrcIds = ['pngsource', 'contourSrc', 'pngsource2', 'contourSrc2']
-      let addWaterLayerIds = ['addWater', 'contourLayer', 'contourLabel', 'addWater2', 'contourLayer2', 'contourLabel2']
+      const addWaterSrcIds = [
+        'pngsource',
+        'contourSrc',
+        'pngsource2',
+        'contourSrc2',
+      ]
+      const addWaterLayerIds = [
+        'addWater',
+        'contourLayer',
+        'contourLabel',
+        'addWater2',
+        'contourLayer2',
+        'contourLabel2',
+      ]
 
-      addWaterLayerIds.forEach(layerid => {
+      addWaterLayerIds.forEach((layerid) => {
         mapStore.map!.getLayer(layerid) && mapStore.map!.removeLayer(layerid)
       })
       addWaterSrcIds.forEach((srcid) => {
@@ -106,18 +118,17 @@ watch(selectedLayer, async (now: null | Number, old: null | Number) => {
 
       // adwtTicker&&clearInterval(adwtTicker)
 
-      break;
+      break
     default:
-      break;
+      break
   }
-
 
   // addding
   switch (now) {
     case 0:
       ElMessage({
         offset: 50,
-        message: "正在加载风场..."
+        message: '正在加载风场...',
       })
       // mapStore.map!.addLayer(new WindLayer9711() as mapboxgl.AnyLayer);
       // mapStore.map!.addLayer(new wind9711() as mapboxgl.AnyLayer)
@@ -127,13 +138,13 @@ watch(selectedLayer, async (now: null | Number, old: null | Number) => {
       mapStore.map!.flyTo({
         center: [122.92069384160902, 33.5063086220937],
         zoom: 5.184918089769568,
-        duration: 500
+        duration: 500,
       })
-      break;
+      break
     case 1:
       ElMessage({
         offset: 50,
-        message: "正在加载流场..."
+        message: '正在加载流场...',
       })
       // mapStore.map!.addLayer(new FlowLayer9711() as mapboxgl.AnyLayer);
       // mapStore.map!.addLayer(new flow9711() as mapboxgl.AnyLayer)
@@ -143,23 +154,23 @@ watch(selectedLayer, async (now: null | Number, old: null | Number) => {
       mapStore.map!.flyTo({
         center: [122.92069384160902, 32.0063086220937],
         zoom: 7.512044631152661,
-        duration: 500
+        duration: 500,
       })
-      break;
+      break
     case 2:
       ElMessage({
         offset: 50,
-        message: "正在加载增水场..."
+        message: '正在加载增水场...',
       })
 
       mapStore.map!.flyTo({
         center: [122.92069384160902, 32.0063086220937],
         zoom: 6.912044631152661,
-        duration: 500
+        duration: 500,
       })
 
       // adwtTicker = adwtHandeler()
-      // static 
+      // static
       // let addWaterID = 26
       // let addWaterSrcIds = ['pngsource', 'contourSrc']
       // if (mapStore.map!.getSource(addWaterSrcIds[0]) && mapStore.map!.getSource(addWaterSrcIds[1]))
@@ -178,48 +189,56 @@ watch(selectedLayer, async (now: null | Number, old: null | Number) => {
         adwtid = (adwtid + 1) % 195
       }, 3000)
 
-      break;
+      break
     default:
-      break;
+      break
   }
 })
 
 const closeHandeler = () => {
-
   wind.hide()
   flow.hide()
 
   adwtTicker.value && clearInterval(adwtTicker.value)
-  let addWaterSrcIds = ['pngsource', 'contourSrc', 'pngsource2', 'contourSrc2']
-  let addWaterLayerIds = ['addWater', 'contourLayer', 'contourLabel', 'addWater2', 'contourLayer2', 'contourLabel2']
-  addWaterLayerIds.forEach(layerid => {
+  const addWaterSrcIds = [
+    'pngsource',
+    'contourSrc',
+    'pngsource2',
+    'contourSrc2',
+  ]
+  const addWaterLayerIds = [
+    'addWater',
+    'contourLayer',
+    'contourLabel',
+    'addWater2',
+    'contourLayer2',
+    'contourLabel2',
+  ]
+  addWaterLayerIds.forEach((layerid) => {
     mapStore.map!.getLayer(layerid) && mapStore.map!.removeLayer(layerid)
   })
   addWaterSrcIds.forEach((srcid) => {
     mapStore.map!.getSource(srcid) && mapStore.map!.removeSource(srcid)
   })
 
-
   selectedLayer.value = null
 
   radio2!.value!.checked = false
-  radio.value.forEach(element => {
+  radio.value.forEach((element) => {
     element.checked = false
-  });
-
-
+  })
 
   // (radio.value![0]! as any).checked = false
   // (radio.value![1]! as any).checked = false
   // (radio.value![2]! as any).checked = false
 }
 
-const typh: Ref<Number> = ref(0)
+const typh: Ref<number> = ref(0)
 // const text = computed(typh,()=>{
 //   return typh==1?"当前有台风":"当前无台风"
 // })
 const text = computed(() => {
-  return typh.value == 1 ? "当前有台风" : "当前无台风"
+  return typh.value == 1 ? '当前有台风' : '当前无台风'
 })
 
 onMounted(async () => {
@@ -233,7 +252,6 @@ onMounted(async () => {
 
   typh.value = (await axios.get(`/api/v1/data/level/typh`)).data.data
   // typh.value = 1;
-
 
   const map: mapbox.Map = await initScratchMap2(mapContainerRef.value)
   ElMessage({
@@ -277,29 +295,40 @@ onMounted(async () => {
   <!-- <radioVue></radioVue> -->
   <div class="card">
     <div class="imge">
-      <div class='title'>图层控制</div>
+      <div class="title">图层控制</div>
     </div>
 
     <div class="Description">
       <div class="typh">{{ text }}</div>
       <div class="radio-buttons">
-        <label class="radio-button" v-for="opt in radioOptions" :key="opt.value">
-          <input type="radio" name="option" :value="opt.value" ref="radio">
-          <div class="radio-circle" @click="selectedLayer = opt.value;"></div>
-          <span class="radio-label" @click="selectedLayer = opt.value;">{{ opt.label }}</span>
+        <label
+          v-for="opt in radioOptions"
+          :key="opt.value"
+          class="radio-button"
+        >
+          <input ref="radio" type="radio" name="option" :value="opt.value" />
+          <div class="radio-circle" @click="selectedLayer = opt.value"></div>
+          <span class="radio-label" @click="selectedLayer = opt.value">{{
+            opt.label
+          }}</span>
         </label>
-        <label class="radio-button" v-show="typh">
-          <input type="radio" name="option" :value="optt.value" ref="radio2">
-          <div class="radio-circle" @click="selectedLayer = optt.value;"></div>
-          <span class="radio-label" @click="selectedLayer = optt.value;">{{ optt.label }}</span>
+        <label v-show="typh" class="radio-button">
+          <input ref="radio2" type="radio" name="option" :value="optt.value" />
+          <div class="radio-circle" @click="selectedLayer = optt.value"></div>
+          <span class="radio-label" @click="selectedLayer = optt.value">{{
+            optt.label
+          }}</span>
         </label>
       </div>
     </div>
     <div class="imge2">
-      <div class='close' @click="closeHandeler">关闭所有</div>
+      <div class="close" @click="closeHandeler">关闭所有</div>
     </div>
   </div>
-  <adwtLegend v-show="selectedLayer == 2" :contourData="contourDATA"></adwtLegend>
+  <adwtLegend
+    v-show="selectedLayer == 2"
+    :contour-data="contourDATA"
+  ></adwtLegend>
 </template>
 
 <style scoped>
@@ -309,7 +338,6 @@ onMounted(async () => {
   right: 5vw;
   z-index: 2;
 }
-
 
 #GPUFrame {
   position: absolute;
@@ -378,7 +406,7 @@ onMounted(async () => {
 .typh {
   font-size: 1.8vh;
   height: 30%;
-  color: #ffffff
+  color: #ffffff;
 }
 
 .radio-buttons {
@@ -396,7 +424,7 @@ onMounted(async () => {
   cursor: pointer;
 }
 
-.radio-button input[type="radio"] {
+.radio-button input[type='radio'] {
   display: none;
 }
 
@@ -410,7 +438,7 @@ onMounted(async () => {
 }
 
 .radio-circle::before {
-  content: "";
+  content: '';
   display: block;
   width: 12px;
   height: 12px;
@@ -423,11 +451,10 @@ onMounted(async () => {
   transition: all 0.2s ease-in-out;
 }
 
-.radio-button input[type="radio"]:checked+.radio-circle::before {
+.radio-button input[type='radio']:checked + .radio-circle::before {
   transform: translate(-50%, -50%) scale(1);
   background-color: #ffffff;
 }
-
 
 .radio-label {
   font-size: 14px;

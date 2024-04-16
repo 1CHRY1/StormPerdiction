@@ -35,8 +35,6 @@ export const getStormData = async (
     }
     result.dataList.push(temp)
   }
-  console.log(result)
-
   return result
 }
 
@@ -180,7 +178,7 @@ export const updateTyphoonSymbol = (
 export const addStationLayer = async (map: mapbox.Map) => {
   map.addSource('stations', {
     type: 'geojson',
-    data: '/geojson/station.geojson',
+    data: '/geojson/199711-station.geojson',
     attribution: 'name',
   })
 
@@ -201,6 +199,7 @@ export const addStationLayer = async (map: mapbox.Map) => {
       'text-font': ['Open Sans Semibold', 'Arial Unicode MS Bold'],
       'text-offset': [0, 1.25],
       'text-anchor': 'top',
+      'text-size': 18,
     },
     paint: {
       'text-color': '#e2e8f0',
@@ -209,9 +208,10 @@ export const addStationLayer = async (map: mapbox.Map) => {
 }
 
 export const generateTreeDataOfStation = (): Tree[] => {
-  const data: Tree[] = Object.entries(stationInfo).map((value) => ({
-    id: value[0],
-    label: value[1].name,
+  const stationFilterID = ['1', '6', '7', '8', '10', '14']
+  const data: Tree[] = stationFilterID.map((value) => ({
+    id: value,
+    label: stationInfo[value as keyof typeof stationInfo].name,
   }))
 
   return data
@@ -243,9 +243,10 @@ export const drawEcharts = async (
   const haddRange = haddMax - haddMin
   const option: EChartsOption = {
     title: {
-      text: `${stationInfo.name}站点 ${stationInfo.time} 72 小时预报折线图`,
+      text: `${stationInfo.name}站点 ${stationInfo.time} 历史潮位图`,
       textStyle: {
         color: 'hsl(220, 50%, 50%)',
+        fontSize: 20,
       },
     },
     tooltip: {
