@@ -4,8 +4,19 @@ import axios from "axios";
 import earcut from "earcut";
 
 //normal
-const prefix = '/testapi/flow/'
+// const prefix = '/testapi/flow/'
+const prefix = '/testapi/flow/bin?name='
 let resourceUrl = [
+  "uv_0.bin",
+  "uv_1.bin",
+  "uv_2.bin",
+  "uv_3.bin",
+  "uv_4.bin",
+  "uv_5.bin",
+  "uv_6.bin",
+  "uv_7.bin",
+  "uv_8.bin",
+  "uv_9.bin",
   "uv_10.bin",
   "uv_11.bin",
   "uv_12.bin",
@@ -209,11 +220,13 @@ export default class floww {
 
     // PASS - 1: flow textures (mix(from -> to)) generation ////////////////////////////////////////////////
     // station ---> coordinates
+    await this.getVoronoi(prefix+"station.bin");
 
-    await this.getVoronoi("/ffvsrc/flow/station.bin");
-    await this.addVoronoiBindingSync("/ffvsrc/flow/uv_10.bin");
+    await this.addVoronoiBindingSync(prefix+"uv_0.bin");
+
     this.swapVoronoiBinding();
-    await this.addVoronoiBindingSync("/ffvsrc/flow/uv_11.bin");
+    await this.addVoronoiBindingSync(prefix+"uv_1.bin");
+
     this.currentResourceUrl = 1;
     this.nextPrepared = true;
 
@@ -531,6 +544,7 @@ export default class floww {
   }
 
   updateMaxSpeed(maxSpeed) {
+    console.log("!!!!",maxSpeed)
     this.maxSpeed.n = maxSpeed > this.maxSpeed.n ? maxSpeed : this.maxSpeed.n;
   }
 

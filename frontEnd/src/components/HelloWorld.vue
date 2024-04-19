@@ -1,27 +1,31 @@
 <script setup>
 
-import { onMounted } from 'vue'
-// import { init, tickRender, main } from './originWaterDif.js'
+import { onMounted,ref } from 'vue'
 import axios from 'axios'
 import { main } from './layers/main'
+import flowLegend from './legend/flowLegend.vue'
+import timeStepCounter from './legend/timestepCounter.vue'
 
+const timestep = ref(0)
+const alltime = 144
+setInterval(()=>{
+  timestep.value = (timestep.value+1)%alltime
+},1000)
 
 onMounted(async () => {
   console.log('hellop');
-  main()
-  // let typhURL = `/api/v1/data/level/typh`
-  // let myres = (await axios.get(typhURL))
-  // console.log(myres.data.data);
-
-
+  // main(
 })
+
+
 
 </script>
 
 <template>
   <div id="map"></div>
   <canvas id="WebGPUFrame"></canvas>
-
+  <flowLegend :max-speed="26.8"></flowLegend>
+  <timeStepCounter :time-step="timestep" :total-count="alltime"></timeStepCounter>
   <!-- <div class='adwtLegend'>
     <p>风暴增水(m)</p>
     <div class='localFlex'>

@@ -149,6 +149,17 @@ fn fMain(input: VertexOutput) -> @location(0) vec4f {
         0xf46d43,
         0xd53e4f
     );
+    let rampColors1 = array<u32,8>(
+        0xe0ffff,
+        0xc5eff2,
+        0xabdee7,
+        0x91cdde,
+        0x78bcd5,
+        0x60abcd,
+        0x499ac5,
+        0x3288bd
+    );
+
 
     let velocity = input.velocity;
     // if (input.hide == 1.0 || (velocity.x == 0.0 && velocity.y == 0.0) || length(input.coords) > 1.0) {

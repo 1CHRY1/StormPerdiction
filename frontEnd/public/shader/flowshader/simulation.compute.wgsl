@@ -122,6 +122,13 @@ fn calcWebMercatorCoord(coord: vec2f) -> vec2f {
     return vec2f(lon, lat);
 }
 
+fn calcLngLatFromMercator(m_coord: vec2f) -> vec2f{
+    let lng = m_coord.x * 360.0 - 180.0;
+    let y2 = 180.0 - m_coord.y * 360;
+    let lat = 360.0 / PI * atan(exp(y2 * PI / 180.0)) - 90;
+    return vec2f(lng, lat);
+}
+
 fn translateRelativeToEye(high: vec3f, low: vec3f) -> vec3f {
 
     let highDiff = high - dynamicUniform.centerHigh;
@@ -165,6 +172,8 @@ fn getVelocity(texture: texture_2d<f32>, uv: vec2f) -> vec2f {
 fn cMain(@builtin(global_invocation_id) id: vec3<u32>) {
 
     let cExtent = currentExtent();
+    // let cExtent = staticUniform.extent;
+
     let index = id.y * staticUniform.groupSize.x * blockSize + id.x;
     if (cExtent.z <= cExtent.x || cExtent.w <= cExtent.y || index >= controllerUniform.particleNum) {
         return;
@@ -178,6 +187,7 @@ fn cMain(@builtin(global_invocation_id) id: vec3<u32>) {
         particles[index * 6 + 4],
         particles[index * 6 + 5],
     );
+    // 粒子被 拉 回currentExtent
     let x = mix(cExtent.x, cExtent.z, lastPos.x);
     let y = mix(cExtent.y, cExtent.w, lastPos.y);
     let mercatorPos = calcWebMercatorCoord(vec2f(x, y));

@@ -2,9 +2,21 @@ import * as scr from '../scratch/scratch'
 import { Delaunay } from "d3-delaunay";
 import axios from "axios";
 import earcut from "earcut";
+import {ref} from 'vue'
+
 
 //9711 wind
 const resourceUrl = [
+  "/ffvsrc/9711wind/uv_0.bin",
+  "/ffvsrc/9711wind/uv_1.bin",
+  "/ffvsrc/9711wind/uv_2.bin",
+  "/ffvsrc/9711wind/uv_3.bin",
+  "/ffvsrc/9711wind/uv_4.bin",
+  "/ffvsrc/9711wind/uv_5.bin",
+  "/ffvsrc/9711wind/uv_6.bin",
+  "/ffvsrc/9711wind/uv_7.bin",
+  "/ffvsrc/9711wind/uv_8.bin",
+  "/ffvsrc/9711wind/uv_9.bin",
   "/ffvsrc/9711wind/uv_10.bin",
   "/ffvsrc/9711wind/uv_11.bin",
   "/ffvsrc/9711wind/uv_12.bin",
@@ -60,7 +72,9 @@ export default class wind9711 {
     this.progress = 0.0;
     this.framesPerPhase = 100;
     this.maxSpeed = scr.f32();
+    this.maxSpeedRef = ref(this.maxSpeed.n)
     this.currentResourceUrl = 0;
+    this.timeStepRef = ref(0)
     this.maxParticleNum = 262144;
     this.progressRate = scr.f32();
     this.particleNum = scr.u32(65536);
@@ -210,6 +224,7 @@ export default class wind9711 {
     this.swapVoronoiBinding();
     await this.addVoronoiBindingSync("/ffvsrc/9711wind/uv_11.bin");
     this.currentResourceUrl = 1;
+    this.timeStepRef.value = 1;
     this.nextPrepared = true;
 
     this.voronoiPipeline = scr.renderPipeline({
@@ -528,6 +543,7 @@ export default class wind9711 {
 
   updateMaxSpeed(maxSpeed) {
     this.maxSpeed.n = maxSpeed > this.maxSpeed.n ? maxSpeed : this.maxSpeed.n;
+    this.maxSpeedRef.value = this.maxSpeed.n
   }
 
   updateVoronoi() {
@@ -538,6 +554,7 @@ export default class wind9711 {
     if (this.progress === 0) {
       this.currentResourceUrl =
         (this.currentResourceUrl + 1) % resourceUrl.length;
+      this.timeStepRef.value = this.currentResourceUrl
       this.addVoronoiBindingAsync(resourceUrl[this.currentResourceUrl]);
     }
 

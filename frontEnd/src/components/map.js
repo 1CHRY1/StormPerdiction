@@ -1,9 +1,8 @@
 import mapboxgl, { Map } from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
-import { FlowLayer, WaterDifLayer, WindLayer } from './LayerFromWebGPU'
+import { FlowLayer, WindLayer } from './LayerFromWebGPU'
 
 // import FlowLayer from './flowlayer-mapbox'
-// import WaterDifLayer from './waterDifLayer-mapbox'
 // import WindLayer from './windlayer-mapbox'
 
 // import Stats from 'https://threejs.org/examples/jsm/libs/stats.module.js'
@@ -30,7 +29,6 @@ export function viewing() {
 
   map.on('load', () => {
     ////// main //////////
-    // map.addLayer(new WaterDifLayer())
     map.addLayer(new FlowLayer())
     // map.addLayer(new WindLayer())
   })

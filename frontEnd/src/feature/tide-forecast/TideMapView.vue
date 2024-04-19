@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import axios from 'axios'
 import { ElMessage } from 'element-plus'
 import mapbox from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
@@ -250,8 +249,8 @@ onMounted(async () => {
   //   },
   // )
 
-  typh.value = (await axios.get(`/api/v1/data/level/typh`)).data.data
-  // typh.value = 1;
+  // typh.value = (await axios.get(`/api/v1/data/level/typh`)).data.data
+  typh.value = 0;
 
   const map: mapbox.Map = await initScratchMap2(mapContainerRef.value)
   ElMessage({

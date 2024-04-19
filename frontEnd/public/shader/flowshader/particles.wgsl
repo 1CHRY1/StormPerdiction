@@ -112,9 +112,12 @@ fn vMain(input: VertexInput) -> VertexOutput {
         particles[input.instanceIndex * 6 + 3],
     );
 
-    let position = select(currentPosition, lastPosition, input.vertexIndex % 2 == 1);
+    let position = select(currentPosition, lastPosition, input.vertexIndex % 2 == 1);// niubi 
+    // let position = currentPosition;
 
     let cExtent = currentExtent();
+    // let cExtent = staticUniform.extent;
+
     let x = mix(cExtent.x, cExtent.z, position.x);
     let y = mix(cExtent.y, cExtent.w, position.y);
     let mercatorPos = calcWebMercatorCoord(vec2f(x, y));
@@ -148,6 +151,16 @@ fn fMain(input: VertexOutput) -> @location(0) vec4f {
         0xfdae61,
         0xf46d43,
         0xd53e4f
+    );
+    let rampColors1 = array<u32,8>(
+        0xe0ffff,
+        0xc5eff2,
+        0xabdee7,
+        0x91cdde,
+        0x78bcd5,
+        0x60abcd,
+        0x499ac5,
+        0x3288bd
     );
 
     let velocity = input.velocity;

@@ -6,11 +6,9 @@ import { Ref, onMounted, ref, watch } from 'vue'
 import {
   addWaterLayer,
   addWaterLayer2,
-  flow,
   flow9711,
   prepareAddWaterLayer,
   prepareAddWaterLayer2,
-  wind,
   wind9711,
 } from '../../components/LayerFromWebGPU'
 import { router } from '../../router'
@@ -18,6 +16,10 @@ import { useMapStore } from '../../store/mapStore'
 import { useStationStore } from '../../store/stationStore'
 import { initScratchMap } from '../../util/initMap'
 import adwtLegend from './adwtLegend.vue'
+import flowLegend from '../../components/legend/flowLegend.vue'
+import windLegend from '../../components/legend/windLegend.vue'
+import timestepCounter from '../../components/legend/timestepCounter.vue'
+
 import { IStormData, IStormDataOfPoint, IStormTableRow } from './type'
 import {
   addStationLayer,
@@ -105,6 +107,7 @@ const adwtHandler2 = async (addwaterCount: number) => {
 
 const wind = new wind9711() as mapboxgl.AnyLayer
 const flow = new flow9711() as mapboxgl.AnyLayer
+
 
 watch(selectedLayer, async (now: null | number, old: null | number) => {
   // clear
@@ -379,11 +382,26 @@ onMounted(async () => {
           <div class="close" @click="closeHandeler">关闭所有</div>
         </div>
       </div>
-
+      <!-- add water -->
       <adwtLegend
         v-show="selectedLayer == 2"
         :contour-data="contourDATA"
       ></adwtLegend>
+
+      <!-- flow/wind legend -->
+      <flowLegend
+        v-show="selectedLayer == 1 || selectedLayer == 0"
+        :max-speed="selectedLayer == 1?flow.maxSpeedRef:selectedLayer ==0?wind.maxSpeedRef:{value:10.0}"
+        :desc="selectedLayer == 1?'流速(m/s)':selectedLayer == 0?'风速(m/s)':'' "
+      >
+      </flowLegend>
+      <timestepCounter
+        v-show="selectedLayer == 0 || selectedLayer == 1"
+        :timeStep="selectedLayer == 1?flow.timeStepRef:selectedLayer ==0?wind.timeStepRef:{value:10}"
+        :totalCount="selectedLayer == 1?41:selectedLayer ==0?41:{value:10}"
+      >        
+      </timestepCounter>
+
 
       <div ref="mapContainerRef" class="map-container h-full w-full"></div>
       <canvas id="GPUFrame" class="playground"></canvas>
@@ -485,7 +503,15 @@ onMounted(async () => {
   position: fixed;
   bottom: 10vh;
   right: 20vw;
-  z-index: 2;
+  z-index: 3;
+}
+.flow-legend, .wind-legend{
+  z-index: 3;
+
+}
+.timestep-counter{
+  z-index: 3;
+
 }
 
 .card {

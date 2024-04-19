@@ -2,6 +2,7 @@ import * as scr from '../scratch/scratch'
 import { Delaunay } from "d3-delaunay";
 import axios from "axios";
 import earcut from "earcut";
+import { ref } from 'vue';
 
 //9711 flow
 const resourceUrl = [
@@ -57,12 +58,15 @@ export default class flow9711 {
 
     // Control
     this.progress = 0.0;
-    this.framesPerPhase = 300;
+    this.framesPerPhase = 100;
     this.maxSpeed = scr.f32();
+    this.maxSpeedRef = ref(0);
     this.currentResourceUrl = 0;
+    this.timeStepRef = ref(0)
     this.maxParticleNum = 262144;
     this.progressRate = scr.f32();
     this.particleNum = scr.u32(65536);
+    
 
     // Compute
     this.blockSizeX = 16;
@@ -214,6 +218,7 @@ export default class flow9711 {
     this.swapVoronoiBinding();
     await this.addVoronoiBindingSync("/ffvsrc/9711flow/uv_21.bin");
     this.currentResourceUrl = 1;
+    this.timeStepRef.value = this.currentResourceUrl
     this.nextPrepared = true;
 
     this.voronoiPipeline = scr.renderPipeline({
@@ -532,6 +537,7 @@ export default class flow9711 {
 
   updateMaxSpeed(maxSpeed) {
     this.maxSpeed.n = maxSpeed > this.maxSpeed.n ? maxSpeed : this.maxSpeed.n;
+    this.maxSpeedRef.value = this.maxSpeed.n
   }
 
   updateVoronoi() {
@@ -542,6 +548,7 @@ export default class flow9711 {
     if (this.progress === 0) {
       this.currentResourceUrl =
         (this.currentResourceUrl + 1) % resourceUrl.length;
+      this.timeStepRef.value = this.currentResourceUrl
       this.addVoronoiBindingAsync(resourceUrl[this.currentResourceUrl]);
     }
 
