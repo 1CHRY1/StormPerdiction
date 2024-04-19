@@ -397,7 +397,7 @@ onMounted(async () => {
       </flowLegend>
       <timestepCounter
         v-show="selectedLayer == 0 || selectedLayer == 1"
-        :timeStep="selectedLayer == 1?flow.timeStepRef:selectedLayer ==0?wind.timeStepRef:{value:10}"
+        :timeStep="selectedLayer == 1?flow.timeStepRef:selectedLayer == 0?wind.timeStepRef:{value:10}"
         :totalCount="selectedLayer == 1?41:selectedLayer ==0?41:{value:10}"
       >        
       </timestepCounter>
