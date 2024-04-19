@@ -14,7 +14,8 @@
     "lon": 121.267,
     "type": "river",
     "row": 47421,
-    "api": ""
+    "api_all": "https://geomodeling.njnu.edu.cn/waterLevel/jiangsu/getInfoByStation",
+    "api_time": "https://geomodeling.njnu.edu.cn/waterLevel/jiangsu/getInfoByStationAndTime"
   },
   "wuhu": {
     "name": "芜湖",
@@ -157,13 +158,14 @@
     "api_all": "https://geomodeling.njnu.edu.cn/waterLevel/jiangsu/getInfoByStation",
     "api_time": "https://geomodeling.njnu.edu.cn/waterLevel/jiangsu/getInfoByStationAndTime"
   },
-  "doulonggangzhaxia": {
+  "doulonggangzha": {
     "name": "斗龙港闸下",
     "lat": 33.517,
     "lon": 120.667,
     "type": "sea",
     "row": 67687,
-    "api": ""
+    "api_all": "https://geomodeling.njnu.edu.cn/waterLevel/jiangsu/getInfoByStation",
+    "api_time": "https://geomodeling.njnu.edu.cn/waterLevel/jiangsu/getInfoByStationAndTime"
   },
   "zhapu": {
     "name": "乍浦",
@@ -171,7 +173,8 @@
     "lon": 121.1,
     "type": "sea",
     "row": 82064,
-    "api": ""
+    "api_all": "https://geomodeling.njnu.edu.cn/waterLevel/zhejiang/getInfoByStation",
+    "api_time": "https://geomodeling.njnu.edu.cn/waterLevel/zhejiang/getInfoByStationAndTime"
   },
   "ganpu": {
     "name": "澉浦",
@@ -197,6 +200,7 @@
     "lon": 121.179666,
     "type": "sea",
     "row": 85848,
-    "api": ""
+    "api_all": "https://geomodeling.njnu.edu.cn/waterLevel/zhejiang/getInfoByStation",
+    "api_time": "https://geomodeling.njnu.edu.cn/waterLevel/zhejiang/getInfoByStationAndTime"
   }
 }

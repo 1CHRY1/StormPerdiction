@@ -27,6 +27,62 @@ import java.util.Map;
 @Slf4j
 public class FieldUtil {
 
+    public static Integer executePythonFieldGenerating(String python, String logPath, String FieldGenerating, String ncfilepath, String fieldpath) throws IOException {
+        PrintWriter writer = new PrintWriter(new FileWriter(logPath, true));
+        // 执行场二进制数据生成
+        try {
+            Process process = Runtime.getRuntime().exec(python + " " + FieldGenerating + " " + ncfilepath + " " + fieldpath);
+            // 添加日志输出
+            System.out.println("FieldGenerating scheduled at " + LocalDateTime.now());
+            writer.println("Log message: FieldGenerating scheduled at " + LocalDateTime.now());
+            // 等待脚本完成
+            int exitCode = process.waitFor();
+            if (exitCode == 0) {
+                System.out.println("FieldGenerating executed successfully!");
+                writer.println("Log message: FieldGenerating executed successfully!");
+                return 0;
+            } else {
+                System.out.println("FieldGenerating execution failed!");
+                writer.println("Log message: FieldGenerating execution failed!");
+                return exitCode;
+            }
+        } catch (Exception e) {
+            System.out.println("Error executing FieldGenerating" + e.getMessage());
+            writer.println("Log message: Error executing FieldGenerating" + e.getMessage());
+            return -1;
+        } finally {
+            writer.close();
+        }
+    }
+
+    public static Integer executePythonTxtBuilder4add(String python, String logPath, String addFieldGenerating, String ncfilepath_fort, String ncfilepath2_acdirc, String addField, String addFieldMask) throws IOException {
+        PrintWriter writer = new PrintWriter(new FileWriter(logPath, true));
+        // 执行增水场数据生成脚本
+        try {
+            Process process = Runtime.getRuntime().exec(python + " " + addFieldGenerating + " " + ncfilepath2_acdirc + " " + ncfilepath_fort + " " + addField + " " + addFieldMask);
+            // 添加日志输出
+            writer.println("TxtBuilder4zeta execution scheduled at: {}" + LocalDateTime.now());
+            System.out.println("Log message: TxtBuilder4zeta execution scheduled at: {}" + LocalDateTime.now());
+            // 等待脚本完成
+            int exitCode = process.waitFor();
+            if (exitCode == 0) {
+                System.out.println("TxtBuilder4zeta executed successfully!");
+                writer.println("Log message: TxtBuilder4zeta executed successfully!");
+                return 0;
+            } else {
+                System.out.println("TxtBuilder4zeta execution failed!");
+                writer.println("Log message: TxtBuilder4zeta execution failed!");
+                return exitCode;
+            }
+        } catch (Exception e) {
+            System.out.println("Error executing TxtBuilder4zeta" + e.getMessage());
+            writer.println("Log message: Error executing TxtBuilder4zeta" + e.getMessage());
+            return -1;
+        } finally {
+            writer.close();
+        }
+    }
+
     public static void executePythonDeleteFieldData(String python, String logPath, String DeleteFileData) throws IOException {
         PrintWriter writer = new PrintWriter(new FileWriter(logPath, true));
         // 执行场数据删除
@@ -102,34 +158,6 @@ public class FieldUtil {
         } catch (Exception e) {
             System.out.println("Error executing TxtBuilder4wind" + e.getMessage());
             writer.println("Log message: Error executing TxtBuilder4wind" + e.getMessage());
-            return -1;
-        } finally {
-            writer.close();
-        }
-    }
-
-    public static Integer executePythonTxtBuilder4add(String python, String logPath, String txtBuilder4zeta, String ncfilepath_fort, String ncfilepath2_acdirc) throws IOException {
-        PrintWriter writer = new PrintWriter(new FileWriter(logPath, true));
-        // 执行增水场txt生成
-        try {
-            Process process = Runtime.getRuntime().exec(python + " " + txtBuilder4zeta + " " + ncfilepath_fort + " " + ncfilepath2_acdirc);
-            // 添加日志输出
-            writer.println("TxtBuilder4zeta execution scheduled at: {}" + LocalDateTime.now());
-            System.out.println("Log message: TxtBuilder4zeta execution scheduled at: {}" + LocalDateTime.now());
-            // 等待脚本完成
-            int exitCode = process.waitFor();
-            if (exitCode == 0) {
-                System.out.println("TxtBuilder4zeta executed successfully!");
-                writer.println("Log message: TxtBuilder4zeta executed successfully!");
-                return 0;
-            } else {
-                System.out.println("TxtBuilder4zeta execution failed!");
-                writer.println("Log message: TxtBuilder4zeta execution failed!");
-                return exitCode;
-            }
-        } catch (Exception e) {
-            System.out.println("Error executing TxtBuilder4zeta" + e.getMessage());
-            writer.println("Log message: Error executing TxtBuilder4zeta" + e.getMessage());
             return -1;
         } finally {
             writer.close();

@@ -57,35 +57,13 @@ meteorology:
 DataProcessLog:
   ${dataprocess}/logfile.log
 
-DeleteFileData:
-  ${dataprocess}/FieldProcess/DeleteFieldData.py
-TxtBuilder4flow:
-  ${dataprocess}/FieldProcess/txtBuilder4flow.py
-TxtBuilder4wind:
-  ${dataprocess}/FieldProcess/txtBuilder4wind.py
 TxtBuilder4zeta:
   ${dataprocess}/FieldProcess/txtBuilder4zeta.py
 Triangle:
   ${dataprocess}/FieldProcess/triangle.py
-CppExecution:
-  ${dataprocess}/FieldProcess/Debug/FlowField_Builder.exe
-CppFlowFieldInputPath:
-  "${dataprocess}/FieldProcess/output/Flow"
-CppFlowFieldJsonPath:
-  "${dataprocess}/FieldProcess/Debug_json/description_new_flow.json"
-CppWindFieldInputPath:
-  "${dataprocess}/FieldProcess/output/Wind"
-CppWindFieldJsonPath:
-  "${dataprocess}/FieldProcess/Debug_json/description_new_wind.json"
 FlowField:
   "${data}/Field/Flow"
 WindField:
   "${data}/Field/Wind"
 AddField:
   "${data}/Field/Add"
-FlowField9711:
-  "${data}/Field/9711/Flow"
-WindField9711:
-  "${data}/Field/9711/Wind"
-AddField9711:
-  "${data}/Field/9711/Add"

@@ -77,44 +77,20 @@ public class TimeTask {
     @Value("${meteorology.db}")
     String meteorologydb;
 
-    @Value("${TxtBuilder4flow}")
-    String txtBuilder4flow;
+    @Value("${FieldGenerating}")
+    String fieldGenerating;
 
-    @Value("${TxtBuilder4wind}")
-    String txtBuilder4wind;
+    @Value("${FieldPath}")
+    String field_path;
 
-    @Value("${TxtBuilder4zeta}")
-    String txtBuilder4add;
-
-    @Value("${Triangle}")
-    String triangle;
-
-    @Value("${DeleteFileData}")
-    String deleteFileData;
-
-    @Value("${CppExecution}")
-    String cppExecution;
-
-    @Value("${CppFlowFieldInputPath}")
-    String cppFlowFieldInputPath;
-
-    @Value("${CppFlowFieldJsonPath}")
-    String cppFlowFieldJsonPath;
-
-    @Value("${CppWindFieldInputPath}")
-    String cppWindFieldInputPath;
-
-    @Value("${CppWindFieldJsonPath}")
-    String cppWindFieldJsonPath;
-
-    @Value("${FlowField}")
-    String FlowField;
-
-    @Value("${WindField}")
-    String WindField;
+    @Value("${AddFieldGenerating}")
+    String addFieldGenerating;
 
     @Value("${AddField}")
-    String AddField;
+    String addField;
+
+    @Value("${AddFieldMask}")
+    String addFieldMask;
 
     @Value("${DataProcessLog}")
     String logPath;
@@ -168,42 +144,38 @@ public class TimeTask {
         ClawingUtil.DeleteClawingData(python, deleteClawingData, logPath);
     }
 
-    @Scheduled(cron = "10 40 09 * * ?")
+//    @Scheduled(cron = "00 40 10 * * ?")
+//    @Scheduled(cron = "0/1 * * * * ?")
     public void executePythonFieldProcessingData() throws IOException {
-        // 删除上一天流场数据(当前文件夹所存储的)
-        FieldUtil.executePythonDeleteFieldData(python, logPath, deleteFileData);
         // 计算当天流场数据
         LocalDateTime time = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0);
-        time = time.withYear(2023).withMonth(8).withDayOfMonth(31);
+//        time = time.withYear(2023).withMonth(8).withDayOfMonth(31);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String time_str = time.format(formatter);
         Integer iftyph = levelService.ifTyph(time_str);
         String acdirc_path = '"' + ncService.getPathByTimeAndType(time_str, "adcirc") + '"';
-        // 执行py文件生成流场txt
-        int TxtBuilder4flowResult = FieldUtil.executePythonTxtBuilder4flow(python ,logPath ,txtBuilder4flow, acdirc_path);
-        if ( TxtBuilder4flowResult == 0 ){
-            // 执行cpp文件生成流场纹理
-            FieldUtil.executeCppFlowField(cppExecution, cppFlowFieldJsonPath, cppFlowFieldInputPath, FlowField, logPath);
+        String fort_path = '"' + ncService.getPathByTimeAndType(time_str, "fort63") + '"';
+//        Integer iftyph = 1;
+//        String acdirc_path = "D:\\1study\\Work\\2023_12_22_Storm\\StormPerdiction\\data\\forecastData\\20240413\\adcirc_addwind.nc";
+//        String fort_path = "D:\\1study\\Work\\2023_12_22_Storm\\StormPerdiction\\data\\forecastData\\20240413\\adcirc_addwind.nc";
+        // 执行py文件生成流场和风场bin文件
+        int FieldGeneratingResult = FieldUtil.executePythonFieldGenerating(python, logPath, fieldGenerating, acdirc_path, field_path);
+        if ( FieldGeneratingResult == 0 ) {
+            System.out.println("当日流场，风场数据生成成功");
         } else {
-            return;
+            System.out.println(FieldGeneratingResult);
         }
         if ( iftyph == 1 ) {
-            // 执行py文件生成风场txt
-            int TxtBuilder4windResult = FieldUtil.executePythonTxtBuilder4wind(python ,logPath ,txtBuilder4wind, acdirc_path);
-            if ( TxtBuilder4windResult == 0 ) {
-                // 执行cpp文件生成风场纹理
-                FieldUtil.executeCppWindField(cppExecution, cppWindFieldJsonPath, cppWindFieldInputPath, WindField, logPath);
-            }
-            String fort_path =  '"' + ncService.getPathByTimeAndType(time_str, "fort63") + '"';
-            // 执行py文件生成憎水场txt
-            int TxtBuilder4addResult = FieldUtil.executePythonTxtBuilder4add(python ,logPath ,txtBuilder4add, acdirc_path, fort_path);
-            if ( TxtBuilder4addResult == 0 ){
-                FieldUtil.executePythonTriangle(python, logPath, triangle, AddField);
+             // 执行py文件生成憎水场txt
+            int addFieldGeneratingResult = FieldUtil.executePythonTxtBuilder4add(python ,logPath ,addFieldGenerating, acdirc_path, fort_path, addField, addFieldMask);
+            if ( addFieldGeneratingResult == 0 ) {
+                System.out.println("当日增水场数据生成成功");
+            } else {
+                System.out.println(addFieldGeneratingResult);
             }
         }
         PrintWriter writer = new PrintWriter(new FileWriter(logPath, true));
         writer.println("Log message: Field data processed successfully at " + LocalDateTime.now());
         System.out.println("Log message: Field data processed successfully at " + LocalDateTime.now());
     }
-
 }
