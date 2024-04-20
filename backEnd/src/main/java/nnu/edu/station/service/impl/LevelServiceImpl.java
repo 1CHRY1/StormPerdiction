@@ -29,11 +29,25 @@ import java.util.*;
 @Service
 public class LevelServiceImpl implements LevelService {
 
+    // V1 Service
+
     @Autowired
     LevelMapper levelMapper;
 
     @Value("${stations}")
     String station_path;
+
+    private String getLocalTimeStr() {
+        LocalDateTime time = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return time.format(formatter);
+    }
+
+    private String getLocalTimeBeforeStr(Integer i) {
+        LocalDateTime time = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0).minusDays(i);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return time.format(formatter);
+    }
 
     @Override
     public Integer ifTyph(String time) {
@@ -195,5 +209,29 @@ public class LevelServiceImpl implements LevelService {
     @Override
     public List<Map<String, Object>> getNoTyphAllManualByStation(String station) {
         return  levelMapper.getNoTyphAllManualByStation(station);
+    }
+
+    // V2 Service
+    @Override
+    public Map<String, Object> get48scNotyNoman(String station) {
+        String localTime = getLocalTimeStr();
+        return ListUtil.StringObj2ArrayObj(levelMapper.get48scNotyNoman(station, localTime));
+    }
+
+    @Override
+    public Map<String, Object> get48ybNotyNoman(String station) {
+        String localTime = getLocalTimeStr();
+        return ListUtil.StringObj2ArrayObj(levelMapper.get48ybNotyNoman(station, localTime));
+    }
+
+    @Override
+    public List<Map<String, Object>> getAllManul() {
+        String localTime = getLocalTimeStr();
+        return levelMapper.getAllManul(localTime);
+    }
+
+    @Override
+    public Map<String, Object> getManuelByTime(String time) {
+        return levelMapper.getManuelByTime(time);
     }
 }
