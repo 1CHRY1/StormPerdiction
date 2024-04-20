@@ -40,4 +40,22 @@
     <select id="getNoTyphAllManualByStation" resultType="java.util.Map">
         select hz from ${station} where iftyph=0 and manual=1
     </select>
+
+<!--  api version 2-->
+
+    <select id="get48scNotyNoman" resultType="java.util.Map">
+        select hshice from ${station} where iftyph=0 and manual=0
+    </select>
+
+    <select id="get48ybNotyNoman" resultType="java.util.Map">
+        select hybresult from ${station} where iftyph=0 and manual=0
+    </select>
+
+    <select id="getAllManul" resultType="java.util.Map">
+        select time, ifTyph from typh where manual=1
+    </select>
+
+    <select id="getManuelByTime" resultType="java.util.Map">
+        select manuel, ifTyph from typh where time=#{time}
+    </select>
 </mapper>

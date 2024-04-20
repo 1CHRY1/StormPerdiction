@@ -30,7 +30,7 @@ export const getStationInfo = (id: keyof typeof stationInfo): IStationInfo => {
 export const getStationCurrentWaterSituation = async (
   id: keyof typeof stationInfo,
 ) => {
-  const url = `/api/v1/data/level/station/real?station=${stationInfo[id].pinyin}`
+  const url = `/api/v1/data/level/station/shice/48?station=${stationInfo[id].pinyin}`
   const dataMap = (await fetch(url)
     .then((res) => {
       if (res.status === 200) {
@@ -66,18 +66,19 @@ export const getStationCurrentWaterSituation = async (
 export const getFakeData = async (
   id: keyof typeof stationInfo,
 ): Promise<ITideSituation> => {
-  const url = `/api/v1/data/level/station/72?station=${stationInfo[id].pinyin}`
+  const url = `/api/v1/data/level/station/yubao/48?station=${stationInfo[id].pinyin}`
   const dataMap = (await fetch(url)
     .then((res) => res.json())
     .then((data) => data.data)) as ITideSituationResponse
 
-  if (!dataMap.hpre) {
+  if (!dataMap.hybresult) {
     return {
       time: [],
       hpre: [],
       isTyphoon: false,
       hadd: [],
       hyubao: [],
+      hybresult: [],
     }
   }
 
@@ -95,7 +96,8 @@ export const getFakeData = async (
     const nextHour = new Date(startTime.getTime() - i * 60 * 60 * 1000)
     time.push(nextHour.toLocaleString().replace(/:\d\d$/, ''))
   }
-  return { time, isTyphoon, hyubao, hpre, hadd }
+  const hybresult = dataMap.hybresult || []
+  return { time, isTyphoon, hyubao, hpre, hadd, hybresult}
 }
 
 export const getStationPredictionTideSituation = async (
@@ -121,12 +123,13 @@ export const getStationPredictionTideSituation = async (
   })
   hpre[hpre.length - 1] = hpre[hpre.length - 2]
   const hyubao = fakeStation.hpre
+  const hybresult = fakeStation.hybresult
   const hadd =
     hpre.map((value, index) => {
       const result = value - hyubao[index]
       return result
     }) || []
-  return { time: timeList, isTyphoon, hyubao, hpre, hadd }
+  return { time: timeList, isTyphoon, hyubao, hpre, hadd, hybresult }
 }
 
 const getAccurateAssessmentTable = async (): Promise<

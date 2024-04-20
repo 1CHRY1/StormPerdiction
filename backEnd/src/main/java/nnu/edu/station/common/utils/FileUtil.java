@@ -8,6 +8,7 @@ import nnu.edu.station.common.exception.MyException;
 import nnu.edu.station.common.result.ResultEnum;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 /**
@@ -141,22 +142,30 @@ public class FileUtil {
 
     public static List<List<String>> readTxtFile(String filePath) {
         List<List<String>> result = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-            String headerLine = br.readLine();
-            String replacedHeaderLine = "zhandian   mae(m)   mae(m)-aftercorrection   rmse(m)   rmse(m)-aftercorrection   hegelv(%)   hegelv(%)-aftercorrection";
-            String[] headerTokens = replacedHeaderLine.trim().split("\\s+");
-            for (String token : headerTokens) {
-                result.add(new ArrayList<>(Arrays.asList(token)));
-            }
+        // 初始化列表
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(filePath), StandardCharsets.UTF_8))) {
             String line;
-            while ((line = br.readLine()) != null) {
-                String[] tokens = line.trim().split("\\s+");
-                for (int i = 0; i < tokens.length; i++) {
-                    result.get(i).add(tokens[i]);
+            // 读取标题行
+            if ((line = br.readLine()) != null) {
+                String[] headers = line.trim().split("\\s+");
+                for (String header : headers) {
+                    result.add(new ArrayList<>());
+                    result.get(result.size() - 1).add(header);
                 }
             }
+            // 逐列读取数据
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.trim().split("\\s+");
+                for (int i = 0; i < parts.length; i++) {
+                    result.get(i).add(parts[i]);
+                }
+            }
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return result;
     }
