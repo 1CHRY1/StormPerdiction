@@ -344,7 +344,7 @@ onMounted(async () => {
       </div>
     </div>
     <div class="imge2">
-      <div class="close" @click="closeHandeler">关闭所有</div>
+      <div class="close" @click="closeHandeler">关闭所有 </div>
     </div>
   </div>
 
