@@ -56,7 +56,7 @@ export default class floww {
 
     // Control
     this.progress = 0.0;
-    this.framesPerPhase = 150;
+    this.framesPerPhase = 100;
     this.maxSpeed = scr.f32();
     this.currentResourceUrl = 0;
     this.maxParticleNum = 65536;
