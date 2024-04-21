@@ -64,7 +64,9 @@ const percentage = computed(()=>{
   font-size: 12px;
   line-height: 20px;
   color: rgb(255, 255, 255);
-  &:hover{
+}
+.play :hover{
+    &:hover{
     cursor: pointer;
     font-weight: 600;
     font-size: 14px;
