@@ -108,6 +108,18 @@ const path = computed(() => route.path)
         ></el-menu-item
       >
     </el-sub-menu>
+    <el-sub-menu index="model">
+      <template #title>
+        <el-icon><icon-menu /></el-icon>
+        <span>模型计算</span>
+      </template>
+      <el-menu-item index="/model/map"
+        ><router-link to="/model/map">地图底图</router-link></el-menu-item
+      >
+      <el-menu-item index="/model/data"
+        ><router-link to="/model/data">模型数据</router-link></el-menu-item
+      >
+    </el-sub-menu>
   </el-menu>
 </template>
 

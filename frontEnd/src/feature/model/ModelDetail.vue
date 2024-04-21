@@ -2,12 +2,8 @@
 import * as echarts from 'echarts'
 import { Ref, computed, onMounted, ref, watch } from 'vue'
 import { useStationStore } from '../../store/stationStore'
-import {
-  getAccurateAssessmentTable,
-  getStationInfo,
-  getStationPredictionTideSituation,
-} from './api'
-import { IAccurateAssessmentTableRow, ITideSituation } from './type'
+import { getStationInfo, getStationPredictionTideSituation } from './api'
+import { ITideSituation } from './type'
 import { drawEcharts, generateTreeDataOfStation, initEcharts } from './util'
 
 let echart: echarts.ECharts | null = null
@@ -15,11 +11,11 @@ const echartsRef = ref()
 const activeName = ref('graph')
 const stationStore = useStationStore()
 const treeData = generateTreeDataOfStation()
+const waterSituationData: Ref<ITideSituation | null> = ref(null)
 const stationInfo = computed(() =>
   getStationInfo(stationStore.currentStationID as any),
 )
-const stationTable: Ref<IAccurateAssessmentTableRow[] | null> = ref(null)
-const waterSituationData: Ref<ITideSituation | null> = ref(null)
+
 const isStationDataExist = computed(() => {
   if (
     waterSituationData.value === null ||
@@ -28,6 +24,31 @@ const isStationDataExist = computed(() => {
     return true
   }
   return false
+})
+const stationTable = computed(() => {
+  if (!waterSituationData.value) {
+    return []
+  } else {
+    const result: {
+      hpre: number
+      hyubao: number | null
+      hadd: number | null
+      time: string
+    }[] = []
+    waterSituationData.value!.hpre.forEach((value, index) => {
+      result.push({
+        hpre: value,
+        time: waterSituationData.value!.time[index],
+        hyubao: waterSituationData.value!.isTyphoon
+          ? waterSituationData.value!.hyubao[index]
+          : null,
+        hadd: waterSituationData.value!.isTyphoon
+          ? waterSituationData.value!.hadd[index]
+          : null,
+      })
+    })
+    return result
+  }
 })
 
 watch(stationStore, async () => {
@@ -49,7 +70,6 @@ onMounted(async () => {
   waterSituationData.value = await getStationPredictionTideSituation(
     stationStore.currentStationID as any,
   )
-  stationTable.value = await getAccurateAssessmentTable()
   if (isStationDataExist.value) {
     echart = initEcharts(echartsRef)
     drawEcharts(
@@ -64,43 +84,30 @@ onMounted(async () => {
 
 <template>
   <div class="h-full w-full flex bg-slate-300">
-    <div class="flex-auto">
-      <el-tabs v-model="activeName" type="border-card" class="bg-white h-full">
-        <el-tab-pane label="折线图" name="graph">
-          <div ref="echartsRef" class="h-[86vh]"></div>
-        </el-tab-pane>
-        <el-tab-pane
-          label="数据表"
-          name="table"
-          class="flex flex-col items-center"
-        >
-          <div class="text-xl font-semibold text-[#406abf]">
-            {{ `${stationInfo.time.split(' ')[0]} 精度统计表` }}
-          </div>
-          <el-table
-            :data="stationTable"
-            class="h-[84vh]"
-            :highlight-current-row="true"
-          >
-            <el-table-column prop="name" label="站点" align="center" />
-            <el-table-column
-              prop="平均误差(m)"
-              label="平均误差(m)"
-              align="center"
-            />
-            <el-table-column
-              prop="均方根误差(m)"
-              label="均方根误差(m)"
-              align="center"
-            />
-            <el-table-column
-              prop="潮位合格率(%)"
-              label="潮位合格率(%)"
-              align="center"
-            />
-          </el-table>
-        </el-tab-pane>
-      </el-tabs>
+    <div class="flex-auto flex flex-col items-center bg-white px-4 m-3">
+      <div class="p-4 text-2xl font-semibold text-[#406abf]">
+        {{ `模型计算结果` }}
+      </div>
+      <el-table
+        :data="stationTable"
+        class="h-[84vh]"
+        :highlight-current-row="true"
+      >
+        <el-table-column prop="time" label="时间" />
+        <el-table-column align="center" prop="hpre" label="天文潮位 (hpre)" />
+        <el-table-column
+          v-if="waterSituationData?.isTyphoon"
+          align="center"
+          prop="hyubao"
+          label="总潮位 (hyubao)"
+        />
+        <el-table-column
+          v-if="waterSituationData?.isTyphoon"
+          align="center"
+          prop="hadd"
+          label="台风增水"
+        />
+      </el-table>
     </div>
     <div class="flex flex-col w-[20rem] bg-white">
       <div class="h-52 m-2 border border-zinc-300">

@@ -296,7 +296,6 @@ onMounted(async () => {
     <div class="imge">
       <div class="title">图层控制</div>
     </div>
-
     <div class="Description">
       <div class="typh">{{ text }}</div>
       <div class="radio-buttons">

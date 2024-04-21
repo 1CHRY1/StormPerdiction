@@ -1,74 +1,39 @@
 <script setup lang="ts">
+import axios from 'axios'
 import { ElMessage } from 'element-plus'
-import { default as mapbox, default as mapboxgl } from 'mapbox-gl'
+import mapbox from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
-import { Ref, onMounted, ref, watch } from 'vue'
+import { Ref, computed, onMounted, ref, watch } from 'vue'
 import {
   addWaterLayer,
   addWaterLayer2,
-  flow9711,
+  floww,
   prepareAddWaterLayer,
   prepareAddWaterLayer2,
-  wind9711,
+  windd,
 } from '../../components/LayerFromWebGPU'
 import { router } from '../../router'
 import { useMapStore } from '../../store/mapStore'
+import { useModelStore } from '../../store/modelStore'
 import { useStationStore } from '../../store/stationStore'
-import { initScratchMap } from '../../util/initMap'
-import adwtLegend from './adwtLegend.vue'
-import flowLegend from '../../components/legend/flowLegend.vue'
-import windLegend from '../../components/legend/windLegend.vue'
-import timestepCounter from '../../components/legend/timestepCounter.vue'
+import { initScratchMap2 } from '../../util/initMap'
+import { runWaterModel } from './api'
+import { addLayer } from './util'
 
-import { IStormData, IStormDataOfPoint, IStormTableRow } from './type'
-import {
-  addStationLayer,
-  addStormLayer,
-  addTyphoonSymbol,
-  formatDate,
-  generateStormTableData,
-  getStormData,
-  updateStormLayer,
-  updateTyphoonSymbol,
-} from './util'
-
+const radio: Ref<HTMLDivElement | null> = ref(null)
+const radio2: Ref<HTMLDivElement | null> = ref(null)
+const mapStore = useMapStore()
 const stationStore = useStationStore()
 const mapContainerRef: Ref<HTMLDivElement | null> = ref(null)
-const radio: Ref<HTMLDivElement | null> = ref(null)
-const selectPointID: Ref<string> = ref('0')
-const selectPointData: Ref<null | IStormDataOfPoint> = ref(null)
-const stormData: Ref<null | IStormData> = ref(null)
-const tableData: Ref<null | IStormTableRow[]> = ref(null)
-const selectStormType: Ref<'199711'> = ref('199711')
-const mapStore = useMapStore()
-
+const modelStore = useModelStore()
 const radioOptions = [
   { label: '风场', value: 0 },
   { label: '流场', value: 1 },
-  { label: '增水场', value: 2 },
+  // { label: '增水场', value: 2 }
 ]
+const optt = { label: '增水场', value: 2 }
 const selectedLayer: Ref<null | number> = ref(null)
-
 const contourDATA: Ref<null | Object> = ref(null)
-
-const handleTableSelectionChange = (selection: any) => {
-  selectPointID.value = selection.id
-}
-
-const handleSelectChange = async () => {
-  selectPointID.value = '0'
-  stormData.value = await getStormData(selectStormType.value)
-  tableData.value = generateStormTableData(stormData.value)
-  selectPointData.value = stormData.value!.dataList[Number(selectPointID.value)]
-  updateStormLayer(mapStore.map!, selectStormType.value)
-  updateTyphoonSymbol(mapStore.map!, [
-    selectPointData.value.lng,
-    selectPointData.value.lat,
-  ])
-  mapStore.map!.flyTo({
-    center: [selectPointData.value.lng, selectPointData.value.lat],
-  })
-}
 
 let adwtid = 0
 const adwtTicker: Ref<number> = ref(0)
@@ -104,9 +69,8 @@ const adwtHandler2 = async (addwaterCount: number) => {
   addWaterLayer2(mapStore.map!, addWaterID)
 }
 
-const wind = new wind9711() as mapboxgl.AnyLayer
-const flow = new flow9711() as mapboxgl.AnyLayer
-
+const wind = new windd() as mapboxgl.AnyLayer
+const flow = new floww() as mapboxgl.AnyLayer
 
 watch(selectedLayer, async (now: null | number, old: null | number) => {
   // clear
@@ -117,6 +81,7 @@ watch(selectedLayer, async (now: null | number, old: null | number) => {
     })
     return
   }
+
   switch (old) {
     case 0:
       // if (mapStore.map!.getLayer('WindLayer9711'))
@@ -260,8 +225,9 @@ const closeHandeler = () => {
 
   selectedLayer.value = null
 
-  radio!.value!.forEach((item) => {
-    item.checked = false
+  radio2!.value!.checked = false
+  radio.value.forEach((element) => {
+    element.checked = false
   })
 
   // (radio.value![0]! as any).checked = false
@@ -269,32 +235,57 @@ const closeHandeler = () => {
   // (radio.value![2]! as any).checked = false
 }
 
-watch(selectPointID, () => {
-  selectPointData.value = stormData.value!.dataList[Number(selectPointID.value)]
-  if (mapStore.map) {
-    mapStore.map.flyTo({
-      center: [selectPointData.value.lng, selectPointData.value.lat],
-    })
-    updateTyphoonSymbol(mapStore.map, [
-      selectPointData.value.lng,
-      selectPointData.value.lat,
-    ])
-  }
+const typh: Ref<number> = ref(0)
+// const text = computed(typh,()=>{
+//   return typh==1?"当前有台风":"当前无台风"
+// })
+const text = computed(() => {
+  return typh.value == 1 ? '当前有台风' : '当前无台风'
 })
 
-onMounted(async () => {
-  stormData.value = await getStormData(selectStormType.value)
-  tableData.value = generateStormTableData(stormData.value)
-  selectPointData.value = stormData.value!.dataList[Number(selectPointID.value)]
+const runModel = async () => {
+  console.log('run model')
+  const status = await runWaterModel()
+  if (status) {
+    modelStore.run('')
+    const id = setInterval(() => {
+      console.log('in')
+      const currentProgress = (modelStore.modelProgress += 5 * Math.random())
+      if (currentProgress > 100) {
+        modelStore.modelProgress = 100
+        modelStore.finish()
+        clearInterval(id)
+        ElMessage({
+          message: '模型运行完成',
+          type: 'success',
+        })
+      } else {
+        modelStore.modelProgress = currentProgress
+      }
+    }, 100)
+  } else {
+    modelStore.reset()
+    ElMessage({
+      message: '模型运行失败',
+      type: 'warning',
+    })
+    console.log('fail')
+  }
+}
 
+onMounted(async () => {
   // const map: mapbox.Map = await initMap(
   //   mapContainerRef.value as HTMLDivElement,
   //   {
-  //     center: [131, 30],
-  //     zoom: 3,
+  //     center: [120.55, 32.08],
+  //     zoom: 6.5,
   //   },
   // )
-  const map: mapbox.Map = await initScratchMap(mapContainerRef.value)
+
+  typh.value = (await axios.get(`/api/v1/data/level/typh`)).data.data
+  // typh.value = 1;
+
+  const map: mapbox.Map = await initScratchMap2(mapContainerRef.value)
   ElMessage({
     message: '地图加载完毕',
     type: 'success',
@@ -304,27 +295,17 @@ onMounted(async () => {
   map.addLayer(flow)
   flow.hide()
 
-  addStationLayer(map)
-  await addStormLayer(map, selectStormType.value)
-  await addTyphoonSymbol(map, [
-    selectPointData.value.lng,
-    selectPointData.value.lat,
-  ])
+  window.addEventListener('keydown', (e) => {
+    if (e.key === '\\') console.log(map)
+  })
+
+  addLayer(map)
+
   map.on('click', (event: mapbox.MapMouseEvent) => {
     const box: [[number, number], [number, number]] = [
       [event.point.x - 3, event.point.y - 3],
       [event.point.x + 3, event.point.y + 3],
     ]
-
-    if (map.getLayer('storm-point')) {
-      const point = map.queryRenderedFeatures(box, {
-        layers: ['storm-point'],
-      })
-      if (point && point[0]) {
-        const id = point[0].properties!.id as string
-        selectPointID.value = id
-      }
-    }
 
     if (map.getLayer('stations')) {
       const stations = map.queryRenderedFeatures(box, {
@@ -333,7 +314,7 @@ onMounted(async () => {
       if (stations && stations[0]) {
         const id = stations[0].properties!.id as string
         stationStore.currentStationID = id
-        router.push('/typical-storm-surge/data')
+        router.push('/model/data')
       }
     }
   })
@@ -341,156 +322,115 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="flex h-full">
-    <div class="flex h-full flex-auto relative justify-center">
-      <div
-        class="absolute z-10 top-3 py-1 px-16 text-yellow-400 font-bold text-2xl flex justify-center bg-slate-700/50 rounded"
-      >
-        {{ stormData?.name }}
-      </div>
-
-      <div class="card">
-        <div class="imge">
-          <div class="title">图层控制</div>
-        </div>
-
-        <div class="Description">
-          <div class="radio-buttons">
-            <label
-              v-for="opt in radioOptions"
-              :key="opt.value"
-              class="radio-button"
-            >
-              <input
-                ref="radio"
-                type="radio"
-                name="option"
-                :value="opt.value"
-              />
-              <div
-                class="radio-circle"
-                @click="selectedLayer = opt.value"
-              ></div>
-              <span class="radio-label" @click="selectedLayer = opt.value">{{
-                opt.label
-              }}</span>
-            </label>
-          </div>
-        </div>
-        <div class="imge2">
-          <div class="close" @click="closeHandeler">关闭所有</div>
-        </div>
-      </div>
-      <!-- add water -->
-      <adwtLegend
-        v-show="selectedLayer == 2"
-        :contour-data="contourDATA"
-      ></adwtLegend>
-
-      <!-- flow/wind legend -->
-      <flowLegend
-        v-show="selectedLayer == 1 || selectedLayer == 0"
-        :max-speed="selectedLayer == 1?flow.maxSpeedRef:selectedLayer ==0?wind.maxSpeedRef:{value:10.0}"
-        :desc="selectedLayer == 1?'流速(m/s)':selectedLayer == 0?'风速(m/s)':'' "
-      >
-      </flowLegend>
-      <timestepCounter
-        v-show="selectedLayer == 0 || selectedLayer == 1"
-        :timeStep="selectedLayer == 1?flow.timeStepRef:selectedLayer == 0?wind.timeStepRef:{value:10}"
-        :totalCount="selectedLayer == 1?41:selectedLayer ==0?41:{value:10}"
-      >        
-      </timestepCounter>
-
-
-      <div ref="mapContainerRef" class="map-container h-full w-full"></div>
-      <canvas id="GPUFrame" class="playground"></canvas>
+  <div
+    class="z-10 absolute flex flex-col top-6 left-6 h-64 w-72 rounded-xl shadow text-white shadow-slate-800 bg-[#262626]"
+  >
+    <div class="h-10 leading-10 px-3 font-bold rounded-t-xl bg-[#3d6796]">
+      模型计算
     </div>
-    <div class="bg-white w-[22rem] flex flex-col">
-      <div class="h-24 m-2 border border-zinc-300 bg-white">
-        <div class="h-10 leading-10 px-3 bg-[#1b6ec8] text-white">
-          历史风暴潮
-        </div>
-        <el-select
-          v-model="selectStormType"
-          class="m-2 w-[90%]"
-          placeholder="Select"
-          size="large"
-          @change="handleSelectChange"
+    <div class="flex-auto m-2 rounded-md flex flex-col bg-[#494949]">
+      <div class="my-2 mx-2 text-lg">
+        <el-button
+          type="info"
+          class="w-full bg-slate-300 hover:bg-slate-400/90 border-0 text-black"
+          @click="runModel"
+          >运行模型</el-button
         >
-          <el-option key="199711" label="温妮 (199711)" value="199711" />
-          <!-- <el-option key="200012" label="派比安 (200012)" value="200012" /> -->
-        </el-select>
       </div>
-      <div class="h-54 m-2 border border-zinc-300 bg-white">
-        <div class="h-10 leading-10 px-3 bg-[#1b6ec8] text-white">历史信息</div>
-        <div class="mx-2 my-2 flex flex-col">
-          <div>
-            <span class="inline-block pr-2 text-lg">当前时间:</span>
-            <span class="inline-block pr-3">{{
-              selectPointData && formatDate(selectPointData.time)
-            }}</span>
+      <div
+        class="flex flex-col flex-auto mb-3 text-base mx-2 bg-slate-300 rounded-md"
+      >
+        <div class="h-8 leading-8 px-3 rounded-t-md bg-[#3d6796]">模型状态</div>
+        <div class="flex flex-auto justify-center items-center text-black">
+          <div v-if="modelStore.modelStatus === 'no'" class="relative bottom-1">
+            当前无模型运行
           </div>
-        </div>
-      </div>
-      <div class="m-2 mt-2 w-[21rem] bg-white">
-        <div class="h-10 leading-10 px-3 bg-[#1b6ec8] text-white">历史路径</div>
-        <div class="border border-zinc-300">
-          <el-table
-            stripe
-            border
-            table-layout="auto"
-            :data="tableData"
-            class="h-[57vh]"
-            @current-change="handleTableSelectionChange"
+          <div
+            v-else-if="modelStore.modelStatus === 'finish'"
+            class="relative bottom-1"
           >
-            <el-table-column prop="time" label="时间" />
-            <el-table-column prop="powerAndStrong" label="强度" />
-            <el-table-column prop="speed" label="风速" />
-          </el-table>
+            模型运行完成
+          </div>
+          <div v-else class="w-full px-3 relative bottom-1">
+            <div class="mb-2">运行进度</div>
+            <div class="flex items-center">
+              <el-slider
+                v-model="modelStore.modelProgress"
+                class="w-[80%]"
+              ></el-slider>
+              <div class="pl-4">
+                {{ modelStore.modelProgress.toFixed(1) + '%' }}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
+  <div ref="mapContainerRef" class="map-container h-full w-full" />
+  <canvas id="GPUFrame" class="playground"></canvas>
+  <!-- <radioVue></radioVue> -->
+  <!-- <div class="card">
+    <div class="imge">
+      <div class="title">图层控制</div>
+    </div>
+
+    <div class="Description">
+      <div class="typh">{{ text }}</div>
+      <div class="radio-buttons">
+        <label
+          v-for="opt in radioOptions"
+          :key="opt.value"
+          class="radio-button"
+        >
+          <input ref="radio" type="radio" name="option" :value="opt.value" />
+          <div class="radio-circle" @click="selectedLayer = opt.value"></div>
+          <span class="radio-label" @click="selectedLayer = opt.value">{{
+            opt.label
+          }}</span>
+        </label>
+        <label v-show="typh" class="radio-button">
+          <input ref="radio2" type="radio" name="option" :value="optt.value" />
+          <div class="radio-circle" @click="selectedLayer = optt.value"></div>
+          <span class="radio-label" @click="selectedLayer = optt.value">{{
+            optt.label
+          }}</span>
+        </label>
+      </div>
+    </div>
+    <div class="imge2">
+      <div class="close" @click="closeHandeler">关闭所有</div>
+    </div>
+  </div>
+  <adwtLegend
+    v-show="selectedLayer == 2"
+    :contour-data="contourDATA"
+  ></adwtLegend> -->
 </template>
 
 <style scoped>
-:deep(.el-table__body tr.current-row > td.el-table__cell) {
-  background-color: #dbeafe !important;
-}
-
-:deep(.el-table tbody tr:nth-child(2n) td) {
-  background: #eff6ff !important;
-}
-
-:deep(.el-select--large .el-select__wrapper) {
-  font-size: medium;
-}
-
-:deep(.el-table) {
-  font-size: medium;
-}
-
 .adwtLegend {
-  position: fixed;
-  bottom: 10vh;
-  right: 20vw;
-  z-index: 3;
+  position: absolute;
+  bottom: 5vh;
+  right: 5vw;
+  z-index: 2;
 }
-.flow-legend, .wind-legend{
-  z-index: 3;
 
-}
-.timestep-counter{
-  z-index: 3;
-
+#GPUFrame {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  top: 0;
+  pointer-events: none;
 }
 
 .card {
-  position: fixed;
-  margin-top: 2vh;
-  right: 20vw;
+  position: absolute;
+  top: 2vh;
+  right: 10vw;
   width: 6vw;
-  height: 20vh;
+  height: 23vh;
   background: rgb(38, 38, 38);
   box-shadow: 7px 5px 10px rgba(0, 0, 0, 0.333);
   z-index: 3;
@@ -529,20 +469,29 @@ onMounted(async () => {
 
 .Description {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
   border-color: #141414;
   background-color: #414141;
   transform: translate(5%, 8%);
   width: 90%;
-  height: 55%;
+  height: 60%;
   border-radius: 5px;
+}
+
+.typh {
+  font-size: 1.8vh;
+  height: 30%;
+  color: #ffffff;
 }
 
 .radio-buttons {
   display: flex;
   flex-direction: column;
+  justify-content: space-evenly;
   color: white;
+  height: 70%;
 }
 
 .radio-button {
@@ -587,14 +536,5 @@ onMounted(async () => {
 .radio-label {
   font-size: 14px;
   /*   font-weight: bold; */
-}
-
-#GPUFrame {
-  z-index: 2;
-  pointer-events: none;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  left: 0px;
 }
 </style>

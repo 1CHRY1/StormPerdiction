@@ -30,7 +30,7 @@ export const drawEcharts = async (
   const range = max - min
   const option: EChartsOption = {
     title: {
-      text: `${stationInfo.name}站点 ${stationInfo.time} 精读评定折线图`,
+      text: `${stationInfo.name}站点 ${stationInfo.time.split(' ')[0]} 精读评定折线图`,
       textStyle: {
         color: 'hsl(220, 50%, 50%)',
         fontSize: 20,
