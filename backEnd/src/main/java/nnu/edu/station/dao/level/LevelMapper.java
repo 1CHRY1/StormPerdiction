@@ -31,4 +31,12 @@ public interface LevelMapper {
     List<Map<String, Object>> getTyph72ManualByStation(@Param("station") String station);
 
     List<Map<String, Object>> getNoTyphAllManualByStation(@Param("station") String station);
+
+    Map<String, Object> get48scNotyNoman(@Param("station") String station, @Param("time") String time);
+
+    Map<String, Object> get48ybNotyNoman(@Param("station") String station, @Param("time") String time);
+
+    List<Map<String, Object>> getAllManul(@Param("time") String time);
+
+    Map<String, Object> getManuelByTime(@Param("time") String time);
 }

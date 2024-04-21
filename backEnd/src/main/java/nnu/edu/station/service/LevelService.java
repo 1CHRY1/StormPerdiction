@@ -8,6 +8,8 @@ import java.util.Map;
 
 public interface LevelService {
 
+    // V1 Service
+
     Integer ifTyph(String time);
 
     List<Map<String, Object>> getAllInfoByStation(String station);
@@ -31,5 +33,15 @@ public interface LevelService {
     List<Map<String, Object>> getTyph72ManualByStation(String station);
 
     List<Map<String, Object>> getNoTyphAllManualByStation(String station);
+
+    // V2 Service
+
+    Map<String, Object> get48scNotyNoman(String station);
+
+    Map<String, Object> get48ybNotyNoman(String station);
+
+    List<Map<String, Object>> getAllManul();
+
+    Map<String, Object> getManuelByTime(String time);
 
 }

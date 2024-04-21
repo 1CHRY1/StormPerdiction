@@ -87,7 +87,6 @@ export const addStormLayer = async (
 ) => {
   const pointFeatureCollection = generateStormOfPoint(storm)
   const lineString = generateStormOfLine(storm)
-  console.log(lineString)
 
   map.addSource(`storm-${storm[0].name}-point`, {
     type: 'geojson',

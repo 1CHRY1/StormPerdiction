@@ -2,6 +2,8 @@ import { RouteRecordRaw, createRouter, createWebHistory } from 'vue-router'
 import HelloWorld from '../components/HelloWorld.vue'
 import AccuracyDetail from '../feature/accuracy-assessment/AccuracyDetail.vue'
 import AccuracyMapView from '../feature/accuracy-assessment/AccuracyMapView.vue'
+import ModelDetail from '../feature/model/ModelDetail.vue'
+import ModelMapView from '../feature/model/ModelMapView.vue'
 import WaterMapView from '../feature/real-time-situation/WaterMapView.vue'
 import WaterSituationDetail from '../feature/real-time-situation/WaterSituationDetail.vue'
 import TideDetail from '../feature/tide-forecast/TideDetail.vue'
@@ -133,6 +135,23 @@ const routes: RouteRecordRaw[] = [
         name: 'StormDetail',
         component: StormDetail,
         meta: { index: 5 },
+      },
+    ],
+  },
+  {
+    path: '/model',
+    children: [
+      {
+        path: 'map',
+        name: 'ModelMapView',
+        component: ModelMapView,
+        meta: { index: 6 },
+      },
+      {
+        path: 'data',
+        name: 'ModelDetail',
+        component: ModelDetail,
+        meta: { index: 6 },
       },
     ],
   },

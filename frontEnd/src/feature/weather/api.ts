@@ -66,7 +66,6 @@ export const getStormDataMap = async (): Promise<IStormDataMap> => {
 
   const year = new Date(Date.now() + 8 * 3600 * 1000).getFullYear().toString()
   const url = `http://typhoon.zjwater.gov.cn/Api/TyphoonInfo/${year}${month}`
-  console.log(url)
   const response = (await fetch(url)
     .then((res) => res.json())
     .then((json) => json)
