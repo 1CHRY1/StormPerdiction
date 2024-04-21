@@ -56,7 +56,7 @@ const percentage = computed(()=>{
   font-size: 14px;
   color: rgb(255, 255, 255);
 }
-.play{
+/* .play{
   display: block;
   margin-top:5px;
   height: 20px;
@@ -64,13 +64,15 @@ const percentage = computed(()=>{
   font-size: 12px;
   line-height: 20px;
   color: rgb(255, 255, 255);
-  &:hover{
+}
+.play :hover{
+    &:hover{
     cursor: pointer;
     font-weight: 600;
     font-size: 14px;
     transition: 300ms;
   }
-}
+} */
 
 :deep(.el-progress-circle__track){
     stroke: rgb(167,230,240);
