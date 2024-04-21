@@ -92,4 +92,29 @@ public class LevelController {
         /* 根据名称获取站点无台风情况下所有手动计算潮位预报信息 */
         return ResultUtils.success(levelService.getNoTyphAllManualByStation(station));
     }
+
+    @GetMapping(value = "/station/shice/48")
+    public JsonResult get48B_noty_noman(@RequestParam String station) {
+        /* 根据名称获取站点前48小时潮位预报信息 */
+        return ResultUtils.success(levelService.get48scNotyNoman(station));
+    }
+
+    @GetMapping(value = "/station/yubao/48")
+    public JsonResult get48A_noty_noman(@RequestParam String station) {
+        /* 根据名称获取站点后48小时潮位预报信息 */
+        return ResultUtils.success(levelService.get48ybNotyNoman(station));
+    }
+
+    @GetMapping(value = "/manuel/all")
+    public JsonResult getAllManuel() {
+        // 获取当天所有手动计算数据
+        return ResultUtils.success(levelService.getAllManul());
+    }
+
+    @GetMapping(value = "/manuel/time")
+    public JsonResult getManuelByTime(@RequestParam String time) {
+        // 获取指定时间的手动计算数据
+        return ResultUtils.success(levelService.getManuelByTime(time));
+    }
+
 }

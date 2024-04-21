@@ -1,5 +1,3 @@
-import sys
-
 from scipy.io import loadmat
 import json
 import netCDF4 as nc
@@ -8,6 +6,18 @@ import os
 import schedule
 import time
 from datetime import datetime, timedelta
+
+def getStationInfo():
+    # 获取所有站点信息
+    filePath = "station.json"
+    with open(filePath, 'r', encoding='utf-8') as file:
+        data = json.load(file)
+    return data
+
+def ReadMatfile(filePath):
+    # 读取mat文件
+    matData = loadmat(filePath)
+    return matData
 
 def JudgeIfTyph(filePath):
     # 判断是否有台风
@@ -71,13 +81,11 @@ def getZetaFromArray(array, stations):
         result.append({"name":name, "data":data})
     return result
 
-
 def list_process(hpre):
     data = []
     for item in hpre:
         data.append(item[0])
     return data
-
 
 def get_hzdata(hz, start_time):
     result = []
@@ -90,7 +98,6 @@ def get_hzdata(hz, start_time):
         result.append([current_time.strftime("%Y-%m-%d %H:%M:%S"), hz[i][0]])  # 将datetime对象转换为字符串
     result.reverse()
     return result
-
 
 def get_DBhzlen(db_path, name):
     # 获取已有的hz数据
@@ -135,30 +142,33 @@ def get_prefix_before_digits(input_str):
         prefix += char
     return prefix
 
-# dataprocess_path = "D:/1study/Work/2023_12_22_Storm/stormPerdiction/data/DataProcess"
-
 def main():
-    args = sys.argv
-    if len(args) < 2:
-        print("未传入正确数量参数")
-        sys.exit(1)
-    dataprocess_path = args[1]
-    db_path_Forcasting = dataprocess_path + '/Forcasting.db'
-    db_path_NC = dataprocess_path + '/NC.db'
-    stations_path = dataprocess_path + '/station.json'
+    db_path_Forcasting = os.getcwd() + '/Forcasting.db'
+    db_path_NC =  os.getcwd() + '/NC.db'
+    stations_path = 'station.json'
     with open(stations_path, 'r', encoding='utf-8') as file:
         stations = json.load(file)
-    folderPath = os.path.dirname(dataprocess_path) + "/forecastData"
+    folderPath = os.path.abspath(os.pardir) + "/forecastData"
     folderPath = folderPath.replace(os.sep, '/')
     folders = os.listdir(folderPath)
+    folders = sorted(folders, key=str.lower)
     for folder in folders:
-        current_time = datetime.now().strftime("%Y%m%d")
-        if (len(folder) != 8 or folder != current_time):
-            continue
+        # 遍历每个文件夹中的数据
         Path = folderPath + "/" + folder
         print("****************" + folder + " begin!" + "****************")
-        time = datetime.strptime(folder, "%Y%m%d")
-        manual = 0
+        # 获取数据时间
+        if ( len(folder)==8 ):
+            # 数据时间非手动计算
+            time = datetime.strptime(folder, "%Y%m%d")
+            manual = 0
+        else:
+            # 数据时间为手动计算
+            try:
+                time = datetime.strptime(folder, "%Y%m%d_%H:%M")
+                manual = 1
+            except Exception as e:
+                print(e)
+                continue
         try:
             txtPath = os.path.join(Path, "ifTyph.txt")
             if (JudgeIfTyph(txtPath) == True):
@@ -204,7 +214,7 @@ def main():
                             type = "adcirc"
                             zeta = nc2array(path)
                             insert_NCdata(db_path_NC, time, type, path, filename, manual)
-                            hyubao = getZetaFromArray(zeta, stations)
+                            hyubao = getZetaFromArray(zeta,stations)
                         if name == "fort.63_nowind":
                             type = "fort63"
                             zeta = nc2array(path)
@@ -216,18 +226,23 @@ def main():
                                 hyubao_data = hyubao[i].get("data")
                                 hpre_data = hpre[i].get("data")
                                 hadd_data = hyubao_data - hpre_data
-                                insert_typhdata(db_path_Forcasting, name, time, hpre_data.tolist(),
-                                                hyubao_data.tolist(), hadd_data.tolist(), manual)
+                                insert_typhdata(db_path_Forcasting, name, time, hpre_data.tolist(), hyubao_data.tolist(), hadd_data.tolist(), manual)
                             break
+
+                    # 处理精度评定结果数据
+                    if os.path.basename(file) == "result.txt":
+                        path = Path + "/" + file
+                        filename = "result.txt"
+                        type = "result"
+                        insert_NCdata(db_path_NC, time, type, path, filename, manual)
 
                     print(os.path.basename(file))
 
             else:
                 # 不存在台风
-                insert_iftyph(db_path_Forcasting, time, 0, 0)
+                insert_iftyph(db_path_Forcasting, time, 0, 1)
                 files = os.listdir(Path)
                 for file in files:
-                    # 文件名称
                     name = os.path.splitext(file)[0]
                     # 处理mat数据
                     if file.endswith(".mat"):

@@ -23,7 +23,6 @@ import {
   addStationLayer,
   addStormLayer,
   addTyphoonSymbol,
-  decimalToDMS,
   formatDate,
   generateStormTableData,
   getStormData,

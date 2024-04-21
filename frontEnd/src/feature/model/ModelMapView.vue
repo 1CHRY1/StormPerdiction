@@ -1,8 +1,9 @@
 <script setup lang="ts">
+import axios from 'axios'
 import { ElMessage } from 'element-plus'
 import mapbox from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
-import { Ref, computed, onMounted, ref, watch, reactive, watchEffect } from 'vue'
+import { Ref, computed, onMounted, ref, watch } from 'vue'
 import {
   addWaterLayer,
   addWaterLayer2,
@@ -13,17 +14,18 @@ import {
 } from '../../components/LayerFromWebGPU'
 import { router } from '../../router'
 import { useMapStore } from '../../store/mapStore'
+import { useModelStore } from '../../store/modelStore'
 import { useStationStore } from '../../store/stationStore'
 import { initScratchMap2 } from '../../util/initMap'
+import { runWaterModel } from './api'
 import { addLayer } from './util'
-import flowLegend from '../../components/legend/flowLegend.vue'
-import timestepCounter from '../../components/legend/timestepCounter.vue'
 
 const radio: Ref<HTMLDivElement | null> = ref(null)
 const radio2: Ref<HTMLDivElement | null> = ref(null)
 const mapStore = useMapStore()
 const stationStore = useStationStore()
 const mapContainerRef: Ref<HTMLDivElement | null> = ref(null)
+const modelStore = useModelStore()
 const radioOptions = [
   { label: '风场', value: 0 },
   { label: '流场', value: 1 },
@@ -35,73 +37,40 @@ const contourDATA: Ref<null | Object> = ref(null)
 
 let adwtid = 0
 const adwtTicker: Ref<number> = ref(0)
-const adwtHandler = async (addwaterCount: number, swapTag: number) => {
-  const jsonPrefix = `/ffvsrc/9711add/contour_`
-  const picPrefix = `/ffvsrc/9711add/addWater_`
-  if (swapTag) {
-    const addWaterID = addwaterCount
-    const addWaterSrcIds = ['pngsource', 'contourSrc']
-    // remove
-    const addWaterLayerIds = ['addWater', 'contourLayer', 'contourLabel']
-    // remove
-    addWaterLayerIds.forEach((layerid) => {
-      mapStore.map!.getLayer(layerid) && mapStore.map!.removeLayer(layerid)
-    })
-    addWaterSrcIds.forEach((srcid) => {
-      mapStore.map!.getSource(srcid) && mapStore.map!.removeSource(srcid)
-    })
-    // add
-    contourDATA.value = await prepareAddWaterLayer(mapStore.map!, addWaterID, jsonPrefix, picPrefix)
-    addWaterLayer(mapStore.map!, addWaterID)
-  } else {
-    const addWaterID = addwaterCount
-    const addWaterSrcIds = ['pngsource2', 'contourSrc2']
-    const addWaterLayerIds = ['addWater2', 'contourLayer2', 'contourLabel2']
-    // remove
-    addWaterLayerIds.forEach((layerid) => {
-      mapStore.map!.getLayer(layerid) && mapStore.map!.removeLayer(layerid)
-    })
-    addWaterSrcIds.forEach((srcid) => {
-      mapStore.map!.getSource(srcid) && mapStore.map!.removeSource(srcid)
-    })
-    // add
-    contourDATA.value = await prepareAddWaterLayer2(mapStore.map!, addWaterID, jsonPrefix, picPrefix)
-    addWaterLayer2(mapStore.map!, addWaterID)
-  }
-
-  const getAddRange = (geojson: any) => {
-    let features: Array<any> = geojson["features"]
-    let maxAdd: Number = -999
-    let minAdd: Number = 999
-    features.forEach((feat: any) => {
-      if (feat['properties']['addWater'] && feat['properties']['addWater'] > maxAdd) {
-        maxAdd = feat['properties']['addWater']
-      } else if (feat['properties']['addWater'] && feat['properties']['addWater'] < minAdd) {
-        minAdd = feat['properties']['addWater']
-      }
-    })
-    return [maxAdd, minAdd]
-  }
-  addRangeRef.value = getAddRange(contourDATA.value)
+const adwtHandler = async (addwaterCount: number) => {
+  const addWaterID = addwaterCount
+  const addWaterSrcIds = ['pngsource', 'contourSrc']
+  // remove
+  const addWaterLayerIds = ['addWater', 'contourLayer', 'contourLabel']
+  // remove
+  addWaterLayerIds.forEach((layerid) => {
+    mapStore.map!.getLayer(layerid) && mapStore.map!.removeLayer(layerid)
+  })
+  addWaterSrcIds.forEach((srcid) => {
+    mapStore.map!.getSource(srcid) && mapStore.map!.removeSource(srcid)
+  })
+  // add
+  contourDATA.value = await prepareAddWaterLayer(mapStore.map!, addWaterID)
+  addWaterLayer(mapStore.map!, addWaterID)
 }
-const wind = reactive(new windd())
-const flow = reactive(new floww())
-const flowTimeStepRef: Ref<Number> = ref(0)
-const flowMaxSpeedRef: Ref<Number> = ref(0)
-const windTimeStepRef: Ref<Number> = ref(0)
-const windMaxSpeedRef: Ref<Number> = ref(0)
-const addRangeRef: Ref<Array<Number>> = ref([0, 0])
-const adwtidRef: Ref<Number> = ref(0)
+const adwtHandler2 = async (addwaterCount: number) => {
+  const addWaterID = addwaterCount
+  const addWaterSrcIds = ['pngsource2', 'contourSrc2']
+  const addWaterLayerIds = ['addWater2', 'contourLayer2', 'contourLabel2']
+  // remove
+  addWaterLayerIds.forEach((layerid) => {
+    mapStore.map!.getLayer(layerid) && mapStore.map!.removeLayer(layerid)
+  })
+  addWaterSrcIds.forEach((srcid) => {
+    mapStore.map!.getSource(srcid) && mapStore.map!.removeSource(srcid)
+  })
+  // add
+  contourDATA.value = await prepareAddWaterLayer2(mapStore.map!, addWaterID)
+  addWaterLayer2(mapStore.map!, addWaterID)
+}
 
-watchEffect(() => {
-  flowTimeStepRef.value = flow.currentResourceUrl;
-  flowMaxSpeedRef.value = flow.maxSpeed.n;
-  windTimeStepRef.value = wind.currentResourceUrl
-  windMaxSpeedRef.value = wind.maxSpeed.n;
-})
-
-
-
+const wind = new windd() as mapboxgl.AnyLayer
+const flow = new floww() as mapboxgl.AnyLayer
 
 watch(selectedLayer, async (now: null | number, old: null | number) => {
   // clear
@@ -169,8 +138,8 @@ watch(selectedLayer, async (now: null | number, old: null | number) => {
       wind.show()
 
       mapStore.map!.flyTo({
-        center: [121.45, 31.38],
-        zoom: 5.18,
+        center: [122.92069384160902, 33.5063086220937],
+        zoom: 5.184918089769568,
         duration: 500,
       })
       break
@@ -185,8 +154,8 @@ watch(selectedLayer, async (now: null | number, old: null | number) => {
       flow.show()
 
       mapStore.map!.flyTo({
-        center: [121.5, 31.56],
-        zoom: 7,
+        center: [122.92069384160902, 32.0063086220937],
+        zoom: 7.512044631152661,
         duration: 500,
       })
       break
@@ -197,23 +166,30 @@ watch(selectedLayer, async (now: null | number, old: null | number) => {
       })
 
       mapStore.map!.flyTo({
-        center: [121.5, 31.56],
-        zoom: 7,
+        center: [122.92069384160902, 32.0063086220937],
+        zoom: 6.912044631152661,
         duration: 500,
       })
 
+      // adwtTicker = adwtHandeler()
+      // static
+      // let addWaterID = 26
+      // let addWaterSrcIds = ['pngsource', 'contourSrc']
+      // if (mapStore.map!.getSource(addWaterSrcIds[0]) && mapStore.map!.getSource(addWaterSrcIds[1]))
+      //   addWaterLayer(mapStore.map!, addWaterID)
+      // else {
+      //   mapStore.map!.getSource(addWaterSrcIds[0]) && mapStore.map!.removeSource(addWaterSrcIds[0])
+      //   mapStore.map!.getSource(addWaterSrcIds[1]) && mapStore.map!.removeSource(addWaterSrcIds[1])
+      //   contourDATA.value = await prepareAddWaterLayer(mapStore.map!, addWaterID)
+      //   addWaterLayer(mapStore.map!, addWaterID)
+      // }
       adwtid = 4
-      adwtidRef.value = 4
       adwtTicker.value = setInterval(() => {
-        adwtHandler(adwtid, adwtid % 2)
-        adwtid = (adwtid + 1) % 80
-        adwtidRef.value = adwtid
+        adwtid % 2 && adwtHandler(adwtid)
+        !(adwtid % 2) && adwtHandler2(adwtid)
+
+        adwtid = (adwtid + 1) % 195
       }, 3000)
-      setTimeout(() => {
-        adwtHandler(adwtid, adwtid % 2)
-        adwtid = (adwtid + 1) % 80
-        adwtidRef.value = adwtid
-      }, 0)
 
       break
     default:
@@ -264,8 +240,38 @@ const typh: Ref<number> = ref(0)
 //   return typh==1?"当前有台风":"当前无台风"
 // })
 const text = computed(() => {
-  return typh.value == 1 ? '当前有台风 !' : '当前无台风 !'
+  return typh.value == 1 ? '当前有台风' : '当前无台风'
 })
+
+const runModel = async () => {
+  console.log('run model')
+  const status = await runWaterModel()
+  if (status) {
+    modelStore.run('')
+    const id = setInterval(() => {
+      console.log('in')
+      const currentProgress = (modelStore.modelProgress += 5 * Math.random())
+      if (currentProgress > 100) {
+        modelStore.modelProgress = 100
+        modelStore.finish()
+        clearInterval(id)
+        ElMessage({
+          message: '模型运行完成',
+          type: 'success',
+        })
+      } else {
+        modelStore.modelProgress = currentProgress
+      }
+    }, 100)
+  } else {
+    modelStore.reset()
+    ElMessage({
+      message: '模型运行失败',
+      type: 'warning',
+    })
+    console.log('fail')
+  }
+}
 
 onMounted(async () => {
   // const map: mapbox.Map = await initMap(
@@ -276,8 +282,8 @@ onMounted(async () => {
   //   },
   // )
 
-  // typh.value = (await axios.get(`/api/v1/data/level/typh`)).data.data
-  typh.value = 1;
+  typh.value = (await axios.get(`/api/v1/data/level/typh`)).data.data
+  // typh.value = 1;
 
   const map: mapbox.Map = await initScratchMap2(mapContainerRef.value)
   ElMessage({
@@ -308,7 +314,7 @@ onMounted(async () => {
       if (stations && stations[0]) {
         const id = stations[0].properties!.id as string
         stationStore.currentStationID = id
-        router.push('/tide-forecast/data')
+        router.push('/model/data')
       }
     }
   })
@@ -316,45 +322,90 @@ onMounted(async () => {
 </script>
 
 <template>
+  <div
+    class="z-10 absolute flex flex-col top-6 left-6 h-64 w-72 rounded-xl shadow text-white shadow-slate-800 bg-[#262626]"
+  >
+    <div class="h-10 leading-10 px-3 font-bold rounded-t-xl bg-[#3d6796]">
+      模型计算
+    </div>
+    <div class="flex-auto m-2 rounded-md flex flex-col bg-[#494949]">
+      <div class="my-2 mx-2 text-lg">
+        <el-button
+          type="info"
+          class="w-full bg-slate-300 hover:bg-slate-400/90 border-0 text-black"
+          @click="runModel"
+          >运行模型</el-button
+        >
+      </div>
+      <div
+        class="flex flex-col flex-auto mb-3 text-base mx-2 bg-slate-300 rounded-md"
+      >
+        <div class="h-8 leading-8 px-3 rounded-t-md bg-[#3d6796]">模型状态</div>
+        <div class="flex flex-auto justify-center items-center text-black">
+          <div v-if="modelStore.modelStatus === 'no'" class="relative bottom-1">
+            当前无模型运行
+          </div>
+          <div
+            v-else-if="modelStore.modelStatus === 'finish'"
+            class="relative bottom-1"
+          >
+            模型运行完成
+          </div>
+          <div v-else class="w-full px-3 relative bottom-1">
+            <div class="mb-2">运行进度</div>
+            <div class="flex items-center">
+              <el-slider
+                v-model="modelStore.modelProgress"
+                class="w-[80%]"
+              ></el-slider>
+              <div class="pl-4">
+                {{ modelStore.modelProgress.toFixed(1) + '%' }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   <div ref="mapContainerRef" class="map-container h-full w-full" />
   <canvas id="GPUFrame" class="playground"></canvas>
   <!-- <radioVue></radioVue> -->
-  <div class="card">
+  <!-- <div class="card">
     <div class="imge">
       <div class="title">图层控制</div>
     </div>
+
     <div class="Description">
       <div class="typh">{{ text }}</div>
       <div class="radio-buttons">
-        <label v-for="opt in radioOptions" :key="opt.value" class="radio-button">
+        <label
+          v-for="opt in radioOptions"
+          :key="opt.value"
+          class="radio-button"
+        >
           <input ref="radio" type="radio" name="option" :value="opt.value" />
           <div class="radio-circle" @click="selectedLayer = opt.value"></div>
           <span class="radio-label" @click="selectedLayer = opt.value">{{
-        opt.label
-      }}</span>
+            opt.label
+          }}</span>
         </label>
         <label v-show="typh" class="radio-button">
           <input ref="radio2" type="radio" name="option" :value="optt.value" />
           <div class="radio-circle" @click="selectedLayer = optt.value"></div>
           <span class="radio-label" @click="selectedLayer = optt.value">{{
-        optt.label
-      }}</span>
+            optt.label
+          }}</span>
         </label>
       </div>
     </div>
     <div class="imge2">
-      <div class="close" @click="closeHandeler">关闭所有 </div>
+      <div class="close" @click="closeHandeler">关闭所有</div>
     </div>
   </div>
-
-  <flowLegend v-show="selectedLayer == 1 || selectedLayer == 0 || selectedLayer == 2"
-    :max-speed="selectedLayer == 1 ? flowMaxSpeedRef : selectedLayer == 0 ? windMaxSpeedRef : { value: 999 }"
-    :add-range="addRangeRef" :desc="selectedLayer == 1 ? '流速(m/s)' : selectedLayer == 0 ? '风速(m/s)' : '风暴增水(m)'">
-  </flowLegend>
-  <timestepCounter v-show="selectedLayer == 0 || selectedLayer == 1 || selectedLayer == 2"
-    :timeStep="selectedLayer == 1 ? flowTimeStepRef : selectedLayer == 0 ? windTimeStepRef : adwtidRef"
-    :totalCount="selectedLayer == 1 ? 41 : selectedLayer == 0 ? 41 : 80">
-  </timestepCounter>
+  <adwtLegend
+    v-show="selectedLayer == 2"
+    :contour-data="contourDATA"
+  ></adwtLegend> -->
 </template>
 
 <style scoped>
@@ -363,17 +414,6 @@ onMounted(async () => {
   bottom: 5vh;
   right: 5vw;
   z-index: 2;
-}
-
-.flow-legend,
-.wind-legend {
-  z-index: 3;
-
-}
-
-.timestep-counter {
-  z-index: 3;
-
 }
 
 #GPUFrame {
@@ -387,40 +427,37 @@ onMounted(async () => {
 
 .card {
   position: absolute;
-  top: 3vh;
+  top: 2vh;
   right: 10vw;
   width: 6vw;
-  height: 22vh;
+  height: 23vh;
   background: rgb(38, 38, 38);
   box-shadow: 7px 5px 10px rgba(0, 0, 0, 0.333);
   z-index: 3;
 }
 
 .title {
-  height: 4vh;
-  width: 6vw;
-  font-size: calc(0.6vw + 0.8vh);
-  font-weight: 600;
+  font-size: larger;
+  font-weight: bolder;
   text-align: center;
-  line-height: 4vh;
+  line-height: 3rem;
   color: white;
 }
 
 .imge2 {
-  height: 3vh;
-  display: absolute;
+  margin-top: 10px;
+  height: 1.5rem;
+  display: fixed;
   background-color: #3d6796;
   width: 100%;
   cursor: pointer;
-  position: absolute;
-  bottom: 0;
 }
 
 .close {
   font-size: smaller;
   font-weight: bolder;
   text-align: center;
-  line-height: 3vh;
+  line-height: 1.5rem;
   color: white;
 }
 
@@ -433,21 +470,20 @@ onMounted(async () => {
 .Description {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: space-between;
+  align-items: center;
   border-color: #141414;
   background-color: #414141;
-  height: 15vh;
-  width: 6vw;
-  transform: scale(0.9);
+  transform: translate(5%, 8%);
+  width: 90%;
+  height: 60%;
   border-radius: 5px;
 }
 
 .typh {
-  font-size: calc(0.5vw + 0.7vh);
-  height: 3vh;
-  line-height: 3vh;
+  font-size: 1.8vh;
+  height: 30%;
   color: #ffffff;
-  text-align: center;
 }
 
 .radio-buttons {
@@ -461,9 +497,8 @@ onMounted(async () => {
 .radio-button {
   display: flex;
   align-items: center;
+  margin-bottom: 0.5rem;
   cursor: pointer;
-  justify-content: flex-start;
-  padding-left: 0.5vw;
 }
 
 .radio-button input[type='radio'] {
@@ -471,8 +506,8 @@ onMounted(async () => {
 }
 
 .radio-circle {
-  width: calc(1vh + 0.5vw);
-  height: calc(1vh + 0.5vw);
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   border: 2px solid #aaa;
   position: relative;
@@ -482,8 +517,8 @@ onMounted(async () => {
 .radio-circle::before {
   content: '';
   display: block;
-  width: calc(1vh + 0.3vw);
-  height: calc(1vh + 0.3vw);
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
   background-color: #ddd;
   position: absolute;
@@ -493,13 +528,13 @@ onMounted(async () => {
   transition: all 0.2s ease-in-out;
 }
 
-.radio-button input[type='radio']:checked+.radio-circle::before {
+.radio-button input[type='radio']:checked + .radio-circle::before {
   transform: translate(-50%, -50%) scale(1);
   background-color: #ffffff;
 }
 
 .radio-label {
-  font-size: calc(0.7vh + 0.5vw);
+  font-size: 14px;
   /*   font-weight: bold; */
 }
 </style>

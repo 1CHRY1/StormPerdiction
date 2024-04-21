@@ -25,7 +25,7 @@ Typhoon:
   ${dataprocess}/Clawing/typhoon.json
 
 updateData:
-  ${dataprocess}/UpdateData.py
+  ${dataprocess}/UpdateDataV2.py
 
 clawingCloud:
   ${dataprocess}/Clawing/Cloud.py
@@ -73,3 +73,12 @@ FlowField:
   "${data}/Field/Flow"
 WindField:
   "${data}/Field/Wind"
+
+ScriptName:
+  "run.sh"
+DirectoryPath:
+  "D:/1study/Work/2023_12_22_Storm/StormPerdiction/data"
+ForecastDataPath:
+  "${data}/forecastData"
+ManuelUpdating:
+  ${dataprocess}/UpdateDataV2_man.py

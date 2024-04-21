@@ -10,25 +10,18 @@ export interface IStationInfo {
 export interface IRealTideSituationResponse {
   code: string
   data: {
-    time: string
-    level: number
-  }[]
+    hshice: number[]
+  } | null
 }
 
 export interface IForecastTideSituationResponse {
-  hz: number[]
-  time: string
-}
-
-export interface ITideSituationResponse {
-  time: string
-  hpre: number[]
-  hyubao?: number[]
-  hadd?: number[]
+  code: string
+  data: {
+    hybresult: number[]
+  } | null
 }
 
 export interface ITideSituation {
-  isTyphoon: boolean
   time: string[]
   hpre: number[]
   hyubao: number[]
@@ -43,10 +36,7 @@ export interface Tree {
 
 export interface IAccurateAssessmentTableRow {
   name: string
-  'mae(m)': string
-  'mae(m)-aftercorrection': string
-  'rmse(m)': string
-  'rmse(m)-aftercorrection': string
-  'hegelv(%)': string
-  'hegelv(%)-aftercorrection': string
+  '平均误差(m)': string
+  '均方根误差(m)': string
+  '潮位合格率(%)': string
 }

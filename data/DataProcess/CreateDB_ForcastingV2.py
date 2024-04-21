@@ -23,6 +23,7 @@ def createStationtable(db_path, tablename):
                 updatetime DATETIME,
                 time DATETIME,
                 iftyph INTEGER,
+                hpre FLOAT,
                 hshice FLOAT,
                 hybresult FLOAT,
                 manual INTEGER
@@ -39,7 +40,8 @@ def  createTyphtable(db_path):
                 CREATE TABLE IF NOT EXISTS typh (
                     updatetime DATETIME,
                     time DATETIME,
-                    iftyph INTEGER
+                    iftyph INTEGER,
+                    manuel InTEGER
                 )
             ''')
     conn.commit()
