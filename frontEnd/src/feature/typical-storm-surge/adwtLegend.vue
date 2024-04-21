@@ -18,8 +18,6 @@ const getCountourArr = (geojson: any) => {
     // contorArr.
     contorArr.sort()
     contorArr.reverse()
-    // console.log(contorArr);
-
     return contorArr
 }
 

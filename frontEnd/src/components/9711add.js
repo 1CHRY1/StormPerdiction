@@ -1,8 +1,10 @@
 import axios from "axios"
 
-const prepareAddWaterLayer = async(map,id) =>{
-    const jsonPrefix = `/api/v1/data/nc/field/add/9711/json?name=contour_`
-    const picPrefix =  `/api/v1/data/nc/field/add/9711/pic?name=addWater_`
+const prepareAddWaterLayer = async(map,id,jsonPrefix,picPrefix) =>{
+    // const jsonPrefix = `/api/v1/data/nc/field/add/9711/json?name=contour_`
+    // const picPrefix =  `/api/v1/data/nc/field/add/9711/pic?name=addWater_`
+
+
 
     map.addSource('pngsource', {
         "type": "image",
@@ -44,8 +46,8 @@ const addWaterLayer = (map,id) => {
         type: 'line',
         source: 'contourSrc',
         paint: {
-            'line-color': "#000",
-            "line-width": 1
+            'line-color': "#FFFFFF",
+            "line-width": 1.5
         }
     })
     map.addLayer({
@@ -57,15 +59,13 @@ const addWaterLayer = (map,id) => {
             'symbol-placement':"line-center"
         },
         paint: {
-            'text-color': '#ffffff'
+            'text-color': '#0202BD'
         }
     })
 
 }
 
-const prepareAddWaterLayer2 = async(map,id) =>{
-    const jsonPrefix = `/api/v1/data/nc/field/add/9711/json?name=contour_`
-    const picPrefix =  `/api/v1/data/nc/field/add/9711/pic?name=addWater_`
+const prepareAddWaterLayer2 = async(map,id,jsonPrefix,picPrefix) =>{
 
     map.addSource('pngsource2', {
         "type": "image",
@@ -107,8 +107,8 @@ const addWaterLayer2 = (map,id) => {
         type: 'line',
         source: 'contourSrc2',
         paint: {
-            'line-color': "#000",
-            "line-width": 1
+            'line-color': "#FFFFFF",
+            "line-width": 1.5
         }
     })
     map.addLayer({
@@ -120,7 +120,7 @@ const addWaterLayer2 = (map,id) => {
             'symbol-placement':"line-center"
         },
         paint: {
-            'text-color': '#ffffff'
+            'text-color': '#0202BD'
         }
     })
 

@@ -1,5 +1,5 @@
 import * as scr from '../scratch/scratch'
-import SteadyFlowLayer from './flow'
+import SteadyFlowLayer from './flowMoreBeautiful'
 import mapboxgl from 'mapbox-gl'
 
 

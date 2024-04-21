@@ -1,7 +1,8 @@
 import * as scr from '../scratch/scratch'
-import { Delaunay } from "d3-delaunay";
-import axios from "axios";
-import earcut from "earcut";
+import { Delaunay } from "d3-delaunay"
+import axios from "axios"
+import earcut from "earcut"
+import {ref} from 'vue'
 
 //9711 wind
 const prefix = '/testapi/wind/bin?name='
@@ -73,7 +74,9 @@ export default class windd {
     this.progress = 0.0;
     this.framesPerPhase = 100;
     this.maxSpeed = scr.f32();
+    this.maxSpeedRef = ref(0);
     this.currentResourceUrl = 0;
+    this.timeStepRef = ref(0);
     this.maxParticleNum = 65536;
     this.progressRate = scr.f32();
     this.particleNum = scr.u32(1000);
@@ -541,6 +544,7 @@ export default class windd {
 
   updateMaxSpeed(maxSpeed) {
     this.maxSpeed.n = maxSpeed > this.maxSpeed.n ? maxSpeed : this.maxSpeed.n;
+    this.maxSpeedRef.value = this.maxSpeed.n
   }
 
   updateVoronoi() {
@@ -551,6 +555,7 @@ export default class windd {
     if (this.progress === 0) {
       this.currentResourceUrl =
         (this.currentResourceUrl + 1) % resourceUrl.length;
+      this.timeStepRef.value = this.currentResourceUrl;
       this.addVoronoiBindingAsync(resourceUrl[this.currentResourceUrl]);
     }
 

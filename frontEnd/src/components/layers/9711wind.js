@@ -2,7 +2,6 @@ import * as scr from '../scratch/scratch'
 import { Delaunay } from "d3-delaunay";
 import axios from "axios";
 import earcut from "earcut";
-import {ref} from 'vue'
 
 
 //9711 wind
@@ -72,9 +71,7 @@ export default class wind9711 {
     this.progress = 0.0;
     this.framesPerPhase = 100;
     this.maxSpeed = scr.f32();
-    this.maxSpeedRef = ref(this.maxSpeed.n)
     this.currentResourceUrl = 0;
-    this.timeStepRef = ref(0)
     this.maxParticleNum = 262144;
     this.progressRate = scr.f32();
     this.particleNum = scr.u32(65536);
@@ -224,7 +221,6 @@ export default class wind9711 {
     this.swapVoronoiBinding();
     await this.addVoronoiBindingSync("/ffvsrc/9711wind/uv_11.bin");
     this.currentResourceUrl = 1;
-    this.timeStepRef.value = 1;
     this.nextPrepared = true;
 
     this.voronoiPipeline = scr.renderPipeline({
@@ -543,18 +539,16 @@ export default class wind9711 {
 
   updateMaxSpeed(maxSpeed) {
     this.maxSpeed.n = maxSpeed > this.maxSpeed.n ? maxSpeed : this.maxSpeed.n;
-    this.maxSpeedRef.value = this.maxSpeed.n
   }
 
   updateVoronoi() {
     // No update and tick when preparing resource
-    if (this.nextPreparing) return;
 
+    if (this.nextPreparing) return;
     // Update resource codition
     if (this.progress === 0) {
       this.currentResourceUrl =
         (this.currentResourceUrl + 1) % resourceUrl.length;
-      this.timeStepRef.value = this.currentResourceUrl
       this.addVoronoiBindingAsync(resourceUrl[this.currentResourceUrl]);
     }
 

@@ -558,6 +558,7 @@ export default class floww {
     this.progressRate.n = this.progress / (this.framesPerPhase - 1);
   }
   async getVoronoi(url) {
+    console.log(url);
     const res = await axios.get(url, { responseType: "arraybuffer" });
     const meshes = new Delaunay(new Float32Array(res.data));
 

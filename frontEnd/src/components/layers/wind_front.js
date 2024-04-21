@@ -631,7 +631,6 @@ export default class windd {
   }
   async getMask(url) {
     const json = (await axios.get(url)).data;
-    console.log(json);
     let coordinate = json["features"][0]["geometry"]["coordinates"];
     coordinate = coordinate[0][0].flat();
     var triangle = earcut(coordinate);
@@ -705,12 +704,9 @@ export default class windd {
     let vertexData = [];
     for (let i = 0; i < coordinate.length; i += 2) {
       let [x, y] = lnglat2Mercator(coordinate[i], coordinate[i + 1]);
-    //   let x = coordinate[i]
-    //   let y = coordinate[i+1]
       vertexData.push(x);
       vertexData.push(y);
     }
-    console.log(vertexData,triangle);
     let vertexBuffer = scr.vertexBuffer({
       name: "vertexbuffer",
       resource: {

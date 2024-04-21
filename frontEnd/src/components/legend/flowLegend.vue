@@ -5,31 +5,53 @@
         <div class="legend-body">
             <canvas id="pallete-flow" width="40" height="160"></canvas>
             <div class="legend-desc">
-                <div class="legend-text" v-for="i in 8">{{ getValue(i) }}</div>
+                <div class="legend-text" v-for="i in 8">{{ value[i - 1] }}</div>
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, reactive, ref, watch } from 'vue';
 
-const props = defineProps({
-    maxSpeed: Object,
-    desc:String
-})
+const props = defineProps(['maxSpeed', 'desc', 'addRange'])
+const value = reactive(['0', '0', '0', '0', '0', '0', '0', '0'])
+const getValue = () => {
+    if (props.desc === '流速(m/s)' || props.desc === '风速(m/s)') {
+        if (props.maxSpeed) {
+            for (let i = 0; i < 8; i++) {
+                value[7-i] = (props.maxSpeed / 8 * (i)).toFixed(2)
+            }
+        }
+    } else if (props.desc === '风暴增水(m)') {
 
-const getValue = (i) => {
-    if (props.maxSpeed){
-        return (props.maxSpeed.value / 8 * (8 - i)).toFixed(2)
-    }else
-        return  i;
+        let max = props.addRange[0]
+        let min = props.addRange[1]
+
+        for (let i = 0; i < 8; i++) {
+            value[7-i] = (min + (max - min) / (8-i) * i).toFixed(2)
+        }
+
+        for (let i = 6; i > 1; i--) {
+            if(value[i]==value[i-1]){
+                value[i] = ' '
+            }
+        }
+        if(value[0]===value[1]){
+            value[1] = ''
+        }
+        if(value[7]===value[6]){
+            value[6] = ''
+        }
+
+    }
+
 }
 
-
-watch(props, () => {
-    console.log(props);
+watch(props, (v) => {
+    getValue()
 })
+
 onMounted(() => {
     let rampColor = [
         '#3288bd',
@@ -50,9 +72,6 @@ const drawPallete = (rampColor) => {
     const canvas = document.querySelector('#pallete-flow')
     const ctx = canvas.getContext("2d");
 
-    // ctx.clearRect(0, 0, canvas.width, canvas.height);
-    // let width = 200
-    // let height = 200 / rampColor.length
     let width = canvas.width
     let height = canvas.height / rampColor.length
 
@@ -78,7 +97,7 @@ const drawPallete = (rampColor) => {
 
 .flow-legend .legend-title {
 
-    font-size: 20px;
+    font-size: 18px;
     color: rgb(0, 36, 153);
     font-weight: 800;
     padding: 5px;
@@ -114,9 +133,11 @@ hr {
 
 .legend-text {
     color: rgb(0, 34, 145);
+    display: block;
     font-size: 14px;
     text-align: center;
     line-height: 20px;
+    height: 20px;
     width: 40px;
 }
 </style>

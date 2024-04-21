@@ -13,8 +13,8 @@ setInterval(()=>{
 },1000)
 
 onMounted(async () => {
-  console.log('hellop');
-  // main(
+  // console.log('hellop');
+  main()
 })
 
 

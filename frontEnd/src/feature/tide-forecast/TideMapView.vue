@@ -2,7 +2,7 @@
 import { ElMessage } from 'element-plus'
 import mapbox from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
-import { Ref, computed, onMounted, ref, watch } from 'vue'
+import { Ref, computed, onMounted, ref, watch, reactive, watchEffect } from 'vue'
 import {
   addWaterLayer,
   addWaterLayer2,
@@ -15,8 +15,9 @@ import { router } from '../../router'
 import { useMapStore } from '../../store/mapStore'
 import { useStationStore } from '../../store/stationStore'
 import { initScratchMap2 } from '../../util/initMap'
-import adwtLegend from '../typical-storm-surge/adwtLegend.vue'
 import { addLayer } from './util'
+import flowLegend from '../../components/legend/flowLegend.vue'
+import timestepCounter from '../../components/legend/timestepCounter.vue'
 
 const radio: Ref<HTMLDivElement | null> = ref(null)
 const radio2: Ref<HTMLDivElement | null> = ref(null)
@@ -34,40 +35,73 @@ const contourDATA: Ref<null | Object> = ref(null)
 
 let adwtid = 0
 const adwtTicker: Ref<number> = ref(0)
-const adwtHandler = async (addwaterCount: number) => {
-  const addWaterID = addwaterCount
-  const addWaterSrcIds = ['pngsource', 'contourSrc']
-  // remove
-  const addWaterLayerIds = ['addWater', 'contourLayer', 'contourLabel']
-  // remove
-  addWaterLayerIds.forEach((layerid) => {
-    mapStore.map!.getLayer(layerid) && mapStore.map!.removeLayer(layerid)
-  })
-  addWaterSrcIds.forEach((srcid) => {
-    mapStore.map!.getSource(srcid) && mapStore.map!.removeSource(srcid)
-  })
-  // add
-  contourDATA.value = await prepareAddWaterLayer(mapStore.map!, addWaterID)
-  addWaterLayer(mapStore.map!, addWaterID)
-}
-const adwtHandler2 = async (addwaterCount: number) => {
-  const addWaterID = addwaterCount
-  const addWaterSrcIds = ['pngsource2', 'contourSrc2']
-  const addWaterLayerIds = ['addWater2', 'contourLayer2', 'contourLabel2']
-  // remove
-  addWaterLayerIds.forEach((layerid) => {
-    mapStore.map!.getLayer(layerid) && mapStore.map!.removeLayer(layerid)
-  })
-  addWaterSrcIds.forEach((srcid) => {
-    mapStore.map!.getSource(srcid) && mapStore.map!.removeSource(srcid)
-  })
-  // add
-  contourDATA.value = await prepareAddWaterLayer2(mapStore.map!, addWaterID)
-  addWaterLayer2(mapStore.map!, addWaterID)
-}
+const adwtHandler = async (addwaterCount: number, swapTag: number) => {
+  const jsonPrefix = `/ffvsrc/9711add/contour_`
+  const picPrefix = `/ffvsrc/9711add/addWater_`
+  if (swapTag) {
+    const addWaterID = addwaterCount
+    const addWaterSrcIds = ['pngsource', 'contourSrc']
+    // remove
+    const addWaterLayerIds = ['addWater', 'contourLayer', 'contourLabel']
+    // remove
+    addWaterLayerIds.forEach((layerid) => {
+      mapStore.map!.getLayer(layerid) && mapStore.map!.removeLayer(layerid)
+    })
+    addWaterSrcIds.forEach((srcid) => {
+      mapStore.map!.getSource(srcid) && mapStore.map!.removeSource(srcid)
+    })
+    // add
+    contourDATA.value = await prepareAddWaterLayer(mapStore.map!, addWaterID, jsonPrefix, picPrefix)
+    addWaterLayer(mapStore.map!, addWaterID)
+  } else {
+    const addWaterID = addwaterCount
+    const addWaterSrcIds = ['pngsource2', 'contourSrc2']
+    const addWaterLayerIds = ['addWater2', 'contourLayer2', 'contourLabel2']
+    // remove
+    addWaterLayerIds.forEach((layerid) => {
+      mapStore.map!.getLayer(layerid) && mapStore.map!.removeLayer(layerid)
+    })
+    addWaterSrcIds.forEach((srcid) => {
+      mapStore.map!.getSource(srcid) && mapStore.map!.removeSource(srcid)
+    })
+    // add
+    contourDATA.value = await prepareAddWaterLayer2(mapStore.map!, addWaterID, jsonPrefix, picPrefix)
+    addWaterLayer2(mapStore.map!, addWaterID)
+  }
 
-const wind = new windd() as mapboxgl.AnyLayer
-const flow = new floww() as mapboxgl.AnyLayer
+  const getAddRange = (geojson: any) => {
+    let features: Array<any> = geojson["features"]
+    let maxAdd: Number = -999
+    let minAdd: Number = 999
+    features.forEach((feat: any) => {
+      if (feat['properties']['addWater'] && feat['properties']['addWater'] > maxAdd) {
+        maxAdd = feat['properties']['addWater']
+      } else if (feat['properties']['addWater'] && feat['properties']['addWater'] < minAdd) {
+        minAdd = feat['properties']['addWater']
+      }
+    })
+    return [maxAdd, minAdd]
+  }
+  addRangeRef.value = getAddRange(contourDATA.value)
+}
+const wind = reactive(new windd())
+const flow = reactive(new floww())
+const flowTimeStepRef: Ref<Number> = ref(0)
+const flowMaxSpeedRef: Ref<Number> = ref(0)
+const windTimeStepRef: Ref<Number> = ref(0)
+const windMaxSpeedRef: Ref<Number> = ref(0)
+const addRangeRef: Ref<Array<Number>> = ref([0, 0])
+const adwtidRef: Ref<Number> = ref(0)
+
+watchEffect(() => {
+  flowTimeStepRef.value = flow.currentResourceUrl;
+  flowMaxSpeedRef.value = flow.maxSpeed.n;
+  windTimeStepRef.value = wind.currentResourceUrl
+  windMaxSpeedRef.value = wind.maxSpeed.n;
+})
+
+
+
 
 watch(selectedLayer, async (now: null | number, old: null | number) => {
   // clear
@@ -135,8 +169,8 @@ watch(selectedLayer, async (now: null | number, old: null | number) => {
       wind.show()
 
       mapStore.map!.flyTo({
-        center: [122.92069384160902, 33.5063086220937],
-        zoom: 5.184918089769568,
+        center: [121.45, 31.38],
+        zoom: 5.18,
         duration: 500,
       })
       break
@@ -151,8 +185,8 @@ watch(selectedLayer, async (now: null | number, old: null | number) => {
       flow.show()
 
       mapStore.map!.flyTo({
-        center: [122.92069384160902, 32.0063086220937],
-        zoom: 7.512044631152661,
+        center: [121.5, 31.56],
+        zoom: 7,
         duration: 500,
       })
       break
@@ -163,30 +197,23 @@ watch(selectedLayer, async (now: null | number, old: null | number) => {
       })
 
       mapStore.map!.flyTo({
-        center: [122.92069384160902, 32.0063086220937],
-        zoom: 6.912044631152661,
+        center: [121.5, 31.56],
+        zoom: 7,
         duration: 500,
       })
 
-      // adwtTicker = adwtHandeler()
-      // static
-      // let addWaterID = 26
-      // let addWaterSrcIds = ['pngsource', 'contourSrc']
-      // if (mapStore.map!.getSource(addWaterSrcIds[0]) && mapStore.map!.getSource(addWaterSrcIds[1]))
-      //   addWaterLayer(mapStore.map!, addWaterID)
-      // else {
-      //   mapStore.map!.getSource(addWaterSrcIds[0]) && mapStore.map!.removeSource(addWaterSrcIds[0])
-      //   mapStore.map!.getSource(addWaterSrcIds[1]) && mapStore.map!.removeSource(addWaterSrcIds[1])
-      //   contourDATA.value = await prepareAddWaterLayer(mapStore.map!, addWaterID)
-      //   addWaterLayer(mapStore.map!, addWaterID)
-      // }
       adwtid = 4
+      adwtidRef.value = 4
       adwtTicker.value = setInterval(() => {
-        adwtid % 2 && adwtHandler(adwtid)
-        !(adwtid % 2) && adwtHandler2(adwtid)
-
-        adwtid = (adwtid + 1) % 195
+        adwtHandler(adwtid, adwtid % 2)
+        adwtid = (adwtid + 1) % 80
+        adwtidRef.value = adwtid
       }, 3000)
+      setTimeout(() => {
+        adwtHandler(adwtid, adwtid % 2)
+        adwtid = (adwtid + 1) % 80
+        adwtidRef.value = adwtid
+      }, 0)
 
       break
     default:
@@ -237,7 +264,7 @@ const typh: Ref<number> = ref(0)
 //   return typh==1?"当前有台风":"当前无台风"
 // })
 const text = computed(() => {
-  return typh.value == 1 ? '当前有台风' : '当前无台风'
+  return typh.value == 1 ? '当前有台风 !' : '当前无台风 !'
 })
 
 onMounted(async () => {
@@ -250,7 +277,7 @@ onMounted(async () => {
   // )
 
   // typh.value = (await axios.get(`/api/v1/data/level/typh`)).data.data
-  typh.value = 0;
+  typh.value = 1;
 
   const map: mapbox.Map = await initScratchMap2(mapContainerRef.value)
   ElMessage({
@@ -300,23 +327,19 @@ onMounted(async () => {
     <div class="Description">
       <div class="typh">{{ text }}</div>
       <div class="radio-buttons">
-        <label
-          v-for="opt in radioOptions"
-          :key="opt.value"
-          class="radio-button"
-        >
+        <label v-for="opt in radioOptions" :key="opt.value" class="radio-button">
           <input ref="radio" type="radio" name="option" :value="opt.value" />
           <div class="radio-circle" @click="selectedLayer = opt.value"></div>
           <span class="radio-label" @click="selectedLayer = opt.value">{{
-            opt.label
-          }}</span>
+        opt.label
+      }}</span>
         </label>
         <label v-show="typh" class="radio-button">
           <input ref="radio2" type="radio" name="option" :value="optt.value" />
           <div class="radio-circle" @click="selectedLayer = optt.value"></div>
           <span class="radio-label" @click="selectedLayer = optt.value">{{
-            optt.label
-          }}</span>
+        optt.label
+      }}</span>
         </label>
       </div>
     </div>
@@ -324,10 +347,15 @@ onMounted(async () => {
       <div class="close" @click="closeHandeler">关闭所有</div>
     </div>
   </div>
-  <adwtLegend
-    v-show="selectedLayer == 2"
-    :contour-data="contourDATA"
-  ></adwtLegend>
+
+  <flowLegend v-show="selectedLayer == 1 || selectedLayer == 0 || selectedLayer == 2"
+    :max-speed="selectedLayer == 1 ? flowMaxSpeedRef : selectedLayer == 0 ? windMaxSpeedRef : { value: 999 }"
+    :add-range="addRangeRef" :desc="selectedLayer == 1 ? '流速(m/s)' : selectedLayer == 0 ? '风速(m/s)' : '风暴增水(m)'">
+  </flowLegend>
+  <timestepCounter v-show="selectedLayer == 0 || selectedLayer == 1 || selectedLayer == 2"
+    :timeStep="selectedLayer == 1 ? flowTimeStepRef : selectedLayer == 0 ? windTimeStepRef : adwtidRef"
+    :totalCount="selectedLayer == 1 ? 41 : selectedLayer == 0 ? 41 : 80">
+  </timestepCounter>
 </template>
 
 <style scoped>
@@ -336,6 +364,17 @@ onMounted(async () => {
   bottom: 5vh;
   right: 5vw;
   z-index: 2;
+}
+
+.flow-legend,
+.wind-legend {
+  z-index: 3;
+
+}
+
+.timestep-counter {
+  z-index: 3;
+
 }
 
 #GPUFrame {
@@ -349,37 +388,40 @@ onMounted(async () => {
 
 .card {
   position: absolute;
-  top: 2vh;
+  top: 3vh;
   right: 10vw;
   width: 6vw;
-  height: 23vh;
+  height: 22vh;
   background: rgb(38, 38, 38);
   box-shadow: 7px 5px 10px rgba(0, 0, 0, 0.333);
   z-index: 3;
 }
 
 .title {
-  font-size: larger;
-  font-weight: bolder;
+  height: 4vh;
+  width: 6vw;
+  font-size: calc(0.6vw + 0.8vh);
+  font-weight: 600;
   text-align: center;
-  line-height: 3rem;
+  line-height: 4vh;
   color: white;
 }
 
 .imge2 {
-  margin-top: 10px;
-  height: 1.5rem;
-  display: fixed;
+  height: 3vh;
+  display: absolute;
   background-color: #3d6796;
   width: 100%;
   cursor: pointer;
+  position: absolute;
+  bottom: 0;
 }
 
 .close {
   font-size: smaller;
   font-weight: bolder;
   text-align: center;
-  line-height: 1.5rem;
+  line-height: 3vh;
   color: white;
 }
 
@@ -392,20 +434,21 @@ onMounted(async () => {
 .Description {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
+  justify-content: flex-start;
   border-color: #141414;
   background-color: #414141;
-  transform: translate(5%, 8%);
-  width: 90%;
-  height: 60%;
+  height: 15vh;
+  width: 6vw;
+  transform: scale(0.9);
   border-radius: 5px;
 }
 
 .typh {
-  font-size: 1.8vh;
-  height: 30%;
+  font-size: calc(0.5vw + 0.7vh);
+  height: 3vh;
+  line-height: 3vh;
   color: #ffffff;
+  text-align: center;
 }
 
 .radio-buttons {
@@ -419,8 +462,9 @@ onMounted(async () => {
 .radio-button {
   display: flex;
   align-items: center;
-  margin-bottom: 0.5rem;
   cursor: pointer;
+  justify-content: flex-start;
+  padding-left: 0.5vw;
 }
 
 .radio-button input[type='radio'] {
@@ -428,8 +472,8 @@ onMounted(async () => {
 }
 
 .radio-circle {
-  width: 20px;
-  height: 20px;
+  width: calc(1vh + 0.5vw);
+  height: calc(1vh + 0.5vw);
   border-radius: 50%;
   border: 2px solid #aaa;
   position: relative;
@@ -439,8 +483,8 @@ onMounted(async () => {
 .radio-circle::before {
   content: '';
   display: block;
-  width: 12px;
-  height: 12px;
+  width: calc(1vh + 0.3vw);
+  height: calc(1vh + 0.3vw);
   border-radius: 50%;
   background-color: #ddd;
   position: absolute;
@@ -450,13 +494,13 @@ onMounted(async () => {
   transition: all 0.2s ease-in-out;
 }
 
-.radio-button input[type='radio']:checked + .radio-circle::before {
+.radio-button input[type='radio']:checked+.radio-circle::before {
   transform: translate(-50%, -50%) scale(1);
   background-color: #ffffff;
 }
 
 .radio-label {
-  font-size: 14px;
+  font-size: calc(0.7vh + 0.5vw);
   /*   font-weight: bold; */
 }
 </style>

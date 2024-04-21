@@ -1,7 +1,8 @@
 import * as scr from '../scratch/scratch'
-import { Delaunay } from "d3-delaunay";
-import axios from "axios";
-import earcut from "earcut";
+import { Delaunay } from "d3-delaunay"
+import axios from "axios"
+import earcut from "earcut"
+import {ref} from 'vue'
 
 //normal
 // const prefix = '/testapi/flow/'
@@ -74,7 +75,9 @@ export default class floww {
     this.progress = 0.0;
     this.framesPerPhase = 150;
     this.maxSpeed = scr.f32();
+    this.maxSpeedRef = ref(0);
     this.currentResourceUrl = 0;
+    this.timeStepRef = ref(0);
     this.maxParticleNum = 65535;
     this.progressRate = scr.f32();
     this.particleNum = scr.u32(65535);
@@ -544,8 +547,8 @@ export default class floww {
   }
 
   updateMaxSpeed(maxSpeed) {
-    console.log("!!!!",maxSpeed)
     this.maxSpeed.n = maxSpeed > this.maxSpeed.n ? maxSpeed : this.maxSpeed.n;
+    this.maxSpeedRef.value = this.maxSpeed.n;
   }
 
   updateVoronoi() {
@@ -556,6 +559,7 @@ export default class floww {
     if (this.progress === 0) {
       this.currentResourceUrl =
         (this.currentResourceUrl + 1) % resourceUrl.length;
+      this.timeStepRef.value = this.currentResourceUrl;
       this.addVoronoiBindingAsync(resourceUrl[this.currentResourceUrl]);
     }
 

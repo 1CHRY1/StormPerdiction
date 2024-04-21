@@ -2,7 +2,8 @@ import * as scr from '../scratch/scratch'
 import { Delaunay } from "d3-delaunay";
 import axios from "axios";
 import earcut from "earcut";
-import { ref } from 'vue';
+import {ref} from 'vue'
+
 
 //9711 flow
 const resourceUrl = [
@@ -40,6 +41,7 @@ const resourceUrl = [
 
 
 export default class flow9711 {
+
   constructor() {
     // Layer
     this.type = "custom";
@@ -60,9 +62,8 @@ export default class flow9711 {
     this.progress = 0.0;
     this.framesPerPhase = 100;
     this.maxSpeed = scr.f32();
-    this.maxSpeedRef = ref(0);
     this.currentResourceUrl = 0;
-    this.timeStepRef = ref(0)
+    this.test = 0
     this.maxParticleNum = 262144;
     this.progressRate = scr.f32();
     this.particleNum = scr.u32(65536);
@@ -218,7 +219,7 @@ export default class flow9711 {
     this.swapVoronoiBinding();
     await this.addVoronoiBindingSync("/ffvsrc/9711flow/uv_21.bin");
     this.currentResourceUrl = 1;
-    this.timeStepRef.value = this.currentResourceUrl
+    this.test = 1
     this.nextPrepared = true;
 
     this.voronoiPipeline = scr.renderPipeline({
@@ -459,6 +460,7 @@ export default class flow9711 {
   }
 
   async render(gl, matrix) {
+    this.test = this.test + 1
     // Ask map to repaint
     this.map.triggerRepaint();
     // this.mapbuffer&&this.mapbuffer.mapping()
@@ -537,19 +539,16 @@ export default class flow9711 {
 
   updateMaxSpeed(maxSpeed) {
     this.maxSpeed.n = maxSpeed > this.maxSpeed.n ? maxSpeed : this.maxSpeed.n;
-    this.maxSpeedRef.value = this.maxSpeed.n
   }
 
   updateVoronoi() {
     // No update and tick when preparing resource
     if (this.nextPreparing) return;
-
     // Update resource codition
     if (this.progress === 0) {
       this.currentResourceUrl =
         (this.currentResourceUrl + 1) % resourceUrl.length;
-      this.timeStepRef.value = this.currentResourceUrl
-      this.addVoronoiBindingAsync(resourceUrl[this.currentResourceUrl]);
+        this.addVoronoiBindingAsync(resourceUrl[this.currentResourceUrl]);
     }
 
     // Tick progress
