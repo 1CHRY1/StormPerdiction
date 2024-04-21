@@ -56,7 +56,7 @@ const percentage = computed(()=>{
   font-size: 14px;
   color: rgb(255, 255, 255);
 }
-.play{
+/* .play{
   display: block;
   margin-top:5px;
   height: 20px;
@@ -70,7 +70,7 @@ const percentage = computed(()=>{
     font-size: 14px;
     transition: 300ms;
   }
-}
+} */
 
 :deep(.el-progress-circle__track){
     stroke: rgb(167,230,240);
