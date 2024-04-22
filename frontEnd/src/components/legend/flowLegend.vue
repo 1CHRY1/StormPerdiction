@@ -37,10 +37,10 @@ const getValue = () => {
                 value[i] = ' '
             }
         }
-        if(value[0]===value[1]){
+        if(value[0]===value[1] || value[0] === '-'+value[1] || value[1] === '-'+value[0]){
             value[1] = ''
         }
-        if(value[7]===value[6]){
+        if(value[7]===value[6] || value[7] === '-'+value[6] || value[6] === '-'+value[7]){
             value[6] = ''
         }
 
