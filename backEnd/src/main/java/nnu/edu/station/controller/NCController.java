@@ -70,7 +70,7 @@ public class NCController {
 
     @GetMapping("/field/flow/bin")
     public ResponseEntity<FileSystemResource> getFlowJson(@RequestParam String name) {
-        String filePath = FlowField + "/" + name;
+        String filePath = FlowField + "/bin/" + name;
         File file = new File(filePath);
         if (file.exists()){
             HttpHeaders headers = new HttpHeaders();
@@ -90,7 +90,7 @@ public class NCController {
 
     @GetMapping("/field/wind/bin")
     public ResponseEntity<FileSystemResource> getWindJson(@RequestParam String name) {
-        String filePath = WindField + "/" + name;
+        String filePath = WindField + "/bin/" + name;
         File file = new File(filePath);
         if (file.exists()){
             HttpHeaders headers = new HttpHeaders();
