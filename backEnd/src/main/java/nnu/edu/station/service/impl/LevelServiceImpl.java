@@ -23,6 +23,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -65,6 +66,7 @@ public class LevelServiceImpl implements LevelService {
         // 处理json
         Set<String> keys = stations.keySet();
         String url_time = "";
+        String url = "";
         String name = "";
         for (String key : keys) {
             if (key.equals(station)) {
@@ -78,9 +80,15 @@ public class LevelServiceImpl implements LevelService {
         }
         LocalDateTime currentTime = LocalDateTime.now();
         LocalDateTime threeDaysAgo = currentTime.minusDays(3);
-        String url = url_time + "/" + name + "/" + threeDaysAgo + "/" + currentTime;
+        JSONObject jsonResponse = new JSONObject();
+        if (name.equals("江阴") || name.equals("徐六泾") || name.equals("连兴港") || name.equals("六滧")){
+            url = url_time + "/" + threeDaysAgo.atZone(ZoneOffset.UTC).toInstant().getEpochSecond() + "/" + currentTime.atZone(ZoneOffset.UTC).toInstant().getEpochSecond();
+            jsonResponse = HttpUtil.GetRealData4Station(url);
+        } else {
+            url = url_time + "/" + name + "/" + threeDaysAgo + "/" + currentTime;
+            jsonResponse = HttpUtil.GetRealData(url);
+        }
         // 获取实时监测数据
-        JSONObject jsonResponse = HttpUtil.GetRealData(url);
         JSONArray realDataList = (JSONArray) jsonResponse.get("data");
         return ListUtil.realDataProcessing(realDataList);
     }

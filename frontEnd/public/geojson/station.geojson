@@ -231,6 +231,16 @@
         "type": "sea"
       },
       "geometry": { "type": "Point", "coordinates": [121.179, 30.645] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "连兴港",
+        "id": "24",
+        "pinyin": "lianxinggang",
+        "type": "sea"
+      },
+      "geometry": { "type": "Point", "coordinates": [121.88, 31.68] }
     }
   ]
 }

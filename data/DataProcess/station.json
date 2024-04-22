@@ -32,7 +32,7 @@
     "lon": 121.7,
     "type": "river",
     "row": 52143,
-    "api": ""
+    "api_time": "http://223.2.32.197:9999/tide/getData/60117820"
   },
   "maanshan": {
     "name": "马鞍山",
@@ -95,7 +95,7 @@
     "type": "river",
     "row": 36159,
     "api_all": "https://geomodeling.njnu.edu.cn/waterLevel/jiangsu/getInfoByStation",
-    "api_time": "https://geomodeling.njnu.edu.cn/waterLevel/jiangsu/getInfoByStationAndTime"
+    "api_time": "http://223.2.32.197:9999/tide/getData/60116700CWF"
   },
   "yuxizhaxia": {
     "name": "裕溪闸下",
@@ -131,7 +131,7 @@
     "type": "river",
     "row": 43341,
     "api_all": "https://geomodeling.njnu.edu.cn/waterLevel/jiangsu/getInfoByStation",
-    "api_time": "https://geomodeling.njnu.edu.cn/waterLevel/jiangsu/getInfoByStationAndTime"
+    "api_time": "http://223.2.32.197:9999/tide/getData/60117400"
   },
   "sheyanghekou": {
     "name": "射阳河口",
@@ -210,6 +210,6 @@
     "type": "sea",
     "row": 85848,
     "api_all": "",
-    "api_time": ""
+    "api_time": "http://223.2.32.197:9999/tide/getData/60117840"
   }
 }

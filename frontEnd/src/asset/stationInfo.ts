@@ -143,4 +143,10 @@ export const stationInfo = {
     pinyin: 'jinqiao',
     type: 'sea',
   },
+  '24': {
+    coord: [121.88, 31.68],
+    name: '连兴港',
+    pinyin: 'lianxinggang',
+    type: 'sea',
+  },
 }

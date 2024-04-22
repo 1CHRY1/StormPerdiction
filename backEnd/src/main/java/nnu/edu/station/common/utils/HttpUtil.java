@@ -82,4 +82,31 @@ public class HttpUtil {
             return new JSONObject();
         }
     }
+
+    public static JSONObject GetRealData4Station(String url) {
+        try {
+            String encodedURL = encodeChineseURL(url);
+            URL Url = new URL(encodedURL);
+            HttpURLConnection connection = (HttpURLConnection) Url.openConnection();
+            connection.setRequestMethod("GET");
+            int responseCode = connection.getResponseCode();
+            StringBuilder response = new StringBuilder();
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    response.append(line);
+                }
+                reader.close();
+            } else {
+                System.out.println("GET request failed with response code " + responseCode);
+                return new JSONObject();
+            }
+            connection.disconnect();
+            return JSONObject.parseObject(response.toString());
+        } catch (Exception e) {
+            System.out.println(e);
+            return new JSONObject();
+        }
+    }
 }
