@@ -20,7 +20,7 @@ export const stationInfo = {
   '3': {
     coord: [121.7, 31.5],
     name: '六滧',
-    pinyin: 'liulang',
+    pinyin: 'liuxiao',
     type: 'river',
   },
   '4': {

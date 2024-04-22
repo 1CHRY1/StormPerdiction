@@ -273,6 +273,10 @@ const runModel = async () => {
   }
 }
 
+const dispalyModelResult = () => {
+  router.push('/model/data')
+}
+
 onMounted(async () => {
   // const map: mapbox.Map = await initMap(
   //   mapContainerRef.value as HTMLDivElement,
@@ -347,9 +351,16 @@ onMounted(async () => {
           </div>
           <div
             v-else-if="modelStore.modelStatus === 'finish'"
-            class="relative bottom-1"
+            class="relative bottom-1 flex flex-col justify-center"
           >
-            模型运行完成
+            <div class="m-3 pl-2">模型运行完成</div>
+            <el-button
+              type="primary"
+              color="#3d6796"
+              class="w-full border-0"
+              @click="dispalyModelResult"
+              >显示模型运行结果</el-button
+            >
           </div>
           <div v-else class="w-full px-3 relative bottom-1">
             <div class="mb-2">运行进度</div>

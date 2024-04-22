@@ -37,7 +37,7 @@
       "properties": {
         "name": "六滧",
         "id": "3",
-        "pinyin": "liulang",
+        "pinyin": "liuxiao",
         "type": "river"
       },
       "geometry": { "type": "Point", "coordinates": [121.7, 31.5] }
