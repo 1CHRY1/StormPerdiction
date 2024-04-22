@@ -104,8 +104,8 @@ export const drawEcharts = async (
       yAxis: [
         {
           type: 'value',
-          min: tideMin - tideRange * 0.05,
-          max: tideMax + tideRange * 0.05,
+          min: tideMin - tideRange * 5,
+          max: tideMax + tideRange * 5,
           axisLabel: {
             formatter: function (value: number) {
               return value.toFixed(2)
@@ -204,8 +204,8 @@ export const drawEcharts = async (
       },
       yAxis: {
         type: 'value',
-        min: min - range * 0.05,
-        max: max + range * 0.05,
+        min: min - range * 5,
+        max: max + range * 5,
         axisLabel: {
           formatter: function (value: number) {
             return value.toFixed(2)
