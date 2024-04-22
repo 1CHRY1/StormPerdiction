@@ -16,7 +16,7 @@ def writeTXT_flow(ncfilePath, txtDir):
 
     ## global parameters
     allTime = len(UvelArr)
-    allTime = 2
+    # allTime = 2
     print(f'total time step : {allTime}')
     rootPath = txtDir
     space = '    '
@@ -59,7 +59,7 @@ def writeTXT_wind(ncfilePath, txtDir):
 
     ## global parameters
     allTime = len(WxArr)
-    allTime = 2
+    # allTime = 2
     print(f'total time step : {allTime}')
     rootPath = txtDir
     space = '    '

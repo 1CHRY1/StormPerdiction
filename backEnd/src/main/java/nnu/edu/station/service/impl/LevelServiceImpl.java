@@ -215,13 +215,23 @@ public class LevelServiceImpl implements LevelService {
     @Override
     public Map<String, Object> get48scNotyNoman(String station) {
         String localTime = getLocalTimeStr();
-        return ListUtil.StringObj2ArrayObj(levelMapper.get48scNotyNoman(station, localTime));
+        Map<String, Object> obj = ListUtil.StringObj2ArrayObj(levelMapper.get48scNotyNoman(station, localTime));
+        if (obj == null) {
+            localTime = getLocalTimeBeforeStr(1);
+            obj = ListUtil.StringObj2ArrayObj(levelMapper.get48scNotyNoman(station, localTime));
+        }
+        return obj;
     }
 
     @Override
     public Map<String, Object> get48ybNotyNoman(String station) {
         String localTime = getLocalTimeStr();
-        return ListUtil.StringObj2ArrayObj(levelMapper.get48ybNotyNoman(station, localTime));
+        Map<String, Object> obj = ListUtil.StringObj2ArrayObj(levelMapper.get48ybNotyNoman(station, localTime));
+        if (obj == null) {
+            localTime = getLocalTimeBeforeStr(1);
+            obj = ListUtil.StringObj2ArrayObj(levelMapper.get48ybNotyNoman(station, localTime));
+        }
+        return obj;
     }
 
     @Override

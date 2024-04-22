@@ -22,11 +22,11 @@
     </select>
 
     <select id="getNoTyph72ByStation" resultType="java.util.Map">
-        select hpre from ${station} where iftyph=0 and manual=0 and time=#{time}
+        select hpre, time from ${station} where iftyph=0 and manual=0 and time=#{time}
     </select>
 
     <select id="getTyph72ByStation" resultType="java.util.Map">
-        select hpre, hyubao, hadd from ${station} where iftyph=1 and manual=0 and time=#{time}
+        select hpre, hyubao, hadd, time from ${station} where iftyph=1 and manual=0 and time=#{time}
     </select>
 
     <select id="getNoTyph72ManualByStation" resultType="java.util.Map">
@@ -44,11 +44,11 @@
 <!--  api version 2-->
 
     <select id="get48scNotyNoman" resultType="java.util.Map">
-        select hshice from ${station} where iftyph=0 and manual=0
+        select hshice,time from ${station} where iftyph=0 and manual=0 and time=#{time}
     </select>
 
     <select id="get48ybNotyNoman" resultType="java.util.Map">
-        select hybresult from ${station} where iftyph=0 and manual=0
+        select hybresult,time from ${station} where iftyph=0 and manual=0 and time=#{time}
     </select>
 
     <select id="getAllManul" resultType="java.util.Map">

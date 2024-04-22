@@ -102,7 +102,7 @@ public class TimeTask {
     NCService ncService;
 
 //    @Scheduled(cron = "0/5 * * * * *")
-    @Scheduled(cron = "0 0 16 * * ?")
+//    @Scheduled(cron = "0 0 16 * * ?")
     public void executePythonUpdateData() throws IOException {
         // 每日更新站点数据
         UpdateUtil.DataUpdating(python, updateData, dataprocess, logPath);
@@ -144,7 +144,7 @@ public class TimeTask {
         ClawingUtil.DeleteClawingData(python, deleteClawingData, logPath);
     }
 
-//    @Scheduled(cron = "00 40 10 * * ?")
+    @Scheduled(cron = "00 04 10 * * ?")
 //    @Scheduled(cron = "0/1 * * * * ?")
     public void executePythonFieldProcessingData() throws IOException {
         // 计算当天流场数据

@@ -29,8 +29,8 @@ def writeAddWatertxt(adcircNC, fortNC, txtDir):
     fort_z = fort.variables['zeta'][:]
     adcirc_z = adcirc.variables['zeta'][:]
 
-    # allTime = len(adcirc_z)
-    allTime = 1
+    allTime = len(adcirc_z)
+    # allTime = 1
     print(f'total time step : {allTime}')
     space = '    '
     abnormal = '--'

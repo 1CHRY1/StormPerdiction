@@ -26,7 +26,7 @@
     "api_all": "https://geomodeling.njnu.edu.cn/waterLevel/anhui/getInfoByStation",
     "api_time": "https://geomodeling.njnu.edu.cn/waterLevel/anhui/getInfoByStationAndTime"
   },
-  "liulang": {
+  "liuxiao": {
     "name": "六滧",
     "lat": 31.5,
     "lon": 121.7,
@@ -202,5 +202,14 @@
     "row": 85848,
     "api_all": "https://geomodeling.njnu.edu.cn/waterLevel/zhejiang/getInfoByStation",
     "api_time": "https://geomodeling.njnu.edu.cn/waterLevel/zhejiang/getInfoByStationAndTime"
+  },
+  "lianxinggang": {
+    "name": "连兴港",
+    "lat": 31.68,
+    "lon": 121.88,
+    "type": "sea",
+    "row": 85848,
+    "api_all": "",
+    "api_time": ""
   }
 }
