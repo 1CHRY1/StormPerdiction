@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ElMessage } from 'element-plus'
 import 'mapbox-gl/dist/mapbox-gl.css'
-import { Ref, onMounted, ref, watch, reactive, watchEffect } from 'vue'
+import { Ref, onMounted, ref, watch, reactive, watchEffect, onUnmounted } from 'vue'
 import {
   addWaterLayer,
   addWaterLayer2,
@@ -14,9 +14,9 @@ import { router } from '../../router'
 import { useMapStore } from '../../store/mapStore'
 import { useStationStore } from '../../store/stationStore'
 import { initScratchMap } from '../../util/initMap'
-import adwtLegend from './adwtLegend.vue'
 import flowLegend from '../../components/legend/flowLegend.vue'
 import timestepCounter from '../../components/legend/timestepCounter.vue'
+import { decimalToDMS } from './util'
 
 import { IStormData, IStormDataOfPoint, IStormTableRow } from './type'
 import {
@@ -44,7 +44,7 @@ const flowTimeStepRef: Ref<Number> = ref(0)
 const flowMaxSpeedRef: Ref<Number> = ref(0)
 const windTimeStepRef: Ref<Number> = ref(0)
 const windMaxSpeedRef: Ref<Number> = ref(0)
-const addRangeRef: Ref<Array<Number>> = ref([0,0])
+const addRangeRef: Ref<Array<Number>> = ref([0, 0])
 
 const radioOptions = [
   { label: '风场', value: 0 },
@@ -76,10 +76,12 @@ const handleSelectChange = async () => {
 
 let adwtid = 0
 const adwtidRef: Ref<Number> = ref(0)
-const adwtTicker: Ref<Number> = ref(0)
+let adwtTicker: null | number = null
 const adwtHandler = async (addwaterCount: number, swapTag: number) => {
   const jsonPrefix = `/ffvsrc/9711add/contour_`
   const picPrefix = `/ffvsrc/9711add/addWater_`
+  console.log('adwt!');
+
   if (swapTag) {
     const addWaterID = addwaterCount
     const addWaterSrcIds = ['pngsource', 'contourSrc']
@@ -124,10 +126,7 @@ const adwtHandler = async (addwaterCount: number, swapTag: number) => {
     })
     return [maxAdd, minAdd]
   }
-  
   addRangeRef.value = getAddRange(contourDATA.value)
-  console.log('!!!!',addRangeRef.value);
-
 
 }
 
@@ -158,7 +157,9 @@ watch(selectedLayer, async (now: null | number, old: null | number) => {
       flow.hide()
       break
     case 2:
-      clearInterval(adwtTicker.value)
+      console.log('clearInterval()', adwtTicker);
+      clearInterval(adwtTicker!)
+      adwtTicker = null;
       const addWaterSrcIds = [
         'pngsource',
         'contourSrc',
@@ -225,16 +226,21 @@ watch(selectedLayer, async (now: null | number, old: null | number) => {
       })
       adwtid = 4
       adwtidRef.value = 4
-      adwtTicker.value = setInterval(() => {
-        adwtHandler(adwtid, adwtid % 2)
-        adwtid = (adwtid + 1) % 80
-        adwtidRef.value = adwtid
-      }, 3000)
-      setTimeout(() => {
-        adwtHandler(adwtid, adwtid % 2)
-        adwtid = (adwtid + 1) % 80
-        adwtidRef.value = adwtid
-      }, 0)
+      if (!adwtTicker) {
+
+        adwtTicker = setInterval(() => {
+          adwtHandler(adwtid, adwtid % 2)
+          adwtid = (adwtid + 1) % 80
+          adwtidRef.value = adwtid
+        }, 3000)
+        console.log('set new timer', adwtTicker);
+
+      }
+      // setTimeout(() => {
+      //   adwtHandler(adwtid, adwtid % 2)
+      //   adwtid = (adwtid + 1) % 80
+      //   adwtidRef.value = adwtid
+      // }, 0)
 
       break
     default:
@@ -242,16 +248,20 @@ watch(selectedLayer, async (now: null | number, old: null | number) => {
   }
 })
 
-const onPause = ()=>{
+const onPause = () => {
 }
-const onPlay = ()=>{
+const onPlay = () => {
 }
 
 const closeHandeler = () => {
   wind.hide()
   flow.hide()
 
-  adwtTicker.value && clearInterval(adwtTicker.value)
+  if (adwtTicker) {
+    console.log('clearInterval()', adwtTicker);
+    clearInterval(adwtTicker!)
+    adwtTicker = null;
+  }
   const addWaterSrcIds = [
     'pngsource',
     'contourSrc',
@@ -342,13 +352,10 @@ onMounted(async () => {
       }
     }
   })
+})
 
-  window.addEventListener('keydown', (e) => {
-
-    console.log(map.getZoom());
-    console.log(map.getCenter());
-
-  })
+onUnmounted(()=>{
+  closeHandeler()
 })
 
 </script>
@@ -387,14 +394,12 @@ onMounted(async () => {
       <!-- flow/wind legend -->
       <flowLegend v-show="selectedLayer == 1 || selectedLayer == 0 || selectedLayer == 2"
         :max-speed="selectedLayer == 1 ? flowMaxSpeedRef : selectedLayer == 0 ? windMaxSpeedRef : { value: 999 }"
-        :add-range="addRangeRef"
-        :desc="selectedLayer == 1 ? '流速(m/s)' : selectedLayer == 0 ? '风速(m/s)' : '风暴增水(m)'">
+        :add-range="addRangeRef" :desc="selectedLayer == 1 ? '流速(m/s)' : selectedLayer == 0 ? '风速(m/s)' : '风暴增水(m)'">
       </flowLegend>
       <timestepCounter v-show="selectedLayer == 0 || selectedLayer == 1 || selectedLayer == 2"
         :timeStep="selectedLayer == 1 ? flowTimeStepRef : selectedLayer == 0 ? windTimeStepRef : adwtidRef"
-        :totalCount="selectedLayer == 1 ? 41 : selectedLayer == 0 ? 41 : 80"
-        @pause="onPause"
-        :on-play="onPlay"
+        :totalCount="selectedLayer == 1 ? 131 : selectedLayer == 0 ? 41 : 80" @pause="onPause" :on-play="onPlay"
+        :type="selectedLayer == 0 ? '9711wind' : selectedLayer == 1 ? '9711flow' : '9711adwt'"
         >
       </timestepCounter>
 
@@ -514,14 +519,16 @@ onMounted(async () => {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  
+
 }
+
 .imge {
   height: 4vh;
   width: 6vw;
   display: relative;
   background-color: #3d6796;
 }
+
 .title {
   font-size: calc(0.6vw + 0.8vh);
   font-weight: 600;

@@ -68,8 +68,8 @@ onMounted(() => {
 })
 
 const drawPallete = (rampColor) => {
-    // console.log();
     const canvas = document.querySelector('#pallete-flow')
+    console.log(canvas);
     const ctx = canvas.getContext("2d");
 
     let width = canvas.width

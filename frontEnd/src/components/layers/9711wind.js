@@ -6,23 +6,7 @@ import earcut from "earcut";
 
 //9711 wind
 const resourceUrl = [
-  "/ffvsrc/9711wind/uv_0.bin",
-  "/ffvsrc/9711wind/uv_1.bin",
-  "/ffvsrc/9711wind/uv_2.bin",
-  "/ffvsrc/9711wind/uv_3.bin",
-  "/ffvsrc/9711wind/uv_4.bin",
-  "/ffvsrc/9711wind/uv_5.bin",
-  "/ffvsrc/9711wind/uv_6.bin",
-  "/ffvsrc/9711wind/uv_7.bin",
-  "/ffvsrc/9711wind/uv_8.bin",
-  "/ffvsrc/9711wind/uv_9.bin",
-  "/ffvsrc/9711wind/uv_10.bin",
-  "/ffvsrc/9711wind/uv_11.bin",
-  "/ffvsrc/9711wind/uv_12.bin",
-  "/ffvsrc/9711wind/uv_13.bin",
-  "/ffvsrc/9711wind/uv_14.bin",
-  "/ffvsrc/9711wind/uv_15.bin",
-  "/ffvsrc/9711wind/uv_16.bin",
+  "/ffvsrc/9711wind/uv_16.bin",//16
   "/ffvsrc/9711wind/uv_17.bin",
   "/ffvsrc/9711wind/uv_18.bin",
   "/ffvsrc/9711wind/uv_19.bin",
@@ -217,9 +201,9 @@ export default class wind9711 {
     // station ---> coordinates
 
     await this.getVoronoi("/ffvsrc/9711wind/station.bin");
-    await this.addVoronoiBindingSync("/ffvsrc/9711wind/uv_10.bin");
+    await this.addVoronoiBindingSync("/ffvsrc/9711wind/uv_16.bin");
     this.swapVoronoiBinding();
-    await this.addVoronoiBindingSync("/ffvsrc/9711wind/uv_11.bin");
+    await this.addVoronoiBindingSync("/ffvsrc/9711wind/uv_17.bin");
     this.currentResourceUrl = 1;
     this.nextPrepared = true;
 

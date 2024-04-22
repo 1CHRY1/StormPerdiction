@@ -18,6 +18,7 @@ import { initScratchMap2 } from '../../util/initMap'
 import { addLayer } from './util'
 import flowLegend from '../../components/legend/flowLegend.vue'
 import timestepCounter from '../../components/legend/timestepCounter.vue'
+import axios from 'axios'
 
 const radio: Ref<HTMLDivElement | null> = ref(null)
 const radio2: Ref<HTMLDivElement | null> = ref(null)
@@ -276,8 +277,8 @@ onMounted(async () => {
   //   },
   // )
 
-  // typh.value = (await axios.get(`/api/v1/data/level/typh`)).data.data
-  typh.value = 1;
+  typh.value = (await axios.get(`/api/v1/data/level/typh`)).data.data
+  // typh.value = 1;
 
   const map: mapbox.Map = await initScratchMap2(mapContainerRef.value)
   ElMessage({
@@ -353,7 +354,9 @@ onMounted(async () => {
   </flowLegend>
   <timestepCounter v-show="selectedLayer == 0 || selectedLayer == 1 || selectedLayer == 2"
     :timeStep="selectedLayer == 1 ? flowTimeStepRef : selectedLayer == 0 ? windTimeStepRef : adwtidRef"
-    :totalCount="selectedLayer == 1 ? 41 : selectedLayer == 0 ? 41 : 80">
+    :totalCount="selectedLayer == 1 ? 144 : selectedLayer == 0 ? 144 : 144"
+    :type="'normal'"
+    >
   </timestepCounter>
 </template>
 
