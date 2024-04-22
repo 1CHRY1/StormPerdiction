@@ -22,4 +22,10 @@ public class StationController {
         /* 获取全部站点名称 */
         return ResultUtils.success(stationService.getAllStations());
     }
+
+    @GetMapping("/today")
+    public JsonResult getTodayStation() {
+        /* 获取当天有数据的站点 */
+        return ResultUtils.success(stationService.getTodayStation());
+    }
 }

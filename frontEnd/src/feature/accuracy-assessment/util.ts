@@ -68,8 +68,8 @@ export const drawEcharts = async (
     },
     yAxis: {
       type: 'value',
-      min: min - range * 5,
-      max: max + range * 5,
+      min: Math.ceil(min - 3),
+      max: Math.floor(max + 3),
       axisLabel: {
         formatter: function (value: number) {
           return value.toFixed(2)
@@ -90,16 +90,16 @@ export const drawEcharts = async (
     series: [
       {
         name: '预报数据',
-        type: 'scatter',
-        symbolSize: 7,
-        data: waterSituationData.hyubao,
-        zlevel: 10,
-      },
-      {
-        name: '实测数据',
         type: 'line',
         smooth: true,
         data: waterSituationData.hpre,
+      },
+      {
+        name: '实测数据',
+        type: 'scatter',
+        symbolSize: 10,
+        data: waterSituationData.hyubao,
+        zlevel: 10,
       },
     ],
   }

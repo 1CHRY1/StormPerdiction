@@ -142,6 +142,10 @@ def get_prefix_before_digits(input_str):
         prefix += char
     return prefix
 
+def get_prefix_before_digitsV2(input_str):
+    prefix = input_str[:-10]
+    return prefix
+
 def main():
     db_path_Forcasting = os.getcwd() + '/Forcasting.db'
     db_path_NC =  os.getcwd() + '/NC.db'
@@ -249,7 +253,13 @@ def main():
                         # 获取站点名称
                         name = os.path.splitext(file)[0]
                         # 去掉尾部数字
-                        name = get_prefix_before_digits(name)
+                        # name = get_prefix_before_digits(name)
+                        # 去掉尾部数据V2
+                        name = get_prefix_before_digitsV2(name)
+                        if name == "xuliujing":
+                            continue
+                        elif name == "xuliujing1":
+                            name = "xuliujing"
 
                         mat_path = os.path.join(Path, file)
                         mat_data = loadmat(mat_path)

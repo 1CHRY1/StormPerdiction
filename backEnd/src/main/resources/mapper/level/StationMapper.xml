@@ -8,4 +8,9 @@
     <select id="getAllStations" resultType="java.util.Map">
         select name_cn,lat,lon,type,tablename from stations
     </select>
+
+    <select id="getStationByNameAndTime" resultType="java.util.Map">
+        select * from ${station} where time=#{time}
+    </select>
+
 </mapper>

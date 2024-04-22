@@ -43,15 +43,6 @@
     "api_all": "https://geomodeling.njnu.edu.cn/waterLevel/anhui/getInfoByStation",
     "api_time": "https://geomodeling.njnu.edu.cn/waterLevel/anhui/getInfoByStationAndTime"
   },
-  "gaoqiao": {
-    "name": "高桥",
-    "lat": 31.383,
-    "lon": 121.55,
-    "type": "river",
-    "row": 51380,
-    "api_all": "",
-    "api_time": ""
-  },
   "nanjing": {
     "name": "南京",
     "lat": 32.083,
@@ -133,40 +124,6 @@
     "api_all": "https://geomodeling.njnu.edu.cn/waterLevel/jiangsu/getInfoByStation",
     "api_time": "http://223.2.32.197:9999/tide/getData/60117400"
   },
-  "sheyanghekou": {
-    "name": "射阳河口",
-    "lat": 33.883,
-    "lon": 120.567,
-    "type": "sea",
-    "row": 68381,
-    "api": ""
-  },
-  "huangshagangzhaxia": {
-    "name": "黄沙港闸下",
-    "lat": 33.583,
-    "lon": 120.633,
-    "type": "sea",
-    "row": 68381,
-    "api": ""
-  },
-  "xinyanggangzhaxia": {
-    "name": "新洋港闸",
-    "lat": 33.633,
-    "lon": 120.6,
-    "type": "sea",
-    "row": 68377,
-    "api_all": "https://geomodeling.njnu.edu.cn/waterLevel/jiangsu/getInfoByStation",
-    "api_time": "https://geomodeling.njnu.edu.cn/waterLevel/jiangsu/getInfoByStationAndTime"
-  },
-  "doulonggangzha": {
-    "name": "斗龙港闸下",
-    "lat": 33.517,
-    "lon": 120.667,
-    "type": "sea",
-    "row": 67687,
-    "api_all": "https://geomodeling.njnu.edu.cn/waterLevel/jiangsu/getInfoByStation",
-    "api_time": "https://geomodeling.njnu.edu.cn/waterLevel/jiangsu/getInfoByStationAndTime"
-  },
   "zhapu": {
     "name": "乍浦",
     "lat": 30.583,
@@ -182,15 +139,6 @@
     "lon": 120.917,
     "type": "sea",
     "row": 87448,
-    "api_all": "https://geomodeling.njnu.edu.cn/waterLevel/zhejiang/getInfoByStation",
-    "api_time": "https://geomodeling.njnu.edu.cn/waterLevel/zhejiang/getInfoByStationAndTime"
-  },
-  "yanguan": {
-    "name": "盐官",
-    "lat": 30.4,
-    "lon": 120.55,
-    "type": "sea",
-    "row": 91427,
     "api_all": "https://geomodeling.njnu.edu.cn/waterLevel/zhejiang/getInfoByStation",
     "api_time": "https://geomodeling.njnu.edu.cn/waterLevel/zhejiang/getInfoByStationAndTime"
   },
