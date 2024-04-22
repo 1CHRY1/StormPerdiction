@@ -2,55 +2,55 @@ import * as scr from '../scratch/scratch'
 import { Delaunay } from "d3-delaunay"
 import axios from "axios"
 import earcut from "earcut"
-import {ref} from 'vue'
 
 //9711 wind
 const prefix = '/testapi/wind/bin?name='
-let resourceUrl = [
-  "uv_0.bin",
-  "uv_1.bin",
-  "uv_2.bin",
-  "uv_3.bin",
-  "uv_4.bin",
-  "uv_5.bin",
-  "uv_6.bin",
-  "uv_7.bin",
-  "uv_8.bin",
-  "uv_9.bin",
-  "uv_10.bin",
-  "uv_11.bin",
-  "uv_12.bin",
-  "uv_13.bin",
-  "uv_14.bin",
-  "uv_15.bin",
-  "uv_16.bin",
-  "uv_17.bin",
-  "uv_18.bin",
-  "uv_19.bin",
-  "uv_20.bin",
-  "uv_21.bin",
-  "uv_22.bin",
-  "uv_23.bin",
-  "uv_24.bin",
-  "uv_25.bin",
-  "uv_26.bin",
-  "uv_27.bin",
-  "uv_28.bin",
-  "uv_29.bin",
-  "uv_30.bin",
-  "uv_31.bin",
-  "uv_32.bin",
-  "uv_33.bin",
-  "uv_34.bin",
-  "uv_35.bin",
-  "uv_36.bin",
-  "uv_37.bin",
-  "uv_38.bin",
-  "uv_39.bin",
-  "uv_40.bin",
-];
-for (let i = 0; i < resourceUrl.length; i++) {
-  resourceUrl[i] = prefix + resourceUrl[i]
+// let resourceUrl = [
+//   "uv_0.bin",
+//   "uv_1.bin",
+//   "uv_2.bin",
+//   "uv_3.bin",
+//   "uv_4.bin",
+//   "uv_5.bin",
+//   "uv_6.bin",
+//   "uv_7.bin",
+//   "uv_8.bin",
+//   "uv_9.bin",
+//   "uv_10.bin",
+//   "uv_11.bin",
+//   "uv_12.bin",
+//   "uv_13.bin",
+//   "uv_14.bin",
+//   "uv_15.bin",
+//   "uv_16.bin",
+//   "uv_17.bin",
+//   "uv_18.bin",
+//   "uv_19.bin",
+//   "uv_20.bin",
+//   "uv_21.bin",
+//   "uv_22.bin",
+//   "uv_23.bin",
+//   "uv_24.bin",
+//   "uv_25.bin",
+//   "uv_26.bin",
+//   "uv_27.bin",
+//   "uv_28.bin",
+//   "uv_29.bin",
+//   "uv_30.bin",
+//   "uv_31.bin",
+//   "uv_32.bin",
+//   "uv_33.bin",
+//   "uv_34.bin",
+//   "uv_35.bin",
+//   "uv_36.bin",
+//   "uv_37.bin",
+//   "uv_38.bin",
+//   "uv_39.bin",
+//   "uv_40.bin",
+// ];
+let resourceUrl = new Array(144)
+for(let i=0;i<144;i++){
+  resourceUrl[i] = prefix+ `uv_${i}.bin`
 }
 
 export default class windd {
@@ -74,12 +74,10 @@ export default class windd {
     this.progress = 0.0;
     this.framesPerPhase = 100;
     this.maxSpeed = scr.f32();
-    this.maxSpeedRef = ref(0);
     this.currentResourceUrl = 0;
-    this.timeStepRef = ref(0);
     this.maxParticleNum = 65536;
     this.progressRate = scr.f32();
-    this.particleNum = scr.u32(1000);
+    this.particleNum = scr.u32(65536);
 
     // Compute
     this.blockSizeX = 16;
@@ -544,7 +542,6 @@ export default class windd {
 
   updateMaxSpeed(maxSpeed) {
     this.maxSpeed.n = maxSpeed > this.maxSpeed.n ? maxSpeed : this.maxSpeed.n;
-    this.maxSpeedRef.value = this.maxSpeed.n
   }
 
   updateVoronoi() {
@@ -555,7 +552,6 @@ export default class windd {
     if (this.progress === 0) {
       this.currentResourceUrl =
         (this.currentResourceUrl + 1) % resourceUrl.length;
-      this.timeStepRef.value = this.currentResourceUrl;
       this.addVoronoiBindingAsync(resourceUrl[this.currentResourceUrl]);
     }
 

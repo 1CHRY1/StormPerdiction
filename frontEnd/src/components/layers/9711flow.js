@@ -6,39 +6,47 @@ import {ref} from 'vue'
 
 
 //9711 flow
-const resourceUrl = [
-  "/ffvsrc/9711flow/uv_10.bin",
-  "/ffvsrc/9711flow/uv_11.bin",
-  "/ffvsrc/9711flow/uv_12.bin",
-  "/ffvsrc/9711flow/uv_13.bin",
-  "/ffvsrc/9711flow/uv_14.bin",
-  "/ffvsrc/9711flow/uv_15.bin",
-  "/ffvsrc/9711flow/uv_16.bin",
-  "/ffvsrc/9711flow/uv_17.bin",
-  "/ffvsrc/9711flow/uv_18.bin",
-  "/ffvsrc/9711flow/uv_19.bin",
-  "/ffvsrc/9711flow/uv_20.bin",
-  "/ffvsrc/9711flow/uv_21.bin",
-  "/ffvsrc/9711flow/uv_22.bin",
-  "/ffvsrc/9711flow/uv_23.bin",
-  "/ffvsrc/9711flow/uv_24.bin",
-  "/ffvsrc/9711flow/uv_25.bin",
-  "/ffvsrc/9711flow/uv_26.bin",
-  "/ffvsrc/9711flow/uv_27.bin",
-  "/ffvsrc/9711flow/uv_28.bin",
-  "/ffvsrc/9711flow/uv_29.bin",
-  "/ffvsrc/9711flow/uv_30.bin",
-  "/ffvsrc/9711flow/uv_31.bin",
-  "/ffvsrc/9711flow/uv_32.bin",
-  "/ffvsrc/9711flow/uv_33.bin",
-  "/ffvsrc/9711flow/uv_34.bin",
-  "/ffvsrc/9711flow/uv_35.bin",
-  "/ffvsrc/9711flow/uv_36.bin",
-  "/ffvsrc/9711flow/uv_37.bin",
-  "/ffvsrc/9711flow/uv_38.bin",
-  "/ffvsrc/9711flow/uv_39.bin",
-];
-
+// const resourceUrl = [
+//   "/ffvsrc/9711flow/uv_0.bin",
+//   "/ffvsrc/9711flow/uv_1.bin",
+//   "/ffvsrc/9711flow/uv_2.bin",
+//   "/ffvsrc/9711flow/uv_3.bin",
+//   "/ffvsrc/9711flow/uv_4.bin",
+//   "/ffvsrc/9711flow/uv_5.bin",
+//   "/ffvsrc/9711flow/uv_6.bin",
+//   "/ffvsrc/9711flow/uv_7.bin",
+//   "/ffvsrc/9711flow/uv_8.bin",
+//   "/ffvsrc/9711flow/uv_9.bin",
+//   "/ffvsrc/9711flow/uv_10.bin",
+//   "/ffvsrc/9711flow/uv_11.bin",
+//   "/ffvsrc/9711flow/uv_12.bin",
+//   "/ffvsrc/9711flow/uv_13.bin",
+//   "/ffvsrc/9711flow/uv_14.bin",
+//   "/ffvsrc/9711flow/uv_15.bin",
+//   "/ffvsrc/9711flow/uv_16.bin",
+//   "/ffvsrc/9711flow/uv_17.bin",
+//   "/ffvsrc/9711flow/uv_18.bin",
+//   "/ffvsrc/9711flow/uv_19.bin",
+//   "/ffvsrc/9711flow/uv_20.bin",
+//   "/ffvsrc/9711flow/uv_21.bin",
+//   "/ffvsrc/9711flow/uv_19.bin",
+//   "/ffvsrc/9711flow/uv_10.bin",
+//   "/ffvsrc/9711flow/uv_11.bin",
+//   "/ffvsrc/9711flow/uv_12.bin",
+//   "/ffvsrc/9711flow/uv_13.bin",
+//   "/ffvsrc/9711flow/uv_14.bin",
+//   "/ffvsrc/9711flow/uv_15.bin",
+//   "/ffvsrc/9711flow/uv_16.bin",
+//   "/ffvsrc/9711flow/uv_17.bin",
+//   "/ffvsrc/9711flow/uv_18.bin",
+//   "/ffvsrc/9711flow/uv_19.bin",
+//   "/ffvsrc/9711flow/uv_20.bin",
+// ];
+let resourceUrl = new Array(130)
+for(let i=0;i<130;i++){
+   resourceUrl[i]=`/ffvsrc/9711flow/uv_${i}.bin`
+}
+console.log(resourceUrl);
 
 export default class flow9711 {
 
@@ -215,9 +223,9 @@ export default class flow9711 {
     // station ---> coordinates
 
     await this.getVoronoi("/ffvsrc/9711flow/station.bin");
-    await this.addVoronoiBindingSync("/ffvsrc/9711flow/uv_20.bin");
+    await this.addVoronoiBindingSync("/ffvsrc/9711flow/uv_0.bin");
     this.swapVoronoiBinding();
-    await this.addVoronoiBindingSync("/ffvsrc/9711flow/uv_21.bin");
+    await this.addVoronoiBindingSync("/ffvsrc/9711flow/uv_1.bin");
     this.currentResourceUrl = 1;
     this.test = 1
     this.nextPrepared = true;
