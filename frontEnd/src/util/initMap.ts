@@ -50,10 +50,10 @@ export const initScratchMap = async (mapdom: HTMLDivElement) => {
   const map = (await new Promise((resolve) => {
     scr.StartDash().then(() => {
       let mapp = new ScratchMap({
-        // style: 'mapbox://styles/johnnyt/clrldnfyk001f01q2092ndx2y',
+        style: 'mapbox://styles/johnnyt/clrldnfyk001f01q2092ndx2y',
         // style: "mapbox://styles/ycsoku/cldjl0d2m000501qlpmmex490",
         // accessToken: 'pk.eyJ1IjoieWNzb2t1IiwiYSI6ImNrenozdWdodDAza3EzY3BtdHh4cm5pangifQ.ZigfygDi2bK4HXY1pWh-wg',
-        style: 'mapbox://styles/mapbox/streets-v9',
+        // style: 'mapbox://styles/mapbox/streets-v9',
         center: [131, 30],
         projection: 'mercator',
         GPUFrame: GPUFrame,

@@ -4,12 +4,12 @@ import axios from 'axios'
 
 export default class SteadyFlowLayer {
 
-    constructor(stationUrl, uvUrlList, timePointParser) {
+    constructor(id,stationUrl, uvUrlList, timePointParser) {
 
         // Layer
         this.type = 'custom'
         this.map = undefined
-        this.id = 'FlowLayer'
+        this.id = id
         this.renderingMode = '3d'
 
         // Attributes

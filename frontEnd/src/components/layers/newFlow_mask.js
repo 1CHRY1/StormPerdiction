@@ -5,12 +5,12 @@ import earcut from 'earcut'
 
 export default class SteadyFlowLayer {
 
-    constructor(stationUrl, uvUrlList, timePointParser, maskUrl) {
+    constructor(id,stationUrl, uvUrlList, timePointParser, maskUrl) {
 
         // Layer
         this.type = 'custom'
         this.map = undefined
-        this.id = 'FlowLayer'
+        this.id = id
         this.renderingMode = '3d'
 
         // Attributes
@@ -694,7 +694,7 @@ export default class SteadyFlowLayer {
     }
 
     idle() {
-
+        if(this.trajectoryPipeline)
         this.trajectoryPipeline.executable = false
 
         // this.isIdling = true
@@ -710,7 +710,7 @@ export default class SteadyFlowLayer {
     }
 
     restart() {
-
+        if(this.trajectoryPipeline)
         this.trajectoryPipeline.executable = true
 
         // this.preheat = 10

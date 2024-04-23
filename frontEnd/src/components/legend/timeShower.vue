@@ -62,6 +62,7 @@ onMounted(() => {
     position: absolute;
     right: 4vw;
     bottom: 32vh;
+    z-index: 3;
 }
 
 .percentage-value {

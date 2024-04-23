@@ -9,7 +9,8 @@ import {
   prepareAddWaterLayer,
   prepareAddWaterLayer2,
   // wind9711,
-  lastFlow
+  lastFlow,
+  lastFlow_mask
 } from '../../components/LayerFromWebGPU'
 import { router } from '../../router'
 import { useMapStore } from '../../store/mapStore'
@@ -30,6 +31,8 @@ import {
   updateTyphoonSymbol,
 } from './util'
 import mapboxgl from 'mapbox-gl'
+import controller from '../../components/legend/controller.vue'
+import timeShower from '../../components/legend/timeShower.vue'
 
 const stationStore = useStationStore()
 const mapContainerRef: Ref<HTMLDivElement | null> = ref(null)
@@ -41,9 +44,9 @@ const tableData: Ref<null | IStormTableRow[]> = ref(null)
 const selectStormType: Ref<'199711'> = ref('199711')
 const mapStore = useMapStore()
 
-const flowTimeStepRef: Ref<Number> = ref(0)
+// const flowTimeStepRef: Ref<Number> = ref(0)
 const flowMaxSpeedRef: Ref<Number> = ref(0)
-const windTimeStepRef: Ref<Number> = ref(0)
+// const windTimeStepRef: Ref<Number> = ref(0)
 const windMaxSpeedRef: Ref<Number> = ref(0)
 const addRangeRef: Ref<Array<Number>> = ref([0, 0])
 
@@ -140,22 +143,24 @@ for (let i = 0; i < 22; i++) {
   if (i * 6 < 132)
     flow9711src[i] = `/ffvsrc/9711flow/uv_${i * 6}.bin`
 }
-const wind = reactive(new lastFlow(
+const flow = reactive(new lastFlow_mask(
+  'flow',
   '/ffvsrc/9711flow/station.bin',
   flow9711src,
   (url: String) => url.match(/uv_(\d+)\.bin/)![1],
   '/ffvsrc/flowbound2.geojson',
 ))
-const flow = reactive(new lastFlow(
+const wind = reactive(new lastFlow(
+  'wind',
   '/ffvsrc/9711wind/station.bin',
   wind9711src,
   (url: String) => url.match(/uv_(\d+)\.bin/)![1],
 ))
 
 watchEffect(() => {
-  flowTimeStepRef.value = flow.currentResourcePointer;
+  // flowTimeStepRef.value = flow.currentResourcePointer;
   flowMaxSpeedRef.value = flow.maxSpeed.n;
-  windTimeStepRef.value = wind.currentResourcePointer
+  // windTimeStepRef.value = wind.currentResourcePointer
   windMaxSpeedRef.value = wind.maxSpeed.n;
 })
 
@@ -301,9 +306,9 @@ const closeHandeler = () => {
 
   selectedLayer.value = null
 
-  (radio!.value! as any).forEach((item:any) => {
-    item.checked = false
-  })
+    (radio!.value! as any).forEach((item: any) => {
+      item.checked = false
+    })
 
 }
 
@@ -374,6 +379,69 @@ onUnmounted(() => {
   closeHandeler()
 })
 
+
+///////controller 
+const nowParticleNum_flow = ref(0)
+const maxParticleNum_flow = ref(0)
+const nowSpeed_flow = ref(0)
+const maxSpeed_flow = ref(0)
+const flowProgress_flow = ref(0)
+
+const nowParticleNum_wind = ref(0)
+const maxParticleNum_wind = ref(0)
+const nowSpeed_wind = ref(0)
+const maxSpeed_wind = ref(0)
+const flowProgress_wind = ref(0)
+
+watchEffect(() => {
+  //progress
+  let progress_flow = flow.currentResourcePointer / flow.uvUrlList.length
+  flowProgress_flow.value = Math.floor(progress_flow * 100)
+  //particleNum
+  nowParticleNum_flow.value = flow.particleNum.n
+  maxParticleNum_flow.value = flow.maxParticleNum
+  //speed
+  nowSpeed_flow.value = flow.speedFactor.n
+  maxSpeed_flow.value = 10.0
+
+  //progress
+  let progress_wind = flow.currentResourcePointer / flow.uvUrlList.length
+  flowProgress_wind.value = Math.floor(progress_wind * 100)
+  //particleNum
+  nowParticleNum_wind.value = wind.particleNum.n
+  maxParticleNum_wind.value = wind.maxParticleNum
+  //speed
+  nowSpeed_wind.value = flow.speedFactor.n
+  maxSpeed_wind.value = 10.0
+})
+
+const getProgressValue_flow = (e) => {
+  flowProgress_flow.value = e
+  flow.setProgress(flowProgress_flow.value)
+}
+const getParticleNumValue_flow = (e) => {
+  nowParticleNum_flow.value = e
+  flow.particleNum.n = e;
+}
+const getSpeedValue_flow = (e) => {
+  nowSpeed_flow.value = e
+  flow.speedFactor.n = e;
+}
+const getProgressValue_wind = (e) => {
+  flowProgress_wind.value = e
+  wind.setProgress(flowProgress_wind.value)
+}
+const getParticleNumValue_wind = (e) => {
+  nowParticleNum_wind.value = e
+  wind.particleNum.n = e;
+}
+const getSpeedValue_wind = (e) => {
+  nowSpeed_wind.value = e
+  wind.speedFactor.n = e;
+}
+
+
+
 </script>
 
 <template>
@@ -395,8 +463,8 @@ onUnmounted(() => {
               <input ref="radio" type="radio" name="option" :value="opt.value" />
               <div class="radio-circle" @click="selectedLayer = opt.value"></div>
               <span class="radio-label" @click="selectedLayer = opt.value">{{
-          opt.label
-        }}</span>
+                opt.label
+              }}</span>
             </label>
           </div>
         </div>
@@ -411,7 +479,22 @@ onUnmounted(() => {
         :add-range="addRangeRef" :desc="selectedLayer == 1 ? '流速(m/s)' : selectedLayer == 0 ? '风速(m/s)' : '风暴增水(m)'">
       </flowLegend>
 
+      <timeShower
+        :type="selectedLayer == 0 ? '9711wind' : selectedLayer == 1 ? '9711flow' : '9711adwt'"
+        :time-step="10"
+      ></timeShower>
 
+
+      <controller v-show="selectedLayer == 1" 
+        :flow-progress="flowProgress_flow" :max-particle-num="maxParticleNum_flow" :now-particle-num="nowParticleNum_flow"
+        :now-speed="nowSpeed_flow" :max-speed="maxSpeed_flow"
+        @particle-num-value="getParticleNumValue_flow" @progress-value="getProgressValue_flow" @speed-value="getSpeedValue_flow">
+      </controller>
+      <controller v-show="selectedLayer == 0"
+        :flow-progress="flowProgress_wind" :max-particle-num="maxParticleNum_wind" :now-particle-num="nowParticleNum_wind"
+        :now-speed="nowSpeed_wind" :max-speed="maxSpeed_wind"
+        @particle-num-value="getParticleNumValue_wind" @progress-value="getProgressValue_wind" @speed-value="getSpeedValue_wind">
+      </controller>
 
 
       <div ref="mapContainerRef" class="map-container h-full w-full"></div>
@@ -434,36 +517,36 @@ onUnmounted(() => {
           <div>
             <span class="inline-block pr-2 text-lg">当前时间:</span>
             <span class="inline-block pr-3">{{
-          selectPointData && formatDate(selectPointData.time)
-        }}</span>
+              selectPointData && formatDate(selectPointData.time)
+            }}</span>
           </div>
         </div>
         <div class="mx-2 my-2 flex flex-col">
           <div>
             <span class="inline-block pr-2 text-lg">中心位置:</span>
             <span class="inline-block pr-3">{{
-            selectPointData && decimalToDMS(selectPointData.lng)
-          }}</span>
+              selectPointData && decimalToDMS(selectPointData.lng)
+            }}</span>
             <span class="inline-block pr-3">{{
-            selectPointData && decimalToDMS(selectPointData.lat)
-          }}</span>
+              selectPointData && decimalToDMS(selectPointData.lat)
+            }}</span>
           </div>
         </div>
         <div class="mx-2 my-2 flex flex-col">
           <div>
             <span class="inline-block pr-2 text-lg">当前强度:</span>
             <span class="inline-block pr-3">{{
-            selectPointData &&
-            `${selectPointData?.power}级 (${selectPointData?.strong})`
-          }}</span>
+              selectPointData &&
+              `${selectPointData?.power}级 (${selectPointData?.strong})`
+            }}</span>
           </div>
         </div>
         <div class="mx-2 my-2 flex flex-col">
           <div>
             <span class="inline-block pr-2 text-lg">当前风速:</span>
             <span class="inline-block pr-3">{{
-            selectPointData && selectPointData?.speed + 'm/s'
-          }}</span>
+              selectPointData && selectPointData?.speed + 'm/s'
+            }}</span>
           </div>
         </div>
       </div>

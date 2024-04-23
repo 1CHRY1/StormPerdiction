@@ -36,6 +36,7 @@ let wind9711src = new Array(22)
 for (let i = 0; i < 22; i++) {
   wind9711src[i] = `/ffvsrc/9711wind/uv_${16 + i}.bin`
 }
+console.log(wind9711src)
 let flow9711src = new Array(22)
 for (let i = 0; i < 22; i++) {
   if (i * 6 < 132)
@@ -59,18 +60,21 @@ for(let i=0;i<30;i++){
 // ))
 
 // wind9711
-// let flowLayer = reactive(new lastFlow(
-//   '/ffvsrc/9711wind/station.bin',
-//   wind9711src,
-//   url => url.match(/uv_(\d+)\.bin/)[1],
-// ))
+let flowLayer = reactive(new newFlow(
+  '/bin/station.bin',
+  ['/bin/uv_0.bin',
+  '/bin/uv_1.bin',
+  '/bin/uv_2.bin',
+  '/bin/uv_3.bin',],
+  url => url.match(/uv_(\d+)\.bin/)[1],
+))
 
 // flow
 // let flowLayer = reactive(new lastFlow(
-//   '/ffvsrc/flow/station.bin',
+//   '//ffvsrc//flow//station.bin',
 //   flowsrc,
 //   url => url.match(/uv_(\d+)\.bin/)[1],
-//   '/ffvsrc/flowbound2.geojson',
+//   '//ffvsrc//flowbound2.geojson',
 // ))
 // wind
 // let flowLayer = reactive(new lastFlow(

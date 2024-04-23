@@ -6,10 +6,11 @@ import { Ref, computed, onMounted, ref, watch, reactive, watchEffect } from 'vue
 import {
   addWaterLayer,
   addWaterLayer2,
-  floww,
+  // floww,
   prepareAddWaterLayer,
   prepareAddWaterLayer2,
-  windd,
+  // windd,
+  lastFlow_mask
 } from '../../components/LayerFromWebGPU'
 import { router } from '../../router'
 import { useMapStore } from '../../store/mapStore'
@@ -17,7 +18,8 @@ import { useStationStore } from '../../store/stationStore'
 import { initScratchMap2 } from '../../util/initMap'
 import { addLayer } from './util'
 import flowLegend from '../../components/legend/flowLegend.vue'
-import timestepCounter from '../../components/legend/timestepCounter.vue'
+import timeShower from '../../components/legend/timeShower.vue'
+import controller from '../../components/legend/controller.vue'
 import axios from 'axios'
 
 const radio: Ref<HTMLDivElement | null> = ref(null)
@@ -85,8 +87,40 @@ const adwtHandler = async (addwaterCount: number, swapTag: number) => {
   }
   addRangeRef.value = getAddRange(contourDATA.value)
 }
-const wind = reactive(new windd())
-const flow = reactive(new floww())
+//front
+let windsrc = new Array(30)
+for (let i = 0; i < 30; i++) {
+  windsrc[i] = `/ffvsrc/wind/uv_${i + 10}.bin`
+}
+let flowsrc = new Array(30)
+for (let i = 0; i < 30; i++) {
+  flowsrc[i] = `/ffvsrc/flow/uv_${i + 10}.bin`
+}
+//back
+// let windsrc = new Array(144)
+// for(let i=0;i<144;i++){
+//   windsrc[i] = `/field/wind/bin?name=uv_${i+10}.bin`
+// }
+// let flowsrc = new Array(30)
+// for(let i=0;i<144;i++){
+//   flowsrc[i] = `/field/flow/bin?name=uv_${i+10}.bin`
+// }
+
+const wind = reactive(new lastFlow_mask(
+  'wind',
+  '/ffvsrc/wind/station.bin',
+  windsrc,
+  url => url.match(/uv_(\d+)\.bin/)[1],
+  '/ffvsrc/windBound.geojson',
+
+))
+const flow = reactive(new lastFlow_mask(
+  'flow',
+  '/ffvsrc/flow/station.bin',
+  flowsrc,
+  url => url.match(/uv_(\d+)\.bin/)[1],
+  '/ffvsrc/flowbound2.geojson',
+))
 const flowTimeStepRef: Ref<Number> = ref(0)
 const flowMaxSpeedRef: Ref<Number> = ref(0)
 const windTimeStepRef: Ref<Number> = ref(0)
@@ -314,6 +348,68 @@ onMounted(async () => {
     }
   })
 })
+
+
+
+///////controller 
+const nowParticleNum_flow = ref(0)
+const maxParticleNum_flow = ref(0)
+const nowSpeed_flow = ref(0)
+const maxSpeed_flow = ref(0)
+const flowProgress_flow = ref(0)
+
+const nowParticleNum_wind = ref(0)
+const maxParticleNum_wind = ref(0)
+const nowSpeed_wind = ref(0)
+const maxSpeed_wind = ref(0)
+const flowProgress_wind = ref(0)
+
+watchEffect(() => {
+  //progress
+  let progress_flow = flow.currentResourcePointer / flow.uvUrlList.length
+  flowProgress_flow.value = Math.floor(progress_flow * 100)
+  //particleNum
+  nowParticleNum_flow.value = flow.particleNum.n
+  maxParticleNum_flow.value = flow.maxParticleNum
+  //speed
+  nowSpeed_flow.value = flow.speedFactor.n
+  maxSpeed_flow.value = 10.0
+
+  //progress
+  let progress_wind = flow.currentResourcePointer / flow.uvUrlList.length
+  flowProgress_wind.value = Math.floor(progress_wind * 100)
+  //particleNum
+  nowParticleNum_wind.value = wind.particleNum.n
+  maxParticleNum_wind.value = wind.maxParticleNum
+  //speed
+  nowSpeed_wind.value = flow.speedFactor.n
+  maxSpeed_wind.value = 10.0
+})
+
+const getProgressValue_flow = (e) => {
+  flowProgress_flow.value = e
+  flow.setProgress(flowProgress_flow.value)
+}
+const getParticleNumValue_flow = (e) => {
+  nowParticleNum_flow.value = e
+  flow.particleNum.n = e;
+}
+const getSpeedValue_flow = (e) => {
+  nowSpeed_flow.value = e
+  flow.speedFactor.n = e;
+}
+const getProgressValue_wind = (e) => {
+  flowProgress_wind.value = e
+  wind.setProgress(flowProgress_wind.value)
+}
+const getParticleNumValue_wind = (e) => {
+  nowParticleNum_wind.value = e
+  wind.particleNum.n = e;
+}
+const getSpeedValue_wind = (e) => {
+  nowSpeed_wind.value = e
+  wind.speedFactor.n = e;
+}
 </script>
 
 <template>
@@ -331,15 +427,15 @@ onMounted(async () => {
           <input ref="radio" type="radio" name="option" :value="opt.value" />
           <div class="radio-circle" @click="selectedLayer = opt.value"></div>
           <span class="radio-label" @click="selectedLayer = opt.value">{{
-        opt.label
-      }}</span>
+            opt.label
+          }}</span>
         </label>
         <label v-show="typh" class="radio-button">
           <input ref="radio2" type="radio" name="option" :value="optt.value" />
           <div class="radio-circle" @click="selectedLayer = optt.value"></div>
           <span class="radio-label" @click="selectedLayer = optt.value">{{
-        optt.label
-      }}</span>
+            optt.label
+          }}</span>
         </label>
       </div>
     </div>
@@ -352,12 +448,22 @@ onMounted(async () => {
     :max-speed="selectedLayer == 1 ? flowMaxSpeedRef : selectedLayer == 0 ? windMaxSpeedRef : { value: 999 }"
     :add-range="addRangeRef" :desc="selectedLayer == 1 ? '流速(m/s)' : selectedLayer == 0 ? '风速(m/s)' : '风暴增水(m)'">
   </flowLegend>
-  <timestepCounter v-show="selectedLayer == 0 || selectedLayer == 1 || selectedLayer == 2"
-    :timeStep="selectedLayer == 1 ? flowTimeStepRef : selectedLayer == 0 ? windTimeStepRef : adwtidRef"
-    :totalCount="selectedLayer == 1 ? 144 : selectedLayer == 0 ? 144 : 144"
-    :type="'normal'"
-    >
-  </timestepCounter>
+
+  <timeShower v-show="selectedLayer == 1 || selectedLayer == 0 || selectedLayer == 2"
+  :type="selectedLayer == 0 ? '9711wind' : selectedLayer == 1 ? '9711flow' : '9711adwt'" :time-step="10">
+  </timeShower>
+
+
+  <controller v-show="selectedLayer == 1" :flow-progress="flowProgress_flow" :max-particle-num="maxParticleNum_flow"
+    :now-particle-num="nowParticleNum_flow" :now-speed="nowSpeed_flow" :max-speed="maxSpeed_flow"
+    @particle-num-value="getParticleNumValue_flow" @progress-value="getProgressValue_flow"
+    @speed-value="getSpeedValue_flow">
+  </controller>
+  <controller v-show="selectedLayer == 0" :flow-progress="flowProgress_wind" :max-particle-num="maxParticleNum_wind"
+    :now-particle-num="nowParticleNum_wind" :now-speed="nowSpeed_wind" :max-speed="maxSpeed_wind"
+    @particle-num-value="getParticleNumValue_wind" @progress-value="getProgressValue_wind"
+    @speed-value="getSpeedValue_wind">
+  </controller>
 </template>
 
 <style scoped>

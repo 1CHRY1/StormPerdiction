@@ -13,7 +13,11 @@ import wind9711 from './layers/9711wind'
 import floww from './layers/flow_front'
 import windd from './layers/wind_back'
 // import floww from './layers/flow_back'
-import lastFlow from './layers/lastFlow'
+
+// import lastFlow from './layers/lastFlow'
+import lastFlow from './layers/newFlow'
+import lastFlow_mask from './layers/newFlow_mask'
+
 
 
 
@@ -31,5 +35,7 @@ export{
     wind9711,
     floww,
     windd,
-    lastFlow
+    
+    lastFlow,
+    lastFlow_mask
 }
