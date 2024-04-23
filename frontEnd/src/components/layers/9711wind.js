@@ -56,9 +56,9 @@ export default class wind9711 {
     this.framesPerPhase = 100;
     this.maxSpeed = scr.f32();
     this.currentResourceUrl = 0;
-    this.maxParticleNum = 262144;
+    this.maxParticleNum = 65536;
     this.progressRate = scr.f32();
-    this.particleNum = scr.u32(65536);
+    this.particleNum = scr.u32(5000);
 
     // Compute
     this.blockSizeX = 16;

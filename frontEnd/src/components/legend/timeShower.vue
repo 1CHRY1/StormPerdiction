@@ -1,5 +1,5 @@
 <template>
-    <div class="timestep-counter">
+    <div class="timestep-shower">
         <el-progress type="dashboard" :percentage="percentage">
             <template #default="{ percentage }">
                 <span class="percentage-value">{{ hour + '时' }}</span>
@@ -15,12 +15,10 @@ import dayjs from 'dayjs'
 
 const props = defineProps({
     timeStep: Number,
-    totalCount: Number,
     type: String,
 })
-const percentage = computed(() => {
-    return Math.ceil((props.timeStep! / props.totalCount!) * 100);
-})
+
+const percentage = 100;
 
 const timee = computed(() => {
     if (props.type == 'normal') {
@@ -28,15 +26,9 @@ const timee = computed(() => {
         let passHour = props.timeStep! / 6  //正常是一天144个  10分钟一个  6个一小时
         return today0.add(passHour, 'hour').format('YYYY/MM/DD HH')
     }
-
-    else if(props.type == '9711wind') {
+    else if(props.type == '9711') {
         let today0 = dayjs('1997-08-16').startOf('day')
         let passHour = props.timeStep! * 6  //9711-wind是 6小时一个
-        return today0.add(passHour, 'hour').format('YYYY/MM/DD HH')
-    }
-    else if(props.type == '9711flow') {
-        let today0 = dayjs('1997-08-16').startOf('day')
-        let passHour = props.timeStep! * 1 //9711-flow 1小时一个
         return today0.add(passHour, 'hour').format('YYYY/MM/DD HH')
     }
     else if(props.type == '9711adwt'){
@@ -60,10 +52,11 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.timestep-counter {
+.timestep-shower {
     position: absolute;
     right: 4vw;
-    bottom: 32vh;
+    bottom: 28vh;
+    z-index: 3;
 }
 
 .percentage-value {
@@ -89,7 +82,7 @@ onMounted(() => {
 }
 
 :deep(.el-progress-circle__path) {
-    stroke: rgb(253, 174, 104);
+    stroke: rgb(104, 198, 253);
     /* stroke-width: 4.8; */
 }
 </style>

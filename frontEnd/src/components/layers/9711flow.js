@@ -46,8 +46,6 @@ let resourceUrl = new Array(130)
 for(let i=0;i<130;i++){
    resourceUrl[i]=`/ffvsrc/9711flow/uv_${i}.bin`
 }
-console.log(resourceUrl);
-
 export default class flow9711 {
 
   constructor() {
@@ -72,9 +70,9 @@ export default class flow9711 {
     this.maxSpeed = scr.f32();
     this.currentResourceUrl = 0;
     this.test = 0
-    this.maxParticleNum = 262144;
+    this.maxParticleNum = 65536;
     this.progressRate = scr.f32();
-    this.particleNum = scr.u32(65536);
+    this.particleNum = scr.u32(5000);
     
 
     // Compute
@@ -499,7 +497,7 @@ export default class flow9711 {
   idle() {
     this.isIdling = true;
 
-    this.showBinding.executable = true;
+    this.showBinding.executable = false;
     this.swapPasses[2].executable = true;
     this.arrowPipeline.executable = false;
 

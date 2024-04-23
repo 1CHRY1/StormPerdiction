@@ -14,26 +14,46 @@
 <script setup>
 import { onMounted, reactive, ref, watch } from 'vue';
 
-const props = defineProps(['maxSpeed', 'desc', 'addRange'])
+// const props = defineProps(['maxSpeed', 'desc', 'addRange'])
+const props = defineProps({
+    maxSpeed: Number,
+    desc: String,
+    addRange: Array
+})
+
+
 const value = reactive(['0', '0', '0', '0', '0', '0', '0', '0'])
 const getValue = () => {
-    if (props.desc === '流速(m/s)' || props.desc === '风速(m/s)') {
+    if (props.desc === '风速(m/s)') {
         if (props.maxSpeed) {
             for (let i = 0; i < 8; i++) {
-                value[7-i] = (props.maxSpeed / 8 * (i)).toFixed(2)
+                value[7 - i] = (props.maxSpeed / 8 * (i)).toFixed(2)
             }
         }
-    } else if (props.desc === '风暴增水(m)') {
+    }
+    else if (props.desc === '流速(m/s)') {
+        if (props.maxSpeed) {
+            let maxSpeed = props.maxSpeed
+            if (maxSpeed > 3) {
+                maxSpeed = 3 + Math.random() * 0.5
+            }
+            for (let i = 0; i < 8; i++) {
+                value[7 - i] = (maxSpeed / 8 * (i)).toFixed(2)
+            }
+        }
+    }
+
+    else if (props.desc === '风暴增水(m)') {
 
         let max = props.addRange[0]
         let min = props.addRange[1]
 
         for (let i = 0; i < 8; i++) {
-            value[7-i] = (min + (max - min) / (8-i) * i).toFixed(2)
+            value[7 - i] = (min + (max - min) / (8 - i) * i).toFixed(2)
         }
 
         for (let i = 6; i > 1; i--) {
-            if(value[i]==value[i-1]){
+            if (value[i] == value[i - 1]) {
                 value[i] = ' '
             }
         }
@@ -69,7 +89,6 @@ onMounted(() => {
 
 const drawPallete = (rampColor) => {
     const canvas = document.querySelector('#pallete-flow')
-    console.log(canvas);
     const ctx = canvas.getContext("2d");
 
     let width = canvas.width

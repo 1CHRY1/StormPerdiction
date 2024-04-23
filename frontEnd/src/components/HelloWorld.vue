@@ -1,43 +1,135 @@
+<template>
+  <div id="map" ref="mapRef"></div>
+  <canvas id="GPUFrame"></canvas>
+  <controller :flow-progress="flowProgress" :max-particle-num="maxParticleNum" :now-particle-num="nowParticleNum"
+    :now-speed="nowSpeed" :max-speed="maxSpeed" @particle-num-value="getParticleNumValue"
+    @progress-value="getProgressValue" @speed-value="getSpeedValue">
+  </controller>
+
+
+  <timeShower :type="'9711wind'" :time-step="timeStep"></timeShower>
+  <flowLegend :max-speed="maxSpeed" :desc="'风速(m/s)'"></flowLegend>
+</template>
+
 <script setup>
 
-import { onMounted,ref } from 'vue'
-import axios from 'axios'
-import { main } from './layers/main'
-import flowLegend from './legend/flowLegend.vue'
-import timeStepCounter from './legend/timestepCounter.vue'
+import { onMounted, ref, reactive, watch, computed, watchEffect } from 'vue'
+import { initM } from '../util/initMap';
+import newFlow from '../components/layers/newFlow.js'
+import newFlow2 from '../components/layers/newFlow_mask.js'
+import lastFlow from '../components/layers/lastFlow.js'
 
-const timestep = ref(0)
-const alltime = 144
-setInterval(()=>{
-  timestep.value = (timestep.value+1)%alltime
-},1000)
+import timeShower from '../components/legend/timeShower.vue'
+import flowLegend from './legend/flowLegend.vue';
+import controller from './legend/controller.vue'
+import axios from 'axios';
 
-onMounted(async () => {
-  // console.log('hellop');
-  main()
+const mapRef = ref()
+const nowParticleNum = ref(0)
+const maxParticleNum = ref(0)
+const nowSpeed = ref(0)
+const maxSpeed = ref(0)
+const flowProgress = ref(0)
+
+
+let wind9711src = new Array(22)
+for (let i = 0; i < 22; i++) {
+  wind9711src[i] = `/ffvsrc/9711wind/uv_${16 + i}.bin`
+}
+console.log(wind9711src)
+let flow9711src = new Array(22)
+for (let i = 0; i < 22; i++) {
+  if (i * 6 < 132)
+    flow9711src[i] = `/ffvsrc/9711flow/uv_${i * 6}.bin`
+}
+let windsrc = new Array(30)
+for(let i=0;i<30;i++){
+  windsrc[i] = `/ffvsrc/wind/uv_${i+10}.bin`
+}
+let flowsrc = new Array(30)
+for(let i=0;i<30;i++){
+  flowsrc[i] = `/ffvsrc/flow/uv_${i+10}.bin`
+}
+
+// flow9711
+// let flowLayer = reactive(new lastFlow(
+//   '/ffvsrc/9711flow/station.bin',
+//   flow9711src,
+//   url => url.match(/uv_(\d+)\.bin/)[1], 
+//   '/ffvsrc/flowbound2.geojson',
+// ))
+
+// wind9711
+let flowLayer = reactive(new newFlow(
+  '/bin/station.bin',
+  ['/bin/uv_0.bin',
+  '/bin/uv_1.bin',
+  '/bin/uv_2.bin',
+  '/bin/uv_3.bin',],
+  url => url.match(/uv_(\d+)\.bin/)[1],
+))
+
+// flow
+// let flowLayer = reactive(new lastFlow(
+//   '//ffvsrc//flow//station.bin',
+//   flowsrc,
+//   url => url.match(/uv_(\d+)\.bin/)[1],
+//   '//ffvsrc//flowbound2.geojson',
+// ))
+// wind
+// let flowLayer = reactive(new lastFlow(
+//   'flowlayer',
+//   '/ffvsrc/wind/station.bin',
+//   windsrc,
+//   url => url.match(/uv_(\d+)\.bin/)[1],
+//   '/ffvsrc/windBound.geojson'
+// ))
+
+
+
+const timeStep = computed(() => {
+  return flowProgress.value / 100 * flowLayer.uvUrlList.length
+})
+
+watchEffect(() => {
+  //progress
+  let progress = flowLayer.currentResourcePointer / flowLayer.uvUrlList.length
+  flowProgress.value = Math.floor(progress * 100)
+
+  //particleNum
+  nowParticleNum.value = flowLayer.particleNum.n
+  maxParticleNum.value = flowLayer.maxParticleNum
+
+  nowSpeed.value = flowLayer.speedFactor.n
+  maxSpeed.value = 10.0
+
 })
 
 
 
-</script>
 
-<template>
-  <div id="map"></div>
-  <canvas id="WebGPUFrame"></canvas>
-  <flowLegend :max-speed="26.8"></flowLegend>
-  <timeStepCounter :time-step="timestep" :total-count="alltime"></timeStepCounter>
-  <!-- <div class='adwtLegend'>
-    <p>风暴增水(m)</p>
-    <div class='localFlex'>
-      <div class='rampColor'></div>
-      <div class="lable">
-        <p>1</p>
-        <p>1</p>
-        <p>1</p>
-      </div>
-    </div>
-  </div> -->
-</template>
+onMounted(async () => {
+  const map = await initM(mapRef.value)
+  map.addLayer(flowLayer)
+  console.log('map added layer')
+
+})
+
+
+const getProgressValue = (e) => {
+  flowProgress.value = e
+  flowLayer.setProgress(flowProgress.value)
+}
+const getParticleNumValue = (e) => {
+  nowParticleNum.value = e
+  flowLayer.particleNum.n = e;
+}
+const getSpeedValue = (e) => {
+  nowSpeed.value = e
+  flowLayer.speedFactor.n = e;
+}
+
+</script>
 
 <style>
 .adwtLegend {
@@ -83,7 +175,7 @@ onMounted(async () => {
 }
 
 
-#WebGPUFrame {
+#GPUFrame {
   z-index: 1;
   pointer-events: none;
   position: absolute;
@@ -103,6 +195,4 @@ onMounted(async () => {
 #stats {
   z-index: 2;
 }
-
-
 </style>

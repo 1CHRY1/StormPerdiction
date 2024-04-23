@@ -11,8 +11,8 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },
-      '/testapi':{
-        target: 'http://localhost:9989/api/v1/data/nc/field',
+      '/field':{
+        target: 'http://172.21.212.165:9989/api/v1/data/nc/field',
         changeOrigin: true,
         secure:false,
         rewrite: (path) => path.replace(/^\/testapi/, ''),

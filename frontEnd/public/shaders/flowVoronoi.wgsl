@@ -1,8 +1,8 @@
 struct VertexInput {
     @builtin(vertex_index) vertexIndex: u32,
-    @location(0) position: vec4f,//xh,yh,xl,yl  0,1
-    @location(1) vFrom: vec2f,// velocity from
-    @location(2) vTo: vec2f,// velocity to
+    @location(0) position: vec4f,
+    @location(1) vFrom: vec2f,
+    @location(2) vTo: vec2f,
 };
 
 struct VertexOutput {
@@ -18,6 +18,8 @@ struct FrameUniformBlock {
     zoomLevel: f32,
     progressRate: f32,
     maxSpeed: f32,
+    lastMvp: mat4x4f,
+    lastMvpInverse: mat4x4f,
 };
 
 struct StaticUniformBlock {
@@ -31,16 +33,13 @@ struct DynamicUniformBlock {
     uMatrix: mat4x4f,
     centerLow: vec3f,
     centerHigh: vec3f,
+    mvpInverse: mat4x4f,
 };
 
 // Uniform Bindings
 @group(0) @binding(0) var<uniform> frameUniform: FrameUniformBlock;
 @group(0) @binding(1) var<uniform> staticUniform: StaticUniformBlock;
 @group(0) @binding(2) var<uniform> dynamicUniform: DynamicUniformBlock;
-
-// @group(1) @binding(0) var<storage, read_write> outbuffer: array<f32>;
-
-@group(1) @binding(0) var border: texture_2d<f32>;
 
 const PI = 3.1415926535;
 
@@ -59,40 +58,24 @@ fn calcWebMercatorCoord(coord: vec2f) -> vec2f {
     return vec2f(lon, lat);
 }
 
-fn calBorderUV(pos: vec4f) -> vec2f {
-    
-    let cs_pos = dynamicUniform.uMatrix * pos;
-    let ss_pos = cs_pos.xy/cs_pos.w;
-    var uv = (ss_pos + 1.0) / 2.0;
-    uv = vec2f(uv.x, 1.0-uv.y);
-    return uv;
-}
-
-
 @vertex
 fn vMain(input: VertexInput) -> VertexOutput {
-    let pos = vec4f(translateRelativeToEye(vec3f(input.position.xy, 0.0), vec3f(input.position.zw, 0.0)), 1.0);
-    let mapped_uv = calBorderUV(pos);
 
-
+    let x = (input.position.x - staticUniform.extent[0]) / (staticUniform.extent[2] - staticUniform.extent[0]);
+    let y = (input.position.y - staticUniform.extent[1]) / (staticUniform.extent[3] - staticUniform.extent[1]);
 
     var output: VertexOutput;
-    output.position = dynamicUniform.uMatrix * pos;
+    output.position = dynamicUniform.uMatrix * vec4f(translateRelativeToEye(vec3f(input.position.xy, 0.0), vec3f(input.position.zw, 0.0)), 1.0);
     output.velocity = mix(input.vFrom, input.vTo, frameUniform.progressRate);
-    output.uv = mapped_uv;
     return output;
 }
 
 @fragment
 fn fMain(input: VertexOutput) -> @location(0) vec2f {
 
-    let dim = vec2f(textureDimensions(border,0).xy);
-    let color = textureLoad(border,vec2i(dim*input.uv),0);
-    if(color.x == 0.0){
-        return vec2f(0.0);
-    }
-
-
-    return input.velocity;  
-    
+    // if (input.velocity.x == 0.0 &&  input.velocity.y == 0.0) {
+    //     discard;
+    // }
+    return input.velocity;
+    // return vec2f(1.0);
 }
