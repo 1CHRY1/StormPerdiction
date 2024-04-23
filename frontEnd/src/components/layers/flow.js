@@ -384,7 +384,7 @@ export default class floww {
       range: () => [4],
       textures: [
         { texture: this.flowTexture, sampleType: "unfilterable-float" },
-        { texture: this.maskTexture, sampleType: "unfilterable-float" },
+        // { texture: this.maskTexture, sampleType: "unfilterable-float" },
       ],
       sharedUniforms: [{ buffer: this.uniformBuffer_frame }],
     });

@@ -14,6 +14,8 @@ struct FrameUniformBlock {
     zoomLevel: f32,
     progressRate: f32,
     maxSpeed: f32,
+    lastMvp: mat4x4f,
+    lastMvpInverse: mat4x4f,
 };
 
 // Uniform bindings
@@ -22,7 +24,6 @@ struct FrameUniformBlock {
 // Texture bindings
 @group(1) @binding(0) var fromTexture: texture_2d<f32>;
 // @group(1) @binding(1) var toTexture: texture_2d<f32>;
-// @group(1) @binding(1) var maskTexture: texture_2d<f32>;
 
 fn toneMapACES(color: vec3f) -> vec3f {
     let a = 2.51;
@@ -128,21 +129,13 @@ fn fMain(fsInput: VertexOutput) -> @location(0) vec4f {
         0xd53e4f
     );
 
+    // let velocity = mix(getVelocity(fromTexture, fsInput.texcoords), getVelocity(toTexture, fsInput.texcoords), frameUniform.progressRate);
     let velocity = getVelocity(fromTexture, fsInput.texcoords);
- 
     if (all(velocity == vec2f(0.0))) {
         discard;
     }
 
     let color = velocityColor(length(velocity) / frameUniform.maxSpeed, rampColors0);
+    // return vec4f(velocity, 0.0, 1.0);
     return vec4f(color, 0.5);
-
-    // let dim = vec2f(textureDimensions(maskTexture, 0).xy);
-    // let uv = fsInput.texcoords * dim;
-    // let color = textureLoad(maskTexture, vec2i(uv), 0);
-    // if(color.x == 1.0)
-    //     {return vec4f(1.0,0.0,0.0,0.6);}
-    // else
-    //     {return vec4f(0.0,0.0,1.0,0.6);}
-    
 }

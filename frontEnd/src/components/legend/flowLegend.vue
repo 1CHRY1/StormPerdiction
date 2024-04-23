@@ -14,7 +14,14 @@
 <script setup>
 import { onMounted, reactive, ref, watch } from 'vue';
 
-const props = defineProps(['maxSpeed', 'desc', 'addRange'])
+// const props = defineProps(['maxSpeed', 'desc', 'addRange'])
+const props = defineProps({
+    maxSpeed: Number,
+    desc: String,
+    addRange: Array 
+})
+
+
 const value = reactive(['0', '0', '0', '0', '0', '0', '0', '0'])
 const getValue = () => {
     if (props.desc === '流速(m/s)' || props.desc === '风速(m/s)') {
@@ -69,7 +76,6 @@ onMounted(() => {
 
 const drawPallete = (rampColor) => {
     const canvas = document.querySelector('#pallete-flow')
-    console.log(canvas);
     const ctx = canvas.getContext("2d");
 
     let width = canvas.width

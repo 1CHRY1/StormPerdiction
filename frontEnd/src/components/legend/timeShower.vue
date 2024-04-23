@@ -1,5 +1,5 @@
 <template>
-    <div class="timestep-counter">
+    <div class="timestep-shower">
         <el-progress type="dashboard" :percentage="percentage">
             <template #default="{ percentage }">
                 <span class="percentage-value">{{ hour + '时' }}</span>
@@ -15,12 +15,10 @@ import dayjs from 'dayjs'
 
 const props = defineProps({
     timeStep: Number,
-    totalCount: Number,
     type: String,
 })
-const percentage = computed(() => {
-    return Math.ceil((props.timeStep! / props.totalCount!) * 100);
-})
+
+const percentage = 100;
 
 const timee = computed(() => {
     if (props.type == 'normal') {
@@ -60,7 +58,7 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.timestep-counter {
+.timestep-shower {
     position: absolute;
     right: 4vw;
     bottom: 32vh;
@@ -89,7 +87,7 @@ onMounted(() => {
 }
 
 :deep(.el-progress-circle__path) {
-    stroke: rgb(253, 174, 104);
+    stroke: rgb(104, 198, 253);
     /* stroke-width: 4.8; */
 }
 </style>

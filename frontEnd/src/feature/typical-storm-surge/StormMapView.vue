@@ -5,17 +5,17 @@ import { Ref, onMounted, ref, watch, reactive, watchEffect, onUnmounted } from '
 import {
   addWaterLayer,
   addWaterLayer2,
-  flow9711,
+  // flow9711,
   prepareAddWaterLayer,
   prepareAddWaterLayer2,
-  wind9711,
+  // wind9711,
+  lastFlow
 } from '../../components/LayerFromWebGPU'
 import { router } from '../../router'
 import { useMapStore } from '../../store/mapStore'
 import { useStationStore } from '../../store/stationStore'
 import { initScratchMap } from '../../util/initMap'
 import flowLegend from '../../components/legend/flowLegend.vue'
-import timestepCounter from '../../components/legend/timestepCounter.vue'
 import { decimalToDMS } from './util'
 
 import { IStormData, IStormDataOfPoint, IStormTableRow } from './type'
@@ -29,6 +29,7 @@ import {
   updateStormLayer,
   updateTyphoonSymbol,
 } from './util'
+import mapboxgl from 'mapbox-gl'
 
 const stationStore = useStationStore()
 const mapContainerRef: Ref<HTMLDivElement | null> = ref(null)
@@ -130,13 +131,31 @@ const adwtHandler = async (addwaterCount: number, swapTag: number) => {
 
 }
 
-const wind = reactive(new wind9711())
-const flow = reactive(new flow9711())
+let wind9711src = new Array(22)
+for (let i = 0; i < 22; i++) {
+  wind9711src[i] = `/ffvsrc/9711wind/uv_${16 + i}.bin`
+}
+let flow9711src = new Array(22)
+for (let i = 0; i < 22; i++) {
+  if (i * 6 < 132)
+    flow9711src[i] = `/ffvsrc/9711flow/uv_${i * 6}.bin`
+}
+const wind = reactive(new lastFlow(
+  '/ffvsrc/9711flow/station.bin',
+  flow9711src,
+  (url: String) => url.match(/uv_(\d+)\.bin/)![1],
+  '/ffvsrc/flowbound2.geojson',
+))
+const flow = reactive(new lastFlow(
+  '/ffvsrc/9711wind/station.bin',
+  wind9711src,
+  (url: String) => url.match(/uv_(\d+)\.bin/)![1],
+))
 
 watchEffect(() => {
-  flowTimeStepRef.value = flow.currentResourceUrl;
+  flowTimeStepRef.value = flow.currentResourcePointer;
   flowMaxSpeedRef.value = flow.maxSpeed.n;
-  windTimeStepRef.value = wind.currentResourceUrl
+  windTimeStepRef.value = wind.currentResourcePointer
   windMaxSpeedRef.value = wind.maxSpeed.n;
 })
 
@@ -248,10 +267,7 @@ watch(selectedLayer, async (now: null | number, old: null | number) => {
   }
 })
 
-const onPause = () => {
-}
-const onPlay = () => {
-}
+
 
 const closeHandeler = () => {
   wind.hide()
@@ -285,7 +301,7 @@ const closeHandeler = () => {
 
   selectedLayer.value = null
 
-  radio!.value!.forEach((item) => {
+  (radio!.value! as any).forEach((item:any) => {
     item.checked = false
   })
 
@@ -309,14 +325,14 @@ onMounted(async () => {
   tableData.value = generateStormTableData(stormData.value)
   selectPointData.value = stormData.value!.dataList[Number(selectPointID.value)]
 
-  const map: mapbox.Map = await initScratchMap(mapContainerRef.value)
+  const map: mapboxgl.Map = await initScratchMap(mapContainerRef.value!)
   ElMessage({
     message: '地图加载完毕',
     type: 'success',
   })
-  map.addLayer(wind)
+  map.addLayer(wind as mapboxgl.AnyLayer)
   wind.hide()
-  map.addLayer(flow)
+  map.addLayer(flow as mapboxgl.AnyLayer)
   flow.hide()
 
   addStationLayer(map)
@@ -325,7 +341,7 @@ onMounted(async () => {
     selectPointData.value.lng,
     selectPointData.value.lat,
   ])
-  map.on('click', (event: mapbox.MapMouseEvent) => {
+  map.on('click', (event: mapboxgl.MapMouseEvent) => {
     const box: [[number, number], [number, number]] = [
       [event.point.x - 3, event.point.y - 3],
       [event.point.x + 3, event.point.y + 3],
@@ -354,7 +370,7 @@ onMounted(async () => {
   })
 })
 
-onUnmounted(()=>{
+onUnmounted(() => {
   closeHandeler()
 })
 
@@ -388,20 +404,14 @@ onUnmounted(()=>{
           <div class="close" @click="closeHandeler">关闭所有</div>
         </div>
       </div>
-      <!-- add water -->
-      <!-- <adwtLegend v-show="selectedLayer == 2" :contour-data="contourDATA"></adwtLegend> -->
 
       <!-- flow/wind legend -->
       <flowLegend v-show="selectedLayer == 1 || selectedLayer == 0 || selectedLayer == 2"
         :max-speed="selectedLayer == 1 ? flowMaxSpeedRef : selectedLayer == 0 ? windMaxSpeedRef : { value: 999 }"
         :add-range="addRangeRef" :desc="selectedLayer == 1 ? '流速(m/s)' : selectedLayer == 0 ? '风速(m/s)' : '风暴增水(m)'">
       </flowLegend>
-      <timestepCounter v-show="selectedLayer == 0 || selectedLayer == 1 || selectedLayer == 2"
-        :timeStep="selectedLayer == 1 ? flowTimeStepRef : selectedLayer == 0 ? windTimeStepRef : adwtidRef"
-        :totalCount="selectedLayer == 1 ? 131 : selectedLayer == 0 ? 41 : 80" @pause="onPause" :on-play="onPlay"
-        :type="selectedLayer == 0 ? '9711wind' : selectedLayer == 1 ? '9711flow' : '9711adwt'"
-        >
-      </timestepCounter>
+
+
 
 
       <div ref="mapContainerRef" class="map-container h-full w-full"></div>
