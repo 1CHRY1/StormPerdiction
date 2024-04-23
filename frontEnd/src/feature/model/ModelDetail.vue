@@ -135,7 +135,7 @@ onMounted(async () => {
         </div>
       </div>
       <div class="flex flex-col flex-auto m-2 top-1 border border-zinc-300">
-        <div class="h-10 leading-10 px-2 bg-[#1b6ec8] text-white">站点列表</div>
+        <div class="h-10 leading-10 px-2 bg-[#1b6ec8] text-white">站点选择</div>
         <el-radio-group
           v-model="stationStore.currentStationID"
           class="py-2 px-4 block overflow-auto h-[66vh]"

@@ -50,7 +50,7 @@ public class StationServiceImpl implements StationService {
 
     @Override
     public List<String> getTodayStation() {
-        // 当天有数据的站点列表
+        // 当天有数据的站点选择
         List<String> TodayStations = new ArrayList<>();
         // 获取所有站点数据
         Path fullPath = Paths.get(station_path);

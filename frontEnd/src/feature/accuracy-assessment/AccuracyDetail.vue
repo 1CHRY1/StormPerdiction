@@ -1,17 +1,11 @@
 <script setup lang="ts">
-import * as echarts from 'echarts'
-import { Ref, computed, onMounted, ref, watch } from 'vue'
+import { Ref, computed, ref } from 'vue'
 import { useStationStore } from '../../store/stationStore'
-import {
-  getAccurateAssessmentTable,
-  getStationInfo,
-  getStationPredictionTideSituation,
-} from './api'
-import { IAccurateAssessmentTableRow, ITideSituation } from './type'
-import { drawEcharts, generateTreeDataOfStation, initEcharts } from './util'
+import AccuracyGraph from './AccuracyGraph.vue'
+import { getStationInfo } from './api'
+import { IAccurateAssessmentTableRow } from './type'
+import { generateTreeDataOfStation } from './util'
 
-let echart: echarts.ECharts | null = null
-const echartsRef = ref()
 const activeName = ref('graph')
 const stationStore = useStationStore()
 const treeData = generateTreeDataOfStation()
@@ -19,55 +13,14 @@ const stationInfo = computed(() =>
   getStationInfo(stationStore.currentStationID as any),
 )
 const stationTable: Ref<IAccurateAssessmentTableRow[] | null> = ref(null)
-const waterSituationData: Ref<ITideSituation | null> = ref(null)
-const isStationDataExist = computed(() => {
-  if (
-    waterSituationData.value === null ||
-    waterSituationData.value.hpre.length !== 0
-  ) {
-    return true
-  }
-  return false
-})
-
-watch(stationStore, async () => {
-  waterSituationData.value = await getStationPredictionTideSituation(
-    stationStore.currentStationID as any,
-  )
-  if (echart) {
-    echart.clear()
-    drawEcharts(
-      echart,
-      waterSituationData.value,
-      stationInfo.value,
-      isStationDataExist.value,
-    )
-  }
-})
-
-onMounted(async () => {
-  waterSituationData.value = await getStationPredictionTideSituation(
-    stationStore.currentStationID as any,
-  )
-  stationTable.value = await getAccurateAssessmentTable()
-  if (isStationDataExist.value) {
-    echart = initEcharts(echartsRef)
-    drawEcharts(
-      echart,
-      waterSituationData.value,
-      stationInfo.value,
-      isStationDataExist.value,
-    )
-  }
-})
 </script>
 
 <template>
   <div class="h-full w-full flex bg-slate-300">
     <div class="flex-auto">
       <el-tabs v-model="activeName" type="border-card" class="bg-white h-full">
-        <el-tab-pane label="折线图" name="graph">
-          <div ref="echartsRef" class="h-[86vh]"></div>
+        <el-tab-pane label="折线图" name="graph" class="h-[86vh]">
+          <AccuracyGraph></AccuracyGraph>
         </el-tab-pane>
         <el-tab-pane
           label="数据表"
@@ -128,7 +81,7 @@ onMounted(async () => {
         </div>
       </div>
       <div class="flex flex-col flex-auto m-2 top-1 border border-zinc-300">
-        <div class="h-10 leading-10 px-2 bg-[#1b6ec8] text-white">站点列表</div>
+        <div class="h-10 leading-10 px-2 bg-[#1b6ec8] text-white">站点选择</div>
         <el-radio-group
           v-model="stationStore.currentStationID"
           class="py-2 px-4 block overflow-auto h-[66vh]"

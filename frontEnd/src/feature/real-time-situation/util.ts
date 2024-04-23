@@ -2,6 +2,7 @@ import * as echarts from 'echarts'
 import mapbox from 'mapbox-gl'
 import { Ref } from 'vue'
 import { stationInfo } from '../../asset/stationInfo'
+import { generateStationGeoJson } from '../../util/getStation'
 import { IRealTideSituation, IStationInfo, Tree } from './type'
 
 export const generateTreeDataOfStation = (): Tree[] => {
@@ -117,9 +118,10 @@ export const drawEcharts = async (
 }
 
 export const addLayer = async (map: mapbox.Map) => {
+  const geojson = await generateStationGeoJson()
   map.addSource('stations', {
     type: 'geojson',
-    data: '/geojson/station.geojson',
+    data: geojson as any,
     attribution: 'name',
   })
 

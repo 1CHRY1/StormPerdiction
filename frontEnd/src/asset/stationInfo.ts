@@ -30,120 +30,78 @@ export const stationInfo = {
     type: 'river',
   },
   '5': {
-    coord: [121.55, 31.383],
-    name: '高桥',
-    pinyin: 'gaoqiao',
-    type: 'river',
-  },
-  '6': {
     coord: [118.717, 32.083],
     name: '南京',
     pinyin: 'nanjing',
     type: 'river',
   },
-  '7': {
+  '6': {
     coord: [121.233, 31.267],
     name: '吴淞',
     pinyin: 'wusong',
     type: 'river',
   },
-  '8': {
+  '7': {
     coord: [119.433, 32.217],
     name: '镇江',
     pinyin: 'zhenjiang',
     type: 'river',
   },
-  '9': {
+  '8': {
     coord: [117.783, 31.133],
     name: '凤凰颈站下',
     pinyin: 'fenghuangjingzhanxia',
     type: 'river',
   },
-  '10': {
+  '9': {
     coord: [120.3, 31.95],
     name: '江阴',
     pinyin: 'jiangyin',
     type: 'river',
   },
-  '11': {
+  '10': {
     coord: [118.317, 31.433],
     name: '裕溪闸下',
     pinyin: 'yuxizhaxia',
     type: 'river',
   },
-  '12': {
+  '11': {
     coord: [120.75, 32.033],
     name: '天生港',
     pinyin: 'tianshenggang',
     type: 'river',
   },
-  '13': {
+  '12': {
     coord: [118.367, 31.533],
     name: '新桥闸下',
     pinyin: 'xinqiaozhaxia',
     type: 'river',
   },
-  '14': {
+  '13': {
     coord: [120.95, 31.75],
     name: '徐六泾',
     pinyin: 'xuliujing',
     type: 'river',
   },
-  '15': {
-    coord: [120.567, 33.883],
-    name: '射阳河口',
-    pinyin: 'sheyanghekou',
-    type: 'sea',
-  },
-  '16': {
-    coord: [120.633, 33.583],
-    name: '黄沙港闸下',
-    pinyin: 'huangshagangzhaxia',
-    type: 'sea',
-  },
-  '17': {
-    coord: [120.6, 33.633],
-    name: '新洋港闸下',
-    pinyin: 'xinyanggangzhaxia',
-    type: 'sea',
-  },
-  '18': {
-    coord: [120.667, 33.517],
-    name: '斗龙港闸下',
-    pinyin: 'doulonggangzhaxia',
-    type: 'sea',
-  },
-  '19': {
-    coord: [120.917, 33.083],
-    name: '川东港闸下',
-    pinyin: 'chuandonggangzhaxia',
-    type: 'sea',
-  },
-  '20': {
+  '14': {
     coord: [121.1, 30.583],
     name: '乍浦',
     pinyin: 'zhapu',
     type: 'sea',
   },
-  '21': {
+  '15': {
     coord: [120.917, 30.367],
     name: '澉浦',
     pinyin: 'ganpu',
     type: 'sea',
   },
-  '22': {
-    coord: [120.55, 30.4],
-    name: '盐官',
-    pinyin: 'yanguan',
-    type: 'sea',
-  },
-  '23': {
+  '16': {
     coord: [121.179, 30.645],
     name: '金桥',
     pinyin: 'jinqiao',
     type: 'sea',
   },
-  '24': {
+  '17': {
     coord: [121.88, 31.68],
     name: '连兴港',
     pinyin: 'lianxinggang',

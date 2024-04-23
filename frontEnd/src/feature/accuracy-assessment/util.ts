@@ -2,6 +2,7 @@ import * as echarts from 'echarts'
 import mapbox from 'mapbox-gl'
 import { Ref } from 'vue'
 import { stationInfo } from '../../asset/stationInfo'
+import { generateStationGeoJson } from '../../util/getStation'
 import { IStationInfo, ITideSituation, Tree } from './type'
 
 export const generateTreeDataOfStation = (): Tree[] => {
@@ -23,19 +24,21 @@ export const drawEcharts = async (
   waterSituationData: ITideSituation,
   stationInfo: IStationInfo,
   isStationDataExist: boolean,
+  isPopup: boolean,
 ) => {
   type EChartsOption = echarts.EChartsOption
   const min = Math.min(...waterSituationData.hpre, ...waterSituationData.hyubao)
   const max = Math.max(...waterSituationData.hpre, ...waterSituationData.hyubao)
-  const range = max - min
   const option: EChartsOption = {
-    title: {
-      text: `${stationInfo.name}站点 ${stationInfo.time.split(' ')[0]} 精读评定折线图`,
-      textStyle: {
-        color: 'hsl(220, 50%, 50%)',
-        fontSize: 20,
-      },
-    },
+    title: isPopup
+      ? undefined
+      : {
+          text: `${stationInfo.name}站点 ${stationInfo.time.split(' ')[0]} 精读评定折线图`,
+          textStyle: {
+            color: 'hsl(220, 50%, 50%)',
+            fontSize: 20,
+          },
+        },
     tooltip: {
       trigger: 'axis',
     },
@@ -50,14 +53,16 @@ export const drawEcharts = async (
       bottom: '10%',
       containLabel: true,
     },
-    toolbox: {
-      feature: {
-        dataZoom: {
-          yAxisIndex: 'none',
+    toolbox: isPopup
+      ? undefined
+      : {
+          feature: {
+            dataZoom: {
+              yAxisIndex: 'none',
+            },
+            saveAsImage: {},
+          },
         },
-        saveAsImage: {},
-      },
-    },
     xAxis: {
       type: 'category',
       boundaryGap: false,
@@ -76,17 +81,19 @@ export const drawEcharts = async (
         },
       },
     },
-    dataZoom: [
-      {
-        type: 'inside',
-        start: 0,
-        end: 100,
-      },
-      {
-        start: 0,
-        end: 20,
-      },
-    ],
+    dataZoom: isPopup
+      ? undefined
+      : [
+          {
+            type: 'inside',
+            start: 0,
+            end: 100,
+          },
+          {
+            start: 0,
+            end: 20,
+          },
+        ],
     series: [
       {
         name: '预报数据',
@@ -123,9 +130,10 @@ export const drawEcharts = async (
 }
 
 export const addLayer = async (map: mapbox.Map) => {
+  const geojson = await generateStationGeoJson()
   map.addSource('stations', {
     type: 'geojson',
-    data: '/geojson/station.geojson',
+    data: geojson as any,
     attribution: 'name',
   })
 
