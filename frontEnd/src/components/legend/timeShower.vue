@@ -26,15 +26,9 @@ const timee = computed(() => {
         let passHour = props.timeStep! / 6  //正常是一天144个  10分钟一个  6个一小时
         return today0.add(passHour, 'hour').format('YYYY/MM/DD HH')
     }
-
-    else if(props.type == '9711wind') {
+    else if(props.type == '9711') {
         let today0 = dayjs('1997-08-16').startOf('day')
         let passHour = props.timeStep! * 6  //9711-wind是 6小时一个
-        return today0.add(passHour, 'hour').format('YYYY/MM/DD HH')
-    }
-    else if(props.type == '9711flow') {
-        let today0 = dayjs('1997-08-16').startOf('day')
-        let passHour = props.timeStep! * 1 //9711-flow 1小时一个
         return today0.add(passHour, 'hour').format('YYYY/MM/DD HH')
     }
     else if(props.type == '9711adwt'){
@@ -61,7 +55,7 @@ onMounted(() => {
 .timestep-shower {
     position: absolute;
     right: 4vw;
-    bottom: 32vh;
+    bottom: 28vh;
     z-index: 3;
 }
 

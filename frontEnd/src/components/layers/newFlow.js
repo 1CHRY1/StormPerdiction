@@ -223,7 +223,6 @@ export default class SteadyFlowLayer {
         this.progressRate.n = 0
         this.startPoint = this.timePointParser(this.uvUrlList[0])
         this.endPoint = this.timePointParser(this.uvUrlList[this.uvUrlList.length - 1])
-        console.log(`FLOW-TIME: ${this.startPoint} -> ${this.endPoint}`)
 
         await addVoronoiBindingSync(this.uvUrlList[x]); this.swapVoronoiBinding()
         await addVoronoiBindingSync(this.uvUrlList[next]); this.swapVoronoiBinding()
@@ -554,7 +553,7 @@ export default class SteadyFlowLayer {
     } 
 
     idle() {
-
+        if(this.trajectoryPipeline)
         this.trajectoryPipeline.executable = false
 
         // this.isIdling = true
@@ -570,7 +569,7 @@ export default class SteadyFlowLayer {
     }
 
     restart() {
-
+        if(this.trajectoryPipeline)
         this.trajectoryPipeline.executable = true
 
         // this.preheat = 10

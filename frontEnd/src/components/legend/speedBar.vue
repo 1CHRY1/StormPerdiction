@@ -59,16 +59,11 @@ const handleClick = (e) => {
     emits('speedValue',Math.ceil(selectedValue.value * props.maxSpeed))
 }
 
-watch(props,(v)=>{
-    const totalWidth = bar.value.clientWidth
-    const x = Math.ceil(props.nowSpeed / props.maxSpeed * totalWidth)
-    Pos.value = `left: ${x}px`
-})
-
 onMounted(()=>{
-    const totalWidth = bar.value.clientWidth
+    const totalWidth = 8 //vw
     const x = Math.ceil(props.nowSpeed / props.maxSpeed * totalWidth)
-    Pos.value = `left: ${x}px`
+    console.log(x);
+    Pos.value = `left: ${x}vw`
 })
 
 </script>

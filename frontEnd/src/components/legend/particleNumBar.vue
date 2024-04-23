@@ -11,7 +11,7 @@
 </template>
 
 <script setup>
-import { ref, watch, onMounted } from 'vue';
+import { ref, watch, onMounted, nextTick } from 'vue';
 
 const bar = ref()
 const Pos = ref("left: 0")
@@ -57,16 +57,11 @@ const handleClick = (e) => {
     selectedValue.value = x / w//0-1
     emits('particleNumValue', Math.ceil(selectedValue.value * props.maxParticleNum))
 }
-
-watch(props, (v) => {
-    const totalWidth = bar.value.clientWidth
-    const x = Math.floor(v.nowParticleNum / v.maxParticleNum * totalWidth)
-    Pos.value = `left: ${x}px`
-})
 onMounted(() => {
-    const totalWidth = bar.value.clientWidth
+    const totalWidth = 8 //vw
     const x = Math.ceil(props.nowParticleNum / props.maxParticleNum * totalWidth)
-    Pos.value = `left: ${x}px`
+    console.log(x);
+    Pos.value = `left: ${x}vw`
 })
 
 </script>
@@ -81,10 +76,11 @@ onMounted(() => {
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
-    background-color: rgb(65,65,65);
+    background-color: rgb(65, 65, 65);
     border-radius: 1vh;
 }
-.tt{
+
+.tt {
     color: white;
     font-size: calc(0.6vh + 0.6vw);
     margin-right: 1vw;

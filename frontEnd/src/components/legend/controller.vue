@@ -1,6 +1,6 @@
 <template>
     <div class="controller">
-        <div class="header">控制面板</div>
+        <div class="header">流线控制</div>
         <div class="content">
             <particleNumBar :nowParticleNum="nowParticleNum" :maxParticleNum="maxParticleNum"
                 @particle-num-value="getParticleNumValue"></particleNumBar>
@@ -74,7 +74,7 @@ const getSpeedValue = (e) => {
     text-align: center;
     line-height: 4vh;
     color: white;
-    background-color: rgb(80, 104, 119)
+    background-color: rgb(62,103,148)
 }
 
 .content {
