@@ -1,18 +1,25 @@
 <script setup lang="ts">
-import { Ref, computed, ref } from 'vue'
+import { Ref, computed, ref, onMounted } from 'vue'
 import { useStationStore } from '../../store/stationStore'
 import AccuracyGraph from './AccuracyGraph.vue'
-import { getStationInfo } from './api'
+import { getStationInfo, getAccurateAssessmentTable } from './api'
 import { IAccurateAssessmentTableRow } from './type'
 import { generateTreeDataOfStation } from './util'
+import { Tree } from './type'
 
 const activeName = ref('graph')
 const stationStore = useStationStore()
-const treeData = generateTreeDataOfStation()
 const stationInfo = computed(() =>
   getStationInfo(stationStore.currentStationID as any),
 )
+const treeData = ref<Tree[]>([])
 const stationTable: Ref<IAccurateAssessmentTableRow[] | null> = ref(null)
+
+onMounted(async () => {
+  stationTable.value = await getAccurateAssessmentTable()
+  treeData.value = await generateTreeDataOfStation();
+})
+
 </script>
 
 <template>

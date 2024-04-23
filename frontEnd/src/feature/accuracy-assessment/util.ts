@@ -1,13 +1,14 @@
 import * as echarts from 'echarts'
 import mapbox from 'mapbox-gl'
 import { Ref } from 'vue'
-import { stationInfo } from '../../asset/stationInfo'
-import { generateStationGeoJson } from '../../util/getStation'
+// import { stationInfo } from '../../asset/stationInfo'
+import { generateStationGeoJson, generateStationJson } from '../../util/getStation'
 import { IStationInfo, ITideSituation, Tree } from './type'
 
-export const generateTreeDataOfStation = (): Tree[] => {
+export const generateTreeDataOfStation = async (): Promise<Tree[]> => {
+  const stationInfo = await generateStationJson()
   const data: Tree[] = Object.entries(stationInfo).map((value) => ({
-    id: value[0],
+    id: value[1].id,
     label: value[1].name,
   }))
 

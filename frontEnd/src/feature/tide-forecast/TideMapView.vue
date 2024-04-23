@@ -19,7 +19,11 @@ import { addLayer } from './util'
 import flowLegend from '../../components/legend/flowLegend.vue'
 import timestepCounter from '../../components/legend/timestepCounter.vue'
 import axios from 'axios'
+import TideGraph from './TideGraph.vue'
 
+const isPopup: Ref<boolean> = ref(false)
+const x: Ref<number> = ref(0)
+const y: Ref<number> = ref(0)
 const radio: Ref<HTMLDivElement | null> = ref(null)
 const radio2: Ref<HTMLDivElement | null> = ref(null)
 const mapStore = useMapStore()
@@ -313,7 +317,32 @@ onMounted(async () => {
       }
     }
   })
+
+  map.on('mousemove', 'stations', (event: mapbox.MapMouseEvent) => {
+    const box: [[number, number], [number, number]] = [
+      [event.point.x - 3, event.point.y - 3],
+      [event.point.x + 3, event.point.y + 3],
+    ]
+
+    if (map.getLayer('stations')) {
+      const stations = map.queryRenderedFeatures(box, {
+        layers: ['stations'],
+      })
+      if (stations && stations[0]) {
+        const id = stations[0].properties!.id as string
+        stationStore.currentStationID = id
+        isPopup.value = true
+        x.value = event.point.x
+        y.value = event.point.y
+      }
+    }
+  })
+
+  map.on('mouseleave', 'stations', () => {
+    isPopup.value = false
+  })
 })
+
 </script>
 
 <template>
@@ -358,6 +387,17 @@ onMounted(async () => {
     :type="'normal'"
     >
   </timestepCounter>
+
+  <div
+      class="absolute w-[500px] h-[400px] bg-white bg-opacity-70 p-2 rounded border border-black"
+      :style="{
+        zIndex: isPopup ? '10' : '-10',
+        top: `${y - 450}px`,
+        left: `${x - 350}px`,
+      }"
+    >
+      <TideGraph v-model="isPopup" class="bg-blue-300 bg-opacity-30"></TideGraph>
+    </div>
 </template>
 
 <style scoped>

@@ -5,12 +5,13 @@ import { useStationStore } from '../../store/stationStore'
 import { getStationInfo, getStationPredictionTideSituation } from './api'
 import { ITideSituation } from './type'
 import { drawEcharts, generateTreeDataOfStation, initEcharts } from './util'
+import { Tree } from './type'
 
 let echart: echarts.ECharts | null = null
 const echartsRef = ref()
 const activeName = ref('graph')
 const stationStore = useStationStore()
-const treeData = generateTreeDataOfStation()
+const treeData = ref<Tree[]>([])
 const waterSituationData: Ref<ITideSituation | null> = ref(null)
 const stationInfo = computed(() =>
   getStationInfo(stationStore.currentStationID as any),
@@ -67,6 +68,7 @@ watch(stationStore, async () => {
 })
 
 onMounted(async () => {
+  treeData.value = await generateTreeDataOfStation();
   waterSituationData.value = await getStationPredictionTideSituation(
     stationStore.currentStationID as any,
   )

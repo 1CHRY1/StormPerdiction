@@ -7,12 +7,12 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://172.21.212.165:9989/api',
+        target: 'http://localhost:9989/api',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },
       '/testapi':{
-        target: 'http://172.21.212.165:9989/api/v1/data/nc/field',
+        target: 'http://localhost:9989/api/v1/data/nc/field',
         changeOrigin: true,
         secure:false,
         rewrite: (path) => path.replace(/^\/testapi/, ''),

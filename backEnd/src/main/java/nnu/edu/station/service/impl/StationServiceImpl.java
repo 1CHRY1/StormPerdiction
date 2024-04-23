@@ -2,6 +2,7 @@ package nnu.edu.station.service.impl;
 
 import com.alibaba.fastjson2.JSONObject;
 import nnu.edu.station.common.utils.FileUtil;
+import nnu.edu.station.common.utils.ListUtil;
 import nnu.edu.station.dao.level.StationMapper;
 import nnu.edu.station.service.StationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,6 +70,11 @@ public class StationServiceImpl implements StationService {
     public Map<String,Object> getStationByNameAndTime(String station) {
         // 获取某站点当天时间的数据
         String localTime = getLocalTimeStr();
-        return stationMapper.getStationByNameAndTime(station, localTime);
+        Map<String, Object> obj = ListUtil.StringObj2ArrayObj(stationMapper.getStationByNameAndTime(station, localTime));
+        if (obj == null) {
+            localTime = getLocalTimeBeforeStr(1);
+            obj = ListUtil.StringObj2ArrayObj(stationMapper.getStationByNameAndTime(station, localTime));
+        }
+        return obj;
     }
 }

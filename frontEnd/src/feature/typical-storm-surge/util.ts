@@ -9,6 +9,7 @@ import {
   IStormTableRow,
   Tree,
 } from './type'
+import { tr } from 'element-plus/es/locales.mjs'
 
 export const getStormData = async (
   stormType: '199711',
@@ -326,17 +327,156 @@ export const drawEcharts = async (
         },
       },
     ],
-    dataZoom: [
+    series: [
       {
-        type: 'inside',
-        start: 0,
-        end: 100,
-        xAxisIndex: [0, 1],
+        name: '天文潮位',
+        type: 'line',
+        smooth: true,
+        data: waterSituationData.hpre,
       },
       {
-        start: 0,
-        end: 100,
-        xAxisIndex: [0, 1],
+        name: '总潮位',
+        type: 'line',
+        smooth: true,
+        data: waterSituationData.hyubao,
+      },
+      {
+        name: '台风增水',
+        type: 'line',
+        smooth: true,
+        data: waterSituationData.hadd,
+        yAxisIndex: 1,
+        xAxisIndex: 1,
+      },
+    ],
+  }
+  if (!isValid) {
+    option.graphic = {
+      type: 'text', // 类型：文本
+      left: 'center',
+      top: 'middle',
+      silent: true, // 不响应事件
+      invisible: waterSituationData.hpre.length > 0, // 有数据就隐藏
+      style: {
+        fill: '#9d9d9d',
+        fontWeight: 'bold',
+        text: '该时间段暂无数据',
+        fontFamily: 'Microsoft YaHei',
+        fontSize: '25px',
+      },
+    }
+  }
+  option && echart.setOption(option)
+}
+
+export const drawEcharts_cover = async (
+  echart: echarts.ECharts,
+  waterSituationData: IHistoryTide,
+  stationInfo: IStationInfo,
+  isValid: boolean,
+  isPopup: boolean,
+) => {
+  type EChartsOption = echarts.EChartsOption
+  const tideMin = Math.min(
+    ...waterSituationData.hpre,
+    ...waterSituationData.hyubao,
+  )
+  const tideMax = Math.max(
+    ...waterSituationData.hpre,
+    ...waterSituationData.hyubao,
+  )
+  const tideRange = tideMax - tideMin
+  const haddMin = Math.min(...waterSituationData.hadd)
+  const haddMax = Math.max(...waterSituationData.hadd)
+  const haddRange = haddMax - haddMin
+  const option: EChartsOption = {
+    title:
+    {
+      text: `${stationInfo.name}站点${stationInfo.time}历史潮位`,
+      top: '1%',
+      textStyle: {
+        color: 'hsl(220, 50%, 50%)',
+        fontSize: 15,
+      },
+    },
+    tooltip:isPopup
+    ? undefined
+    : {
+      trigger: 'axis',
+    },
+    legend: {
+      data: ['天文潮位', '总潮位', '台风增水'],
+      right: '15%',
+      top: '8%',
+    },
+    grid: [
+      {
+        left: 60,
+        right: 50,
+        top: '20%',
+        height: '30%',
+      },
+      {
+        left: 60,
+        right: 50,
+        top: '65%',
+        height: '30%',
+      },
+    ],
+    toolbox: {
+      feature: {
+        dataZoom: {
+          yAxisIndex: 'none',
+        },
+        saveAsImage: {},
+      },
+    },
+    axisPointer: {
+      link: [
+        {
+          xAxisIndex: 'all',
+        },
+      ],
+    },
+    xAxis: [
+      {
+        type: 'category',
+        boundaryGap: false,
+        data: waterSituationData.time,
+        axisLabel: {
+          padding: [15, 0, 0, 50],
+        },
+      },
+      {
+        gridIndex: 1,
+        data: waterSituationData.time,
+        axisLabel: {
+          show: false,
+        },
+        position: 'top',
+      },
+    ],
+    yAxis: [
+      {
+        type: 'value',
+        min: tideMin - tideRange * 0.05,
+        max: tideMax + tideRange * 0.05,
+        axisLabel: {
+          formatter: function (value: number) {
+            return value.toFixed(2)
+          },
+        },
+      },
+      {
+        type: 'value',
+        gridIndex: 1,
+        min: haddMin - haddRange * 0.05,
+        max: haddMax + haddRange * 0.05,
+        axisLabel: {
+          formatter: function (value: number) {
+            return value.toFixed(2)
+          },
+        },
       },
     ],
     series: [

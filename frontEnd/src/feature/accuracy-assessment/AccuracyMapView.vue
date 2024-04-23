@@ -5,7 +5,7 @@ import { Ref, onMounted, ref } from 'vue'
 import { router } from '../../router'
 import { useStationStore } from '../../store/stationStore'
 import { initMap } from '../../util/initMap'
-import AccuracyGraph from './AccuracyGraph.vue'
+// import AccuracyGraph from './AccuracyGraph.vue'
 import { addLayer } from './util'
 
 const stationStore = useStationStore()
@@ -70,16 +70,16 @@ onMounted(async () => {
 
 <template>
   <div class="relative h-full w-full">
-    <div
-      class="absolute w-[300px] h-[200px] bg-white p-2 rounded"
+    <!-- <div
+      class="absolute w-[500px] h-[400px] bg-white bg-opacity-20 p-2 rounded border border-black"
       :style="{
         zIndex: isPopup ? '10' : '-10',
-        top: `${y - 250}px`,
-        left: `${x - 150}px`,
+        top: `${y - 450}px`,
+        left: `${x - 350}px`,
       }"
     >
-      <AccuracyGraph v-model="isPopup"></AccuracyGraph>
-    </div>
+      <AccuracyGraph v-model="isPopup" class="bg-blue-300 bg-opacity-30"></AccuracyGraph>
+    </div> -->
     <div ref="mapContainerRef" class="map-container h-full w-full" />
   </div>
 </template>

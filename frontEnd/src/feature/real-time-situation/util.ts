@@ -117,6 +117,97 @@ export const drawEcharts = async (
   option && echart.setOption(option)
 }
 
+export const drawEcharts_cover = async (
+  echart: echarts.ECharts,
+  waterSituationData: IRealTideSituation,
+  info: IStationInfo,
+  isValid: boolean,
+  isPopup: boolean,
+) => {
+  const min = Math.min(...waterSituationData.hpre)
+  const max = Math.max(...waterSituationData.hpre)
+  const range = max - min
+  type EChartsOption = echarts.EChartsOption
+  const option: EChartsOption = {
+    title: {
+      text: `${info.name}站点 ${info.time} 实时潮位图`,
+      top: "1%",
+      textStyle: {
+        color: 'hsl(220, 50%, 50%)',
+        fontSize: 15,
+      },
+    },
+    tooltip: isPopup
+    ? undefined
+    : {
+      trigger: 'axis',
+    },
+    legend: {
+      data: [info.name],
+      right: '15%',
+      top: '8%',
+    },
+    grid: {
+      left: '3%',
+      right: '4%',
+      bottom: '10%',
+      containLabel: true,
+    },
+    toolbox: {
+      feature: {
+        dataZoom: {
+          yAxisIndex: 'none',
+        },
+        saveAsImage: {},
+      },
+    },
+    xAxis: {
+      type: 'category',
+      boundaryGap: false,
+      data: waterSituationData.time,
+      axisLabel: {
+        padding: [0, 0, 0, 50],
+      },
+    },
+    yAxis: {
+      type: 'value',
+      min: Math.ceil(min - 1),
+      max: Math.floor(max + 1),
+      axisLabel: {
+        formatter: function (value: number) {
+          return value.toFixed(2)
+        },
+      },
+    },
+    series: [
+      {
+        name: info.name,
+        type: 'line',
+        smooth: true,
+        data: waterSituationData.hpre,
+        connectNulls: true,
+      },
+    ],
+  }
+  if (!isValid) {
+    option.graphic = {
+      type: 'text', // 类型：文本
+      left: 'center',
+      top: 'middle',
+      silent: true, // 不响应事件
+      invisible: waterSituationData.hpre.length > 0, // 有数据就隐藏
+      style: {
+        fill: '#9d9d9d',
+        fontWeight: 'bold',
+        text: '该时间段暂无数据',
+        fontFamily: 'Microsoft YaHei',
+        fontSize: '25px',
+      },
+    }
+  }
+  option && echart.setOption(option)
+}
+
 export const addLayer = async (map: mapbox.Map) => {
   const geojson = await generateStationGeoJson()
   map.addSource('stations', {

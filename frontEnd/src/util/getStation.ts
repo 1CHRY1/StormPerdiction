@@ -1,3 +1,5 @@
+import { stationInfo } from '../asset/stationInfo.ts'
+
 const getStation = async () => {
   const stationList = (await fetch('/api/v1/data/station/today')
     .then((res) => res.json())
@@ -22,4 +24,13 @@ export const generateStationGeoJson = async () => {
   )
 
   return result
+}
+
+export const generateStationJson = async () => {
+  const stationList = await getStation()
+  const result = Object.values(stationInfo).filter(
+    (value: any) => stationList.includes(value.pinyin)
+  );
+  
+  return result;
 }
