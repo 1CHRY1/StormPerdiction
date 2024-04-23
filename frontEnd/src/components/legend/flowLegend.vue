@@ -32,11 +32,10 @@ const getValue = () => {
         }
     }
     else if (props.desc === '流速(m/s)') {
-        console.log('111');
         if (props.maxSpeed) {
             let maxSpeed = props.maxSpeed
             if (maxSpeed > 3) {
-                maxSpeed = 3 + Math.random() * 1
+                maxSpeed = 3 + Math.random() * 0.5
             }
             for (let i = 0; i < 8; i++) {
                 value[7 - i] = (maxSpeed / 8 * (i)).toFixed(2)
