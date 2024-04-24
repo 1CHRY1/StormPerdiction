@@ -51,7 +51,7 @@ const path = computed(() => route.path)
       </template>
       <el-menu-item index="/real-time-situation/map"
         ><router-link to="/real-time-situation/map"
-          >地图底图</router-link
+          >站点选择</router-link
         ></el-menu-item
       >
       <el-menu-item index="/real-time-situation/data"
@@ -67,7 +67,7 @@ const path = computed(() => route.path)
       </template>
       <el-menu-item index="/tide-forecast/map"
         ><router-link to="/tide-forecast/map"
-          >地图底图</router-link
+          >站点选择</router-link
         ></el-menu-item
       >
       <el-menu-item index="/tide-forecast/data"
@@ -83,7 +83,7 @@ const path = computed(() => route.path)
       </template>
       <el-menu-item index="/accuracy-assessment/map"
         ><router-link to="/accuracy-assessment/map"
-          >地图底图</router-link
+          >站点选择</router-link
         ></el-menu-item
       >
       <el-menu-item index="/accuracy-assessment/data"
@@ -99,7 +99,7 @@ const path = computed(() => route.path)
       </template>
       <el-menu-item index="/typical-storm-surge/map"
         ><router-link to="/typical-storm-surge/map"
-          >地图底图</router-link
+          >站点选择</router-link
         ></el-menu-item
       >
       <el-menu-item index="/typical-storm-surge/data"

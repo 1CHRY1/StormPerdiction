@@ -82,15 +82,28 @@ public class LevelServiceImpl implements LevelService {
         LocalDateTime threeDaysAgo = currentTime.minusDays(3);
         JSONObject jsonResponse = new JSONObject();
         if (name.equals("江阴") || name.equals("徐六泾") || name.equals("连兴港") || name.equals("六滧")){
-            url = url_time + "/" + threeDaysAgo.atZone(ZoneOffset.UTC).toInstant().getEpochSecond() + "/" + currentTime.atZone(ZoneOffset.UTC).toInstant().getEpochSecond();
+            url = url_time + "/" + threeDaysAgo.atZone(ZoneOffset.UTC).toInstant().getEpochSecond()*1000 + "/" + currentTime.atZone(ZoneOffset.UTC).toInstant().getEpochSecond()*1000;
             jsonResponse = HttpUtil.GetRealData4Station(url);
+            // 获取实时监测数据
+            JSONArray realDataList = (JSONArray) jsonResponse.get("data");
+            if (realDataList == null) {
+                return null;
+            }
+            else {
+                return ListUtil.realDataProcessingV2(realDataList);
+            }
         } else {
             url = url_time + "/" + name + "/" + threeDaysAgo + "/" + currentTime;
             jsonResponse = HttpUtil.GetRealData(url);
+            // 获取实时监测数据
+            JSONArray realDataList = (JSONArray) jsonResponse.get("data");
+            if (realDataList == null) {
+                return null;
+            }
+            else {
+                return ListUtil.realDataProcessing(realDataList);
+            }
         }
-        // 获取实时监测数据
-        JSONArray realDataList = (JSONArray) jsonResponse.get("data");
-        return ListUtil.realDataProcessing(realDataList);
     }
 
     @Override
@@ -135,15 +148,10 @@ public class LevelServiceImpl implements LevelService {
     @Override
     public Map<String, Object> get72ByStation(String station) {
 //        LocalDateTime time = LocalDateTime.now().withYear(2023).withMonth(8).withDayOfMonth(30).withHour(0).withMinute(0).withSecond(0).withNano(0);
-        LocalDateTime time = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String time_str = time.format(formatter);
-        Integer ifTyph = ifTyph(time_str);
+        Integer ifTyph = ifTyph(getLocalTimeStr());
         // 若当天数据未更新，则获取前一天的数据
         if (ifTyph == null) {
-            time = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0).minusDays(1);
-            time_str = time.format(formatter);
-            ifTyph = ifTyph(time_str);
+            ifTyph = ifTyph(getLocalTimeBeforeStr(1));
         }
         try{
             if ( ifTyph == 1){
