@@ -6,7 +6,7 @@ import { ScratchMap } from '../components/layers/main'
 import * as scr from '../components/scratch/scratch'
 
 mapbox.accessToken =
-  'pk.eyJ1Ijoiam9obm55dCIsImEiOiJja2xxNXplNjYwNnhzMm5uYTJtdHVlbTByIn0.f1GfZbFLWjiEayI6hb_Qvg'
+  'pk.eyJ1IjoibnVqYWJlc2xvbyIsImEiOiJjbGp6Y3czZ2cwOXhvM3FtdDJ5ZXJmc3B4In0.5DCKDt0E2dFoiRhg3yWNRA'
 
 export const initMap = async (
   container: HTMLDivElement,
@@ -21,7 +21,7 @@ export const initMap = async (
   const map = (await new Promise((resolve) => {
     const map = new mapbox.Map({
       container,
-      style: 'mapbox://styles/johnnyt/clrldnfyk001f01q2092ndx2y',
+      style: 'mapbox://styles/nujabesloo/clvdqkwi600xf01rjha1k0etv',
       center,
       zoom,
       projection: 'mercator' as any,
@@ -43,31 +43,6 @@ export const initMap = async (
   return map
 }
 
-export const initScratchMap = async (mapdom: HTMLDivElement) => {
-
-  const GPUFrame = document.querySelector('#GPUFrame')
-
-  const map = (await new Promise((resolve) => {
-    scr.StartDash().then(() => {
-      let mapp = new ScratchMap({
-        style: 'mapbox://styles/johnnyt/clrldnfyk001f01q2092ndx2y',
-        center: [131, 30],
-        projection: 'mercator',
-        GPUFrame: GPUFrame,
-        container: mapdom,
-        antialias: true,
-        maxZoom: 18,
-        zoom: 3,
-      }).on('load', async () => {
-        resolve(mapp)
-      })
-    })
-  })) as mapbox.Map
-
-  useMapStore().map = map
-
-  return map
-}
 export const initScratchMap2 = async (mapdom: HTMLDivElement) => {
 
   const GPUFrame = document.querySelector('#GPUFrame')
@@ -75,7 +50,7 @@ export const initScratchMap2 = async (mapdom: HTMLDivElement) => {
   const map = (await new Promise((resolve) => {
     scr.StartDash().then(() => {
       let mapp = new ScratchMap({
-        style: 'mapbox://styles/johnnyt/clrldnfyk001f01q2092ndx2y',
+        style: 'mapbox://styles/nujabesloo/clvdqkwi600xf01rjha1k0etv',
         center: [120.55, 32.08],
         projection: 'mercator',
         GPUFrame: GPUFrame,
@@ -99,7 +74,7 @@ export const initScrMap = async (mapdom: HTMLDivElement, center: [number, number
   const map = (await new Promise((resolve) => {
     scr.StartDash().then(() => {
       let mapp = new ScratchMap({
-        style: 'mapbox://styles/johnnyt/clrldnfyk001f01q2092ndx2y',
+        style: 'mapbox://styles/nujabesloo/clvdqkwi600xf01rjha1k0etv',
         center,
         projection: 'mercator',
         GPUFrame: GPUFrame,
@@ -108,8 +83,6 @@ export const initScrMap = async (mapdom: HTMLDivElement, center: [number, number
         maxZoom: 18,
         zoom,
       }).on('load', async () => {
-        mapp.triggerRepaint()
-        mapp.triggerRepaint()
         mapp.triggerRepaint()
         resolve(mapp)
       })
@@ -128,10 +101,7 @@ export const initM = async (mapdom: HTMLDivElement) => {
   const map = (await new Promise((resolve) => {
     scr.StartDash().then(() => {
       let mapp = new ScratchMap({
-        style: 'mapbox://styles/mapbox/streets-v9',
-        // style: 'mapbox://styles/mapbox/dark-v11',
-        // style: 'mapbox://styles/johnnyt/clrldnfyk001f01q2092ndx2y',
-
+        style: 'mapbox://styles/nujabesloo/clvdqkwi600xf01rjha1k0etv',
         center: [120.55, 32.08],
         projection: 'mercator',
         GPUFrame: GPUFrame,
@@ -142,8 +112,6 @@ export const initM = async (mapdom: HTMLDivElement) => {
       }).on('load', async () => {
         resolve(mapp)
       })
-
-
     })
   })) as mapbox.Map
 

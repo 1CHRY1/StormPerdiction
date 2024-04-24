@@ -206,8 +206,8 @@ watch(selectedLayer, async (now: null | number, old: null | number) => {
       wind.show()
 
       mapStore.map!.flyTo({
-        center: [121.45, 31.38],
-        zoom: 5.18,
+        center: [121.45, 32.68],
+        zoom: 5.08,
         duration: 500,
       })
       break

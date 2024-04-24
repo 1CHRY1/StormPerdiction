@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import * as Scratch from './components/scratch/scratch'
 import Home from './page/Home.vue'
 
-Scratch.StartDash()
 </script>
 
 <template>
