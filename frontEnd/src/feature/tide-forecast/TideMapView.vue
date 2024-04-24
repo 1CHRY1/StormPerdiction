@@ -105,24 +105,26 @@ let windsrc = new Array(144)
 for(let i=0;i<144;i++){
   windsrc[i] = `/field/wind/bin?name=uv_${i}.bin`
 }
-let flowsrc = new Array(30)
+let flowsrc = new Array(144)
 for(let i=0;i<144;i++){
   flowsrc[i] = `/field/flow/bin?name=uv_${i}.bin`
 }
+// console.log(windsrc);
+// console.log(flowsrc);
 
 const wind = reactive(new lastFlow_mask(
   'wind',
-  '/ffvsrc/wind/station.bin',
+  '/field/wind/bin?name=station.bin',
   windsrc,
-  url => url.match(/uv_(\d+)\.bin/)[1],
+  (url:any) => url.match(/uv_(\d+)\.bin/)[1],
   '/ffvsrc/windBound.geojson',
 
 ))
 const flow = reactive(new lastFlow_mask(
   'flow',
-  '/ffvsrc/flow/station.bin',
+  '/field/flow/bin?name=station.bin',
   flowsrc,
-  url => url.match(/uv_(\d+)\.bin/)[1],
+  (url:any) => url.match(/uv_(\d+)\.bin/)[1],
   '/ffvsrc/flowbound2.geojson',
 ))
 flow.speedFactor.n = 3.0;
@@ -306,7 +308,7 @@ const text = computed(() => {
 onMounted(async () => {
 
   typh.value = (await axios.get(`/api/v1/data/level/typh`)).data.data
-  // typh.value = 1;
+  // typh.value = 0;
 
   const map: mapbox.Map = await initScratchMap2(mapContainerRef.value)
   ElMessage({
