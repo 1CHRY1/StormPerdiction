@@ -15,7 +15,7 @@ import {
 import { router } from '../../router'
 import { useMapStore } from '../../store/mapStore'
 import { useStationStore } from '../../store/stationStore'
-import { initScratchMap2 } from '../../util/initMap'
+import { initScrMap } from '../../util/initMap'
 import { addLayer } from './util'
 import flowLegend from '../../components/legend/flowLegend.vue'
 import timeShower from '../../components/legend/timeShower.vue'
@@ -304,7 +304,7 @@ onMounted(async () => {
   // typh.value = (await axios.get(`/api/v1/data/level/typh`)).data.data
   typh.value = 0;
 
-  const map: mapbox.Map = await initScratchMap2(mapContainerRef.value)
+  const map: mapbox.Map = await initScrMap(mapContainerRef.value!,[120.55, 32.08],6.5)
   ElMessage({
     message: '地图加载完毕',
     type: 'success',

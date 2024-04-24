@@ -94,6 +94,30 @@ export const initScratchMap2 = async (mapdom: HTMLDivElement) => {
   return map
 }
 
+export const initScrMap = async (mapdom: HTMLDivElement, center: [number, number],zoom: number) => {
+  const GPUFrame = document.querySelector('#GPUFrame')
+  const map = (await new Promise((resolve) => {
+    scr.StartDash().then(() => {
+      let mapp = new ScratchMap({
+        style: 'mapbox://styles/johnnyt/clrldnfyk001f01q2092ndx2y',
+        center,
+        projection: 'mercator',
+        GPUFrame: GPUFrame,
+        container: mapdom,
+        antialias: true,
+        maxZoom: 18,
+        zoom,
+      }).on('load', async () => {
+        resolve(mapp)
+      })
+    })
+  })) as mapbox.Map
+
+  useMapStore().map = map
+
+  return map
+}
+
 export const initM = async (mapdom: HTMLDivElement) => {
 
   const GPUFrame = document.querySelector('#GPUFrame')

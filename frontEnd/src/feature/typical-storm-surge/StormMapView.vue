@@ -13,7 +13,7 @@ import {
 import { router } from '../../router'
 import { useMapStore } from '../../store/mapStore';
 import { useStationStore } from '../../store/stationStore'
-import { initScratchMap } from '../../util/initMap'
+import { initScrMap } from '../../util/initMap'
 import flowLegend from '../../components/legend/flowLegend.vue'
 import { decimalToDMS } from './util'
 
@@ -338,7 +338,7 @@ onMounted(async () => {
   tableData.value = generateStormTableData(stormData.value)
   selectPointData.value = stormData.value!.dataList[Number(selectPointID.value)]
 
-  const map: mapboxgl.Map = await initScratchMap(mapContainerRef.value!)
+  const map: mapboxgl.Map = await initScrMap(mapContainerRef.value!,[131, 30],3)
   ElMessage({
     message: '地图加载完毕',
     type: 'success',
