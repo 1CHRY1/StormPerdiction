@@ -4,6 +4,7 @@ import 'mapbox-gl/dist/mapbox-gl.css'
 import { useMapStore } from '../store/mapStore'
 import { ScratchMap } from '../components/layers/main'
 import * as scr from '../components/scratch/scratch'
+import mapboxgl from 'mapbox-gl'
 
 mapbox.accessToken =
   'pk.eyJ1IjoibnVqYWJlc2xvbyIsImEiOiJjbGp6Y3czZ2cwOXhvM3FtdDJ5ZXJmc3B4In0.5DCKDt0E2dFoiRhg3yWNRA'
@@ -118,4 +119,15 @@ export const initM = async (mapdom: HTMLDivElement) => {
   useMapStore().map = map
 
   return map
+}
+
+export const testMap = (mapdom: HTMLDivElement, center: [number, number],zoom: number)=>{
+  return new mapboxgl.Map({
+    style: 'mapbox://styles/nujabesloo/clvdqkwi600xf01rjha1k0etv',
+    center,
+    container: mapdom,
+    antialias: true,
+    maxZoom: 18,
+    zoom,
+  })
 }
