@@ -392,6 +392,12 @@ const removeFieldResource = () => {
     mapStore.map.removeLayer('flow')
     mapStore.map.removeLayer('wind')
   }
+  flow.destroy()
+  wind.destroy()
+  flow = null
+  wind = null
+  console.log('destroy');
+  
 }
 onUnmounted(() => {
   removeFieldResource()

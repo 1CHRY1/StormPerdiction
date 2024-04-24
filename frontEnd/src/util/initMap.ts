@@ -110,11 +110,11 @@ export const initM = async (mapdom: HTMLDivElement) => {
         maxZoom: 18,
         zoom: 6.5,
       }).on('load', async () => {
+        console.log('map load');
         resolve(mapp)
       })
     })
   })) as mapbox.Map
-
   useMapStore().map = map
 
   return map

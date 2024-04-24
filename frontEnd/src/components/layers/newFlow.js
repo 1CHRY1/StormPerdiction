@@ -155,8 +155,8 @@ export default class SteadyFlowLayer {
         let addVoronoiBindingSync = async (url) => {
             
             this.nextPreparing = true
-            const res = await axios.get(url, { responseType: 'arraybuffer' })
-            const uvs = new Float32Array(res.data)
+            let res = await axios.get(url, { responseType: 'arraybuffer' })
+            let uvs = new Float32Array(res.data)
     
             let maxSpeed = -Infinity
             for (let i = 0; i < uvs.length; i += 2) {
@@ -173,6 +173,8 @@ export default class SteadyFlowLayer {
     
             this.nextPreparing = false
             this.nextPrepared = true
+            uvs = null
+            res = null
         }
 
         this.progress = 0
@@ -181,7 +183,6 @@ export default class SteadyFlowLayer {
         this.uvUrlList = resourceUrlList
         this.startPoint = this.timePointParser(this.uvUrlList[0])
         this.endPoint = this.timePointParser(this.uvUrlList[this.uvUrlList.length - 1])
-        console.log(`FLOW-TIME: ${this.startPoint} -> ${this.endPoint}`)
 
         await addVoronoiBindingSync(this.uvUrlList[0]); this.swapVoronoiBinding()
         await addVoronoiBindingSync(this.uvUrlList[1]); this.swapVoronoiBinding()
@@ -216,6 +217,8 @@ export default class SteadyFlowLayer {
     
             this.nextPreparing = false
             this.nextPrepared = true
+            res = null
+            uvs = null
         }
 
         this.progress = 0
@@ -688,6 +691,95 @@ export default class SteadyFlowLayer {
     get globalProgress() {
 
         return (this.currentResourcePointer + this.progressRate.n) / this.uvUrlList.length
+    }
+
+    destroy(){
+         // Layer
+         this.type = undefined
+         this.map = undefined
+         this.id = undefined
+         this.renderingMode = undefined
+ 
+         // Attributes
+         this.preheat = undefined
+         this.swapPointer = undefined
+         this.extent = undefined
+ 
+         // Resource
+         this.worker = undefined
+         this.uvUrlList = undefined
+         this.stationUrl = undefined
+ 
+         // Control
+         this.endPoint = undefined
+         this.progress = undefined
+         this.startPoint = undefined
+         this.framesPerPhase = undefined
+         this.maxSpeed = undefined
+         this.maxParticleNum = undefined
+         this.progressRate = undefined
+         this.currentResourcePointer = undefined
+         this.particleNum = undefined
+         this.speedFactor = undefined
+         this.timePointParser = undefined
+         this.randomSeed = undefined
+         // Compute
+         this.blockSizeX = undefined
+         this.blockSizeY = undefined
+         this.lastMvp = undefined
+         this.lastMvpInverse = undefined
+         this.groupSizeX = undefined
+         this.groupSizeY = undefined
+         this.randomFillData = undefined
+ 
+         // Buffer-related resource
+         this.toRef = undefined
+         this.fromRef = undefined
+         this.nextRef = undefined
+         this.uniformBuffer_frame = undefined
+         this.indexBuffer_voronoi = undefined
+         this.vertexBuffer_voronoi = undefined
+         this.uniformBuffer_static = undefined
+         this.storageBuffer_particle = undefined
+         this.particleRef = undefined
+ 
+         // Texture-related resource
+         this.flowTexture = undefined
+         this.depthTexture = undefined
+         this.layerTexture1 = undefined
+         this.layerTexture2 = undefined
+         this.copiedDepthTexture = undefined
+ 
+         // Binding
+         this.showBinding = undefined
+         this.layerBindings = undefined
+         this.voronoiBinding = undefined
+         this.segmentBinding = undefined
+         this.voronoiToBinding = undefined
+         this.simulationBinding = undefined
+         this.trajectoryBindings = undefined
+ 
+         // Pipeline
+         this.showPipeline = undefined
+         this.layerPipeline = undefined
+         this.voronoiPipeline = undefined
+         this.segmentPipeline = undefined
+         this.trajectoryPipeline = undefined
+         this.simulationPipeline = undefined
+ 
+         // Pass
+         this.swapPasses = undefined
+         this.voronoiPass = undefined
+         this.simulationPass = undefined
+ 
+         // Flag
+         this.isHided = undefined
+         this.isIdling = undefined
+         this.showArrow = undefined
+         this.showVoronoi = undefined
+         this.nextPrepared = undefined
+         this.isInitialized = undefined
+         this.nextPreparing = undefined
     }
 }
 

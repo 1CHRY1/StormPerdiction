@@ -87,23 +87,23 @@ const routes: RouteRecordRaw[] = [
       },
     ],
   },
-  {
-    path: '/tide-forecast',
-    children: [
-      {
-        path: 'map',
-        name: 'TideMapView',
-        component: TideMapView,
-        meta: { index: 3 },
-      },
-      {
-        path: 'data',
-        name: 'TideDetail',
-        component: TideDetail,
-        meta: { index: 3 },
-      },
-    ],
-  },
+  // {
+  //   path: '/tide-forecast',
+  //   children: [
+  //     {
+  //       path: 'map',
+  //       name: 'TideMapView',
+  //       component: TideMapView,
+  //       meta: { index: 3 },
+  //     },
+  //     {
+  //       path: 'data',
+  //       name: 'TideDetail',
+  //       component: TideDetail,
+  //       meta: { index: 3 },
+  //     },
+  //   ],
+  // },
   {
     path: '/accuracy-assessment',
     children: [
@@ -121,40 +121,40 @@ const routes: RouteRecordRaw[] = [
       },
     ],
   },
-  {
-    path: '/typical-storm-surge',
-    children: [
-      {
-        path: 'map',
-        name: 'StormMapView',
-        component: StormMapView,
-        meta: { index: 5 },
-      },
-      {
-        path: 'data',
-        name: 'StormDetail',
-        component: StormDetail,
-        meta: { index: 5 },
-      },
-    ],
-  },
-  {
-    path: '/model',
-    children: [
-      {
-        path: 'map',
-        name: 'ModelMapView',
-        component: ModelMapView,
-        meta: { index: 6 },
-      },
-      {
-        path: 'data',
-        name: 'ModelDetail',
-        component: ModelDetail,
-        meta: { index: 6 },
-      },
-    ],
-  },
+  // {
+  //   path: '/typical-storm-surge',
+  //   children: [
+  //     {
+  //       path: 'map',
+  //       name: 'StormMapView',
+  //       component: StormMapView,
+  //       meta: { index: 5 },
+  //     },
+  //     {
+  //       path: 'data',
+  //       name: 'StormDetail',
+  //       component: StormDetail,
+  //       meta: { index: 5 },
+  //     },
+  //   ],
+  // },
+  // {
+  //   path: '/model',
+  //   children: [
+  //     {
+  //       path: 'map',
+  //       name: 'ModelMapView',
+  //       component: ModelMapView,
+  //       meta: { index: 6 },
+  //     },
+  //     {
+  //       path: 'data',
+  //       name: 'ModelDetail',
+  //       component: ModelDetail,
+  //       meta: { index: 6 },
+  //     },
+  //   ],
+  // },
 ]
 
 const router = createRouter({
