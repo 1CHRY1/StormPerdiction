@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ElMessage } from 'element-plus'
 import 'mapbox-gl/dist/mapbox-gl.css'
-import { Ref, onMounted, ref, watch, reactive, watchEffect, onUnmounted,onBeforeUnmount } from 'vue'
+import { Ref, onMounted, ref, watch, reactive, watchEffect, onUnmounted, onBeforeUnmount } from 'vue'
 import {
   addWaterLayer,
   addWaterLayer2,
@@ -132,7 +132,7 @@ const adwtHandler = async (addwaterCount: number, swapTag: number) => {
     return [maxAdd, minAdd]
   }
   addRangeRef.value = getAddRange(contourDATA.value)
-  
+
 
   timeStep.value = timeStep.value + 1
 
@@ -338,7 +338,8 @@ onMounted(async () => {
   tableData.value = generateStormTableData(stormData.value)
   selectPointData.value = stormData.value!.dataList[Number(selectPointID.value)]
 
-  const map: mapboxgl.Map = await initScrMap(mapContainerRef.value!,[131, 30],3)
+  const map: mapboxgl.Map = await initScrMap(mapContainerRef.value!, [131, 30], 3)
+
   ElMessage({
     message: '地图加载完毕',
     type: 'success',
@@ -427,7 +428,7 @@ const flowProgress_flow = ref(0)
 const flowProgress_wind = ref(0)
 const timeStep = ref(0)
 
-watchEffect(async() => {
+watchEffect(async () => {
   //progress
   let progress_flow = flow.currentResourcePointer / flow.uvUrlList.length
   flowProgress_flow.value = Math.floor(progress_flow * 100)
@@ -441,10 +442,10 @@ watchEffect(async() => {
   flowProgress_wind.value = Math.floor(progress_wind * 100)
 
   //both
-  if(selectedLayer.value === 0)
-      timeStep.value = wind.currentResourcePointer
-  else if(selectedLayer.value === 1)
-      timeStep.value = flow.currentResourcePointer
+  if (selectedLayer.value === 0)
+    timeStep.value = wind.currentResourcePointer
+  else if (selectedLayer.value === 1)
+    timeStep.value = flow.currentResourcePointer
 
 })
 
@@ -591,16 +592,13 @@ const getSpeedValue_wind = (e) => {
       </div>
     </div>
   </div>
-  <div
-      class="absolute w-[500px] h-[400px] bg-white bg-opacity-70 p-2 rounded border border-black"
-      :style="{
-        zIndex: isPopup ? '10' : '-10',
-        top: `${y - 450}px`,
-        left: `${x - 350}px`,
-      }"
-    >
-      <StormGraph v-model="isPopup" class="bg-blue-300 bg-opacity-30"></StormGraph>
-    </div>
+  <div class="absolute w-[500px] h-[400px] bg-white bg-opacity-70 p-2 rounded border border-black" :style="{
+          zIndex: isPopup ? '10' : '-10',
+          top: `${y - 450}px`,
+          left: `${x - 350}px`,
+      }">
+    <StormGraph v-model="isPopup" class="bg-blue-300 bg-opacity-30"></StormGraph>
+  </div>
 </template>
 
 <style scoped>
@@ -632,7 +630,8 @@ const getSpeedValue_wind = (e) => {
   z-index: 3;
 
 }
-.controller{
+
+.controller {
   position: absolute;
   left: 2vw;
   top: 2vh;

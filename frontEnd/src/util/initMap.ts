@@ -108,6 +108,9 @@ export const initScrMap = async (mapdom: HTMLDivElement, center: [number, number
         maxZoom: 18,
         zoom,
       }).on('load', async () => {
+        mapp.triggerRepaint()
+        mapp.triggerRepaint()
+        mapp.triggerRepaint()
         resolve(mapp)
       })
     })
