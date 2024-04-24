@@ -2,7 +2,7 @@
 import { ElMessage } from 'element-plus'
 import mapbox from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
-import { Ref, computed, onMounted, ref, watch, reactive, watchEffect, onUnmounted } from 'vue'
+import { Ref, computed, onMounted, ref, watch, reactive, watchEffect, onUnmounted, onBeforeUnmount } from 'vue'
 import {
   addWaterLayer,
   addWaterLayer2,
@@ -20,7 +20,6 @@ import { addLayer } from './util'
 import flowLegend from '../../components/legend/flowLegend.vue'
 import timeShower from '../../components/legend/timeShower.vue'
 import controller from '../../components/legend/controller.vue'
-import axios from 'axios'
 import TideGraph from './TideGraph.vue'
 
 const isPopup: Ref<boolean> = ref(false)
@@ -102,44 +101,40 @@ const adwtHandler = async (addwaterCount: number, swapTag: number) => {
 // }
 //back
 let windsrc = new Array(144)
-for(let i=0;i<144;i++){
+for (let i = 0; i < 144; i++) {
   windsrc[i] = `/field/wind/bin?name=uv_${i}.bin`
 }
 let flowsrc = new Array(144)
-for(let i=0;i<144;i++){
+for (let i = 0; i < 144; i++) {
   flowsrc[i] = `/field/flow/bin?name=uv_${i}.bin`
 }
-const wind = reactive(new lastFlow_mask(
+let wind = reactive(new lastFlow_mask(
   'wind',
   // '/ffvsrc/wind/station.bin', //front
   '/field/wind/bin?name=station.bin',
   windsrc,
-  (url:any) => url.match(/uv_(\d+)\.bin/)[1],
+  (url: any) => url.match(/uv_(\d+)\.bin/)[1],
   '/ffvsrc/windBound.geojson',
 
 ))
-const flow = reactive(new lastFlow_mask(
+let flow = reactive(new lastFlow_mask(
   'flow',
   // '/ffvsrc/flow/station.bin', //front
   '/field/flow/bin?name=station.bin',
   flowsrc,
-  (url:any) => url.match(/uv_(\d+)\.bin/)[1],
+  (url: any) => url.match(/uv_(\d+)\.bin/)[1],
   '/ffvsrc/flowbound2.geojson',
 ))
 flow.speedFactor.n = 3.0;
 
 
-const flowTimeStepRef: Ref<Number> = ref(0)
 const flowMaxSpeedRef: Ref<Number> = ref(0)
-const windTimeStepRef: Ref<Number> = ref(0)
 const windMaxSpeedRef: Ref<Number> = ref(0)
 const addRangeRef: Ref<Array<Number>> = ref([0, 0])
 const adwtidRef: Ref<Number> = ref(0)
 
 watchEffect(() => {
-  flowTimeStepRef.value = flow.currentResourceUrl;
   flowMaxSpeedRef.value = flow.maxSpeed.n;
-  windTimeStepRef.value = wind.currentResourceUrl
   windMaxSpeedRef.value = wind.maxSpeed.n;
 })
 
@@ -289,8 +284,8 @@ const closeHandeler = () => {
 
   selectedLayer.value = null
 
-  if (radio2.value) radio2!.value!.checked = false
-  radio.value.forEach((element) => {
+  if (radio2.value) { (radio2!.value! as any).checked = false }
+  (radio.value as any).forEach((element: any) => {
     element.checked = false
   })
 
@@ -314,9 +309,9 @@ onMounted(async () => {
     message: '地图加载完毕',
     type: 'success',
   })
-  map.addLayer(wind)
+  map.addLayer(wind as mapboxgl.AnyLayer)
   wind.hide()
-  map.addLayer(flow)
+  map.addLayer(flow as mapboxgl.AnyLayer)
   flow.hide()
 
   window.addEventListener('keydown', (e) => {
@@ -392,11 +387,19 @@ onMounted(async () => {
 })
 
 
+const removeFieldResource = () => {
+  if (mapStore.map) {
+    mapStore.map.removeLayer('flow')
+    mapStore.map.removeLayer('wind')
+  }
+}
 onUnmounted(() => {
-  closeHandeler()
-  window.location.reload()
+  removeFieldResource()
+  mapStore.map!.remove()
 })
-
+onBeforeUnmount(() => {
+  closeHandeler()
+})
 ///////controller 
 const flowProgress_flow = ref(0)
 const flowProgress_wind = ref(0)
@@ -460,15 +463,15 @@ const getSpeedValue_wind = (e) => {
           <input ref="radio" type="radio" name="option" :value="opt.value" />
           <div class="radio-circle" @click="selectedLayer = opt.value"></div>
           <span class="radio-label" @click="selectedLayer = opt.value">{{
-        opt.label
-      }}</span>
+            opt.label
+          }}</span>
         </label>
         <label v-show="typh" class="radio-button">
           <input ref="radio2" type="radio" name="option" :value="optt.value" />
           <div class="radio-circle" @click="selectedLayer = optt.value"></div>
           <span class="radio-label" @click="selectedLayer = optt.value">{{
-        optt.label
-      }}</span>
+            optt.label
+          }}</span>
         </label>
       </div>
     </div>
@@ -478,14 +481,14 @@ const getSpeedValue_wind = (e) => {
   </div>
 
   <flowLegend v-show="selectedLayer == 1 || selectedLayer == 0 || selectedLayer == 2"
-    :max-speed="selectedLayer == 1 ? flowMaxSpeedRef : selectedLayer == 0 ? windMaxSpeedRef : { value: 999 }"
+    :max-speed="selectedLayer == 1 ? flowMaxSpeedRef : selectedLayer == 0 ? windMaxSpeedRef : 10.0 "
     :add-range="addRangeRef" :desc="selectedLayer == 1 ? '流速(m/s)' : selectedLayer == 0 ? '风速(m/s)' : '风暴增水(m)'">
   </flowLegend>
   <div class="absolute w-[500px] h-[400px] bg-white bg-opacity-70 p-2 rounded border border-black" :style="{
-        zIndex: isPopup ? '10' : '-10',
-        top: `${y - 450}px`,
-        left: `${x - 350}px`,
-      }">
+    zIndex: isPopup ? '10' : '-10',
+    top: `${y - 450}px`,
+    left: `${x - 350}px`,
+  }">
     <TideGraph v-model="isPopup" class="bg-blue-300 bg-opacity-30"></TideGraph>
   </div>
 
