@@ -294,10 +294,10 @@ onMounted(async () => {
     message: '地图加载完毕',
     type: 'success',
   })
-  map.addLayer(wind)
-  wind.hide()
-  map.addLayer(flow)
-  flow.hide()
+  // map.addLayer(wind)
+  // wind.hide()
+  // map.addLayer(flow)
+  // flow.hide()
 
   window.addEventListener('keydown', (e) => {
     if (e.key === '\\') console.log(map)

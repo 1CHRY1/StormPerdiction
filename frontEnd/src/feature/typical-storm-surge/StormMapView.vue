@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ElMessage } from 'element-plus'
 import 'mapbox-gl/dist/mapbox-gl.css'
-import { Ref, onMounted, ref, watch, reactive, watchEffect, onUnmounted } from 'vue'
+import { Ref, onMounted, ref, watch, reactive, watchEffect, onUnmounted,onBeforeUnmount } from 'vue'
 import {
   addWaterLayer,
   addWaterLayer2,
@@ -11,9 +11,9 @@ import {
   lastFlow_mask
 } from '../../components/LayerFromWebGPU'
 import { router } from '../../router'
-import { useMapStore } from '../../store/mapStore'
+import { useMapStore } from '../../store/mapStore';
 import { useStationStore } from '../../store/stationStore'
-import { initScratchMap } from '../../util/initMap'
+import { initScrMap } from '../../util/initMap'
 import flowLegend from '../../components/legend/flowLegend.vue'
 import { decimalToDMS } from './util'
 
@@ -148,7 +148,7 @@ for (let i = 0; i < 22; i++) {
     flow9711src[i] = `/ffvsrc/9711flow/uv_${i * 6}.bin`
 }
 
-const flow = reactive(new lastFlow_mask(
+let flow = reactive(new lastFlow_mask(
   'flow',
   '/ffvsrc/9711flow/station.bin',
   flow9711src,
@@ -158,7 +158,7 @@ const flow = reactive(new lastFlow_mask(
 flow.framesPerPhase = 300
 flow.speedFactor.n = 2.5
 
-const wind = reactive(new lastFlow(
+let wind = reactive(new lastFlow(
   'wind',
   '/ffvsrc/9711wind/station.bin',
   wind9711src,
@@ -338,7 +338,7 @@ onMounted(async () => {
   tableData.value = generateStormTableData(stormData.value)
   selectPointData.value = stormData.value!.dataList[Number(selectPointID.value)]
 
-  const map: mapboxgl.Map = await initScratchMap(mapContainerRef.value!)
+  const map: mapboxgl.Map = await initScrMap(mapContainerRef.value!,[131, 30],3)
   ElMessage({
     message: '地图加载完毕',
     type: 'success',
@@ -407,9 +407,18 @@ onMounted(async () => {
   })
 })
 
+const removeFieldResource = () => {
+  if (mapStore.map) {
+    mapStore.map.removeLayer('flow')
+    mapStore.map.removeLayer('wind')
+  }
+}
 onUnmounted(() => {
+  removeFieldResource()
+  mapStore.map!.remove()
+})
+onBeforeUnmount(() => {
   closeHandeler()
-  window.location.reload()
 })
 
 
@@ -495,7 +504,7 @@ const getSpeedValue_wind = (e) => {
 
       <!-- flow/wind legend -->
       <flowLegend v-show="selectedLayer == 1 || selectedLayer == 0 || selectedLayer == 2"
-        :max-speed="selectedLayer == 1 ? flowMaxSpeedRef : selectedLayer == 0 ? windMaxSpeedRef : { value: 999 }"
+        :max-speed="selectedLayer == 1 ? flowMaxSpeedRef : selectedLayer == 0 ? windMaxSpeedRef : 10.0"
         :add-range="addRangeRef" :desc="selectedLayer == 1 ? '流速(m/s)' : selectedLayer == 0 ? '风速(m/s)' : '风暴增水(m)'">
       </flowLegend>
 

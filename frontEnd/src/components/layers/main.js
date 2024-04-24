@@ -180,6 +180,14 @@ class ScratchMap extends mapboxgl.Map {
         this.outputPass.add(pipeline, binding)
         return this
     }
+
+    remove(){
+        console.log(scr.director.stages);
+        console.log('remove!');
+        super.remove()
+        console.log(scr.director.stages);
+
+    }
 }
 
 

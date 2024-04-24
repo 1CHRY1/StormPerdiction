@@ -160,3 +160,4 @@ Log message: Error executing clawing Typhoon DataCannot run program "D:\1tools\M
 Log message: Error executing radar Data clawingCannot run program "D:\1tools\Miniconda\envs\Env1": CreateProcess error=5, 拒绝访问。
 Log message: Error executing FieldGeneratingCannot run program "D:\1tools\Miniconda\envs\Env1": CreateProcess error=5, 拒绝访问。
 Log message: Error executing rainfall Data clawingCannot run program "D:\1tools\Miniconda\envs\Env1": CreateProcess error=5, 拒绝访问。
+Log message: Error executing cloud Data clawingCannot run program "D:\1tools\Miniconda\envs\Env1": CreateProcess error=5, 拒绝访问。
