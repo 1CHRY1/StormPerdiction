@@ -209,7 +209,9 @@ export const drawEcharts_cover = async (
 }
 
 export const addLayer = async (map: mapbox.Map) => {
-  const geojson = await generateStationGeoJson()
+  const geojson = (await fetch('/geojson/station.geojson')
+  .then((res) => res.json())
+  .then((value) => value)) as any
   map.addSource('stations', {
     type: 'geojson',
     data: geojson as any,

@@ -135,9 +135,6 @@ def get_prefix_before_digits(input_str):
         prefix += char
     return prefix
 
-def get_prefix_before_digitsV2(input_str):
-    prefix = input_str[:-10]
-    return prefix
 # dataprocess_path = "D:/1study/Work/2023_12_22_Storm/stormPerdiction/data/DataProcess"
 
 def main():
@@ -166,7 +163,6 @@ def main():
             txtPath = os.path.join(Path, "ifTyph.txt")
             if (JudgeIfTyph(txtPath) == True):
                 # 存在台风
-                insert_iftyph(db_path_Forcasting, time, 1, 0)
                 files = os.listdir(Path)
                 hyubao = []
                 hpre = []
@@ -227,21 +223,20 @@ def main():
 
             else:
                 # 不存在台风
-                insert_iftyph(db_path_Forcasting, time, 0, 0)
                 files = os.listdir(Path)
                 for file in files:
                     # 文件名称
                     name = os.path.splitext(file)[0]
+
                     # 处理mat数据
                     if file.endswith(".mat"):
                         # 获取站点名称
                         name = os.path.splitext(file)[0]
                         # 去掉尾部数字
-                        name = get_prefix_before_digitsV2(name)
-                        if name == "xuliujing":
+                        name = get_prefix_before_digits(name)
+
+                        if name != "xuliujing":
                             continue
-                        elif name == "xuliujing1":
-                            name = "xuliujing"
 
                         mat_path = os.path.join(Path, file)
                         mat_data = loadmat(mat_path)
@@ -256,22 +251,6 @@ def main():
                             insert_Nottyphdata(db_path_Forcasting, name, time,hpre, hshice, hybresult, manual)
                         except Exception as e:
                             print(e)
-                    # 处理nc数据
-                    if file.endswith(".nc"):
-                        if name == "adcirc_addwind":
-                            type = "adcirc"
-                            path = Path + "/" + file
-                            filename = os.path.basename(file)
-                            insert_NCdata(db_path_NC, time, type, path, filename, manual)
-
-                    # 处理精度评定结果数据
-                    if os.path.basename(file) == "result.txt":
-                        path = Path + "/" + file
-                        filename = "result.txt"
-                        type = "result"
-                        insert_NCdata(db_path_NC, time, type, path, filename, manual)
-
-                    print(os.path.basename(file))
 
             print("****************" + folder + " finished!" + "****************")
             print()
