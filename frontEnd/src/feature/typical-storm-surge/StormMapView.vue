@@ -134,7 +134,7 @@ const adwtHandler = async (addwaterCount: number, swapTag: number) => {
   addRangeRef.value = getAddRange(contourDATA.value)
 
 
-  timeStep.value = timeStep.value + 1
+  timeStep.value = addwaterCount
 
 }
 
