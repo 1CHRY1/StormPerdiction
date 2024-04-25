@@ -14,10 +14,9 @@
 <script setup>
 
 import { onMounted, ref, reactive, watch, computed, watchEffect } from 'vue'
-import { initM } from '../util/initMap';
+import { initScrMap } from '../util/initMap';
 import newFlow from '../components/layers/newFlow.js'
 import newFlow2 from '../components/layers/newFlow_mask.js'
-import lastFlow from '../components/layers/lastFlow.js'
 
 import timeShower from '../components/legend/timeShower.vue'
 import flowLegend from './legend/flowLegend.vue';
@@ -36,19 +35,23 @@ let wind9711src = new Array(22)
 for (let i = 0; i < 22; i++) {
   wind9711src[i] = `/ffvsrc/9711wind/uv_${16 + i}.bin`
 }
-console.log(wind9711src)
 let flow9711src = new Array(22)
 for (let i = 0; i < 22; i++) {
   if (i * 6 < 132)
     flow9711src[i] = `/ffvsrc/9711flow/uv_${i * 6}.bin`
 }
 let windsrc = new Array(30)
-for(let i=0;i<30;i++){
-  windsrc[i] = `/ffvsrc/wind/uv_${i+10}.bin`
+for (let i = 0; i < 30; i++) {
+  windsrc[i] = `/ffvsrc/wind/uv_${i + 10}.bin`
 }
 let flowsrc = new Array(30)
-for(let i=0;i<30;i++){
-  flowsrc[i] = `/ffvsrc/flow/uv_${i+10}.bin`
+for (let i = 0; i < 30; i++) {
+  flowsrc[i] = `/ffvsrc/flow/uv_${i + 10}.bin`
+}
+
+let testSrc = new Array(228)
+for (let i = 0; i < 228; i++) {
+  testSrc[i] = `/bin/uv_${i}.bin`
 }
 
 // flow9711
@@ -60,14 +63,14 @@ for(let i=0;i<30;i++){
 // ))
 
 // wind9711
-let flowLayer = reactive(new newFlow(
-  '/bin/station.bin',
-  ['/bin/uv_0.bin',
-  '/bin/uv_1.bin',
-  '/bin/uv_2.bin',
-  '/bin/uv_3.bin',],
-  url => url.match(/uv_(\d+)\.bin/)[1],
-))
+// let flowLayer = reactive(new newFlow(
+//   '/bin/station.bin',
+//   ['/bin/uv_0.bin',
+//   '/bin/uv_1.bin',
+//   '/bin/uv_2.bin',
+//   '/bin/uv_3.bin',],
+//   url => url.match(/uv_(\d+)\.bin/)[1],
+// ))
 
 // flow
 // let flowLayer = reactive(new lastFlow(
@@ -77,13 +80,14 @@ let flowLayer = reactive(new newFlow(
 //   '//ffvsrc//flowbound2.geojson',
 // ))
 // wind
-// let flowLayer = reactive(new lastFlow(
-//   'flowlayer',
-//   '/ffvsrc/wind/station.bin',
-//   windsrc,
-//   url => url.match(/uv_(\d+)\.bin/)[1],
-//   '/ffvsrc/windBound.geojson'
-// ))
+let flowLayer = reactive(new newFlow2(
+  'flowlayer',
+  '/bin/station.bin',
+  testSrc,
+  url => url.match(/uv_(\d+)\.bin/)[1],
+  '/ffvsrc/windBound.geojson'
+))
+flowLayer.framesPerPhase = 30
 
 
 
@@ -109,7 +113,8 @@ watchEffect(() => {
 
 
 onMounted(async () => {
-  const map = await initM(mapRef.value)
+  const map = await initScrMap(mapRef.value, [120.55, 32.08], 6.5)
+
   map.addLayer(flowLayer)
   console.log('map added layer')
 
@@ -176,7 +181,7 @@ const getSpeedValue = (e) => {
 
 
 #GPUFrame {
-  z-index: 1;
+  z-index: 5;
   pointer-events: none;
   position: absolute;
   width: 100%;
