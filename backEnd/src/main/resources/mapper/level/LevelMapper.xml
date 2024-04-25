@@ -10,7 +10,7 @@
     </select>
 
     <select id="getTyphAllByStation" resultType="java.util.Map">
-        select time, hpre, hyubao, hadd from ${station} where iftyph=1 and manual=0
+        select time, hpre from ${station} where iftyph=1 and manual=0
     </select>
 
     <select id="ifTyph" resultType="java.lang.Integer">
