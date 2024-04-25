@@ -23,7 +23,7 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/test',
-    component: test,
+    component: ()=>import('../components/HelloWorld copy.vue'),
   },
   {
     path: '/weather',

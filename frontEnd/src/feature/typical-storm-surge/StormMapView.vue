@@ -155,7 +155,7 @@ let flow = reactive(new lastFlow_mask(
   (url: String) => url.match(/uv_(\d+)\.bin/)![1],
   '/ffvsrc/flowbound2.geojson',
 ))
-flow.framesPerPhase = 300
+flow.framesPerPhase = 150
 flow.speedFactor.n = 2.5
 
 let wind = reactive(new lastFlow(
@@ -166,6 +166,7 @@ let wind = reactive(new lastFlow(
 ))
 wind.framesPerPhase = 150
 wind.speedFactor.n = 1.0
+
 
 
 
@@ -260,18 +261,18 @@ watch(selectedLayer, async (now: null | number, old: null | number) => {
         zoom: 7,
         duration: 500,
       })
-      adwtid = 4
-      adwtidRef.value = 4
+      adwtid = 0
+      adwtidRef.value = 0
       if (!adwtTicker) {
 
         adwtTicker = setInterval(() => {
           adwtHandler(adwtid, adwtid % 2)
-          adwtid = (adwtid + 1) % 80
+          adwtid = (adwtid + 1) % 22
           adwtidRef.value = adwtid
         }, 3000)
       }
       adwtHandler(adwtid, adwtid % 2)
-      adwtid = (adwtid + 1) % 80
+      adwtid = (adwtid + 1) % 22
       adwtidRef.value = adwtid
 
 
@@ -518,7 +519,7 @@ const getSpeedValue_wind = (e) => {
       </flowLegend>
 
       <timeShower v-show="selectedLayer == 1 || selectedLayer == 0 || selectedLayer == 2"
-        :type="selectedLayer == 0 || selectedLayer == 1 ? '9711' : '9711adwt'" :time-step="timeStep">
+        :type="'9711'" :time-step="timeStep">
       </timeShower>
 
 
