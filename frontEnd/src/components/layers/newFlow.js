@@ -199,8 +199,8 @@ export default class SteadyFlowLayer {
         let addVoronoiBindingSync = async (url) => {
             
             this.nextPreparing = true
-            const res = await axios.get(url, { responseType: 'arraybuffer' })
-            const uvs = new Float32Array(res.data)
+            let res = await axios.get(url, { responseType: 'arraybuffer' })
+            let uvs = new Float32Array(res.data)
     
             let maxSpeed = -Infinity
             for (let i = 0; i < uvs.length; i += 2) {
