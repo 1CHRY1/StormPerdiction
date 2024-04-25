@@ -186,3 +186,11 @@ Log message: Error executing radar Data clawingCannot run program "D:\1tools\Min
 Log message: Error executing FieldGeneratingCannot run program "D:\1tools\Miniconda\envs\Env1": CreateProcess error=5, 拒绝访问。
 Log message: Error executing rainfall Data clawingCannot run program "D:\1tools\Miniconda\envs\Env1": CreateProcess error=5, 拒绝访问。
 >>>>>>> 675bf0be14ca4b51339dd849407d296bd66a89bc
+Log message: Manuel Data updating scheduled at 2024-04-25T11:40:13.954
+Log message: Manuel Data updating execution failed!
+Log message: Cloud Data clawing scheduled at 2024-04-25T12:10:00.037
+Log message: Cloud Data clawing executed successfully!
+Log message: Radar Data clawing scheduled at 2024-04-25T12:30:00.085
+Log message: Radar Data clawing executed successfully!
+Log message: Rainfall Data clawing scheduled at 2024-04-25T12:50:00.080
+Log message: Rainfall Data clawing executed successfully!
