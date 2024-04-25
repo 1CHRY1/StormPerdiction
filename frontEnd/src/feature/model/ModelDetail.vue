@@ -5,12 +5,13 @@ import { useStationStore } from '../../store/stationStore'
 import { getStationInfo, getStationPredictionTideSituation } from './api'
 import { ITideSituation } from './type'
 import { drawEcharts, generateTreeDataOfStation, initEcharts } from './util'
+import { Tree } from './type'
 
 let echart: echarts.ECharts | null = null
 const echartsRef = ref()
-const activeName = ref('graph')
+// const activeName = ref('graph')
 const stationStore = useStationStore()
-const treeData = generateTreeDataOfStation()
+const treeData = ref<Tree[]>([])
 const waterSituationData: Ref<ITideSituation | null> = ref(null)
 const stationInfo = computed(() =>
   getStationInfo(stationStore.currentStationID as any),
@@ -67,6 +68,7 @@ watch(stationStore, async () => {
 })
 
 onMounted(async () => {
+  treeData.value = await generateTreeDataOfStation();
   waterSituationData.value = await getStationPredictionTideSituation(
     stationStore.currentStationID as any,
   )
@@ -135,7 +137,7 @@ onMounted(async () => {
         </div>
       </div>
       <div class="flex flex-col flex-auto m-2 top-1 border border-zinc-300">
-        <div class="h-10 leading-10 px-2 bg-[#1b6ec8] text-white">站点列表</div>
+        <div class="h-10 leading-10 px-2 bg-[#1b6ec8] text-white">站点选择</div>
         <el-radio-group
           v-model="stationStore.currentStationID"
           class="py-2 px-4 block overflow-auto h-[66vh]"

@@ -1,43 +1,22 @@
+<template>
+  <div id="map" ref="mapRef"></div>
+</template>
+
 <script setup>
 
-import { onMounted,ref } from 'vue'
-import axios from 'axios'
-import { main } from './layers/main'
-import flowLegend from './legend/flowLegend.vue'
-import timeStepCounter from './legend/timestepCounter.vue'
+import { onMounted, ref, reactive, watch, computed, watchEffect } from 'vue'
+import { testMap } from '../util/initMap';
 
-const timestep = ref(0)
-const alltime = 144
-setInterval(()=>{
-  timestep.value = (timestep.value+1)%alltime
-},1000)
+const mapRef = ref()
 
-onMounted(async () => {
-  // console.log('hellop');
-  main()
+onMounted(() => {
+  const map = testMap(mapRef.value,[121.45, 32.68],5.08)
+
 })
 
 
 
 </script>
-
-<template>
-  <div id="map"></div>
-  <canvas id="WebGPUFrame"></canvas>
-  <flowLegend :max-speed="26.8"></flowLegend>
-  <timeStepCounter :time-step="timestep" :total-count="alltime"></timeStepCounter>
-  <!-- <div class='adwtLegend'>
-    <p>风暴增水(m)</p>
-    <div class='localFlex'>
-      <div class='rampColor'></div>
-      <div class="lable">
-        <p>1</p>
-        <p>1</p>
-        <p>1</p>
-      </div>
-    </div>
-  </div> -->
-</template>
 
 <style>
 .adwtLegend {
@@ -83,7 +62,7 @@ onMounted(async () => {
 }
 
 
-#WebGPUFrame {
+#GPUFrame {
   z-index: 1;
   pointer-events: none;
   position: absolute;
@@ -103,6 +82,4 @@ onMounted(async () => {
 #stats {
   z-index: 2;
 }
-
-
 </style>

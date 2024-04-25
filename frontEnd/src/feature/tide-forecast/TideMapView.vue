@@ -2,24 +2,29 @@
 import { ElMessage } from 'element-plus'
 import mapbox from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
-import { Ref, computed, onMounted, ref, watch, reactive, watchEffect } from 'vue'
+import { Ref, computed, onMounted, ref, watch, reactive, watchEffect, onUnmounted, onBeforeUnmount } from 'vue'
 import {
   addWaterLayer,
   addWaterLayer2,
-  floww,
+  // floww,
   prepareAddWaterLayer,
   prepareAddWaterLayer2,
-  windd,
+  // windd,
+  lastFlow_mask
 } from '../../components/LayerFromWebGPU'
 import { router } from '../../router'
 import { useMapStore } from '../../store/mapStore'
 import { useStationStore } from '../../store/stationStore'
-import { initScratchMap2 } from '../../util/initMap'
+import { initScrMap } from '../../util/initMap'
 import { addLayer } from './util'
 import flowLegend from '../../components/legend/flowLegend.vue'
-import timestepCounter from '../../components/legend/timestepCounter.vue'
-import axios from 'axios'
+import timeShower from '../../components/legend/timeShower.vue'
+import controller from '../../components/legend/controller.vue'
+import TideGraph from './TideGraph.vue'
 
+const isPopup: Ref<boolean> = ref(false)
+const x: Ref<number> = ref(0)
+const y: Ref<number> = ref(0)
 const radio: Ref<HTMLDivElement | null> = ref(null)
 const radio2: Ref<HTMLDivElement | null> = ref(null)
 const mapStore = useMapStore()
@@ -85,19 +90,51 @@ const adwtHandler = async (addwaterCount: number, swapTag: number) => {
   }
   addRangeRef.value = getAddRange(contourDATA.value)
 }
-const wind = reactive(new windd())
-const flow = reactive(new floww())
-const flowTimeStepRef: Ref<Number> = ref(0)
+//front
+// let windsrc = new Array(40)
+// for (let i = 0; i < 40; i++) {
+//   windsrc[i] = `/ffvsrc/wind/uv_${i}.bin`
+// }
+// let flowsrc = new Array(40)
+// for (let i = 0; i < 40; i++) {
+//   flowsrc[i] = `/ffvsrc/flow/uv_${i}.bin`
+// }
+//back
+let windsrc = new Array(144)
+for (let i = 0; i < 144; i++) {
+  windsrc[i] = `/field/wind/bin?name=uv_${i}.bin`
+}
+let flowsrc = new Array(144)
+for (let i = 0; i < 144; i++) {
+  flowsrc[i] = `/field/flow/bin?name=uv_${i}.bin`
+}
+let wind = reactive(new lastFlow_mask(
+  'wind',
+  // '/ffvsrc/wind/station.bin', //front
+  '/field/wind/bin?name=station.bin',
+  windsrc,
+  (url: any) => url.match(/uv_(\d+)\.bin/)[1],
+  '/ffvsrc/windBound.geojson',
+
+))
+let flow = reactive(new lastFlow_mask(
+  'flow',
+  // '/ffvsrc/flow/station.bin', //front
+  '/field/flow/bin?name=station.bin',
+  flowsrc,
+  (url: any) => url.match(/uv_(\d+)\.bin/)[1],
+  '/ffvsrc/flowbound2.geojson',
+))
+flow.speedFactor.n = 3.0;
+
+
 const flowMaxSpeedRef: Ref<Number> = ref(0)
-const windTimeStepRef: Ref<Number> = ref(0)
 const windMaxSpeedRef: Ref<Number> = ref(0)
 const addRangeRef: Ref<Array<Number>> = ref([0, 0])
 const adwtidRef: Ref<Number> = ref(0)
 
 watchEffect(() => {
-  flowTimeStepRef.value = flow.currentResourceUrl;
   flowMaxSpeedRef.value = flow.maxSpeed.n;
-  windTimeStepRef.value = wind.currentResourceUrl
   windMaxSpeedRef.value = wind.maxSpeed.n;
 })
 
@@ -113,18 +150,15 @@ watch(selectedLayer, async (now: null | number, old: null | number) => {
     })
     return
   }
-
   switch (old) {
     case 0:
-      // if (mapStore.map!.getLayer('WindLayer9711'))
-      //   mapStore.map!.removeLayer('WindLayer9711')
       wind.hide()
+      timeStep.value = wind.currentResourcePointer
 
       break
     case 1:
-      // if (mapStore.map!.getLayer('FlowLayer9711'))
-      //   mapStore.map!.removeLayer('FlowLayer9711')
       flow.hide()
+      timeStep.value = flow.currentResourcePointer
       break
     case 2:
       clearInterval(adwtTicker.value)
@@ -149,13 +183,17 @@ watch(selectedLayer, async (now: null | number, old: null | number) => {
       addWaterSrcIds.forEach((srcid) => {
         mapStore.map!.getSource(srcid) && mapStore.map!.removeSource(srcid)
       })
-
-      // adwtTicker&&clearInterval(adwtTicker)
-
       break
     default:
       break
   }
+
+  // 同步progress
+  let index = Math.floor(timeStep.value / wind.uvUrlList.length * 100)
+  if (index < 1) index = index - 1 + 100
+  else index = index - 1
+
+
 
   // addding
   switch (now) {
@@ -164,14 +202,12 @@ watch(selectedLayer, async (now: null | number, old: null | number) => {
         offset: 50,
         message: '正在加载风场...',
       })
-      // mapStore.map!.addLayer(new WindLayer9711() as mapboxgl.AnyLayer);
-      // mapStore.map!.addLayer(new wind9711() as mapboxgl.AnyLayer)
-      // mapStore.map!.addLayer(new wind() as mapboxgl.AnyLayer)
+      wind.setProgress(index)
       wind.show()
 
       mapStore.map!.flyTo({
-        center: [121.45, 31.38],
-        zoom: 5.18,
+        center: [121.45, 32.68],
+        zoom: 5.08,
         duration: 500,
       })
       break
@@ -180,9 +216,7 @@ watch(selectedLayer, async (now: null | number, old: null | number) => {
         offset: 50,
         message: '正在加载流场...',
       })
-      // mapStore.map!.addLayer(new FlowLayer9711() as mapboxgl.AnyLayer);
-      // mapStore.map!.addLayer(new flow9711() as mapboxgl.AnyLayer)
-      // mapStore.map!.addLayer(new flow() as mapboxgl.AnyLayer)
+      flow.setProgress(index)
       flow.show()
 
       mapStore.map!.flyTo({
@@ -250,14 +284,11 @@ const closeHandeler = () => {
 
   selectedLayer.value = null
 
-  radio2!.value!.checked = false
-  radio.value.forEach((element) => {
+  if (radio2.value) { (radio2!.value! as any).checked = false }
+  (radio.value as any).forEach((element: any) => {
     element.checked = false
   })
 
-  // (radio.value![0]! as any).checked = false
-  // (radio.value![1]! as any).checked = false
-  // (radio.value![2]! as any).checked = false
 }
 
 const typh: Ref<number> = ref(0)
@@ -269,25 +300,18 @@ const text = computed(() => {
 })
 
 onMounted(async () => {
-  // const map: mapbox.Map = await initMap(
-  //   mapContainerRef.value as HTMLDivElement,
-  //   {
-  //     center: [120.55, 32.08],
-  //     zoom: 6.5,
-  //   },
-  // )
 
-  typh.value = (await axios.get(`/api/v1/data/level/typh`)).data.data
-  // typh.value = 1;
+  // typh.value = (await axios.get(`/api/v1/data/level/typh`)).data.data
+  typh.value = 0;
 
-  const map: mapbox.Map = await initScratchMap2(mapContainerRef.value)
+  const map: mapbox.Map = await initScrMap(mapContainerRef.value!,[120.55, 32.08],6.5)
   ElMessage({
     message: '地图加载完毕',
     type: 'success',
   })
-  map.addLayer(wind)
+  map.addLayer(wind as mapboxgl.AnyLayer)
   wind.hide()
-  map.addLayer(flow)
+  map.addLayer(flow as mapboxgl.AnyLayer)
   flow.hide()
 
   window.addEventListener('keydown', (e) => {
@@ -313,7 +337,121 @@ onMounted(async () => {
       }
     }
   })
+  map.on('mousemove', 'stations', (event: mapbox.MapMouseEvent) => {
+    const box: [[number, number], [number, number]] = [
+      [event.point.x - 3, event.point.y - 3],
+      [event.point.x + 3, event.point.y + 3],
+    ]
+
+    if (map.getLayer('stations')) {
+      const stations = map.queryRenderedFeatures(box, {
+        layers: ['stations'],
+      })
+      if (stations && stations[0]) {
+        const id = stations[0].properties!.id as string
+        stationStore.currentStationID = id
+        isPopup.value = true
+        x.value = event.point.x
+        y.value = event.point.y
+      }
+    }
+  })
+
+  map.on('mouseleave', 'stations', () => {
+    isPopup.value = false
+  })
+
+  map.on('mousemove', 'stations', (event: mapbox.MapMouseEvent) => {
+    const box: [[number, number], [number, number]] = [
+      [event.point.x - 3, event.point.y - 3],
+      [event.point.x + 3, event.point.y + 3],
+    ]
+
+    if (map.getLayer('stations')) {
+      const stations = map.queryRenderedFeatures(box, {
+        layers: ['stations'],
+      })
+      if (stations && stations[0]) {
+        const id = stations[0].properties!.id as string
+        stationStore.currentStationID = id
+        isPopup.value = true
+        x.value = event.point.x
+        y.value = event.point.y
+      }
+    }
+  })
+
+  map.on('mouseleave', 'stations', () => {
+    isPopup.value = false
+  })
 })
+
+
+const removeFieldResource = () => {
+  if (mapStore.map) {
+    mapStore.map.removeLayer('flow')
+    mapStore.map.removeLayer('wind')
+  }
+  flow.destroy()
+  wind.destroy()
+  flow = null
+  wind = null
+  console.log('destroy');
+  
+}
+onUnmounted(() => {
+  removeFieldResource()
+  mapStore.map!.remove()
+})
+onBeforeUnmount(() => {
+  closeHandeler()
+})
+///////controller 
+const flowProgress_flow = ref(0)
+const flowProgress_wind = ref(0)
+const timeStep = ref(0)
+
+watchEffect(() => {
+  //progress
+  let progress_flow = flow.currentResourcePointer / flow.uvUrlList.length
+  flowProgress_flow.value = Math.floor(progress_flow * 100)
+
+  //maxspeed
+  flowMaxSpeedRef.value = flow.maxSpeed.n
+
+
+  windMaxSpeedRef.value = wind.maxSpeed.n
+  let progress_wind = wind.currentResourcePointer / wind.uvUrlList.length
+  flowProgress_wind.value = Math.floor(progress_wind * 100)
+
+  //both
+  if (selectedLayer.value === 0)
+    timeStep.value = wind.currentResourcePointer
+  else if (selectedLayer.value === 1)
+    timeStep.value = flow.currentResourcePointer
+})
+
+const getProgressValue_flow = (e) => {
+  flowProgress_flow.value = e
+  flow.setProgress(flowProgress_flow.value)
+}
+const getParticleNumValue_flow = (e) => {
+  flow.particleNum.n = e;
+}
+const getSpeedValue_flow = (e) => {
+  flow.speedFactor.n = e;
+}
+const getProgressValue_wind = (e) => {
+  flowProgress_wind.value = e
+  wind.setProgress(flowProgress_wind.value)
+}
+const getParticleNumValue_wind = (e) => {
+  wind.particleNum.n = e;
+}
+const getSpeedValue_wind = (e) => {
+  wind.speedFactor.n = e;
+}
+
 </script>
 
 <template>
@@ -331,15 +469,15 @@ onMounted(async () => {
           <input ref="radio" type="radio" name="option" :value="opt.value" />
           <div class="radio-circle" @click="selectedLayer = opt.value"></div>
           <span class="radio-label" @click="selectedLayer = opt.value">{{
-        opt.label
-      }}</span>
+            opt.label
+          }}</span>
         </label>
         <label v-show="typh" class="radio-button">
           <input ref="radio2" type="radio" name="option" :value="optt.value" />
           <div class="radio-circle" @click="selectedLayer = optt.value"></div>
           <span class="radio-label" @click="selectedLayer = optt.value">{{
-        optt.label
-      }}</span>
+            optt.label
+          }}</span>
         </label>
       </div>
     </div>
@@ -349,15 +487,32 @@ onMounted(async () => {
   </div>
 
   <flowLegend v-show="selectedLayer == 1 || selectedLayer == 0 || selectedLayer == 2"
-    :max-speed="selectedLayer == 1 ? flowMaxSpeedRef : selectedLayer == 0 ? windMaxSpeedRef : { value: 999 }"
+    :max-speed="selectedLayer == 1 ? flowMaxSpeedRef : selectedLayer == 0 ? windMaxSpeedRef : 10.0 "
     :add-range="addRangeRef" :desc="selectedLayer == 1 ? '流速(m/s)' : selectedLayer == 0 ? '风速(m/s)' : '风暴增水(m)'">
   </flowLegend>
-  <timestepCounter v-show="selectedLayer == 0 || selectedLayer == 1 || selectedLayer == 2"
-    :timeStep="selectedLayer == 1 ? flowTimeStepRef : selectedLayer == 0 ? windTimeStepRef : adwtidRef"
-    :totalCount="selectedLayer == 1 ? 144 : selectedLayer == 0 ? 144 : 144"
-    :type="'normal'"
-    >
-  </timestepCounter>
+  <div class="absolute w-[500px] h-[400px] bg-white bg-opacity-70 p-2 rounded border border-black" :style="{
+    zIndex: isPopup ? '10' : '-10',
+    top: `${y - 450}px`,
+    left: `${x - 350}px`,
+  }">
+    <TideGraph v-model="isPopup" class="bg-blue-300 bg-opacity-30"></TideGraph>
+  </div>
+
+  <timeShower v-show="selectedLayer == 1 || selectedLayer == 0 || selectedLayer == 2" :type="'normal'"
+    :time-step="timeStep">
+  </timeShower>
+
+
+  <controller v-show="selectedLayer == 1" :flow-progress="flowProgress_flow" :max-particle-num="flow.maxParticleNum"
+    :now-particle-num="flow.particleNum.n" :now-speed="flow.speedFactor.n" :max-speed="10.0"
+    @particle-num-value="getParticleNumValue_flow" @progress-value="getProgressValue_flow"
+    @speed-value="getSpeedValue_flow">
+  </controller>
+  <controller v-show="selectedLayer == 0" :flow-progress="flowProgress_wind" :max-particle-num="wind.maxParticleNum"
+    :now-particle-num="wind.particleNum.n" :now-speed="wind.speedFactor.n" :max-speed="10.0"
+    @particle-num-value="getParticleNumValue_wind" @progress-value="getProgressValue_wind"
+    @speed-value="getSpeedValue_wind">
+  </controller>
 </template>
 
 <style scoped>
@@ -388,10 +543,16 @@ onMounted(async () => {
   pointer-events: none;
 }
 
+.controller {
+  position: absolute;
+  left: 2vw;
+  top: 3vh;
+}
+
 .card {
   position: absolute;
   top: 3vh;
-  right: 10vw;
+  right: 5vw;
   width: 6vw;
   height: 22vh;
   background: rgb(38, 38, 38);

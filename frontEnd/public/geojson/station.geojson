@@ -55,18 +55,8 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "高桥",
-        "id": "5",
-        "pinyin": "gaoqiao",
-        "type": "river"
-      },
-      "geometry": { "type": "Point", "coordinates": [121.55, 31.383] }
-    },
-    {
-      "type": "Feature",
-      "properties": {
         "name": "南京",
-        "id": "6",
+        "id": "5",
         "pinyin": "nanjing",
         "type": "river"
       },
@@ -76,7 +66,7 @@
       "type": "Feature",
       "properties": {
         "name": "吴淞",
-        "id": "7",
+        "id": "6",
         "pinyin": "wusong",
         "type": "river"
       },
@@ -86,7 +76,7 @@
       "type": "Feature",
       "properties": {
         "name": "镇江",
-        "id": "8",
+        "id": "7",
         "pinyin": "zhenjiang",
         "type": "river"
       },
@@ -96,7 +86,7 @@
       "type": "Feature",
       "properties": {
         "name": "凤凰颈站下",
-        "id": "9",
+        "id": "8",
         "pinyin": "fenghuangjingzhanxia",
         "type": "river"
       },
@@ -106,7 +96,7 @@
       "type": "Feature",
       "properties": {
         "name": "江阴",
-        "id": "10",
+        "id": "9",
         "pinyin": "jiangyin",
         "type": "river"
       },
@@ -115,8 +105,8 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "裕溪闸闸下",
-        "id": "11",
+        "name": "裕溪闸下",
+        "id": "10",
         "pinyin": "yuxizhaxia",
         "type": "river"
       },
@@ -126,7 +116,7 @@
       "type": "Feature",
       "properties": {
         "name": "天生港",
-        "id": "12",
+        "id": "11",
         "pinyin": "tianshenggang",
         "type": "river"
       },
@@ -135,8 +125,8 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "新桥闸闸下",
-        "id": "13",
+        "name": "新桥闸下",
+        "id": "12",
         "pinyin": "xinqiaozhaxia",
         "type": "river"
       },
@@ -146,7 +136,7 @@
       "type": "Feature",
       "properties": {
         "name": "徐六泾",
-        "id": "14",
+        "id": "13",
         "pinyin": "xuliujing",
         "type": "river"
       },
@@ -155,48 +145,8 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "射阳河口",
-        "id": "15",
-        "pinyin": "sheyanghekou",
-        "type": "sea"
-      },
-      "geometry": { "type": "Point", "coordinates": [120.567, 33.883] }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "黄沙港闸下",
-        "id": "16",
-        "pinyin": "huangshagangzhaxia",
-        "type": "sea"
-      },
-      "geometry": { "type": "Point", "coordinates": [120.633, 33.583] }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "新洋港闸下",
-        "id": "17",
-        "pinyin": "xinyanggangzhaxia",
-        "type": "sea"
-      },
-      "geometry": { "type": "Point", "coordinates": [120.6, 33.633] }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "斗龙港闸下",
-        "id": "18",
-        "pinyin": "doulonggangzhaxia",
-        "type": "sea"
-      },
-      "geometry": { "type": "Point", "coordinates": [120.667, 33.517] }
-    },
-    {
-      "type": "Feature",
-      "properties": {
         "name": "乍浦",
-        "id": "20",
+        "id": "14",
         "pinyin": "zhapu",
         "type": "sea"
       },
@@ -206,7 +156,7 @@
       "type": "Feature",
       "properties": {
         "name": "澉浦",
-        "id": "21",
+        "id": "15",
         "pinyin": "ganpu",
         "type": "sea"
       },
@@ -215,18 +165,8 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "盐官",
-        "id": "22",
-        "pinyin": "yanguan",
-        "type": "sea"
-      },
-      "geometry": { "type": "Point", "coordinates": [120.55, 30.4] }
-    },
-    {
-      "type": "Feature",
-      "properties": {
         "name": "金桥",
-        "id": "23",
+        "id": "16",
         "pinyin": "jinqiao",
         "type": "sea"
       },
@@ -236,7 +176,7 @@
       "type": "Feature",
       "properties": {
         "name": "连兴港",
-        "id": "24",
+        "id": "17",
         "pinyin": "lianxinggang",
         "type": "sea"
       },

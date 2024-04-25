@@ -65,6 +65,7 @@ class ScratchMap extends mapboxgl.Map {
         this.uMatrix = scr.mat4f()
         this.centerLow = scr.vec3f()
         this.centerHigh = scr.vec3f()
+        this.mvpInverse = scr.mat4f()
         this.mercatorCenter = scr.vec3f()
         this.zoom = scr.f32(this.getZoom())
         this.mercatorBounds = new scr.BoundingBox2D()
@@ -83,6 +84,7 @@ class ScratchMap extends mapboxgl.Map {
                         uMatrix: this.uMatrix,
                         centerLow: this.centerLow,
                         centerHigh: this.centerHigh,
+                        mvpInverse: this.mvpInverse,
                     }
                 }),
             ]
@@ -146,6 +148,25 @@ class ScratchMap extends mapboxgl.Map {
         this.near.n = near
         this.uMatrix.data = matrix
         this.uMatrix.translate(scr.vec3f(mercatorCenterX[0], mercatorCenterY[0], mercatorCenterZ[0]))
+        this.mvpInverse.invert(this.uMatrix)
+
+        // if (frameCount++ === 1000) {
+        //     flowLayer.resetResource([
+        //         '/bin/examples/flow/uv_14.bin',
+        //         '/bin/examples/flow/uv_15.bin',
+        //         '/bin/examples/flow/uv_16.bin',
+        //         '/bin/examples/flow/uv_17.bin',
+        //         '/bin/examples/flow/uv_18.bin',
+        //         '/bin/examples/flow/uv_19.bin',
+        //         '/bin/examples/flow/uv_20.bin',
+        //         '/bin/examples/flow/uv_21.bin',
+        //         '/bin/examples/flow/uv_22.bin',
+        //         '/bin/examples/flow/uv_23.bin',
+        //         '/bin/examples/flow/uv_24.bin',
+        //         '/bin/examples/flow/uv_25.bin',
+        //         '/bin/examples/flow/uv_26.bin',
+        //     ])
+        // }
     }
 
     add2PreProcess(prePass) {
@@ -159,7 +180,18 @@ class ScratchMap extends mapboxgl.Map {
         this.outputPass.add(pipeline, binding)
         return this
     }
+
+    remove(){
+        console.log(scr.director);
+        super.remove()
+        scr.director.stages = {}
+        scr.director.stageNum = 0
+        scr.director.bindings = []
+        console.log(scr.director);
+
+    }
 }
+
 
 // Helpers //////////////////////////////////////////////////////////////////////////////////////////////////////
 function getMercatorMatrix(t) {

@@ -1,20 +1,4 @@
 import { RouteRecordRaw, createRouter, createWebHistory } from 'vue-router'
-import HelloWorld from '../components/HelloWorld.vue'
-import AccuracyDetail from '../feature/accuracy-assessment/AccuracyDetail.vue'
-import AccuracyMapView from '../feature/accuracy-assessment/AccuracyMapView.vue'
-import ModelDetail from '../feature/model/ModelDetail.vue'
-import ModelMapView from '../feature/model/ModelMapView.vue'
-import WaterMapView from '../feature/real-time-situation/WaterMapView.vue'
-import WaterSituationDetail from '../feature/real-time-situation/WaterSituationDetail.vue'
-import TideDetail from '../feature/tide-forecast/TideDetail.vue'
-import TideMapView from '../feature/tide-forecast/TideMapView.vue'
-import StormDetail from '../feature/typical-storm-surge/StormDetail.vue'
-import StormMapView from '../feature/typical-storm-surge/StormMapView.vue'
-import Observation from '../feature/weather/Observation.vue'
-import Precipitation from '../feature/weather/Precipitation.vue'
-import Radar from '../feature/weather/Radar.vue'
-import Satellite from '../feature/weather/Satellite.vue'
-import Typhoon from '../feature/weather/Typhoon.vue'
 
 const routes: RouteRecordRaw[] = [
   {
@@ -23,7 +7,7 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/test',
-    component: HelloWorld,
+    component: ()=>import ('../components/test.vue'),
   },
   {
     path: '/weather',
@@ -31,7 +15,7 @@ const routes: RouteRecordRaw[] = [
       {
         path: 'satellite',
         name: 'Satellite',
-        component: Satellite,
+        component: ()=>import ('../feature/weather/Satellite.vue'),
         meta: {
           index: 1,
         },
@@ -39,7 +23,7 @@ const routes: RouteRecordRaw[] = [
       {
         path: 'radar',
         name: 'Radar',
-        component: Radar,
+        component: ()=>import('../feature/weather/Radar.vue'),
         meta: {
           index: 1,
         },
@@ -47,7 +31,7 @@ const routes: RouteRecordRaw[] = [
       {
         path: 'observation',
         name: 'Observation',
-        component: Observation,
+        component: ()=>import('../feature/weather/Observation.vue'),
         meta: {
           index: 1,
         },
@@ -55,7 +39,7 @@ const routes: RouteRecordRaw[] = [
       {
         path: 'precipitation',
         name: 'Precipitation',
-        component: Precipitation,
+        component: ()=>import('../feature/weather/Precipitation.vue'),
         meta: {
           index: 1,
         },
@@ -63,7 +47,7 @@ const routes: RouteRecordRaw[] = [
       {
         path: 'typhoon',
         name: 'Typhoon',
-        component: Typhoon,
+        component: ()=>import('../feature/weather/Typhoon.vue'),
         meta: {
           index: 1,
         },
@@ -76,13 +60,13 @@ const routes: RouteRecordRaw[] = [
       {
         path: 'map',
         name: 'WaterMapView',
-        component: WaterMapView,
+        component: ()=>import ('../feature/real-time-situation/WaterMapView.vue'),
         meta: { index: 2 },
       },
       {
         path: 'data',
         name: 'WaterSituationDetail',
-        component: WaterSituationDetail,
+        component: ()=>import ('../feature/real-time-situation/WaterSituationDetail.vue'),
         meta: { index: 2 },
       },
     ],
@@ -93,13 +77,13 @@ const routes: RouteRecordRaw[] = [
       {
         path: 'map',
         name: 'TideMapView',
-        component: TideMapView,
+        component: ()=>import ('../feature/tide-forecast/TideMapView.vue'),
         meta: { index: 3 },
       },
       {
         path: 'data',
         name: 'TideDetail',
-        component: TideDetail,
+        component: ()=>import ('../feature/tide-forecast/TideDetail.vue'),
         meta: { index: 3 },
       },
     ],
@@ -110,13 +94,13 @@ const routes: RouteRecordRaw[] = [
       {
         path: 'map',
         name: 'AccuracyMapView',
-        component: AccuracyMapView,
+        component: ()=>import('../feature/accuracy-assessment/AccuracyMapView.vue'),
         meta: { index: 4 },
       },
       {
         path: 'data',
         name: 'AccuracyDetail',
-        component: AccuracyDetail,
+        component: ()=>import('../feature/accuracy-assessment/AccuracyDetail.vue'),
         meta: { index: 4 },
       },
     ],
@@ -127,13 +111,13 @@ const routes: RouteRecordRaw[] = [
       {
         path: 'map',
         name: 'StormMapView',
-        component: StormMapView,
+        component: ()=>import('../feature/typical-storm-surge/StormMapView.vue'),
         meta: { index: 5 },
       },
       {
         path: 'data',
         name: 'StormDetail',
-        component: StormDetail,
+        component: ()=>import('../feature/typical-storm-surge/StormDetail.vue'),
         meta: { index: 5 },
       },
     ],
@@ -144,20 +128,24 @@ const routes: RouteRecordRaw[] = [
       {
         path: 'map',
         name: 'ModelMapView',
-        component: ModelMapView,
+        component: ()=>import('../feature/model/ModelMapView.vue'),
         meta: { index: 6 },
       },
       {
         path: 'data',
         name: 'ModelDetail',
-        component: ModelDetail,
+        component: ()=>import('../feature/model/ModelDetail.vue'),
         meta: { index: 6 },
       },
     ],
   },
 ]
 
-export const router = createRouter({
+const router = createRouter({
   history: createWebHistory(),
   routes,
 })
+
+export{
+  router
+}

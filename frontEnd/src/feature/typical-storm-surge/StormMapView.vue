@@ -1,21 +1,20 @@
 <script setup lang="ts">
 import { ElMessage } from 'element-plus'
 import 'mapbox-gl/dist/mapbox-gl.css'
-import { Ref, onMounted, ref, watch, reactive, watchEffect, onUnmounted } from 'vue'
+import { Ref, onMounted, ref, watch, reactive, watchEffect, onUnmounted, onBeforeUnmount } from 'vue'
 import {
   addWaterLayer,
   addWaterLayer2,
-  flow9711,
   prepareAddWaterLayer,
   prepareAddWaterLayer2,
-  wind9711,
+  lastFlow,
+  lastFlow_mask
 } from '../../components/LayerFromWebGPU'
 import { router } from '../../router'
-import { useMapStore } from '../../store/mapStore'
+import { useMapStore } from '../../store/mapStore';
 import { useStationStore } from '../../store/stationStore'
-import { initScratchMap } from '../../util/initMap'
+import { initScrMap } from '../../util/initMap'
 import flowLegend from '../../components/legend/flowLegend.vue'
-import timestepCounter from '../../components/legend/timestepCounter.vue'
 import { decimalToDMS } from './util'
 
 import { IStormData, IStormDataOfPoint, IStormTableRow } from './type'
@@ -29,7 +28,14 @@ import {
   updateStormLayer,
   updateTyphoonSymbol,
 } from './util'
+import StormGraph from './StormGraph.vue'
+import mapboxgl from 'mapbox-gl'
+import controller from '../../components/legend/controller.vue'
+import timeShower from '../../components/legend/timeShower.vue'
 
+const isPopup: Ref<boolean> = ref(false)
+const x: Ref<number> = ref(0)
+const y: Ref<number> = ref(0)
 const stationStore = useStationStore()
 const mapContainerRef: Ref<HTMLDivElement | null> = ref(null)
 const radio: Ref<HTMLDivElement | null> = ref(null)
@@ -40,9 +46,9 @@ const tableData: Ref<null | IStormTableRow[]> = ref(null)
 const selectStormType: Ref<'199711'> = ref('199711')
 const mapStore = useMapStore()
 
-const flowTimeStepRef: Ref<Number> = ref(0)
+// const flowTimeStepRef: Ref<Number> = ref(0)
 const flowMaxSpeedRef: Ref<Number> = ref(0)
-const windTimeStepRef: Ref<Number> = ref(0)
+// const windTimeStepRef: Ref<Number> = ref(0)
 const windMaxSpeedRef: Ref<Number> = ref(0)
 const addRangeRef: Ref<Array<Number>> = ref([0, 0])
 
@@ -80,7 +86,6 @@ let adwtTicker: null | number = null
 const adwtHandler = async (addwaterCount: number, swapTag: number) => {
   const jsonPrefix = `/ffvsrc/9711add/contour_`
   const picPrefix = `/ffvsrc/9711add/addWater_`
-  console.log('adwt!');
 
   if (swapTag) {
     const addWaterID = addwaterCount
@@ -128,17 +133,41 @@ const adwtHandler = async (addwaterCount: number, swapTag: number) => {
   }
   addRangeRef.value = getAddRange(contourDATA.value)
 
+
+  timeStep.value = timeStep.value + 1
+
 }
 
-const wind = reactive(new wind9711())
-const flow = reactive(new flow9711())
+let wind9711src = new Array(22)
+for (let i = 0; i < 22; i++) {
+  wind9711src[i] = `/ffvsrc/9711wind/uv_${16 + i}.bin`
+}
+let flow9711src = new Array(22)
+for (let i = 0; i < 22; i++) {
+  if (i * 6 < 132)
+    flow9711src[i] = `/ffvsrc/9711flow/uv_${i * 6}.bin`
+}
 
-watchEffect(() => {
-  flowTimeStepRef.value = flow.currentResourceUrl;
-  flowMaxSpeedRef.value = flow.maxSpeed.n;
-  windTimeStepRef.value = wind.currentResourceUrl
-  windMaxSpeedRef.value = wind.maxSpeed.n;
-})
+let flow = reactive(new lastFlow_mask(
+  'flow',
+  '/ffvsrc/9711flow/station.bin',
+  flow9711src,
+  (url: String) => url.match(/uv_(\d+)\.bin/)![1],
+  '/ffvsrc/flowbound2.geojson',
+))
+flow.framesPerPhase = 300
+flow.speedFactor.n = 2.5
+
+let wind = reactive(new lastFlow(
+  'wind',
+  '/ffvsrc/9711wind/station.bin',
+  wind9711src,
+  (url: String) => url.match(/uv_(\d+)\.bin/)![1],
+))
+wind.framesPerPhase = 150
+wind.speedFactor.n = 1.0
+
+
 
 watch(selectedLayer, async (now: null | number, old: null | number) => {
   if (!mapStore.map) {
@@ -151,13 +180,11 @@ watch(selectedLayer, async (now: null | number, old: null | number) => {
   switch (old) {
     case 0:
       wind.hide()
-
       break
     case 1:
       flow.hide()
       break
     case 2:
-      console.log('clearInterval()', adwtTicker);
       clearInterval(adwtTicker!)
       adwtTicker = null;
       const addWaterSrcIds = [
@@ -187,18 +214,25 @@ watch(selectedLayer, async (now: null | number, old: null | number) => {
       break
   }
 
+  let index = Math.floor(timeStep.value / wind.uvUrlList.length * 100)
+  if (index < 3) index = index - 3 + 100
+  else index = index - 3
+
   // addding
   switch (now) {
+
     case 0:
       ElMessage({
         offset: 50,
         message: '正在加载风场...',
       })
+      //保证同步
+      wind.setProgress(index)
       wind.show()
 
       mapStore.map!.flyTo({
-        center: [121.45, 31.37],
-        zoom: 5.18,
+        center: [121.45, 32.68],
+        zoom: 5.08,
         duration: 500,
       })
       break
@@ -207,6 +241,8 @@ watch(selectedLayer, async (now: null | number, old: null | number) => {
         offset: 50,
         message: '正在加载流场...',
       })
+      //保证同步
+      flow.setProgress(index)
       flow.show()
       mapStore.map!.flyTo({
         center: [121.5, 31.56],
@@ -233,14 +269,11 @@ watch(selectedLayer, async (now: null | number, old: null | number) => {
           adwtid = (adwtid + 1) % 80
           adwtidRef.value = adwtid
         }, 3000)
-        console.log('set new timer', adwtTicker);
-
       }
-      // setTimeout(() => {
-      //   adwtHandler(adwtid, adwtid % 2)
-      //   adwtid = (adwtid + 1) % 80
-      //   adwtidRef.value = adwtid
-      // }, 0)
+      adwtHandler(adwtid, adwtid % 2)
+      adwtid = (adwtid + 1) % 80
+      adwtidRef.value = adwtid
+
 
       break
     default:
@@ -248,17 +281,13 @@ watch(selectedLayer, async (now: null | number, old: null | number) => {
   }
 })
 
-const onPause = () => {
-}
-const onPlay = () => {
-}
+
 
 const closeHandeler = () => {
   wind.hide()
   flow.hide()
 
   if (adwtTicker) {
-    console.log('clearInterval()', adwtTicker);
     clearInterval(adwtTicker!)
     adwtTicker = null;
   }
@@ -285,8 +314,8 @@ const closeHandeler = () => {
 
   selectedLayer.value = null
 
-  radio!.value!.forEach((item) => {
-    item.checked = false
+  radio!.value!.forEach((element) => {
+    element.checked = false
   })
 
 }
@@ -309,14 +338,18 @@ onMounted(async () => {
   tableData.value = generateStormTableData(stormData.value)
   selectPointData.value = stormData.value!.dataList[Number(selectPointID.value)]
 
-  const map: mapbox.Map = await initScratchMap(mapContainerRef.value)
+  const map: mapboxgl.Map = await initScrMap(mapContainerRef.value!, [131, 30], 3)
+  // map.on('remove',()=>{
+  //   console.log('map has been removed');
+  // })
+
   ElMessage({
     message: '地图加载完毕',
     type: 'success',
   })
-  map.addLayer(wind)
+  map.addLayer(wind as mapboxgl.AnyLayer)
   wind.hide()
-  map.addLayer(flow)
+  map.addLayer(flow as mapboxgl.AnyLayer)
   flow.hide()
 
   addStationLayer(map)
@@ -325,7 +358,7 @@ onMounted(async () => {
     selectPointData.value.lng,
     selectPointData.value.lat,
   ])
-  map.on('click', (event: mapbox.MapMouseEvent) => {
+  map.on('click', (event: mapboxgl.MapMouseEvent) => {
     const box: [[number, number], [number, number]] = [
       [event.point.x - 3, event.point.y - 3],
       [event.point.x + 3, event.point.y + 3],
@@ -352,11 +385,100 @@ onMounted(async () => {
       }
     }
   })
+
+  map.on('mousemove', 'stations', (event: mapboxgl.MapMouseEvent) => {
+    const box: [[number, number], [number, number]] = [
+      [event.point.x - 3, event.point.y - 3],
+      [event.point.x + 3, event.point.y + 3],
+    ]
+
+    if (map.getLayer('stations')) {
+      const stations = map.queryRenderedFeatures(box, {
+        layers: ['stations'],
+      })
+      if (stations && stations[0]) {
+        const id = stations[0].properties!.id as string
+        stationStore.currentStationID = id
+        isPopup.value = true
+        x.value = event.point.x
+        y.value = event.point.y
+      }
+    }
+  })
+
+  map.on('mouseleave', 'stations', () => {
+    isPopup.value = false
+  })
 })
 
-onUnmounted(()=>{
+const removeFieldResource = () => {
+  if (mapStore.map) {
+    mapStore.map.removeLayer('flow')
+    mapStore.map.removeLayer('wind')
+  }
+  flow.destroy()
+  wind.destroy()
+  flow = null
+  wind = null
+  console.log('destroy');
+}
+onUnmounted(() => {
+  removeFieldResource()
+  mapStore.map!.remove()
+})
+onBeforeUnmount(() => {
   closeHandeler()
 })
+
+
+///////controller 
+const flowProgress_flow = ref(0)
+const flowProgress_wind = ref(0)
+const timeStep = ref(0)
+
+watchEffect(async () => {
+  //progress
+  let progress_flow = flow.currentResourcePointer / flow.uvUrlList.length
+  flowProgress_flow.value = Math.floor(progress_flow * 100)
+
+  //maxspeed
+  flowMaxSpeedRef.value = flow.maxSpeed.n
+
+
+  windMaxSpeedRef.value = wind.maxSpeed.n
+  let progress_wind = wind.currentResourcePointer / wind.uvUrlList.length
+  flowProgress_wind.value = Math.floor(progress_wind * 100)
+
+  //both
+  if (selectedLayer.value === 0)
+    timeStep.value = wind.currentResourcePointer
+  else if (selectedLayer.value === 1)
+    timeStep.value = flow.currentResourcePointer
+
+})
+
+const getProgressValue_flow = (e) => {
+  flowProgress_flow.value = e
+  flow.setProgress(flowProgress_flow.value)
+}
+const getParticleNumValue_flow = (e) => {
+  flow.particleNum.n = e;
+}
+const getSpeedValue_flow = (e) => {
+  flow.speedFactor.n = e;
+}
+const getProgressValue_wind = (e) => {
+  flowProgress_wind.value = e
+  wind.setProgress(flowProgress_wind.value)
+}
+const getParticleNumValue_wind = (e) => {
+  wind.particleNum.n = e;
+}
+const getSpeedValue_wind = (e) => {
+  wind.speedFactor.n = e;
+}
+
+
 
 </script>
 
@@ -388,20 +510,28 @@ onUnmounted(()=>{
           <div class="close" @click="closeHandeler">关闭所有</div>
         </div>
       </div>
-      <!-- add water -->
-      <!-- <adwtLegend v-show="selectedLayer == 2" :contour-data="contourDATA"></adwtLegend> -->
 
       <!-- flow/wind legend -->
       <flowLegend v-show="selectedLayer == 1 || selectedLayer == 0 || selectedLayer == 2"
-        :max-speed="selectedLayer == 1 ? flowMaxSpeedRef : selectedLayer == 0 ? windMaxSpeedRef : { value: 999 }"
+        :max-speed="selectedLayer == 1 ? flowMaxSpeedRef : selectedLayer == 0 ? windMaxSpeedRef : 10.0"
         :add-range="addRangeRef" :desc="selectedLayer == 1 ? '流速(m/s)' : selectedLayer == 0 ? '风速(m/s)' : '风暴增水(m)'">
       </flowLegend>
-      <timestepCounter v-show="selectedLayer == 0 || selectedLayer == 1 || selectedLayer == 2"
-        :timeStep="selectedLayer == 1 ? flowTimeStepRef : selectedLayer == 0 ? windTimeStepRef : adwtidRef"
-        :totalCount="selectedLayer == 1 ? 131 : selectedLayer == 0 ? 41 : 80" @pause="onPause" :on-play="onPlay"
-        :type="selectedLayer == 0 ? '9711wind' : selectedLayer == 1 ? '9711flow' : '9711adwt'"
-        >
-      </timestepCounter>
+
+      <timeShower v-show="selectedLayer == 1 || selectedLayer == 0 || selectedLayer == 2"
+        :type="selectedLayer == 0 || selectedLayer == 1 ? '9711' : '9711adwt'" :time-step="timeStep">
+      </timeShower>
+
+
+      <controller v-show="selectedLayer == 1" :flow-progress="flowProgress_flow" :max-particle-num="flow.maxParticleNum"
+        :now-particle-num="flow.particleNum.n" :now-speed="flow.speedFactor.n" :max-speed="10.0"
+        @particle-num-value="getParticleNumValue_flow" @progress-value="getProgressValue_flow"
+        @speed-value="getSpeedValue_flow">
+      </controller>
+      <controller v-show="selectedLayer == 0" :flow-progress="flowProgress_wind" :max-particle-num="wind.maxParticleNum"
+        :now-particle-num="wind.particleNum.n" :now-speed="wind.speedFactor.n" :max-speed="10.0"
+        @particle-num-value="getParticleNumValue_wind" @progress-value="getProgressValue_wind"
+        @speed-value="getSpeedValue_wind">
+      </controller>
 
 
       <div ref="mapContainerRef" class="map-container h-full w-full"></div>
@@ -470,6 +600,13 @@ onUnmounted(()=>{
       </div>
     </div>
   </div>
+  <div class="absolute w-[500px] h-[400px] bg-white bg-opacity-70 p-2 rounded border border-black" :style="{
+          zIndex: isPopup ? '10' : '-10',
+          top: `${y - 450}px`,
+          left: `${x - 350}px`,
+      }">
+    <StormGraph v-model="isPopup" class="bg-blue-300 bg-opacity-30"></StormGraph>
+  </div>
 </template>
 
 <style scoped>
@@ -502,6 +639,13 @@ onUnmounted(()=>{
 
 }
 
+.controller {
+  position: absolute;
+  left: 2vw;
+  top: 2vh;
+}
+
+
 .timestep-counter {
   z-index: 3;
 
@@ -510,7 +654,7 @@ onUnmounted(()=>{
 .card {
   position: absolute;
   top: 2vh;
-  right: 5vw;
+  right: 4vw;
   width: 6vw;
   height: 20vh;
   background: rgb(38, 38, 38);
