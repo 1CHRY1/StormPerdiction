@@ -7,7 +7,7 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/test',
-    component: ()=>import ('../components/test.vue'),
+    component: ()=>import('../components/HelloWorld copy.vue'),
   },
   {
     path: '/weather',
