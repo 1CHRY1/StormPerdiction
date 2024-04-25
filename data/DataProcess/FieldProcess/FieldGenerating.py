@@ -398,7 +398,7 @@ def wind_dragon(ncfilepath, outputDIR):
     writeFile(outputDIR + '/Wind/bin/', stations, alltimeStep)
     print('finish!!')
 
-
+# "D:\1study\Work\2023_12_22_Storm\stormPerdiction\data\forecastData\20240425\adcirc_addwind.nc" "D:\1study\Work\2023_12_22_Storm\stormPerdiction\data\Field"
 if __name__ == '__main__':
     args = sys.argv
     if ( len(args) < 3 ):

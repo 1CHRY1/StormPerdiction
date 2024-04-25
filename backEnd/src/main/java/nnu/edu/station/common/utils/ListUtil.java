@@ -134,4 +134,20 @@ public class ListUtil {
         return realDataResultList;
     }
 
+    public static JSONArray realDataProcessingV2(JSONArray realDataList) {
+        // 处理真实潮位数据（新增四个站点）
+        JSONArray realDataResultList = new JSONArray();
+        for (int i = 0; i < realDataList.size(); i++) {
+            JSONObject realData = realDataList.getJSONObject(i);
+            String time = realData.getString("time");
+            String level = realData.getString("tideValue");
+
+            JSONObject realDataResult = new JSONObject();
+            realDataResult.put("time", time);
+            realDataResult.put("level", level);
+            realDataResultList.add(realDataResult);
+        }
+        return realDataResultList;
+    }
+
 }
