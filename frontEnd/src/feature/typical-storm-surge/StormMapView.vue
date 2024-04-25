@@ -261,8 +261,8 @@ watch(selectedLayer, async (now: null | number, old: null | number) => {
         zoom: 7,
         duration: 500,
       })
-      adwtid = 0
-      adwtidRef.value = 0
+      adwtid = timeStep.value
+      adwtidRef.value = timeStep.value
       if (!adwtTicker) {
 
         adwtTicker = setInterval(() => {
