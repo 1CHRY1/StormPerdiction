@@ -231,8 +231,8 @@ watch(selectedLayer, async (now: null | number, old: null | number) => {
       wind.show()
 
       mapStore.map!.flyTo({
-        center: [121.45, 31.37],
-        zoom: 5.18,
+        center: [121.45, 32.68],
+        zoom: 5.08,
         duration: 500,
       })
       break
@@ -339,6 +339,9 @@ onMounted(async () => {
   selectPointData.value = stormData.value!.dataList[Number(selectPointID.value)]
 
   const map: mapboxgl.Map = await initScrMap(mapContainerRef.value!, [131, 30], 3)
+  // map.on('remove',()=>{
+  //   console.log('map has been removed');
+  // })
 
   ElMessage({
     message: '地图加载完毕',
@@ -413,6 +416,11 @@ const removeFieldResource = () => {
     mapStore.map.removeLayer('flow')
     mapStore.map.removeLayer('wind')
   }
+  flow.destroy()
+  wind.destroy()
+  flow = null
+  wind = null
+  console.log('destroy');
 }
 onUnmounted(() => {
   removeFieldResource()

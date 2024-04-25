@@ -182,10 +182,12 @@ class ScratchMap extends mapboxgl.Map {
     }
 
     remove(){
-        console.log(scr.director.stages);
-        console.log('remove!');
+        console.log(scr.director);
         super.remove()
-        console.log(scr.director.stages);
+        scr.director.stages = {}
+        scr.director.stageNum = 0
+        scr.director.bindings = []
+        console.log(scr.director);
 
     }
 }

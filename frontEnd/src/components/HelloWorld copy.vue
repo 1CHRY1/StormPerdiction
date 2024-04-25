@@ -7,7 +7,7 @@
   </controller>
 
 
-  <timeShower :type="'9711wind'" :time-step="timeStep"></timeShower>
+  <timeShower :type="'9711'" :time-step="timeStep"></timeShower>
   <flowLegend :max-speed="maxSpeed" :desc="'风速(m/s)'"></flowLegend>
 </template>
 

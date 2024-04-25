@@ -60,7 +60,6 @@ const handleClick = (e) => {
 onMounted(() => {
     const totalWidth = 8 //vw
     const x = Math.ceil(props.nowParticleNum / props.maxParticleNum * totalWidth)
-    console.log(x);
     Pos.value = `left: ${x}vw`
 })
 
