@@ -606,7 +606,7 @@ const getSpeedValue_wind = (e) => {
           top: `${y - 450}px`,
           left: `${x - 350}px`,
       }">
-    <StormGraph v-model="isPopup" class="bg-blue-300 bg-opacity-30"></StormGraph>
+    <StormGraph v-model="isPopup" class="bg-blue-300 bg-opacity-30 backdrop-blur"></StormGraph>
   </div>
 </template>
 

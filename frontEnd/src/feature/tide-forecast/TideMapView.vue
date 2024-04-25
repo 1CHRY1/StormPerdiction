@@ -495,7 +495,7 @@ const getSpeedValue_wind = (e) => {
     top: `${y - 450}px`,
     left: `${x - 350}px`,
   }">
-    <TideGraph v-model="isPopup" class="bg-blue-300 bg-opacity-30"></TideGraph>
+    <TideGraph v-model="isPopup" class="bg-blue-300 bg-opacity-30 backdrop-blur"></TideGraph>
   </div>
 
   <timeShower v-show="selectedLayer == 1 || selectedLayer == 0 || selectedLayer == 2" :type="'normal'"

@@ -77,6 +77,6 @@ onMounted(async () => {
         left: `${x - 350}px`,
       }"
     >
-      <WaterGraph v-model="isPopup" class="bg-blue-300 bg-opacity-30"></WaterGraph>
+      <WaterGraph v-model="isPopup" class="bg-blue-300 bg-opacity-30 backdrop-blur"></WaterGraph>
     </div>
 </template>
