@@ -144,3 +144,9 @@ Log message: Error executing cloud Data clawingCannot run program "D:\1tools\Min
 Log message: Error executing radar Data clawingCannot run program "D:\1tools\Miniconda\envs\Env1": CreateProcess error=5, 拒绝访问。
 Log message: Error executing rainfall Data clawingCannot run program "D:\1tools\Miniconda\envs\Env1": CreateProcess error=5, 拒绝访问。
 >>>>>>> 78ca9a67026e58da96703b3104b6d64e1f13675c
+Log message: Typhoon Data clawing scheduled at 2024-04-25T10:20:00.019
+Log message: Typhoon Data clawing executed successfully!
+Log message: Radar Data clawing scheduled at 2024-04-25T10:30:00.049
+Log message: Radar Data clawing execution failed!
+Log message: FieldGenerating scheduled at 2024-04-25T10:48:30.065
+Log message: Error executing FieldGeneratingnull
