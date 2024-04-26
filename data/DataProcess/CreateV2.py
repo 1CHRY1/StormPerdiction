@@ -6,4 +6,4 @@ import InsertDataV2
 CreateDB_ForcastingV2.main()
 CreateDB_NC.main()
 InsertStations.main()
-# InsertDataV2.main()
+InsertDataV2.main()

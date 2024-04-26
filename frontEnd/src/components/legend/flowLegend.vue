@@ -44,26 +44,13 @@ const getValue = () => {
     }
 
     else if (props.desc === '风暴增水(m)') {
-
         let max = props.addRange[0]
         let min = props.addRange[1]
 
+        let gap = (max-min)/7
         for (let i = 0; i < 8; i++) {
-            value[7 - i] = (min + (max - min) / (8 - i) * i).toFixed(2)
+            value[7 - i] = (min + gap * i).toFixed(2)
         }
-
-        for (let i = 6; i > 1; i--) {
-            if (value[i] == value[i - 1]) {
-                value[i] = ' '
-            }
-        }
-        if(value[0]===value[1] || value[0] === '-'+value[1] || value[1] === '-'+value[0]){
-            value[1] = ''
-        }
-        if(value[7]===value[6] || value[7] === '-'+value[6] || value[6] === '-'+value[7]){
-            value[6] = ''
-        }
-
     }
 
 }

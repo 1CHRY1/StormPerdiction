@@ -108,12 +108,15 @@ public class TimeTask {
         UpdateUtil.DataUpdating(python, updateData, dataprocess, logPath);
     }
 
+//    @Scheduled(cron = "0/1 * * * * *")
     @Scheduled(cron = "0 10 */2 * * ?")
+//    @Scheduled(cron = "0/5 * * * * *")
     public void executePythonClawingCloudData() throws IOException {
         // 爬取卫星云图数据
         ClawingUtil.ClawingCloudData(python, clawingCloud, meteorologydb, cloudfile, webdriver, logPath);
     }
 
+//        @Scheduled(cron = "0/5 * * * * *")
     @Scheduled(cron = "0 30 */2 * * ?")
     public void executePythonClawingRadarData() throws IOException {
         // 爬取雷达拼图数据

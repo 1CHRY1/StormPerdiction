@@ -135,6 +135,10 @@ def get_prefix_before_digits(input_str):
         prefix += char
     return prefix
 
+def get_prefix_before_digitsV2(input_str):
+    prefix = input_str[:-10]
+    return prefix
+
 # dataprocess_path = "D:/1study/Work/2023_12_22_Storm/stormPerdiction/data/DataProcess"
 
 def main():
@@ -233,11 +237,12 @@ def main():
                         # 获取站点名称
                         name = os.path.splitext(file)[0]
                         # 去掉尾部数字
-                        name = get_prefix_before_digits(name)
+                        name = get_prefix_before_digitsV2(name)
 
-                        if name != "xuliujing1":
+                        if name != "jiangyin1":
                             continue
 
+                        name = "jiangyin"
                         mat_path = os.path.join(Path, file)
                         mat_data = loadmat(mat_path)
                         try:

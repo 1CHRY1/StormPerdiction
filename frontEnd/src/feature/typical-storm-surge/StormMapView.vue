@@ -129,6 +129,8 @@ const adwtHandler = async (addwaterCount: number, swapTag: number) => {
         minAdd = feat['properties']['addWater']
       }
     })
+    console.log(maxAdd, minAdd);
+    
     return [maxAdd, minAdd]
   }
   addRangeRef.value = getAddRange(contourDATA.value)

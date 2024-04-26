@@ -34,3 +34,30 @@ export const generateStationJson = async () => {
   
   return result;
 }
+
+export const generateStationGeoJsonNomaanshan = async () => {
+  const geojson = (await fetch('/geojson/station.geojson')
+    .then((res) => res.json())
+    .then((value) => value)) as any
+
+  const stationList = await getStation()
+  const result = {
+    type: 'FeatureCollection',
+    name: 'station',
+    features: [],
+  }
+  result.features = geojson.features.filter((value: any) =>
+    stationList.includes(value.properties.pinyin)  && value.properties.pinyin !== 'maanshan',
+  )
+
+  return result
+}
+
+export const generateStationJsonNomaanshan = async () => {
+  const stationList = await getStation()
+  const result = Object.values(stationInfo).filter(
+    (value: any) => stationList.includes(value.pinyin) && value.pinyin !== 'maanshan'
+  );
+  
+  return result;
+}
