@@ -11,6 +11,14 @@ import java.io.IOException;
  */
 public interface ModelProcessService {
 
-    String run() throws IOException, InterruptedException;
+    String runOnce() throws IOException, InterruptedException;
+
+    String runOnceCondition();
+
+    String runRegular();
+
+    String runRegularCondition();
+
+    String stopRunRegular();
 
 }

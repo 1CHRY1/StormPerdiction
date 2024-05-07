@@ -9,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.*;
 import java.nio.charset.Charset;
@@ -38,9 +35,29 @@ public class ModelProcessController {
 
     @Autowired
     ModelProcessService modelProcessService;
-    @GetMapping("/run")
-    public JsonResult run() throws IOException, InterruptedException {
-        // 判断系统类型
-        return ResultUtils.success(modelProcessService.run());
+    @GetMapping("/run/once")
+    public JsonResult runOnce() throws IOException, InterruptedException {
+        return ResultUtils.success(modelProcessService.runOnce());
+    }
+
+    @GetMapping("/run/once/condition")
+    public JsonResult runOnceCondition() {
+        // 查看单次任务运行状态
+        return ResultUtils.success(modelProcessService.runOnceCondition());
+    }
+
+    @GetMapping ("/run/regular")
+    public JsonResult RunRegular() {
+        return ResultUtils.success(modelProcessService.runRegular());
+    }
+
+    @GetMapping("/run/regular/condition")
+    public JsonResult RunRegularCondition() {
+        return ResultUtils.success(modelProcessService.runRegularCondition());
+    }
+
+    @GetMapping ("/run/regular/stop")
+    public JsonResult StopRunRegular() {
+        return ResultUtils.success(modelProcessService.stopRunRegular());
     }
 }

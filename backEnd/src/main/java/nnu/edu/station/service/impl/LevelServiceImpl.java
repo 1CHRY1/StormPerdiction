@@ -56,93 +56,9 @@ public class LevelServiceImpl implements LevelService {
     }
 
     @Override
-    public JSONArray get72RealInfoByStation(String station) throws IOException {
-        // 获取站点实测数据信息
-//        Path currentPath = Paths.get(System.getProperty("user.dir"));
-//        Path parentPath = currentPath.getParent();
-//        Path fullPath = currentPath.resolve(station_path);
-        Path fullPath = Paths.get(station_path);
-        JSONObject stations = FileUtil.readJsonObjectFile(fullPath.toString());
-        // 处理json
-        Set<String> keys = stations.keySet();
-        String url_time = "";
-        String url = "";
-        String name = "";
-        for (String key : keys) {
-            if (key.equals(station)) {
-                url_time = stations.getJSONObject(key).getString("api_time");
-                name = stations.getJSONObject(key).getString("name");
-                break;
-            }
-        }
-        if (url_time == null) {
-            return null;
-        }
-        LocalDateTime currentTime = LocalDateTime.now();
-        LocalDateTime threeDaysAgo = currentTime.minusDays(3);
-        JSONObject jsonResponse = new JSONObject();
-        if (name.equals("江阴") || name.equals("徐六泾") || name.equals("连兴港") || name.equals("六滧")){
-            url = url_time + "/" + threeDaysAgo.atZone(ZoneOffset.UTC).toInstant().getEpochSecond()*1000 + "/" + currentTime.atZone(ZoneOffset.UTC).toInstant().getEpochSecond()*1000;
-            jsonResponse = HttpUtil.GetRealData4Station(url);
-            // 获取实时监测数据
-            JSONArray realDataList = (JSONArray) jsonResponse.get("data");
-            if (realDataList == null) {
-                return null;
-            }
-            else {
-                return ListUtil.realDataProcessingV2(realDataList);
-            }
-        } else {
-            url = url_time + "/" + name + "/" + threeDaysAgo + "/" + currentTime;
-            jsonResponse = HttpUtil.GetRealData(url);
-            // 获取实时监测数据
-            JSONArray realDataList = (JSONArray) jsonResponse.get("data");
-            if (realDataList == null) {
-                return null;
-            }
-            else {
-                return ListUtil.realDataProcessing(realDataList);
-            }
-        }
-    }
-
-    @Override
     public List<Map<String, Object>> getAllInfoByStation(String station) {
         List<Map<String, Object>> objs = levelMapper.getAllInfoByStation(station);
         return ListUtil.StringObjList2ArrayObjList(objs);
-    }
-
-    @Override
-    public List<Map<String, Object>> getNoTyphAllByStation(String station) {
-        List<Map<String, Object>> objs = levelMapper.getNoTyphAllByStation(station);
-        return ListUtil.StringObjList2ArrayObjList(objs);
-    }
-
-    @Override
-    public List<Map<String, Object>> getTyphAllByStation(String station) {
-        List<Map<String, Object>> objs = levelMapper.getTyphAllByStation(station);
-        return  ListUtil.StringObjList2ArrayObjList(objs);
-    }
-
-    @Override
-    public Map<String, Object> getBefore72ByStation(String station) {
-        station = station + "_hz";
-        LocalDateTime currenttime = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0).minusSeconds(1);
-        LocalDateTime beforetime = currenttime.minusDays(3);
-        //        LocalDateTime currenttime = LocalDateTime.now().withYear(2023).withMonth(8).withDayOfMonth(30).withHour(0).withMinute(0).withSecond(0).withNano(0).minusSeconds(1);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String currenttime_str = currenttime.format(formatter);
-        String beforetime_str = beforetime.format(formatter);
-        List<Map<String,Double>> hz_values = levelMapper.getBefore72ByStation(station, beforetime_str, currenttime_str);
-        Double[] hz = new Double[hz_values.size()];
-        Integer i = 0;
-        for (Map<String,Double> hz_value : hz_values){
-            hz[i++] = hz_value.get("hz_value");
-        }
-        Map<String, Object> obj = new HashMap<>();
-        obj.put("time", currenttime_str);
-        obj.put("hz",hz);
-        return obj;
     }
 
     @Override
@@ -212,43 +128,7 @@ public class LevelServiceImpl implements LevelService {
         }
     }
 
-    @Override
-    public List<Map<String, Object>> getNoTyph72ManualByStation(String station) {
-        return  levelMapper.getNoTyph72ManualByStation(station);
-    }
-
-    @Override
-    public List<Map<String, Object>> getTyph72ManualByStation(String station) {
-        return  levelMapper.getTyph72ManualByStation(station);
-    }
-
-    @Override
-    public List<Map<String, Object>> getNoTyphAllManualByStation(String station) {
-        return  levelMapper.getNoTyphAllManualByStation(station);
-    }
-
     // V2 Service
-    @Override
-    public Map<String, Object> get48scNotyNoman(String station) {
-        String localTime = getLocalTimeStr();
-        Map<String, Object> obj = ListUtil.StringObj2ArrayObj(levelMapper.get48scNotyNoman(station, localTime));
-        if (obj == null) {
-            localTime = getLocalTimeBeforeStr(1);
-            obj = ListUtil.StringObj2ArrayObj(levelMapper.get48scNotyNoman(station, localTime));
-        }
-        return obj;
-    }
-
-    @Override
-    public Map<String, Object> get48ybNotyNoman(String station) {
-        String localTime = getLocalTimeStr();
-        Map<String, Object> obj = ListUtil.StringObj2ArrayObj(levelMapper.get48ybNotyNoman(station, localTime));
-        if (obj == null) {
-            localTime = getLocalTimeBeforeStr(1);
-            obj = ListUtil.StringObj2ArrayObj(levelMapper.get48ybNotyNoman(station, localTime));
-        }
-        return obj;
-    }
 
     @Override
     public List<Map<String, Object>> getAllManul() {
@@ -260,4 +140,124 @@ public class LevelServiceImpl implements LevelService {
     public Map<String, Object> getManuelByTime(String time) {
         return levelMapper.getManuelByTime(time);
     }
+
+    //    @Override
+//    public Map<String, Object> get48scNotyNoman(String station) {
+//        String localTime = getLocalTimeStr();
+//        Map<String, Object> obj = ListUtil.StringObj2ArrayObj(levelMapper.get48scNotyNoman(station, localTime));
+//        if (obj == null) {
+//            localTime = getLocalTimeBeforeStr(1);
+//            obj = ListUtil.StringObj2ArrayObj(levelMapper.get48scNotyNoman(station, localTime));
+//        }
+//        return obj;
+//    }
+
+//    @Override
+//    public Map<String, Object> get48ybNotyNoman(String station) {
+//        String localTime = getLocalTimeStr();
+//        Map<String, Object> obj = ListUtil.StringObj2ArrayObj(levelMapper.get48ybNotyNoman(station, localTime));
+//        if (obj == null) {
+//            localTime = getLocalTimeBeforeStr(1);
+//            obj = ListUtil.StringObj2ArrayObj(levelMapper.get48ybNotyNoman(station, localTime));
+//        }
+//        return obj;
+//    }
+    //    @Override
+//    public JSONArray get72RealInfoByStation(String station) throws IOException {
+//        // 获取站点实测数据信息
+////        Path currentPath = Paths.get(System.getProperty("user.dir"));
+////        Path parentPath = currentPath.getParent();
+////        Path fullPath = currentPath.resolve(station_path);
+//        Path fullPath = Paths.get(station_path);
+//        JSONObject stations = FileUtil.readJsonObjectFile(fullPath.toString());
+//        // 处理json
+//        Set<String> keys = stations.keySet();
+//        String url_time = "";
+//        String url = "";
+//        String name = "";
+//        for (String key : keys) {
+//            if (key.equals(station)) {
+//                url_time = stations.getJSONObject(key).getString("api_time");
+//                name = stations.getJSONObject(key).getString("name");
+//                break;
+//            }
+//        }
+//        if (url_time == null) {
+//            return null;
+//        }
+//        LocalDateTime currentTime = LocalDateTime.now();
+//        LocalDateTime threeDaysAgo = currentTime.minusDays(3);
+//        JSONObject jsonResponse = new JSONObject();
+//        if (name.equals("江阴") || name.equals("徐六泾") || name.equals("连兴港") || name.equals("六滧")){
+//            url = url_time + "/" + threeDaysAgo.atZone(ZoneOffset.UTC).toInstant().getEpochSecond()*1000 + "/" + currentTime.atZone(ZoneOffset.UTC).toInstant().getEpochSecond()*1000;
+//            jsonResponse = HttpUtil.GetRealData4Station(url);
+//            // 获取实时监测数据
+//            JSONArray realDataList = (JSONArray) jsonResponse.get("data");
+//            if (realDataList == null) {
+//                return null;
+//            }
+//            else {
+//                return ListUtil.realDataProcessingV2(realDataList);
+//            }
+//        } else {
+//            url = url_time + "/" + name + "/" + threeDaysAgo + "/" + currentTime;
+//            jsonResponse = HttpUtil.GetRealData(url);
+//            // 获取实时监测数据
+//            JSONArray realDataList = (JSONArray) jsonResponse.get("data");
+//            if (realDataList == null) {
+//                return null;
+//            }
+//            else {
+//                return ListUtil.realDataProcessing(realDataList);
+//            }
+//        }
+//    }
+//
+//    @Override
+//    public List<Map<String, Object>> getNoTyphAllByStation(String station) {
+//        List<Map<String, Object>> objs = levelMapper.getNoTyphAllByStation(station);
+//        return ListUtil.StringObjList2ArrayObjList(objs);
+//    }
+//
+//    @Override
+//    public List<Map<String, Object>> getTyphAllByStation(String station) {
+//        List<Map<String, Object>> objs = levelMapper.getTyphAllByStation(station);
+//        return  ListUtil.StringObjList2ArrayObjList(objs);
+//    }
+//
+//    @Override
+//    public Map<String, Object> getBefore72ByStation(String station) {
+//        station = station + "_hz";
+//        LocalDateTime currenttime = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0).minusSeconds(1);
+//        LocalDateTime beforetime = currenttime.minusDays(3);
+//        //        LocalDateTime currenttime = LocalDateTime.now().withYear(2023).withMonth(8).withDayOfMonth(30).withHour(0).withMinute(0).withSecond(0).withNano(0).minusSeconds(1);
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+//        String currenttime_str = currenttime.format(formatter);
+//        String beforetime_str = beforetime.format(formatter);
+//        List<Map<String,Double>> hz_values = levelMapper.getBefore72ByStation(station, beforetime_str, currenttime_str);
+//        Double[] hz = new Double[hz_values.size()];
+//        Integer i = 0;
+//        for (Map<String,Double> hz_value : hz_values){
+//            hz[i++] = hz_value.get("hz_value");
+//        }
+//        Map<String, Object> obj = new HashMap<>();
+//        obj.put("time", currenttime_str);
+//        obj.put("hz",hz);
+//        return obj;
+//    }
+
+//    @Override
+//    public List<Map<String, Object>> getNoTyph72ManualByStation(String station) {
+//        return  levelMapper.getNoTyph72ManualByStation(station);
+//    }
+//
+//    @Override
+//    public List<Map<String, Object>> getTyph72ManualByStation(String station) {
+//        return  levelMapper.getTyph72ManualByStation(station);
+//    }
+//
+//    @Override
+//    public List<Map<String, Object>> getNoTyphAllManualByStation(String station) {
+//        return  levelMapper.getNoTyphAllManualByStation(station);
+//    }
 }

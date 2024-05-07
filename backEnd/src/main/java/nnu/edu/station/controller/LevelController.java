@@ -33,18 +33,6 @@ public class LevelController {
         return ResultUtils.success(levelService.getAllInfoByStation(station));
     }
 
-    @GetMapping(value = "/station/real")
-    public JsonResult get72RealInfoByStation(@RequestParam String station) throws IOException {
-        /* 根据名称获取站点72小时实测潮位预报信息 */
-        return ResultUtils.success(levelService.get72RealInfoByStation(station));
-    }
-
-    @GetMapping(value = "/station/before/72")
-    public JsonResult getBefore72ByStation(@RequestParam String station) {
-        /* 根据名称获取站点前72小时潮位预报信息 */
-        return ResultUtils.success(levelService.getBefore72ByStation(station));
-    }
-
     @GetMapping(value = "/station/72")
     public JsonResult get72ByStation(@RequestParam String station) {
         /* 根据名称获取站点当天无台风情况下72小时潮位预报信息 */
@@ -63,48 +51,6 @@ public class LevelController {
         return ResultUtils.success(levelService.getTyph72ByStation(station));
     }
 
-    @GetMapping(value = "/station/notyph/all")
-    public JsonResult getNoTyphAllByStation(@RequestParam String station){
-        /* 根据名称获取站点所有无台风情况下所有潮位预报信息 */
-        return ResultUtils.success(levelService.getNoTyphAllByStation(station));
-    }
-
-    @GetMapping(value = "/station/typh/all")
-    public JsonResult getTyphAllByStation(@RequestParam String station){
-        /* 根据名称获取站点所有遭遇台风情况下所有潮位预报信息 */
-        return ResultUtils.success(levelService.getTyphAllByStation(station));
-    }
-
-    @GetMapping(value ="/station/notyph/72/manual")
-    public JsonResult getNoTyph72ManualByStation(@RequestParam String station) {
-        /* 根据名称获取站点无台风情况下72小时手动计算潮位预报信息 */
-        return ResultUtils.success(levelService.getNoTyph72ManualByStation(station));
-    }
-
-    @GetMapping(value = "/station/typh/72/manual")
-    public JsonResult getTyph72ManualByStation(@RequestParam String station) {
-        /* 根据名称获取站点无台风情况下72小时手动计算潮位预报信息 */
-        return ResultUtils.success(levelService.getTyph72ManualByStation(station));
-    }
-
-    @GetMapping(value = "/station/notyph/all/manual")
-    public JsonResult getNoTyphAllManualByStation(@RequestParam String station){
-        /* 根据名称获取站点无台风情况下所有手动计算潮位预报信息 */
-        return ResultUtils.success(levelService.getNoTyphAllManualByStation(station));
-    }
-
-    @GetMapping(value = "/station/shice/48")
-    public JsonResult get48B_noty_noman(@RequestParam String station) {
-        /* 根据名称获取站点前48小时潮位预报信息 */
-        return ResultUtils.success(levelService.get48scNotyNoman(station));
-    }
-
-    @GetMapping(value = "/station/yubao/48")
-    public JsonResult get48A_noty_noman(@RequestParam String station) {
-        /* 根据名称获取站点后48小时潮位预报信息 */
-        return ResultUtils.success(levelService.get48ybNotyNoman(station));
-    }
-
     @GetMapping(value = "/manuel/all")
     public JsonResult getAllManuel() {
         // 获取当天所有手动计算数据
@@ -116,5 +62,57 @@ public class LevelController {
         // 获取指定时间的手动计算数据
         return ResultUtils.success(levelService.getManuelByTime(time));
     }
+//    @GetMapping(value = "/station/shice/48")
+//    public JsonResult get48B_noty_noman(@RequestParam String station) {
+//        /* 根据名称获取站点前48小时潮位预报信息 */
+//        return ResultUtils.success(levelService.get48scNotyNoman(station));
+//    }
+//
+//    @GetMapping(value = "/station/yubao/48")
+//    public JsonResult get48A_noty_noman(@RequestParam String station) {
+//        /* 根据名称获取站点后48小时潮位预报信息 */
+//        return ResultUtils.success(levelService.get48ybNotyNoman(station));
+//    }
+
+//    @GetMapping(value = "/station/real")
+//    public JsonResult get72RealInfoByStation(@RequestParam String station) throws IOException {
+//        /* 根据名称获取站点72小时实测潮位预报信息 */
+//        return ResultUtils.success(levelService.get72RealInfoByStation(station));
+//    }
+
+//    @GetMapping(value = "/station/before/72")
+//    public JsonResult getBefore72ByStation(@RequestParam String station) {
+//        /* 根据名称获取站点前72小时潮位预报信息 */
+//        return ResultUtils.success(levelService.getBefore72ByStation(station));
+//    }
+//    @GetMapping(value = "/station/notyph/all")
+//    public JsonResult getNoTyphAllByStation(@RequestParam String station){
+//        /* 根据名称获取站点所有无台风情况下所有潮位预报信息 */
+//        return ResultUtils.success(levelService.getNoTyphAllByStation(station));
+//    }
+
+//    @GetMapping(value = "/station/typh/all")
+//    public JsonResult getTyphAllByStation(@RequestParam String station){
+//        /* 根据名称获取站点所有遭遇台风情况下所有潮位预报信息 */
+//        return ResultUtils.success(levelService.getTyphAllByStation(station));
+//    }
+
+//    @GetMapping(value ="/station/notyph/72/manual")
+//    public JsonResult getNoTyph72ManualByStation(@RequestParam String station) {
+//        /* 根据名称获取站点无台风情况下72小时手动计算潮位预报信息 */
+//        return ResultUtils.success(levelService.getNoTyph72ManualByStation(station));
+//    }
+//
+//    @GetMapping(value = "/station/typh/72/manual")
+//    public JsonResult getTyph72ManualByStation(@RequestParam String station) {
+//        /* 根据名称获取站点无台风情况下72小时手动计算潮位预报信息 */
+//        return ResultUtils.success(levelService.getTyph72ManualByStation(station));
+//    }
+
+    //    @GetMapping(value = "/station/notyph/all/manual")
+//    public JsonResult getNoTyphAllManualByStation(@RequestParam String station){
+//        /* 根据名称获取站点无台风情况下所有手动计算潮位预报信息 */
+//        return ResultUtils.success(levelService.getNoTyphAllManualByStation(station));
+//    }
 
 }

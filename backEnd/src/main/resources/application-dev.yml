@@ -75,7 +75,7 @@ WindField:
   "${data}/Field/Wind"
 
 ScriptName:
-  "run.sh"
+  "test.sh"
 DirectoryPath:
   "D:/1study/Work/2023_12_22_Storm/StormPerdiction/data"
 ForecastDataPath:

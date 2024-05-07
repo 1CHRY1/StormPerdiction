@@ -5,20 +5,8 @@
         select time, iftyph, hpre, hyubao, hadd, manual from ${station}
     </select>
 
-    <select id="getNoTyphAllByStation" resultType="java.util.Map">
-        select time, hpre from ${station} where iftyph=0 and manual=0
-    </select>
-
-    <select id="getTyphAllByStation" resultType="java.util.Map">
-        select time, hpre from ${station} where iftyph=1 and manual=0
-    </select>
-
     <select id="ifTyph" resultType="java.lang.Integer">
         select iftyph from typh where time=#{time}
-    </select>
-
-    <select id="getBefore72ByStation" resultType="java.util.Map">
-        select hz_value from ${station} where time between #{beforetime} and #{currenttime}
     </select>
 
     <select id="getNoTyph72ByStation" resultType="java.util.Map">
@@ -26,30 +14,9 @@
     </select>
 
     <select id="getTyph72ByStation" resultType="java.util.Map">
-        select hpre, hyubao, hadd, time from ${station} where iftyph=1 and manual=0 and time=#{time}
+        select hpre, time from ${station} where iftyph=1 and manual=0 and time=#{time}
     </select>
 
-    <select id="getNoTyph72ManualByStation" resultType="java.util.Map">
-        select hpre from ${station} where iftyph=0 and manual=1
-    </select>
-
-    <select id="getTyph72ManualByStation" resultType="java.util.Map">
-        select hyubao from ${station} where iftyph=1 and manual=1
-    </select>
-
-    <select id="getNoTyphAllManualByStation" resultType="java.util.Map">
-        select hz from ${station} where iftyph=0 and manual=1
-    </select>
-
-<!--  api version 2-->
-
-    <select id="get48scNotyNoman" resultType="java.util.Map">
-        select hshice,time from ${station} where iftyph=0 and manual=0 and time=#{time}
-    </select>
-
-    <select id="get48ybNotyNoman" resultType="java.util.Map">
-        select hybresult,time from ${station} where iftyph=0 and manual=0 and time=#{time}
-    </select>
 
     <select id="getAllManul" resultType="java.util.Map">
         select time, ifTyph from typh where manual=1
@@ -58,4 +25,39 @@
     <select id="getManuelByTime" resultType="java.util.Map">
         select manuel, ifTyph from typh where time=#{time}
     </select>
+
+    <!--    <select id="getNoTyph72ManualByStation" resultType="java.util.Map">-->
+    <!--        select hpre from ${station} where iftyph=0 and manual=1-->
+    <!--    </select>-->
+
+    <!--    <select id="getTyph72ManualByStation" resultType="java.util.Map">-->
+    <!--        select hyubao from ${station} where iftyph=1 and manual=1-->
+    <!--    </select>-->
+
+    <!--    <select id="getNoTyphAllManualByStation" resultType="java.util.Map">-->
+    <!--        select hz from ${station} where iftyph=0 and manual=1-->
+    <!--    </select>-->
+
+    <!--  api version 2-->
+
+    <!--    <select id="get48scNotyNoman" resultType="java.util.Map">-->
+    <!--        select hshice,time from ${station} where iftyph=0 and manual=0 and time=#{time}-->
+    <!--    </select>-->
+
+    <!--    <select id="get48ybNotyNoman" resultType="java.util.Map">-->
+    <!--        select hybresult,time from ${station} where iftyph=0 and manual=0 and time=#{time}-->
+    <!--    </select>-->
+
+
+    <!--    <select id="getNoTyphAllByStation" resultType="java.util.Map">-->
+    <!--        select time, hpre from ${station} where iftyph=0 and manual=0-->
+    <!--    </select>-->
+
+    <!--    <select id="getTyphAllByStation" resultType="java.util.Map">-->
+    <!--        select time, hpre from ${station} where iftyph=1 and manual=0-->
+    <!--    </select>-->
+
+    <!--    <select id="getBefore72ByStation" resultType="java.util.Map">-->
+    <!--        select hz_value from ${station} where time between #{beforetime} and #{currenttime}-->
+    <!--    </select>-->
 </mapper>
