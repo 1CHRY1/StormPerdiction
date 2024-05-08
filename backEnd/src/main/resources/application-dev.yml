@@ -4,19 +4,11 @@ data:
   D:/1study/Work/2023_12_22_Storm/stormPerdiction/data
 dataprocess:
   D:/1study/Work/2023_12_22_Storm/stormPerdiction/data/DataProcess
-webdriver:
-  "D:/1tools/chromedriver/chromedriver.exe"
 
 spring:
   datasource:
     level:
       jdbc-url: jdbc:sqlite:${dataprocess}/Forcasting.db
-      driver-class-name: org.sqlite.JDBC
-    nc:
-      jdbc-url: jdbc:sqlite:${dataprocess}/NC.db
-      driver-class-name: org.sqlite.JDBC
-    meteorology:
-      jdbc-url: jdbc:sqlite:${dataprocess}/Clawing/Meteorology.db
       driver-class-name: org.sqlite.JDBC
 
 stations:
@@ -27,55 +19,14 @@ Typhoon:
 updateData:
   ${dataprocess}/UpdateDataV2.py
 
-clawingCloud:
-  ${dataprocess}/Clawing/Cloud.py
-clawingRadar:
-  ${dataprocess}/Clawing/Radar.py
-clawingRainfall:
-  ${dataprocess}/Clawing/Rainfall.py
-clawingRainfallpre:
-  ${dataprocess}/Clawing/Rainfall_pre.py
-clawingTyphoon:
-  ${dataprocess}/Clawing/Typhoon.py
-deleteClawingData:
-  ${dataprocess}/Clawing/DeleteData.py
-
-meteorology:
-  file:
-    cloud:
-      "${data}/气象产品/卫星云图"
-    radar:
-      "${data}/气象产品/雷达拼图"
-    rainfall:
-      "${data}/气象产品/降水量实况"
-    rainfallpre:
-      "${data}/气象产品/降水量预报"
-  db:
-    "${dataprocess}/Clawing/Meteorology.db"
-
 
 DataProcessLog:
   ${dataprocess}/logfile.log
 
-FieldGenerating:
-  ${dataprocess}/FieldProcess/FieldGenerating.py
-FieldPath:
-  "${data}/Field"
-
-AddFieldGenerating:
-  ${dataprocess}/FieldProcess/addWaterScripts.py
-AddField:
-  "${data}/Field/Add/out"
-AddFieldMask:
-  "${dataprocess}/FieldProcess/mask/mask.shp"
-
-FlowField:
-  "${data}/Field/Flow"
-WindField:
-  "${data}/Field/Wind"
-
-ScriptName:
+Script1Name:
   "test.sh"
+Script2Name:
+  "run.sh"
 DirectoryPath:
   "D:/1study/Work/2023_12_22_Storm/StormPerdiction/data"
 ForecastDataPath:

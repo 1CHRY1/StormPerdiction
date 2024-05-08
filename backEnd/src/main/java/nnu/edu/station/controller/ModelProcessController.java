@@ -27,12 +27,6 @@ import java.nio.charset.StandardCharsets;
 @RequestMapping("api/v1/process/model")
 public class ModelProcessController {
 
-    @Value("${DirectoryPath}")
-    String directoryPath;
-
-    @Value("${ScriptName}")
-    String scriptName;
-
     @Autowired
     ModelProcessService modelProcessService;
     @GetMapping("/run/once")

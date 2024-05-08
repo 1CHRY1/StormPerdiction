@@ -25,9 +25,6 @@ public class TimeTask {
     @Value("${python}")
     String python;
 
-    @Value("${webdriver}")
-    String webdriver;
-
     @Value("${updateData}")
     String updateData;
 

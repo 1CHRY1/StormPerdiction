@@ -1,22 +1,14 @@
 python:
   python
 data:
-  /home/ps/ForecastPlatform
+  /run/media/ps/c4cc18ff-fa71-43fb-8a59-06bc37d5c482/ForecastPlatform
 dataprocess:
-  /home/ps/ForecastPlatform/DataProcess
-webdriver:
-  "/home/ps/apps/webdriver/geckodriver"
+  /run/media/ps/c4cc18ff-fa71-43fb-8a59-06bc37d5c482/ForecastPlatform/DataProcess
 
 spring:
   datasource:
     level:
       jdbc-url: jdbc:sqlite:${dataprocess}/Forcasting.db
-      driver-class-name: org.sqlite.JDBC
-    nc:
-      jdbc-url: jdbc:sqlite:${dataprocess}/NC.db
-      driver-class-name: org.sqlite.JDBC
-    meteorology:
-      jdbc-url: jdbc:sqlite:${dataprocess}/Clawing/Meteorology.db
       driver-class-name: org.sqlite.JDBC
 
 stations:
@@ -25,45 +17,18 @@ Typhoon:
   ${dataprocess}/Clawing/typhoon.json
 
 updateData:
-  ${dataprocess}/UpdateData.py
-
-clawingCloud:
-  ${dataprocess}/Clawing/Cloud.py
-clawingRadar:
-  ${dataprocess}/Clawing/Radar.py
-clawingRainfall:
-  ${dataprocess}/Clawing/Rainfall.py
-clawingRainfallpre:
-  ${dataprocess}/Clawing/Rainfall_pre.py
-clawingTyphoon:
-  ${dataprocess}/Clawing/Typhoon.py
-deleteClawingData:
-  ${dataprocess}/Clawing/DeleteData.py
-
-meteorology:
-  file:
-    cloud:
-      "${data}/气象产品/卫星云图"
-    radar:
-      "${data}/气象产品/雷达拼图"
-    rainfall:
-      "${data}/气象产品/降水量实况"
-    rainfallpre:
-      "${data}/气象产品/降水量预报"
-  db:
-    "${dataprocess}/Clawing/Meteorology.db"
-
+  ${dataprocess}/UpdateDataV2.py
 
 DataProcessLog:
   ${dataprocess}/logfile.log
 
-TxtBuilder4zeta:
-  ${dataprocess}/FieldProcess/txtBuilder4zeta.py
-Triangle:
-  ${dataprocess}/FieldProcess/triangle.py
-FlowField:
-  "${data}/Field/Flow"
-WindField:
-  "${data}/Field/Wind"
-AddField:
-  "${data}/Field/Add"
+Script1Name:
+  "downloadwaterlevelnow.sh"
+Script2Name:
+  "waterlevelnow1.sh"
+DirectoryPath:
+  "${data}"
+ForecastDataPath:
+  "${data}/forecastData"
+ManuelUpdating:
+  ${dataprocess}/UpdateDataV2_man.py

@@ -33,8 +33,11 @@ public class ModelProcessServiceImpl implements ModelProcessService {
     @Value("${DirectoryPath}")
     String directoryPath;
 
-    @Value("${ScriptName}")
-    String scriptName;
+    @Value("${Script1Name}")
+    String script1Name;
+
+    @Value("${Script2Name}")
+    String script2Name;
 
     @Value("${ForecastDataPath}")
     String forecastDataPath;
@@ -55,7 +58,7 @@ public class ModelProcessServiceImpl implements ModelProcessService {
 
     @Override
     public String runOnce() throws IOException, InterruptedException {
-        return taskManager.runOnce(logPath, directoryPath, scriptName, python, manuelUpdating, dataprocess, forecastDataPath);
+        return taskManager.runOnce(logPath, directoryPath, script1Name, script2Name, python, manuelUpdating, dataprocess, forecastDataPath);
     }
 
     @Override
@@ -65,7 +68,7 @@ public class ModelProcessServiceImpl implements ModelProcessService {
 
     @Override
     public String runRegular() {
-        return taskManager.runRegular(logPath, directoryPath, scriptName, python, manuelUpdating, dataprocess, forecastDataPath);
+        return taskManager.runRegular(logPath, directoryPath, script1Name, script2Name, python, manuelUpdating, dataprocess, forecastDataPath);
     }
 
     @Override
