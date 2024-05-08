@@ -52,7 +52,7 @@ public class TaskManager {
             String command1 = cmd + directoryPath + File.separator + script1Name;
             isRunningOnce1 = true;
             Process process1 = Runtime.getRuntime().exec(command1);
-            boolean exitCode1 = process1.waitFor(20,TimeUnit.MINUTES);
+            boolean exitCode1 = process1.waitFor(60,TimeUnit.MINUTES);
             if (exitCode1) {
                 writer.println("Log message: Shell script1 executed successfully at " + LocalDateTime.now());
                 System.out.println("Shell script1 executed successfully.");
@@ -67,7 +67,7 @@ public class TaskManager {
             String command2 = cmd + directoryPath + File.separator + script2Name;
             isRunningOnce2 = true;
             Process process2 = Runtime.getRuntime().exec(command2);
-            boolean exitCode2 = process2.waitFor(20,TimeUnit.MINUTES);
+            boolean exitCode2 = process2.waitFor(60,TimeUnit.MINUTES);
             if (exitCode2) {
                 writer.println("Log message: Shell script2 executed successfully at " + LocalDateTime.now());
                 System.out.println("Shell script2 executed successfully.");
@@ -99,7 +99,7 @@ public class TaskManager {
             String command1 = sh + directoryPath + File.separator + script1Name;
             isRunningOnce1 = true;
             Process process1 = Runtime.getRuntime().exec(command1);
-            boolean exitCode1 = process1.waitFor(20,TimeUnit.MINUTES);
+            boolean exitCode1 = process1.waitFor(60,TimeUnit.MINUTES);
             if (exitCode1) {
                 writer.println("Log message: Shell script1 executed successfully at " + LocalDateTime.now());
                 System.out.println("Shell script1 executed successfully.");
@@ -114,7 +114,7 @@ public class TaskManager {
             String command2 = sh + directoryPath + File.separator + script2Name;
             isRunningOnce2 = true;
             Process process2 = Runtime.getRuntime().exec(command2);
-            boolean exitCode2 = process2.waitFor(20,TimeUnit.MINUTES);
+            boolean exitCode2 = process2.waitFor(60,TimeUnit.MINUTES);
             if (exitCode2) {
                 writer.println("Log message: Shell script2 executed successfully at " + LocalDateTime.now());
                 System.out.println("Shell script2 executed successfully.");
