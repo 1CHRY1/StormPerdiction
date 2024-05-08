@@ -38,7 +38,7 @@ public class ModelProcessController {
 
     @Autowired
     ModelProcessService modelProcessService;
-    @GetMapping("/run")
+    @GetMapping("/run/once")
     public JsonResult run() throws IOException, InterruptedException {
         // 判断系统类型
         return ResultUtils.success(modelProcessService.run());
