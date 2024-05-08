@@ -40,7 +40,7 @@ public class TaskManager {
         this.executorService = Executors.newSingleThreadScheduledExecutor();
     }
 
-    private void runOnceTask(String logPath, String directoryPath, String script1Name, String script2Name, String python, String manuelUpdating, String dataprocess, String forecastDataPath) throws IOException, InterruptedException {
+    private void runOnceTask(String logPath, String directoryPath, String scriptName, String python, String manuelUpdating, String dataprocess, String forecastDataPath) throws IOException, InterruptedException {
         // 执行模型操作
         PrintWriter writer = new PrintWriter(new FileWriter(logPath, true));
         // 判断系统类型
@@ -49,11 +49,11 @@ public class TaskManager {
         if ( osName.contains("windows") ) {
             Set<Path> beforeOperation = scanFolder(forecastDataPath);
             String cmd = "cmd.exe /c ";
-            String command1 = cmd + directoryPath + File.separator + script1Name;
-            isRunningOnce1 = true;
-            Process process1 = Runtime.getRuntime().exec(command1);
-            boolean exitCode1 = process1.waitFor(60,TimeUnit.MINUTES);
-            if (exitCode1) {
+            String command = cmd + directoryPath + File.separator + scriptName;
+            isRunningOnce = true;
+            Process process = Runtime.getRuntime().exec(command);
+            boolean exitCode = process.waitFor(60,TimeUnit.MINUTES);
+            if (exitCode) {
                 writer.println("Log message: Shell script1 executed successfully at " + LocalDateTime.now());
                 System.out.println("Shell script1 executed successfully.");
                 writer.close();
@@ -62,23 +62,7 @@ public class TaskManager {
                 System.out.println("Shell script1 execution failed.");
                 writer.close();
             }
-            isRunningOnce1 = false;
-            Thread.sleep(60000*2);
-            String command2 = cmd + directoryPath + File.separator + script2Name;
-            isRunningOnce2 = true;
-            Process process2 = Runtime.getRuntime().exec(command2);
-            boolean exitCode2 = process2.waitFor(60,TimeUnit.MINUTES);
-            if (exitCode2) {
-                writer.println("Log message: Shell script2 executed successfully at " + LocalDateTime.now());
-                System.out.println("Shell script2 executed successfully.");
-                writer.close();
-            } else {
-                writer.println("Log message: Shell script2 executed failed at " + LocalDateTime.now());
-                System.out.println("Shell script2 execution failed.");
-                writer.close();
-            }
-            isRunningOnce2 = false;
-//            Thread.sleep(60000*10);
+            isRunningOnce = false;
             Set<Path> afterOperation = scanFolder(forecastDataPath);
             Set<Path> newFolders = new HashSet<>(afterOperation);
             newFolders.removeAll(beforeOperation);
@@ -96,11 +80,11 @@ public class TaskManager {
         } else if (osName.contains("linux")) {
             Set<Path> beforeOperation = scanFolder(forecastDataPath);
             String sh = "sh ";
-            String command1 = sh + directoryPath + File.separator + script1Name;
-            isRunningOnce1 = true;
-            Process process1 = Runtime.getRuntime().exec(command1);
-            boolean exitCode1 = process1.waitFor(60,TimeUnit.MINUTES);
-            if (exitCode1) {
+            String command = sh + directoryPath + File.separator + scriptName;
+            isRunningOnce = true;
+            Process process = Runtime.getRuntime().exec(command);
+            boolean exitCode = process.waitFor(60,TimeUnit.MINUTES);
+            if (exitCode) {
                 writer.println("Log message: Shell script1 executed successfully at " + LocalDateTime.now());
                 System.out.println("Shell script1 executed successfully.");
                 writer.close();
@@ -109,23 +93,7 @@ public class TaskManager {
                 System.out.println("Shell script1 execution failed.");
                 writer.close();
             }
-            isRunningOnce1 = false;
-            Thread.sleep(60000*2);
-            String command2 = sh + directoryPath + File.separator + script2Name;
-            isRunningOnce2 = true;
-            Process process2 = Runtime.getRuntime().exec(command2);
-            boolean exitCode2 = process2.waitFor(60,TimeUnit.MINUTES);
-            if (exitCode2) {
-                writer.println("Log message: Shell script2 executed successfully at " + LocalDateTime.now());
-                System.out.println("Shell script2 executed successfully.");
-                writer.close();
-            } else {
-                writer.println("Log message: Shell script2 executed failed at " + LocalDateTime.now());
-                System.out.println("Shell script2 execution failed.");
-                writer.close();
-            }
-            isRunningOnce2 = false;
-//            Thread.sleep(60000*10);
+            isRunningOnce = false;
             Set<Path> afterOperation = scanFolder(forecastDataPath);
             Set<Path> newFolders = new HashSet<>(afterOperation);
             newFolders.removeAll(beforeOperation);
@@ -160,10 +128,10 @@ public class TaskManager {
         }
     }
 
-    public String runOnce(String logPath, String directoryPath, String script1Name, String script2Name, String python, String manuelUpdating, String dataprocess, String forecastDataPath) {
+    public String runOnce(String logPath, String directoryPath, String scriptName, String python, String manuelUpdating, String dataprocess, String forecastDataPath) {
         Callable<String> task = () -> {
             try {
-                runOnceTask(logPath, directoryPath, script1Name, script2Name, python, manuelUpdating, dataprocess, forecastDataPath);
+                runOnceTask(logPath, directoryPath, scriptName, python, manuelUpdating, dataprocess, forecastDataPath);
             } catch (IOException | InterruptedException e) {
                 System.out.println(e);
                 return "执行任务过程中发生错误 " + e;
@@ -177,7 +145,7 @@ public class TaskManager {
     }
 
     @SneakyThrows
-    public synchronized String runRegular(String logPath, String directoryPath, String script1Name, String script2Name, String python, String manuelUpdating, String dataprocess, String forecastDataPath) {
+    public synchronized String runRegular(String logPath, String directoryPath, String scriptName, String python, String manuelUpdating, String dataprocess, String forecastDataPath) {
         // 每隔三小时执行任务
         PrintWriter writer = new PrintWriter(new FileWriter(logPath, true));
         writer.println("Log message: Emergency task executed at " + LocalDateTime.now());
@@ -186,7 +154,7 @@ public class TaskManager {
         Runnable task = () -> {
             if (isRunning.get()) {
                 try {
-                    runOnce(logPath, directoryPath, script1Name, script2Name, python, manuelUpdating, dataprocess, forecastDataPath);
+                    runOnce(logPath, directoryPath, scriptName, python, manuelUpdating, dataprocess, forecastDataPath);
                 } catch (Exception e) {
                     System.out.println(e);
                 }
