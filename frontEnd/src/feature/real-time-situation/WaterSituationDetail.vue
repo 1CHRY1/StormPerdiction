@@ -10,7 +10,7 @@ let echart: echarts.ECharts | null = null
 const echartsRef = ref()
 const activeName = ref('graph')
 const stationStore = useStationStore()
-const treeData = await generateTreeDataOfStation()
+const treeData = ref()
 const stationInfo = computed(() =>
   getStationInfo(stationStore.currentStationID as any),
 )
@@ -61,6 +61,7 @@ onMounted(async () => {
   waterSituationData.value = await getStationCurrentWaterSituation(
     stationStore.currentStationID as any,
   )
+  treeData.value = await generateTreeDataOfStation()
   if (isStationDataExist.value) {
     echart = initEcharts(echartsRef)
     drawEcharts(

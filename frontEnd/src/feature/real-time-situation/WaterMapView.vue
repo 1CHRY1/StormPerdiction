@@ -69,14 +69,11 @@ onMounted(async () => {
 
 <template>
   <div ref="mapContainerRef" class="map-container h-full w-full" />
-  <div
-      class="absolute w-[500px] h-[400px] bg-white bg-opacity-70 p-2 rounded border border-black"
-      :style="{
-        zIndex: isPopup ? '10' : '-10',
-        top: `${y - 450}px`,
-        left: `${x - 350}px`,
-      }"
-    >
-      <WaterGraph v-model="isPopup" class="bg-blue-300 bg-opacity-30 backdrop-blur"></WaterGraph>
-    </div>
+  <div class="absolute w-[500px] h-[400px] bg-white bg-opacity-70 p-2 rounded border border-black" :style="{
+    zIndex: isPopup ? '10' : '-10',
+    top: `${y - 450}px`,
+    left: `${x - 350}px`,
+  }">
+    <WaterGraph v-model="isPopup" class="bg-blue-300 bg-opacity-30 backdrop-blur"></WaterGraph>
+  </div>
 </template>
