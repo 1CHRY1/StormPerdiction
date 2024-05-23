@@ -10,7 +10,7 @@ let echart: echarts.ECharts | null = null
 const echartsRef = ref()
 const activeName = ref('graph')
 const stationStore = useStationStore()
-const treeData = generateTreeDataOfStation()
+const treeData = await generateTreeDataOfStation()
 const stationInfo = computed(() =>
   getStationInfo(stationStore.currentStationID as any),
 )
@@ -80,25 +80,13 @@ onMounted(async () => {
         <el-tab-pane label="折线图" name="graph">
           <div ref="echartsRef" class="h-[86vh]"></div>
         </el-tab-pane>
-        <el-tab-pane
-          label="数据表"
-          name="table"
-          class="flex flex-col items-center"
-        >
+        <el-tab-pane label="数据表" name="table" class="flex flex-col items-center">
           <div class="text-xl font-semibold text-[#406abf]">
             {{ `${stationInfo.name}站点 ${stationInfo.time} 实时潮位表` }}
           </div>
-          <el-table
-            :data="stationTable"
-            class="h-[84vh]"
-            :highlight-current-row="true"
-          >
+          <el-table :data="stationTable" class="h-[84vh]" :highlight-current-row="true">
             <el-table-column prop="time" label="时间" />
-            <el-table-column
-              align="center"
-              prop="hpre"
-              label="天文潮位 (hpre)"
-            />
+            <el-table-column align="center" prop="hpre" label="天文潮位 (hpre)" />
           </el-table>
         </el-tab-pane>
       </el-tabs>
@@ -115,12 +103,11 @@ onMounted(async () => {
             <span class="inline-block pr-2 text-lg">站点类型:</span>
             <span class="inline-block pr-3">{{
               stationInfo.type === 'sea' ? '沿海' : '沿江'
-            }}</span>
+              }}</span>
           </div>
           <div class="my-1">
             <span class="inline-block pr-2 text-lg">站点位置:</span>
-            <span class="inline-block pr-3">{{ stationInfo.lon }}</span
-            ><span>{{ stationInfo.lat }}</span>
+            <span class="inline-block pr-3">{{ stationInfo.lon }}</span><span>{{ stationInfo.lat }}</span>
           </div>
           <div class="my-1">
             <span class="inline-block pr-2 text-lg">当前时间:</span>
@@ -130,17 +117,8 @@ onMounted(async () => {
       </div>
       <div class="flex flex-col flex-auto m-2 top-1 border border-zinc-300">
         <div class="h-10 leading-10 px-2 bg-[#1b6ec8] text-white">站点选择</div>
-        <el-radio-group
-          v-model="stationStore.currentStationID"
-          class="py-2 px-4 block overflow-auto h-[66vh]"
-        >
-          <el-radio
-            v-for="item in treeData"
-            :key="item.id"
-            :label="item.id"
-            class="block"
-            >{{ item.label }}</el-radio
-          >
+        <el-radio-group v-model="stationStore.currentStationID" class="py-2 px-4 block overflow-auto h-[66vh]">
+          <el-radio v-for="item in treeData" :key="item.id" :label="item.id" class="block">{{ item.label }}</el-radio>
         </el-radio-group>
       </div>
     </div>
