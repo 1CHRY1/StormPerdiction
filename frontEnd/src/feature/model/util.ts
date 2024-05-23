@@ -2,11 +2,14 @@ import * as echarts from 'echarts'
 import mapbox from 'mapbox-gl'
 import { Ref } from 'vue'
 // import { stationInfo } from '../../asset/stationInfo'
-import { generateStationGeoJson, generateStationJson } from '../../util/getStation'
+import {
+  generateStationGeoJson,
+  generateStationJson,
+} from '../../util/getStation'
 import { IStationInfo, ITideSituation, Tree } from './type'
 
 export const generateTreeDataOfStation = async (): Promise<Tree[]> => {
-  const stationInfo = await generateStationJson()
+  const stationInfo = await generateStationJson('forecast')
   const data: Tree[] = Object.entries(stationInfo).map((value) => ({
     id: value[1].id,
     label: value[1].name,
@@ -255,7 +258,7 @@ export const drawEcharts = async (
 }
 
 export const addLayer = async (map: mapbox.Map) => {
-  const geojson = await generateStationGeoJson()
+  const geojson = await generateStationGeoJson('forecast')
   map.addSource('stations', {
     type: 'geojson',
     data: geojson as any,
