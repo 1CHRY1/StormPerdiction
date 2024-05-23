@@ -1,13 +1,16 @@
 import * as echarts from 'echarts'
 import mapbox from 'mapbox-gl'
 import { Ref } from 'vue'
-import { stationInfo } from '../../asset/stationInfo'
-import { generateStationGeoJson } from '../../util/getStation'
+import {
+  generateStationGeoJson,
+  generateStationJson,
+} from '../../util/getStation'
 import { IRealTideSituation, IStationInfo, Tree } from './type'
 
-export const generateTreeDataOfStation = (): Tree[] => {
+export const generateTreeDataOfStation = async (): Promise<Tree[]> => {
+  const stationInfo = await generateStationJson('real')
   const data: Tree[] = Object.entries(stationInfo).map((value) => ({
-    id: value[0],
+    id: value[1].id,
     label: value[1].name,
   }))
 
@@ -131,17 +134,17 @@ export const drawEcharts_cover = async (
   const option: EChartsOption = {
     title: {
       text: `${info.name}站点 ${info.time} 实时潮位图`,
-      top: "1%",
+      top: '1%',
       textStyle: {
         color: 'hsl(220, 50%, 50%)',
         fontSize: 15,
       },
     },
     tooltip: isPopup
-    ? undefined
-    : {
-      trigger: 'axis',
-    },
+      ? undefined
+      : {
+          trigger: 'axis',
+        },
     legend: {
       data: [info.name],
       right: '15%',
@@ -209,7 +212,7 @@ export const drawEcharts_cover = async (
 }
 
 export const addLayer = async (map: mapbox.Map) => {
-  const geojson = await generateStationGeoJson()
+  const geojson = await generateStationGeoJson('real')
   // const geojson = (await fetch('/geojson/station.geojson')
   // .then((res) => res.json())
   // .then((value) => value)) as any

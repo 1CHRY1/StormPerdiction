@@ -9,7 +9,7 @@ import {
 import { IStationInfo, ITideSituation, Tree } from './type'
 
 export const generateTreeDataOfStation = async (): Promise<Tree[]> => {
-  const stationInfo = await generateStationJson()
+  const stationInfo = await generateStationJson('precise')
   const data: Tree[] = Object.entries(stationInfo).map((value) => ({
     id: value[1].id,
     label: value[1].name,
@@ -149,7 +149,7 @@ export const drawEcharts = async (
 }
 
 export const addLayer = async (map: mapbox.Map) => {
-  const geojson = await generateStationGeoJson()
+  const geojson = await generateStationGeoJson('precise')
   map.addSource('stations', {
     type: 'geojson',
     data: geojson as any,
