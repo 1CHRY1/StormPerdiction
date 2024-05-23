@@ -2,15 +2,45 @@ import * as echarts from 'echarts'
 import mapbox from 'mapbox-gl'
 import { Ref } from 'vue'
 // import { stationInfo } from '../../asset/stationInfo'
-import { generateStationGeoJsonNomaanshan, generateStationJsonNomaanshan } from '../../util/getStation'
+import { generateStationJsonNomaanshan } from '../../util/getStation'
 import { IStationInfo, ITideSituation, Tree } from './type'
 
 export const generateTreeDataOfStation = async (): Promise<Tree[]> => {
   const stationInfo = await generateStationJsonNomaanshan()
-  const data: Tree[] = Object.entries(stationInfo).map((value) => ({
-    id: value[1].id,
-    label: value[1].name,
-  }))
+  const stationOrder: Record<string, number> = {
+    datong: 0,
+    fenghuangjingzhanxia: 1,
+    yuxizhaxia: 2,
+    xinqiaozhaxia: 3,
+    wuhu: 4,
+    maanshan: 5,
+    nanjing: 6,
+    zhenjiang: 7,
+    jiangyin: 8,
+    xuliujing: 9,
+    yanglin: 10,
+    wusong: 11,
+    liuxiao: 12,
+    lianxinggang: 13,
+    jinqiao: 14,
+    zhapu: 15,
+    ganpu: 16,
+  }
+  const stationInfoList: Tree[] = new Array(26).fill(null)
+  let currentIndex = 17
+  Object.entries(stationInfo).forEach((value) => {
+    const index = stationOrder[value[1].pinyin]
+    if (typeof index === 'number') {
+      stationInfoList[index] = {
+        id: value[1].id,
+        label: value[1].name,
+      }
+    } else {
+      stationInfoList[currentIndex] = { id: value[1].id, label: value[1].name }
+      currentIndex++
+    }
+  })
+  const data: Tree[] = stationInfoList.filter((value) => value)
 
   return data
 }
@@ -42,8 +72,7 @@ export const drawEcharts = async (
     const haddMax = Math.max(...waterSituationData.hadd)
     const haddRange = haddMax - haddMin
     option = {
-      title: 
-      {
+      title: {
         text: `${stationInfo.name}站点 ${stationInfo.time} 72 小时逐时潮位预报图`,
         textStyle: {
           color: 'hsl(220, 50%, 50%)',
@@ -71,8 +100,7 @@ export const drawEcharts = async (
           height: '35%',
         },
       ],
-      toolbox:
-      {
+      toolbox: {
         feature: {
           dataZoom: {
             yAxisIndex: 'none',
@@ -128,8 +156,7 @@ export const drawEcharts = async (
           },
         },
       ],
-      dataZoom:
-      [
+      dataZoom: [
         {
           type: 'inside',
           start: 0,
@@ -270,8 +297,7 @@ export const drawEcharts_cover = async (
     const haddMax = Math.max(...waterSituationData.hadd)
     const haddRange = haddMax - haddMin
     option = {
-      title: 
-      {
+      title: {
         text: `${stationInfo.name}站点 ${stationInfo.time} 72 小时逐时潮位预报`,
         top: '1%',
         textStyle: {
@@ -301,15 +327,15 @@ export const drawEcharts_cover = async (
         },
       ],
       toolbox: isPopup
-      ? undefined
-      :  {
-        feature: {
-          dataZoom: {
-            yAxisIndex: 'none',
+        ? undefined
+        : {
+            feature: {
+              dataZoom: {
+                yAxisIndex: 'none',
+              },
+              saveAsImage: {},
+            },
           },
-          saveAsImage: {},
-        },
-      },
       axisPointer: {
         link: [
           {
@@ -358,21 +384,21 @@ export const drawEcharts_cover = async (
           },
         },
       ],
-      dataZoom:isPopup
-      ? undefined
-      : [
-        {
-          type: 'inside',
-          start: 0,
-          end: 100,
-          xAxisIndex: [0, 1],
-        },
-        {
-          start: 0,
-          end: 100,
-          xAxisIndex: [0, 1],
-        },
-      ],
+      dataZoom: isPopup
+        ? undefined
+        : [
+            {
+              type: 'inside',
+              start: 0,
+              end: 100,
+              xAxisIndex: [0, 1],
+            },
+            {
+              start: 0,
+              end: 100,
+              xAxisIndex: [0, 1],
+            },
+          ],
       series: [
         {
           name: '天文潮位',
@@ -481,8 +507,8 @@ export const drawEcharts_cover = async (
 export const addLayer = async (map: mapbox.Map) => {
   // const geojson = await generateStationGeoJsonNomaanshan()
   const geojson = (await fetch('/geojson/station.geojson')
-  .then((res) => res.json())
-  .then((value) => value)) as any
+    .then((res) => res.json())
+    .then((value) => value)) as any
   map.addSource('stations', {
     type: 'geojson',
     data: geojson as any,

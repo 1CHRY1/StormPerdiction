@@ -11,6 +11,7 @@ export interface IRealTideSituationResponse {
   code: string
   data: {
     hshice: number[]
+    time: string
   } | null
 }
 
@@ -18,6 +19,7 @@ export interface IForecastTideSituationResponse {
   code: string
   data: {
     hybresult: number[]
+    time: string
   } | null
 }
 

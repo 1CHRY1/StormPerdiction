@@ -56,24 +56,21 @@ export const getStationPredictionTideSituation = async (
     }
   }
 
-  const time: string[] = []
+  const startTime = yubaoData.time
   const hpre: number[] = realData.hshice || []
   const hyubao: number[] = yubaoData.hybresult || []
   const hadd: number[] = realData.hshice.map(
     (value, index) => value - hyubao[index],
   )
-  const length = hyubao.length
-  const startTime = new Date(Date.now() + 8 * 3600 * 1000)
-    .toLocaleString()
-    .split(' ')[0]
-    .replace(/\//, '-')
-  for (let i = 0; i < length; i++) {
+  const timeList: string[] = []
+  for (let i = 0; i < 49; i++) {
     const nextHour = new Date(
       new Date(startTime).getTime() + i * 60 * 60 * 1000,
     )
-    time.push(nextHour.toLocaleString().replace(/:\d\d$/, ''))
+    timeList.push(nextHour.toLocaleString().replace(/:\d\d$/, ''))
   }
-  return { time, hyubao, hpre, hadd }
+  console.log(timeList)
+  return { time: timeList, hyubao, hpre, hadd }
 }
 
 const getAccurateAssessmentTable = async (): Promise<
