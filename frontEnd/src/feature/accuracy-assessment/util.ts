@@ -2,7 +2,10 @@ import * as echarts from 'echarts'
 import mapbox from 'mapbox-gl'
 import { Ref } from 'vue'
 // import { stationInfo } from '../../asset/stationInfo'
-import { generateStationGeoJson, generateStationJson } from '../../util/getStation'
+import {
+  generateStationGeoJson,
+  generateStationJson,
+} from '../../util/getStation'
 import { IStationInfo, ITideSituation, Tree } from './type'
 
 export const generateTreeDataOfStation = async (): Promise<Tree[]> => {
@@ -70,6 +73,8 @@ export const drawEcharts = async (
       data: waterSituationData.time,
       axisLabel: {
         padding: [0, 0, 0, 50],
+        showMaxLabel: true,
+        alignMaxLabel: 'right',
       },
     },
     yAxis: {
@@ -112,16 +117,16 @@ export const drawEcharts = async (
     ],
     graphic: {
       elements: [
-          {
-              type: 'text',
-              style: {
-                  text: '单位:(m)',
-                  x: 5,
-                  y: 904,
-                  fontSize: 13,
-              }
+        {
+          type: 'text',
+          style: {
+            text: '单位:(m)',
+            x: 5,
+            y: 904,
+            fontSize: 13,
           },
-        ]
+        },
+      ],
     },
   }
   if (!isStationDataExist) {
