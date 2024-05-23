@@ -20,7 +20,7 @@ spring:
       driver-class-name: org.sqlite.JDBC
 
 stations:
-  ${dataprocess}/station.json
+  ${dataprocess}/station_service.json
 Typhoon:
   ${dataprocess}/Clawing/typhoon.json
 

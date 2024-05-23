@@ -5,8 +5,8 @@
     "lon": 117.633,
     "type": "river",
     "row": 11584,
-    "api_all": "http://172.21.212.116:9999/YangtzeDownstream/getAllInfoByStation",
-    "api_time": "http://172.21.212.116:9999/YangtzeDownstream/getInfoByStationAndTime"
+    "api_all": "https://geomodeling.njnu.edu.cn/waterLevel/YangtzeDownstream/getAllInfoByStation",
+    "api_time": "https://geomodeling.njnu.edu.cn/waterLevel/YangtzeDownstream/getInfoByStationAndTime"
   },
   "yanglin": {
     "name": "杨林",
@@ -14,8 +14,8 @@
     "lon": 121.267,
     "type": "river",
     "row": 47421,
-    "api_all": "http://172.21.212.116:9999:9999/jiangsu/getInfoByStation",
-    "api_time": "http://172.21.212.116:9999:9999/jiangsu/getInfoByStationAndTime"
+    "api_all": "https://geomodeling.njnu.edu.cn/waterLevel/jiangsu/getInfoByStation",
+    "api_time": "https://geomodeling.njnu.edu.cn/waterLevel/jiangsu/getInfoByStationAndTime"
   },
   "wuhu": {
     "name": "芜湖",
@@ -23,8 +23,8 @@
     "lon": 118.35,
     "type": "river",
     "row": 11584,
-    "api_all": "http://172.21.212.116:9999/anhui/getInfoByStation",
-    "api_time": "http://172.21.212.116:9999/anhui/getInfoByStationAndTime"
+    "api_all": "https://geomodeling.njnu.edu.cn/waterLevel/anhui/getInfoByStation",
+    "api_time": "https://geomodeling.njnu.edu.cn/waterLevel/anhui/getInfoByStationAndTime"
   },
   "liuxiao": {
     "name": "六滧",
@@ -40,8 +40,8 @@
     "lon": 118.45,
     "type": "river",
     "row": 15581,
-    "api_all": "http://172.21.212.116:9999/anhui/getInfoByStation",
-    "api_time": "http://172.21.212.116:9999/anhui/getInfoByStationAndTime"
+    "api_all": "https://geomodeling.njnu.edu.cn/waterLevel/anhui/getInfoByStation",
+    "api_time": "https://geomodeling.njnu.edu.cn/waterLevel/anhui/getInfoByStationAndTime"
   },
   "nanjing": {
     "name": "南京",
@@ -49,8 +49,8 @@
     "lon": 118.717,
     "type": "river",
     "row": 20520,
-    "api_all": "http://172.21.212.116:9999/jiangsu/getAllInfoByStation",
-    "api_time": "http://172.21.212.116:9999/jiangsu/getInfoByStationAndTime"
+    "api_all": "https://geomodeling.njnu.edu.cn/waterLevel/jiangsu/getAllInfoByStation",
+    "api_time": "https://geomodeling.njnu.edu.cn/waterLevel/jiangsu/getInfoByStationAndTime"
   },
   "wusong": {
     "name": "吴淞",
@@ -58,8 +58,8 @@
     "lon": 121.233,
     "type": "river",
     "row": 49073,
-    "api_all": "http://172.21.212.116:9999/jiangsu/getInfoByStation",
-    "api_time": "http://172.21.212.116:9999/jiangsu/getInfoByStationAndTime"
+    "api_all": "https://geomodeling.njnu.edu.cn/waterLevel/jiangsu/getInfoByStation",
+    "api_time": "https://geomodeling.njnu.edu.cn/waterLevel/jiangsu/getInfoByStationAndTime"
   },
   "zhenjiang": {
     "name": "镇江",
@@ -67,8 +67,8 @@
     "lon": 119.433,
     "type": "river",
     "row": 27261,
-    "api_all": "http://172.21.212.116:9999/jiangsu/getInfoByStation",
-    "api_time": "http://172.21.212.116:9999/jiangsu/getInfoByStationAndTime"
+    "api_all": "https://geomodeling.njnu.edu.cn/waterLevel/jiangsu/getInfoByStation",
+    "api_time": "https://geomodeling.njnu.edu.cn/waterLevel/jiangsu/getInfoByStationAndTime"
   },
   "fenghuangjingzhanxia": {
     "name": "凤凰颈站下",
@@ -76,8 +76,8 @@
     "lon": 117.783,
     "type": "river",
     "row": 4924,
-    "api_all": "http://172.21.212.116:9999/anhui/getInfoByStation",
-    "api_time": "http://172.21.212.116:9999/anhui/getInfoByStationAndTime"
+    "api_all": "https://geomodeling.njnu.edu.cn/waterLevel/anhui/getInfoByStation",
+    "api_time": "https://geomodeling.njnu.edu.cn/waterLevel/anhui/getInfoByStationAndTime"
   },
   "jiangyin": {
     "name": "江阴",
@@ -85,7 +85,7 @@
     "lon": 120.3,
     "type": "river",
     "row": 36159,
-    "api_all": "http://172.21.212.116:9999/jiangsu/getInfoByStation",
+    "api_all": "https://geomodeling.njnu.edu.cn/waterLevel/jiangsu/getInfoByStation",
     "api_time": "http://223.2.32.197:9999/tide/getData/60116700CWF"
   },
   "yuxizhaxia": {
@@ -94,8 +94,8 @@
     "lon": 118.317,
     "type": "river",
     "row": 11584,
-    "api_all": "http://172.21.212.116:9999/anhui/getInfoByStation",
-    "api_time": "http://172.21.212.116:9999/anhui/getInfoByStationAndTime"
+    "api_all": "https://geomodeling.njnu.edu.cn/waterLevel/anhui/getInfoByStation",
+    "api_time": "https://geomodeling.njnu.edu.cn/waterLevel/anhui/getInfoByStationAndTime"
   },
   "tianshenggang": {
     "name": "天生港",
@@ -103,8 +103,8 @@
     "lon": 120.75,
     "type": "river",
     "row": 39522,
-    "api_all": "http://172.21.212.116:9999/jiangsu/getInfoByStation",
-    "api_time": "http://172.21.212.116:9999/jiangsu/getInfoByStationAndTime"
+    "api_all": "https://geomodeling.njnu.edu.cn/waterLevel/jiangsu/getInfoByStation",
+    "api_time": "https://geomodeling.njnu.edu.cn/waterLevel/jiangsu/getInfoByStationAndTime"
   },
   "xinqiaozhaxia": {
     "name": "新桥闸下",
@@ -112,8 +112,8 @@
     "lon": 118.367,
     "type": "river",
     "row": 13008,
-    "api_all": "http://172.21.212.116:9999/anhui/getInfoByStation",
-    "api_time": "http://172.21.212.116:9999/anhui/getInfoByStationAndTime"
+    "api_all": "https://geomodeling.njnu.edu.cn/waterLevel/anhui/getInfoByStation",
+    "api_time": "https://geomodeling.njnu.edu.cn/waterLevel/anhui/getInfoByStationAndTime"
   },
   "xuliujing": {
     "name": "徐六泾",
@@ -121,7 +121,7 @@
     "lon": 120.95,
     "type": "river",
     "row": 43341,
-    "api_all": "http://172.21.212.116:9999/jiangsu/getInfoByStation",
+    "api_all": "https://geomodeling.njnu.edu.cn/waterLevel/jiangsu/getInfoByStation",
     "api_time": "http://223.2.32.197:9999/tide/getData/60117400"
   },
   "zhapu": {
@@ -130,8 +130,8 @@
     "lon": 121.1,
     "type": "sea",
     "row": 82064,
-    "api_all": "http://172.21.212.116:9999/zhejiang/getInfoByStation",
-    "api_time": "http://172.21.212.116:9999/zhejiang/getInfoByStationAndTime"
+    "api_all": "https://geomodeling.njnu.edu.cn/waterLevel/zhejiang/getInfoByStation",
+    "api_time": "https://geomodeling.njnu.edu.cn/waterLevel/zhejiang/getInfoByStationAndTime"
   },
   "ganpu": {
     "name": "澉浦",
@@ -139,8 +139,8 @@
     "lon": 120.917,
     "type": "sea",
     "row": 87448,
-    "api_all": "http://172.21.212.116:9999/zhejiang/getInfoByStation",
-    "api_time": "http://172.21.212.116:9999/zhejiang/getInfoByStationAndTime"
+    "api_all": "https://geomodeling.njnu.edu.cn/waterLevel/zhejiang/getInfoByStation",
+    "api_time": "https://geomodeling.njnu.edu.cn/waterLevel/zhejiang/getInfoByStationAndTime"
   },
   "jinqiao": {
     "name": "金桥",
@@ -148,8 +148,8 @@
     "lon": 121.179666,
     "type": "sea",
     "row": 85848,
-    "api_all": "http://172.21.212.116:9999/zhejiang/getInfoByStation",
-    "api_time": "http://172.21.212.116:9999/zhejiang/getInfoByStationAndTime"
+    "api_all": "https://geomodeling.njnu.edu.cn/waterLevel/zhejiang/getInfoByStation",
+    "api_time": "https://geomodeling.njnu.edu.cn/waterLevel/zhejiang/getInfoByStationAndTime"
   },
   "lianxinggang": {
     "name": "连兴港",
