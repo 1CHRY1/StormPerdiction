@@ -31,7 +31,7 @@ def insert_typhdata(db_path, name, time, hpre, hyubao, hadd, manual):
     conn.commit()
     conn.close()
 
-def insert_Nottyphdata(db_path, name, time,hpre, hshice, hybresult, manual):
+def insert_Nottyphdata(db_path, name, time, hpre, hshice, hybresult, manual):
     # 插入无台风数据
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
@@ -148,7 +148,7 @@ def main():
     dataprocess_path = args[1]
     db_path_Forcasting = dataprocess_path + '/Forcasting.db'
     db_path_NC = dataprocess_path + '/NC.db'
-    stations_path = dataprocess_path + '/station.json'
+    stations_path = dataprocess_path + '/station_service.json'
     with open(stations_path, 'r', encoding='utf-8') as file:
         stations = json.load(file)
     folderPath = os.path.dirname(dataprocess_path) + "/forecastData"
@@ -238,23 +238,25 @@ def main():
                         name = os.path.splitext(file)[0]
                         # 去掉尾部数字
                         name = get_prefix_before_digitsV2(name)
-                        if name == "xuliujing":
-                            continue
-                        elif name == "xuliujing1":
-                            name = "xuliujing"
+                        # if name == "xuliujing":
+                        #     continue
+                        # elif name == "xuliujing1":
+                        #     name = "xuliujing"
 
                         mat_path = os.path.join(Path, file)
                         mat_data = loadmat(mat_path)
+                        hpre_list = list_process(mat_data['hpre'])
+                        hpre = [0.0 if value is None else value for value in hpre_list]
                         try:
-                            hpre_list = list_process(mat_data['hpre'])
-                            hpre = [0.0 if value is None else value for value in hpre_list]
                             hshice_list = list_process(mat_data['hshice'])
                             hshice = [0.0 if value is None else value for value in hshice_list]
                             hybresult_list = list_process(mat_data['hybresult'])
                             hybresult = [0.0 if value is None else value for value in hybresult_list]
                             # 将预报数据存入数据库
-                            insert_Nottyphdata(db_path_Forcasting, name, time,hpre, hshice, hybresult, manual)
+                            insert_Nottyphdata(db_path_Forcasting, name, time, hpre, hshice, hybresult, manual)
                         except Exception as e:
+                            if (len(hpre)!=0):
+                                insert_Nottyphdata(db_path_Forcasting, name, time, hpre, [], [], manual)
                             print(e)
                     # 处理nc数据
                     if file.endswith(".nc"):

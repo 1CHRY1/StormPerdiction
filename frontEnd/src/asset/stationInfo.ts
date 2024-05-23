@@ -125,4 +125,60 @@ export const stationInfo = {
     type: 'sea',
     id: '17'
   },
+  '18': {
+    coord: [119.711076, 32.312538],
+    name: '三江营',
+    pinyin: 'sanjiangying',
+    type: 'sea',
+    id: '18'
+  },
+  '19': {
+    coord: [120.5667, 33.8833],
+    name: '射阳河闸下',
+    pinyin: 'sheyanghezhaxia',
+    type: 'sea',
+    id: '19'
+  },
+  '20': {
+    coord: [120.5225361, 33.8186472],
+    name: '黄沙港闸下',
+    pinyin: 'huangshagangzhaxia',
+    type: 'sea',
+    id: '20'
+  },
+  '21': {
+    coord: [120.644513, 33.5016111],
+    name: '斗龙港闸下',
+    pinyin: 'doulonggangzhaxia',
+    type: 'sea',
+    id: '21'
+  },
+  '22': {
+    coord: [121.0464472, 32.5675333],
+    name: '小洋口闸下',
+    pinyin: 'xiaoyangkouzhaxia',
+    type: 'sea',
+    id: '22'
+  },
+  '23': {
+    coord: [120.59291, 33.6434389],
+    name: '新洋港闸下',
+    pinyin: 'xinyanggangzhaxia',
+    type: 'sea',
+    id: '23'
+  },
+  '24': {
+    coord: [120.8470361, 33.1912967],
+    name: '王港新闸闸下',
+    pinyin: 'wanggangxinzhazhaxia',
+    type: 'sea',
+    id: '24'
+  },
+  '25': {
+    coord: [120.9397639, 32.8891417],
+    name: '粱垛河闸下',
+    pinyin: 'liangduohezhaxia',
+    type: 'sea',
+    id: '25'
+  }
 }

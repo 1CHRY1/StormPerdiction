@@ -181,6 +181,86 @@
         "type": "sea"
       },
       "geometry": { "type": "Point", "coordinates": [121.88, 31.68] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "三江营",
+        "id": "18",
+        "pinyin": "sanjiangying",
+        "type": "sea"
+      },
+      "geometry": { "type": "Point", "coordinates": [119.711076, 32.312538] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "射阳河闸下",
+        "id": "19",
+        "pinyin": "sheyanghezhaxia",
+        "type": "sea"
+      },
+      "geometry": { "type": "Point", "coordinates": [120.5667, 33.8833] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "黄沙港闸下",
+        "id": "20",
+        "pinyin": "huangshagangzhaxia",
+        "type": "sea"
+      },
+      "geometry": { "type": "Point", "coordinates": [120.5225361, 33.8186472] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "斗龙港闸下",
+        "id": "21",
+        "pinyin": "doulonggangzhaxia",
+        "type": "sea"
+      },
+      "geometry": { "type": "Point", "coordinates": [120.644513, 33.5016111] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "小洋口闸下",
+        "id": "22",
+        "pinyin": "xiaoyangkouzhaxia",
+        "type": "sea"
+      },
+      "geometry": { "type": "Point", "coordinates": [121.0464472, 32.5675333] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "新洋港闸下",
+        "id": "23",
+        "pinyin": "xinyanggangzhaxia",
+        "type": "sea"
+      },
+      "geometry": { "type": "Point", "coordinates": [120.59291, 33.6434389] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "王港新闸闸下",
+        "id": "24",
+        "pinyin": "wanggangxinzhazhaxia",
+        "type": "sea"
+      },
+      "geometry": { "type": "Point", "coordinates": [120.8470361, 33.1912967] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "粱垛河闸下",
+        "id": "25",
+        "pinyin": "liangduohezhaxia",
+        "type": "sea"
+      },
+      "geometry": { "type": "Point", "coordinates": [120.9397639, 32.8891417] }
     }
   ]
 }

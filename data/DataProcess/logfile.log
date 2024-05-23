@@ -203,3 +203,5 @@ Log message: Error executing rainfall Data clawingCannot run program "D:\1tools\
 Log message: Error executing cloud Data clawingCannot run program "D:\1tools\Miniconda\envs\Env1\python.exe": CreateProcess error=2, 系统找不到指定的文件。
 Log message: Error executing radar Data clawingCannot run program "D:\1tools\Miniconda\envs\Env1\python.exe": CreateProcess error=2, 系统找不到指定的文件。
 Log message: Error executing radar Data clawingCannot run program "D:\1tools\Miniconda\envs\Env1\python.exe": CreateProcess error=2, 系统找不到指定的文件。
+Log message: Cloud Data clawing scheduled at 2024-05-23T16:10:00.010
+Log message: Error executing cloud Data clawingnull

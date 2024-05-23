@@ -34,7 +34,7 @@ export const drawEcharts = async (
     title: isPopup
       ? undefined
       : {
-          text: `${stationInfo.name}站点 ${stationInfo.time.split(' ')[0]} 精读评定折线图`,
+          text: `${stationInfo.name}站点 ${stationInfo.time.split(' ')[0]} 精度评定折线图`,
           textStyle: {
             color: 'hsl(220, 50%, 50%)',
             fontSize: 20,
@@ -110,6 +110,19 @@ export const drawEcharts = async (
         zlevel: 10,
       },
     ],
+    graphic: {
+      elements: [
+          {
+              type: 'text',
+              style: {
+                  text: '单位:(m)',
+                  x: 5,
+                  y: 904,
+                  fontSize: 13,
+              }
+          },
+        ]
+    },
   }
   if (!isStationDataExist) {
     option.graphic = {

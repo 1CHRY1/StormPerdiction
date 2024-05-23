@@ -53,7 +53,7 @@ for name, info in stationInfo.items():
 
 # 创建表
 conn = mysql.connector.connect(**config)
-createStationInfoTable(conn, "stations")
+# createStationInfoTable(conn, "stations")
 for station in stations:
     createStationTable(conn, station)
 conn.close()

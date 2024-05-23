@@ -169,8 +169,8 @@
     "api_all": "",
     "api_time": ""
   },
-  "sheyanghezha": {
-	"name": "射阳河闸",
+  "sheyanghezhaxia": {
+	"name": "射阳河闸下",
     "lat": 33.8833,
     "lon": 120.5667,
     "type": "sea",
@@ -178,8 +178,8 @@
     "api_all": "",
     "api_time": ""
   },
-  "huangshagangzha": {
-	"name": "黄沙港闸",
+  "huangshagangzhaxia": {
+	"name": "黄沙港闸下",
     "lat": 33.8186472,
     "lon": 120.5225361,
     "type": "sea",
@@ -187,8 +187,8 @@
     "api_all": "",
     "api_time": ""
   },
-  "doulonggangzha": {
-	"name": "斗龙港闸",
+  "doulonggangzhaxia": {
+	"name": "斗龙港闸下",
     "lat": 33.5016111,
     "lon": 120.644513,
     "type": "sea",
@@ -196,8 +196,8 @@
     "api_all": "",
     "api_time": ""
   },
-  "xiaoyangkouzha": {
-	"name": "小洋口闸",
+  "xiaoyangkouzhaxia": {
+	"name": "小洋口闸下",
     "lat": 32.5675333,
     "lon": 121.0464472,
     "type": "sea",
@@ -205,8 +205,8 @@
     "api_all": "",
     "api_time": ""
   },
-  "xinyanggangzha": {
-	"name": "新洋港闸",
+  "xinyanggangzhaxia": {
+	"name": "新洋港闸下",
     "lat": 33.6434389,
     "lon": 120.59291,
     "type": "sea",
@@ -214,8 +214,8 @@
     "api_all": "",
     "api_time": ""
   },
-  "wanggangxinzha": {
-	"name": "王港新闸",
+  "wanggangxinzhazhaxia": {
+	"name": "王港新闸闸下",
     "lat": 33.1912967,
     "lon": 120.8470361,
     "type": "sea",
@@ -223,8 +223,8 @@
     "api_all": "",
     "api_time": ""
   },
-  "liangduohezha": {
-	"name": "粱垛河闸",
+  "liangduohezhaxia": {
+	"name": "粱垛河闸下",
     "lat": 32.8891417,
     "lon": 120.9397639,
     "type": "sea",
