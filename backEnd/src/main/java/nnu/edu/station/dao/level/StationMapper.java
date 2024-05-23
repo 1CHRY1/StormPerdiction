@@ -18,4 +18,6 @@ public interface StationMapper {
     List<Object> getAllStations();
 
     Map<String,Object> getStationByNameAndTime(@Param("station") String station, @Param("time") String time);
+
+    Map<String,Object> getStationByNameTimeAndField(@Param("station") String station, @Param("time") String time, @Param("field") String fieldName);
 }

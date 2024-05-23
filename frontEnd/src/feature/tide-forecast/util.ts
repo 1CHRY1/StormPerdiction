@@ -2,11 +2,11 @@ import * as echarts from 'echarts'
 import mapbox from 'mapbox-gl'
 import { Ref } from 'vue'
 // import { stationInfo } from '../../asset/stationInfo'
-import { generateStationJsonNomaanshan } from '../../util/getStation'
+import { generateStationJson } from '../../util/getStation'
 import { IStationInfo, ITideSituation, Tree } from './type'
 
 export const generateTreeDataOfStation = async (): Promise<Tree[]> => {
-  const stationInfo = await generateStationJsonNomaanshan()
+  const stationInfo = await generateStationJson()
   const stationOrder: Record<string, number> = {
     datong: 0,
     fenghuangjingzhanxia: 1,

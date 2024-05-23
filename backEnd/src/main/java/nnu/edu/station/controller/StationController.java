@@ -23,9 +23,28 @@ public class StationController {
         return ResultUtils.success(stationService.getAllStations());
     }
 
+    // 有点问题
     @GetMapping("/today")
     public JsonResult getTodayStation() {
         /* 获取当天有数据的站点 */
         return ResultUtils.success(stationService.getTodayStation());
+    }
+
+    @GetMapping("/today/forecast")
+    public JsonResult getTodayStationForecast() {
+        /* 获取当天有数据的站点 */
+        return ResultUtils.success(stationService.getTodayStationForecast());
+    }
+
+    @GetMapping("/today/precise")
+    public JsonResult getTodayStationPrecise() {
+        /* 获取当天有数据的站点 */
+        return ResultUtils.success(stationService.getTodayStationPrecise());
+    }
+
+    @GetMapping("/today/real")
+    public JsonResult getTodayStationReal() {
+        /* 获取当天有数据的站点 */
+        return ResultUtils.success(stationService.getTodayStationReal());
     }
 }

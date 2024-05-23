@@ -13,4 +13,8 @@
         select * from ${station} where time=#{time}
     </select>
 
+    <select id="getStationByNameTimeAndField" resultType="java.util.Map">
+        select * from ${station} where time=#{time} and ${field}!='[]'
+    </select>
+
 </mapper>

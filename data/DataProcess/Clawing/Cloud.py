@@ -106,6 +106,7 @@ datatypes = [
 # db_path = "D:/1study/Work/2023_12_22_Storm/stormPerdiction/data/DataProcess/Clawing/Meteorology.db"
 # Path = "D:/1study/Work/2023_12_22_Storm/stormPerdiction/data/气象产品/卫星云图"
 # webdriverpath = "D:/1tools/chromedriver/chromedriver.exe"
+# "D:/1study/Work/2023_12_22_Storm/stormPerdiction/data/DataProcess/Clawing/Meteorology.db" "D:/1study/Work/2023_12_22_Storm/stormPerdiction/data/气象产品/卫星云图" "D:/1tools/chromedriver/chromedriver.exe"
 
 args = sys.argv
 if len(args) < 3:

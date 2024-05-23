@@ -67,6 +67,57 @@ public class StationServiceImpl implements StationService {
     }
 
     @Override
+    public List<String> getTodayStationForecast() {
+        // 当天有数据的站点选择
+        List<String> TodayStations = new ArrayList<>();
+        // 获取所有站点数据
+        Path fullPath = Paths.get(station_path);
+        JSONObject stations = FileUtil.readJsonObjectFile(fullPath.toString());
+        Set<String> keys = stations.keySet();
+        for (String key : keys) {
+            String TodayStation = key.toString();
+            if (getStationByNameTimeAndField(TodayStation, "hpre") != null) {
+                TodayStations.add(TodayStation);
+            }
+        }
+        return TodayStations;
+    }
+
+    @Override
+    public List<String> getTodayStationPrecise() {
+        // 当天有数据的站点选择
+        List<String> TodayStations = new ArrayList<>();
+        // 获取所有站点数据
+        Path fullPath = Paths.get(station_path);
+        JSONObject stations = FileUtil.readJsonObjectFile(fullPath.toString());
+        Set<String> keys = stations.keySet();
+        for (String key : keys) {
+            String TodayStation = key.toString();
+            if (getStationByNameTimeAndField(TodayStation, "hshice") != null) {
+                TodayStations.add(TodayStation);
+            }
+        }
+        return TodayStations;
+    }
+
+    @Override
+    public List<String> getTodayStationReal() {
+        // 当天有数据的站点选择
+        List<String> TodayStations = new ArrayList<>();
+        // 获取所有站点数据
+        Path fullPath = Paths.get(station_path);
+        JSONObject stations = FileUtil.readJsonObjectFile(fullPath.toString());
+        Set<String> keys = stations.keySet();
+        for (String key : keys) {
+            String TodayStation = key.toString();
+            if (stations.getJSONObject(TodayStation).get("ifReal") != "no") {
+                TodayStations.add(TodayStation);
+            }
+        }
+        return TodayStations;
+    }
+
+    @Override
     public Map<String,Object> getStationByNameAndTime(String station) {
         // 获取某站点当天时间的数据
         String localTime = getLocalTimeStr();
@@ -77,4 +128,17 @@ public class StationServiceImpl implements StationService {
         }
         return obj;
     }
+
+    @Override
+    public Map<String,Object> getStationByNameTimeAndField(String station, String fieldName) {
+        // 获取某站点当天时间的数据
+        String localTime = getLocalTimeStr();
+        Map<String, Object> obj = ListUtil.StringObj2ArrayObj(stationMapper.getStationByNameTimeAndField(station, localTime, fieldName));
+        if (obj == null) {
+            localTime = getLocalTimeBeforeStr(1);
+            obj = ListUtil.StringObj2ArrayObj(stationMapper.getStationByNameTimeAndField(station, localTime, fieldName));
+        }
+        return obj;
+    }
+
 }

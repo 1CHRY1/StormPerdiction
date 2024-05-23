@@ -12,5 +12,13 @@ public interface StationService {
 
     List<String> getTodayStation();
 
+    List<String> getTodayStationForecast();
+
+    List<String> getTodayStationPrecise();
+
+    List<String> getTodayStationReal();
+
     Map<String,Object> getStationByNameAndTime(String station);
+
+    Map<String,Object> getStationByNameTimeAndField(String station, String fieldName);
 }
