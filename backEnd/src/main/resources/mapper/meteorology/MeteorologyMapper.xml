@@ -5,16 +5,16 @@
         select time, type1, type2, type3 from Meteorology
     </select>
     <select id="getCloud" resultType="java.util.Map">
-        select time, type1, type2, type3 from Meteorology where type1="卫星云图"
+        select time, type1, type2, type3 from Meteorology where type1="weixingyuntu"
     </select>
     <select id="getRadar" resultType="java.util.Map">
-        select time, type1, type2, type3 from Meteorology where type1="雷达拼图"
+        select time, type1, type2, type3 from Meteorology where type1="leidapintu"
     </select>
     <select id="getRainfall" resultType="java.util.Map">
-        select time, type1, type2, type3 from Meteorology where type1="降水量实况"
+        select time, type1, type2, type3 from Meteorology where type1="jiangshuiliangshikuang"
     </select>
     <select id="getRainfallpre" resultType="java.util.Map">
-        select time, type1, type2, type3 from Meteorology where type1="降水量预报"
+        select time, type1, type2, type3 from Meteorology where type1="jiangshuiliangyubao"
     </select>
     <select id="getInfoByTimeAndType" resultType="java.util.Map">
         select path from Meteorology where time=#{time} and type1=#{type1} and type2=#{type2} and type3=#{type3}

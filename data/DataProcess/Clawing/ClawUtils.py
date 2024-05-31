@@ -11,6 +11,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
 import requests
+import pypinyin
 
 # 图片爬取工具集合
 
@@ -101,7 +102,7 @@ def Cloud_clawing(db_path, Path, name, url, type1, type2, type3, webdriverpath):
     except Exception as e:
         print(e)
         driver.close()
-        Cloud_clawing(Path, name, url, type1, type2, type3, webdriverpath)
+        Cloud_clawing(db_path, Path, name, url, type1, type2, type3, webdriverpath)
         return
     finally:
         driver.close()
@@ -116,10 +117,14 @@ def Cloud_clawing_linux(db_path, Path, name, url, type1, type2, type3, webdriver
         filenames.append(os.path.splitext(file)[0])
 
     # 图片爬取
-    options = FirefoxOptions()
+    options = Options()
+    options.add_argument('--no-sandbox')
+    options.add_argument('--disable-dev-shm-usage')
+    options.add_argument('--disable-extensions')
+    options.add_argument('--headless')
     options.headless = True
     webdriver_service = Service(executable_path=webdriverpath)
-    driver = webdriver.Firefox(options=options, service=webdriver_service)
+    driver = webdriver.Chrome(options=options, service=webdriver_service)
     wait = WebDriverWait(driver, 10)
     try:
         driver.get(url)
@@ -150,7 +155,7 @@ def Cloud_clawing_linux(db_path, Path, name, url, type1, type2, type3, webdriver
     except Exception as e:
         print(e)
         driver.close()
-        Cloud_clawing(Path, name, url, type1, type2, type3, webdriverpath)
+        Cloud_clawing_linux(db_path, Path, name, url, type1, type2, type3, webdriverpath)
         return
     finally:
         driver.close()
@@ -199,7 +204,7 @@ def Radar_clawing(db_path, Path, name, url, type1, type2, type3, webdriverpath):
     except Exception as e:
         print(e)
         driver.close()
-        Radar_clawing(Path, name, url, type1, type2, type3, webdriverpath)
+        Radar_clawing(db_path, Path, name, url, type1, type2, type3, webdriverpath)
         return
     finally:
         driver.close()
@@ -214,10 +219,14 @@ def Radar_clawing_linux(db_path, Path, name, url, type1, type2, type3, webdriver
         filenames.append(os.path.splitext(file)[0])
 
     # 图片爬取
-    options = FirefoxOptions()
+    options = Options()
+    options.add_argument('--no-sandbox')
+    options.add_argument('--disable-dev-shm-usage')
+    options.add_argument('--disable-extensions')
+    options.add_argument('--headless')
     options.headless = True
     webdriver_service = Service(executable_path=webdriverpath)
-    driver = webdriver.Firefox(options=options, service=webdriver_service)
+    driver = webdriver.Chrome(options=options, service=webdriver_service)
     wait = WebDriverWait(driver, 10)
     try:
         driver.get(url)
@@ -248,7 +257,7 @@ def Radar_clawing_linux(db_path, Path, name, url, type1, type2, type3, webdriver
     except Exception as e:
         print(e)
         driver.close()
-        Radar_clawing(Path, name, url, type1, type2, type3, webdriverpath)
+        Radar_clawing_linux(db_path, Path, name, url, type1, type2, type3, webdriverpath)
         return
     finally:
         driver.close()
@@ -301,7 +310,7 @@ def Rainfall_clawing(db_path, Path, name, url, type1, type2, type3, webdriverpat
     except Exception as e:
         print(e)
         driver.close()
-        Rainfall_clawing(Path, name, url, type1, type2, type3, webdriverpath)
+        Rainfall_clawing(db_path, Path, name, url, type1, type2, type3, webdriverpath)
         return
     finally:
         driver.close()
@@ -316,10 +325,14 @@ def Rainfall_clawing_linux(db_path, Path, name, url, type1, type2, type3, webdri
         filenames.append(os.path.splitext(file)[0])
 
     # 图片爬取
-    options = FirefoxOptions()
+    options = Options()
+    options.add_argument('--no-sandbox')
+    options.add_argument('--disable-dev-shm-usage')
+    options.add_argument('--disable-extensions')
+    options.add_argument('--headless')
     options.headless = True
     webdriver_service = Service(executable_path=webdriverpath)
-    driver = webdriver.Firefox(options=options, service=webdriver_service)
+    driver = webdriver.Chrome(options=options, service=webdriver_service)
     wait = WebDriverWait(driver, 10)
     try:
         driver.get(url)
@@ -354,7 +367,7 @@ def Rainfall_clawing_linux(db_path, Path, name, url, type1, type2, type3, webdri
     except Exception as e:
         print(e)
         driver.close()
-        Rainfall_clawing(Path, name, url, type1, type2, type3, webdriverpath)
+        Rainfall_clawing_linux(db_path, Path, name, url, type1, type2, type3, webdriverpath)
         return
     finally:
         driver.close()
@@ -387,7 +400,7 @@ def Rainfallpre_clawing(db_path, Path, name, url, type1, type2, type3, webdriver
     except Exception as e:
         print(e)
         driver.close()
-        Rainfallpre_clawing(Path, name, url, type1, type2, type3, webdriverpath)
+        Rainfallpre_clawing(db_path, Path, name, url, type1, type2, type3, webdriverpath)
         return
     finally:
         driver.close()
@@ -396,10 +409,14 @@ def Rainfallpre_clawing(db_path, Path, name, url, type1, type2, type3, webdriver
 def Rainfallpre_clawing_linux(db_path, Path, name, url, type1, type2, type3, webdriverpath):
     folderpath = Path + '/' + name
     # 图片爬取
-    options = FirefoxOptions()
+    options = Options()
+    options.add_argument('--no-sandbox')
+    options.add_argument('--disable-dev-shm-usage')
+    options.add_argument('--disable-extensions')
+    options.add_argument('--headless')
     options.headless = True
     webdriver_service = Service(executable_path=webdriverpath)
-    driver = webdriver.Firefox(options=options, service=webdriver_service)
+    driver = webdriver.Chrome(options=options, service=webdriver_service)
     wait = WebDriverWait(driver, 10)
     try:
         driver.get(url)
@@ -421,10 +438,21 @@ def Rainfallpre_clawing_linux(db_path, Path, name, url, type1, type2, type3, web
     except Exception as e:
         print(e)
         driver.close()
-        Rainfallpre_clawing(Path, name, url, type1, type2, type3, webdriverpath)
+        Rainfallpre_clawing_linux(db_path, Path, name, url, type1, type2, type3, webdriverpath)
         return
     finally:
         driver.close()
+
+def check_os():
+    # 获取操作系统名称
+    current_os = os.name
+    # 判断操作系统类型
+    if current_os == 'posix':
+        return 'linux'
+    elif current_os == 'nt':
+        return 'windows'
+    else:
+        return 'unknown'
 
 def delete_jpg_files(folder_path):
     # 遍历指定文件夹及其子文件夹下的所有文件和文件夹
@@ -470,3 +498,11 @@ def remove_dbcontent(db_path, name):
             cursor.execute(f"DELETE FROM {name} WHERE type1 = {typename} and time < ?", (tommorrow_str,))
     conn.commit()
     conn.close()
+
+def pinyinTransform(string_cn):
+    pinyinList = pypinyin.pinyin(string_cn, style=pypinyin.NORMAL)
+    pinyin_string = ''
+    for pinyin in pinyinList:
+        pinyin_string += pinyin[0]
+    return pinyin_string
+

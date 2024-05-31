@@ -43,13 +43,13 @@ deleteClawingData:
 meteorology:
   file:
     cloud:
-      "${data}/气象产品/卫星云图"
+      "${data}/qixiangchanpin/weixingyuntu"
     radar:
-      "${data}/气象产品/雷达拼图"
+      "${data}/qixiangchanpin/leidapintu"
     rainfall:
-      "${data}/气象产品/降水量实况"
+      "${data}/qixiangchanpin/jiangshuiliangshikuang"
     rainfallpre:
-      "${data}/气象产品/降水量预报"
+      "${data}/qixiangchanpin/jiangshuiliangyubao"
   db:
     "${dataprocess}/Clawing/Meteorology.db"
 

@@ -78,7 +78,6 @@ public class MeteorologyController {
             String filePath = fileInfo.get("path");
             File file = new File(filePath);
             String fileName = file.getName();
-            System.out.println("文件名称");
             if (file.exists()){
                 HttpHeaders headers = new HttpHeaders();
                 headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; ftiilename=" + fileName);

@@ -1,5 +1,5 @@
 import sys
-from ClawUtils import Radar_clawing
+from ClawUtils import Radar_clawing, Radar_clawing_linux, check_os, pinyinTransform
 
 datatypes = [
     {"name":"全国","url":"http://www.nmc.cn/publish/radar/chinaall.html"},
@@ -15,7 +15,7 @@ datatypes = [
 # db_path = "D:/1study/Work/2023_12_22_Storm/stormPerdiction/data/DataProcess/Clawing/Meteorology.db"
 # Path = "D:/1study/Work/2023_12_22_Storm/stormPerdiction/data/气象产品/雷达拼图"
 # webdriverpath = "D:/1tools/chromedriver/chromedriver.exe"
-# "D:/1study/Work/2024_4_9_野外观测系统集成/系统部署/StormData/DataProcess_new/Clawing/Meteorology.db" "D:/1study/Work/2024_4_9_野外观测系统集成/系统部署/StormData/气象产品/雷达拼图" "D:/1tools/chromedriver/chromedriver.exe"
+# "D:/1study/Work/2023_12_22_Storm/StormPerdiction/data/DataProcess/Clawing/Meteorology.db" "D:/1study/Work/2023_12_22_Storm/StormPerdiction/data/qixiangchanpin/leidapintu" "D:/1tools/chromedriver/chromedriver.exe"
 args = sys.argv
 if len(args) < 3:
     print("未传入正确数量参数")
@@ -24,10 +24,14 @@ db_path = args[1]
 Path = args[2]
 webdriverpath = args[3]
 
-type1 = "雷达拼图"
+systemName = check_os()
+
+type1 = pinyinTransform("雷达拼图")
 for datatype in datatypes:
-    name = datatype["name"]
+    name = pinyinTransform(datatype["name"])
     type2 = name
     url = datatype["url"]
-    Radar_clawing(db_path, Path, name, url, type1, type2, "", webdriverpath)
-    # Radar_clawing_linux(db_path, Path, name, url, type1, type2, "", webdriverpath)
+    if (systemName == 'linux'):
+        Radar_clawing_linux(db_path, Path, name, url, type1, type2, "", webdriverpath)
+    else:
+        Radar_clawing(db_path, Path, name, url, type1, type2, "", webdriverpath)

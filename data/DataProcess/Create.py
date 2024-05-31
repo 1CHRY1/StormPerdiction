@@ -1,4 +1,5 @@
-from DataProcess.Utils import CreateUtils as CreateUtils, getStationUtil as getStations
+from Utils import CreateUtils as CreateUtils, getStationUtil as getStations
+from Clawing.ClawUtils import createMeteorologytable
 import mysql.connector
 import os
 
@@ -29,7 +30,7 @@ def createForMysql(stationInfo):
 def main():
     # 创建气象数据库
     # meteorology_path = os.getcwd() + '/Clawing/Meteorology.db'
-    # ClawUtils.createMeteorologytable(meteorology_path,"Meteorology")
+    # createMeteorologytable(meteorology_path,"Meteorology")
     # 定义类
     createTable = CreateUtils.createTable()
     insertStationTable = CreateUtils.insertStationTable()

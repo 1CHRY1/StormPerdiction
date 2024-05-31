@@ -2,7 +2,7 @@ spring:
   application:
     name: station
   profiles:
-    active: docker
+    active: dev
   servlet:
     multipart:
       enabled: true

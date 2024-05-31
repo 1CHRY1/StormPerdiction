@@ -1,5 +1,5 @@
 import sys
-from ClawUtils import Rainfall_clawing
+from ClawUtils import Rainfall_clawing, Rainfall_clawing_linux, check_os, pinyinTransform
 
 datatypes = [
     {"name":"1小时降水量","url":"http://www.nmc.cn/publish/observations/hourly-precipitation.html"},
@@ -29,20 +29,28 @@ db_path = args[1]
 Path = args[2]
 webdriverpath = args[3]
 
-type1 = "降水量实况"
+systemName = check_os()
+
+type1 = pinyinTransform("降水量实况")
 for datatype in datatypes:
-    name = datatype["name"]
+    name = pinyinTransform(datatype["name"])
     type2 = name
     url = datatype["url"]
     if type(url) != str:
         urls = url
         Path_ = Path + "/" + name
         for item in urls:
-            name = item["name"]
+            name = pinyinTransform(item["name"])
             url = item["url"]
             type3 = name
-            Rainfall_clawing(db_path, Path_, name, url, type1, type2, type3, webdriverpath)
-            # Radar_clawing_linux(db_path, Path_, name, url, type1, type2, type3, webdriverpath)
+            if (systemName == 'linux'):
+                Rainfall_clawing_linux(db_path, Path_, name, url, type1, type2, type3, webdriverpath)
+            else:
+                Rainfall_clawing(db_path, Path_, name, url, type1, type2, type3, webdriverpath)
+
     else:
-        Rainfall_clawing(db_path, Path, name, url, type1, type2, "", webdriverpath)
-        # Radar_clawing_linux(db_path, Path_, name, url, type1, type2, type3, webdriverpath)
+        if (systemName == 'linux'):
+            Rainfall_clawing_linux(db_path, Path, name, url, type1, type2, "", webdriverpath)
+        else:
+            Rainfall_clawing(db_path, Path, name, url, type1, type2, "", webdriverpath)
+

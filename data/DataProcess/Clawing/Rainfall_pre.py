@@ -1,5 +1,6 @@
 import sys
-from ClawUtils import Rainfallpre_clawing
+from ClawUtils import Rainfallpre_clawing, Rainfallpre_clawing_linux, check_os, pinyinTransform
+
 
 datatypes = [
     {"name":"24小时降水量","url":[
@@ -33,15 +34,19 @@ db_path = args[1]
 Path = args[2]
 webdriverpath = args[3]
 
-type1 = "降水量预报"
+systemName = check_os()
+
+type1 = pinyinTransform("降水量预报")
 for datatype in datatypes:
-    name = datatype["name"]
+    name = pinyinTransform(datatype["name"])
     type2 = name
     urls = datatype["url"]
     Path_ = Path + "/" + name
     for item in urls:
-        name = item["name"]
+        name = pinyinTransform(item["name"])
         url = item["url"]
         type3 = name
-        Rainfallpre_clawing(db_path, Path_, name, url, type1, type2, type3, webdriverpath)
-        # Rainfallpre_clawing_linux(db_path, Path_, name, url, type1, type2, type3, webdriverpath)
+        if (systemName == 'linux'):
+            Rainfallpre_clawing_linux(db_path, Path_, name, url, type1, type2, type3, webdriverpath)
+        else:
+            Rainfallpre_clawing(db_path, Path_, name, url, type1, type2, type3, webdriverpath)

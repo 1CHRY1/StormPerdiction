@@ -1,5 +1,5 @@
 import sys
-from ClawUtils import Cloud_clawing
+from ClawUtils import Cloud_clawing, Cloud_clawing_linux, check_os, pinyinTransform
 
 datatypes = [
     {"name":"FY4A真彩色","url":"http://www.nmc.cn/publish/satellite/FY4A-true-color.htm"},
@@ -27,9 +27,10 @@ datatypes = [
 ]
 
 # db_path = "D:/1study/Work/2023_12_22_Storm/stormPerdiction/data/DataProcess/Clawing/Meteorology.db"
-# Path = "D:/1study/Work/2023_12_22_Storm/stormPerdiction/data/气象产品/卫星云图"
+# Path = "D:/1study/Work/2023_12_22_Storm/stormPerdiction/data/qixiangchanpin/weixingyuntu"
 # webdriverpath = "D:/1tools/chromedriver/chromedriver.exe"
-# "D:/1study/Work/2024_4_9_野外观测系统集成/系统部署/StormData/DataProcess_new/Clawing/Meteorology.db" "D:/1study/Work/2024_4_9_野外观测系统集成/系统部署/StormData//气象产品/卫星云图" "D:/1tools/chromedriver/chromedriver.exe"
+# "D:/1study/Work/2023_12_22_Storm/StormPerdiction/data/DataProcess/Clawing/Meteorology.db" "D:/1study/Work/2023_12_22_Storm/StormPerdiction/data/qixiangchanpin/weixingyuntu" "D:/1tools/chromedriver/chromedriver.exe"
+# "/usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db" "/usr/local/resource/StormData/qixiangchanpin/weixingyuntu" "D:/1tools/chromedriver/chromedriver.exe"
 
 args = sys.argv
 if len(args) < 3:
@@ -39,20 +40,27 @@ db_path = args[1]
 Path = args[2]
 webdriverpath = args[3]
 
-type1 = "卫星云图"
+systemName = check_os()
+
+type1 = pinyinTransform("卫星云图")
 for datatype in datatypes:
-    name = datatype["name"]
+    name = pinyinTransform(datatype["name"])
     type2 = name
     url = datatype["url"]
     if type(url) != str:
         urls = url
         Path_ = Path + "/" + name
         for item in urls:
-            name = item["name"]
+            name = pinyinTransform(item["name"])
             url = item["url"]
             type3 = name
-            Cloud_clawing(db_path, Path_, name, url, type1, type2, type3, webdriverpath)
-            # Cloud_clawing_linux(db_path, Path_, name, url, type1, type2, type3, webdriverpath)
+            if (systemName == 'linux'):
+                Cloud_clawing_linux(db_path, Path_, name, url, type1, type2, type3, webdriverpath)
+            else:
+                Cloud_clawing(db_path, Path_, name, url, type1, type2, type3, webdriverpath)
     else:
-        Cloud_clawing(db_path, Path, name, url, type1, type2, "", webdriverpath)
-        # Cloud_clawing_linux(db_path, Path_, name, url, type1, type2, type3, webdriverpath)
+        if (systemName == 'linux'):
+            Cloud_clawing_linux(db_path, Path, name, url, type1, type2, "", webdriverpath)
+        else:
+            Cloud_clawing(db_path, Path, name, url, type1, type2, "", webdriverpath)
+
