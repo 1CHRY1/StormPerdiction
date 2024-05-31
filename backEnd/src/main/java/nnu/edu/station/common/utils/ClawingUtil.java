@@ -21,7 +21,9 @@ public class ClawingUtil {
         PrintWriter writer = new PrintWriter(new FileWriter(logPath, true));
         // 爬取卫星云图数据
         try {
-            Process process = Runtime.getRuntime().exec(python + " " + clawingCloud + " " + db + " " + cloudfile + " " + webdriver);
+            String command = python + " " + clawingCloud + " " + db + " " + cloudfile + " " + webdriver;
+            System.out.println(command);
+            Process process = Runtime.getRuntime().exec(command);
             // 添加日志输出
             System.out.println("Cloud Data clawing scheduled at " + LocalDateTime.now());
             writer.println("Log message: Cloud Data clawing scheduled at " + LocalDateTime.now());
@@ -46,7 +48,9 @@ public class ClawingUtil {
         PrintWriter writer = new PrintWriter(new FileWriter(logPath, true));
         // 爬取雷达拼图数据
         try {
-            Process process = Runtime.getRuntime().exec(python + " " + clawingRadar + " " + db + " " + radarfile + " " + webdriver);
+            String command = python + " " + clawingRadar + " " + db + " " + radarfile + " " + webdriver;
+            System.out.println(command);
+            Process process = Runtime.getRuntime().exec(command);
             // 添加日志输出
             System.out.println("Radar Data clawing scheduled at " + LocalDateTime.now());
             writer.println("Log message: Radar Data clawing scheduled at " + LocalDateTime.now());
@@ -71,7 +75,9 @@ public class ClawingUtil {
         PrintWriter writer = new PrintWriter(new FileWriter(logPath, true));
         // 爬取降水量实况数据
         try {
-            Process process = Runtime.getRuntime().exec(python + " " + clawingRainfall + " " + db + " " + rainfallfile + " " + webdriver);
+            String command = python + " " + clawingRainfall + " " + db + " " + rainfallfile + " " + webdriver;
+            System.out.println(command);
+            Process process = Runtime.getRuntime().exec(command);
             // 添加日志输出
             System.out.println("Rainfall Data clawing scheduled at " + LocalDateTime.now());
             writer.println("Log message: Rainfall Data clawing scheduled at " + LocalDateTime.now());
@@ -96,7 +102,9 @@ public class ClawingUtil {
         PrintWriter writer = new PrintWriter(new FileWriter(logPath, true));
         // 爬取降水量实况数据
         try {
-            Process process = Runtime.getRuntime().exec(python + " " + clawingRainfallpre + " " + db + " " + rainfallprefile + " " + webdriver);
+            String command = python + " " + clawingRainfallpre + " " + db + " " + rainfallprefile + " " + webdriver;
+            System.out.println(command);
+            Process process = Runtime.getRuntime().exec(command);
             // 添加日志输出
             System.out.println("Rainfallpre Data clawing scheduled at " + LocalDateTime.now());
             writer.println("Log message: Rainfallpre Data clawing scheduled at " + LocalDateTime.now());
@@ -117,11 +125,13 @@ public class ClawingUtil {
         }
     }
 
-    public static void DeleteClawingData(String python, String clawingCloud, String logPath) throws IOException {
+    public static void DeleteClawingData(String python, String deleteData, String logPath) throws IOException {
         PrintWriter writer = new PrintWriter(new FileWriter(logPath, true));
         // 爬取降水量实况数据
         try {
-            Process process = Runtime.getRuntime().exec(python + " " + clawingCloud);
+            String command = python + " " + deleteData;
+            System.out.println(command);
+            Process process = Runtime.getRuntime().exec(command);
             // 添加日志输出
             System.out.println("Clawed data deleting scheduled at " + LocalDateTime.now());
             writer.println("Log message: Clawed data deleting scheduled at " + LocalDateTime.now());
@@ -146,7 +156,9 @@ public class ClawingUtil {
         PrintWriter writer = new PrintWriter(new FileWriter(logPath, true));
         //爬取台风数据
         try {
-            Process process = Runtime.getRuntime().exec(python + " " + clawingTyphoon);
+            String command = python + " " + clawingTyphoon;
+            System.out.println(command);
+            Process process = Runtime.getRuntime().exec(command);
             // 添加日志输出
             System.out.println("Typhoon Data clawing scheduled at " + LocalDateTime.now());
             writer.println("Log message: Typhoon Data clawing scheduled at " + LocalDateTime.now());

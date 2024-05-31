@@ -121,8 +121,8 @@ export const drawEcharts = async (
           type: 'text',
           style: {
             text: '单位:(m)',
-            x: 5,
-            y: 904,
+            x: 3,
+            y: 730,
             fontSize: 13,
           },
         },

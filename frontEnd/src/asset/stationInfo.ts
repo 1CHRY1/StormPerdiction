@@ -42,7 +42,7 @@ export const stationInfo = {
     id: '5'
   },
   '6': {
-    coord: [121.233, 31.267],
+    coord: [121.54, 31.42],
     name: '吴淞',
     pinyin: 'wusong',
     type: 'river',

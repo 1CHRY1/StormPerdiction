@@ -1,215 +1,36 @@
-Log message: Cloud Data clawing scheduled at 2024-03-15T20:10:00.031
-Log message: Cloud Data clawing executed successfully!
-Log message: Radar Data clawing scheduled at 2024-03-15T20:30:00.036
-Log message: Radar Data clawing executed successfully!
-Log message: Data updating scheduled at 2024-03-18T16:00:00.019
-Log message: Data updating execution failed!
-Log message: Cloud Data clawing scheduled at 2024-03-18T16:10:00.025
+Log message: Rainfall Data clawing scheduled at 2024-05-30T14:49:59.977
+Log message: Rainfall Data clawing execution failed!
+Log message: Cloud Data clawing scheduled at 2024-05-31T00:10:00.103
 Log message: Cloud Data clawing execution failed!
-Log message: Radar Data clawing scheduled at 2024-03-19T04:29:02.694
+Log message: Radar Data clawing scheduled at 2024-05-31T00:30:00.116
 Log message: Radar Data clawing execution failed!
-Log message: Rainfall Data clawing scheduled at 2024-03-19T04:29:02.763
+Log message: Rainfall Data clawing scheduled at 2024-05-31T00:50:00.123
 Log message: Rainfall Data clawing execution failed!
-Log message: Cloud Data clawing scheduled at 2024-03-19T12:09:59.851
-Log message: Error executing cloud Data clawingnull
-Log message: Data updating scheduled at 2024-03-19T21:47:00.015
-Log message: Data updating execution failed!
-Log message: Cloud Data clawing scheduled at 2024-04-09T12:10:00.043
-Log message: Error executing cloud Data clawingnull
-Log message: Cloud Data clawing scheduled at 2024-04-09T18:10:00.045
-Log message: Cloud Data clawing executed successfully!
-Log message: Radar Data clawing scheduled at 2024-04-09T18:30:00.057
-Log message: Error executing radar Data clawingnull
-Log message: Cloud Data clawing scheduled at 2024-04-10T12:10:00.088
-Log message: Error executing cloud Data clawingnull
-Log message: Data updating scheduled at 2024-04-10T16:00:00.034
-Log message: Data updating executed successfully!
-Log message: Cloud Data clawing scheduled at 2024-04-10T16:10:00.060
-Log message: Error executing cloud Data clawingnull
-Log message: Cloud Data clawing scheduled at 2024-04-10T18:10:00.080
-Log message: Cloud Data clawing executed successfully!
-Log message: Cloud Data clawing scheduled at 2024-04-11T14:10:00.069
-Log message: Error executing cloud Data clawingnull
-Log message: Rainfall Data clawing scheduled at 2024-04-11T14:50:00.042
-Log message: Rainfall Data clawing execution failed!
-Log message: Data updating scheduled at 2024-04-11T16:00:00.078
-Log message: Data updating executed successfully!
-Log message: Cloud Data clawing scheduled at 2024-04-11T16:10:00.016
-Log message: Cloud Data clawing executed successfully!
-Log message: Cloud Data clawing scheduled at 2024-04-12T14:10:00.052
-Log message: Error executing cloud Data clawingnull
-Log message: Data updating scheduled at 2024-04-16T16:00:00.117
-Log message: Data updating executed successfully!
-Log message: FieldGenerating scheduled at 2024-04-19T16:18:26.018
-Log message: FieldGenerating executed successfully!
-Log message: FieldGenerating scheduled at 2024-04-19T16:18:37.014
-Log message: Error executing FieldGeneratingnull
-Log message: FieldGenerating scheduled at 2024-04-19T16:29:33.014
-Log message: FieldGenerating executed successfully!
-Log message: FieldGenerating scheduled at 2024-04-19T16:30:08.020
-Log message: FieldGenerating executed successfully!
-Log message: FieldGenerating scheduled at 2024-04-19T16:30:19.012
-Log message: Error executing FieldGeneratingnull
-Log message: FieldGenerating scheduled at 2024-04-19T16:31:00.018
-Log message: FieldGenerating executed successfully!
-Log message: FieldGenerating scheduled at 2024-04-19T21:00:41.018
-Log message: FieldGenerating executed successfully!
-Log message: FieldGenerating scheduled at 2024-04-19T21:04:48.011
-Log message: FieldGenerating executed successfully!
-TxtBuilder4zeta execution scheduled at: {}2024-04-19T21:04:58.900
-Log message: TxtBuilder4zeta executed successfully!
-Log message: FieldGenerating scheduled at 2024-04-19T21:07:31.014
-Log message: Error executing FieldGeneratingnull
-Log message: Radar Data clawing scheduled at 2024-04-19T22:30:00.012
-Log message: Error executing radar Data clawingnull
-Log message: Rainfall Data clawing scheduled at 2024-04-19T22:50:00.011
-Log message: Rainfall Data clawing executed successfully!
-Log message: Cloud Data clawing scheduled at 2024-04-20T00:10:00.013
-Log message: Error executing cloud Data clawingnull
-Log message: Cloud Data clawing scheduled at 2024-04-20T12:10:00.025
-Log message: Error executing cloud Data clawingnull
-Log message: Cloud Data clawing scheduled at 2024-04-20T14:10:00.019
-Log message: Cloud Data clawing executed successfully!
-Log message: Radar Data clawing scheduled at 2024-04-20T14:30:00.018
-Log message: Error executing radar Data clawingnull
-Log message: Rainfall Data clawing scheduled at 2024-04-20T14:50:00.013
-Log message: Rainfall Data clawing executed successfully!
-Log message: Data updating scheduled at 2024-04-20T16:00:00.012
-Log message: Data updating executed successfully!
-Log message: Radar Data clawing scheduled at 2024-04-20T16:30:00.018
-Log message: Error executing radar Data clawingnull
-Log message: Rainfall Data clawing scheduled at 2024-04-20T16:50:17.146
-Log message: Rainfall Data clawing executed successfully!
-Log message: Manuel Data updating scheduled at 2024-04-20T17:46:14.222
-Log message: Manuel Data updating execution failed!
-Log message: Manuel Data updating scheduled at 2024-04-20T17:50:40.052
-Log message: Manuel Data updating execution failed!
-Log message: Manuel Data updating scheduled at 2024-04-20T17:51:31.884
-Log message: Manuel Data updating execution failed!
-Log message: Manuel Data updating scheduled at 2024-04-21T14:52:18.806
-Log message: Manuel Data updating execution failed!
-Log message: Radar Data clawing scheduled at 2024-04-20T18:30:00.023
-Log message: Error executing radar Data clawingnull
-Log message: Data updating scheduled at 2024-04-21T16:00:00.061
-Log message: Data updating executed successfully!
-Log message: Cloud Data clawing scheduled at 2024-04-21T16:10:00.062
-Log message: Error executing cloud Data clawingnull
-Log message: Manuel Data updating scheduled at 2024-04-21T21:23:00.087
-Log message: Manuel Data updating execution failed!
-Log message: Manuel Data updating scheduled at 2024-04-21T21:34:49.670
-Log message: Manuel Data updating execution failed!
-Log message: Cloud Data clawing scheduled at 2024-04-21T22:10:00.048
-Log message: Cloud Data clawing executed successfully!
-Log message: Radar Data clawing scheduled at 2024-04-21T22:30:00.061
-Log message: Error executing radar Data clawingnull
-Log message: Data updating scheduled at 2024-04-22T10:02:00.011
-Log message: Data updating executed successfully!
-Log message: FieldGenerating scheduled at 2024-04-22T10:04:00.082
-Log message: Error executing FieldGeneratingnull
-Log message: FieldGenerating scheduled at 2024-04-22T10:48:30.010
-Log message: Error executing FieldGeneratingnull
-Log message: Cloud Data clawing scheduled at 2024-04-22T12:10:00.081
-Log message: Error executing cloud Data clawingnull
-Log message: Manuel Data updating scheduled at 2024-04-22T13:25:49.465
-Log message: Manuel Data updating execution failed!
-Log message: Manuel Data updating scheduled at 2024-04-22T14:47:04.236
-Log message: Manuel Data updating execution failed!
-Log message: Cloud Data clawing scheduled at 2024-04-22T18:10:00.076
-Log message: Cloud Data clawing executed successfully!
-Log message: Radar Data clawing scheduled at 2024-04-22T18:30:00.101
-Log message: Error executing radar Data clawingnull
-<<<<<<< HEAD
-Log message: Cloud Data clawing scheduled at 2024-04-22T20:10:00.016
-Log message: Cloud Data clawing executed successfully!
-Log message: Manuel Data updating scheduled at 2024-04-24T16:04:35.823
-Log message: Manuel Data updating execution failed!
-Log message: Radar Data clawing scheduled at 2024-04-22T20:30:00.015
-Log message: Error executing radar Data clawingnull
-=======
-Log message: Error executing FieldGeneratingCannot run program "D:\1tools\Miniconda\envs\Env1": CreateProcess error=5, 拒绝访问。
-Log message: Error executing rainfall Data clawingCannot run program "D:\1tools\Miniconda\envs\Env1": CreateProcess error=5, 拒绝访问。
-Log message: Error executing cloud Data clawingCannot run program "D:\1tools\Miniconda\envs\Env1": CreateProcess error=5, 拒绝访问。
-Log message: Error executing radar Data clawingCannot run program "D:\1tools\Miniconda\envs\Env1": CreateProcess error=5, 拒绝访问。
-Log message: Error executing rainfall Data clawingCannot run program "D:\1tools\Miniconda\envs\Env1": CreateProcess error=5, 拒绝访问。
-Log message: Error executing cloud Data clawingCannot run program "D:\1tools\Miniconda\envs\Env1": CreateProcess error=5, 拒绝访问。
-Log message: Error executing radar Data clawingCannot run program "D:\1tools\Miniconda\envs\Env1": CreateProcess error=5, 拒绝访问。
-Log message: Error executing rainfall Data clawingCannot run program "D:\1tools\Miniconda\envs\Env1": CreateProcess error=5, 拒绝访问。
-Log message: Error executing cloud Data clawingCannot run program "D:\1tools\Miniconda\envs\Env1": CreateProcess error=5, 拒绝访问。
-Log message: Error executing radar Data clawingCannot run program "D:\1tools\Miniconda\envs\Env1": CreateProcess error=5, 拒绝访问。
-Log message: Error executing rainfall Data clawingCannot run program "D:\1tools\Miniconda\envs\Env1": CreateProcess error=5, 拒绝访问。
-Log message: Error executing cloud Data clawingCannot run program "D:\1tools\Miniconda\envs\Env1": CreateProcess error=5, 拒绝访问。
-Log message: Error executing radar Data clawingCannot run program "D:\1tools\Miniconda\envs\Env1": CreateProcess error=5, 拒绝访问。
-Log message: Error executing rainfall Data clawingCannot run program "D:\1tools\Miniconda\envs\Env1": CreateProcess error=5, 拒绝访问。
-Log message: Error executing cloud Data clawingCannot run program "D:\1tools\Miniconda\envs\Env1": CreateProcess error=5, 拒绝访问。
-Log message: Error executing radar Data clawingCannot run program "D:\1tools\Miniconda\envs\Env1": CreateProcess error=5, 拒绝访问。
-Log message: Error executing rainfall Data clawingCannot run program "D:\1tools\Miniconda\envs\Env1": CreateProcess error=5, 拒绝访问。
-<<<<<<< HEAD
->>>>>>> 78ca9a67026e58da96703b3104b6d64e1f13675c
-Log message: Typhoon Data clawing scheduled at 2024-04-25T10:20:00.019
-Log message: Typhoon Data clawing executed successfully!
-Log message: Radar Data clawing scheduled at 2024-04-25T10:30:00.049
+Log message: Cloud Data clawing scheduled at 2024-05-31T02:10:00.114
+Log message: Cloud Data clawing execution failed!
+Log message: Radar Data clawing scheduled at 2024-05-31T02:30:00.109
 Log message: Radar Data clawing execution failed!
-Log message: FieldGenerating scheduled at 2024-04-25T10:48:30.065
-Log message: Error executing FieldGeneratingnull
-=======
-Log message: Error executing cloud Data clawingCannot run program "D:\1tools\Miniconda\envs\Env1": CreateProcess error=5, 拒绝访问。
-Log message: Error executing radar Data clawingCannot run program "D:\1tools\Miniconda\envs\Env1": CreateProcess error=5, 拒绝访问。
-Log message: Error executing rainfall Data clawingCannot run program "D:\1tools\Miniconda\envs\Env1": CreateProcess error=5, 拒绝访问。
-Log message: Error executing cloud Data clawingCannot run program "D:\1tools\Miniconda\envs\Env1": CreateProcess error=5, 拒绝访问。
-Log message: Error executing radar Data clawingCannot run program "D:\1tools\Miniconda\envs\Env1": CreateProcess error=5, 拒绝访问。
-Log message: Error executing rainfall Data clawingCannot run program "D:\1tools\Miniconda\envs\Env1": CreateProcess error=5, 拒绝访问。
-Log message: Error executing cloud Data clawingCannot run program "D:\1tools\Miniconda\envs\Env1": CreateProcess error=5, 拒绝访问。
-Log message: Error executing radar Data clawingCannot run program "D:\1tools\Miniconda\envs\Env1": CreateProcess error=5, 拒绝访问。
-Log message: Error executing rainfall Data clawingCannot run program "D:\1tools\Miniconda\envs\Env1": CreateProcess error=5, 拒绝访问。
-Log message: Error executing cloud Data clawingCannot run program "D:\1tools\Miniconda\envs\Env1": CreateProcess error=5, 拒绝访问。
-Log message: Error executing radar Data clawingCannot run program "D:\1tools\Miniconda\envs\Env1": CreateProcess error=5, 拒绝访问。
-Log message: Error executing rainfall Data clawingCannot run program "D:\1tools\Miniconda\envs\Env1": CreateProcess error=5, 拒绝访问。
-Log message: Error executing deleting clawed dataCannot run program "D:\1tools\Miniconda\envs\Env1": CreateProcess error=5, 拒绝访问。
-Log message: Error executing cloud Data clawingCannot run program "D:\1tools\Miniconda\envs\Env1": CreateProcess error=5, 拒绝访问。
-Log message: Error executing radar Data clawingCannot run program "D:\1tools\Miniconda\envs\Env1": CreateProcess error=5, 拒绝访问。
-Log message: Error executing rainfall Data clawingCannot run program "D:\1tools\Miniconda\envs\Env1": CreateProcess error=5, 拒绝访问。
-Log message: Error executing cloud Data clawingCannot run program "D:\1tools\Miniconda\envs\Env1": CreateProcess error=5, 拒绝访问。
-Log message: Error executing radar Data clawingCannot run program "D:\1tools\Miniconda\envs\Env1": CreateProcess error=5, 拒绝访问。
-Log message: Error executing rainfall Data clawingCannot run program "D:\1tools\Miniconda\envs\Env1": CreateProcess error=5, 拒绝访问。
-Log message: Error executing rainfallpre Data clawingCannot run program "D:\1tools\Miniconda\envs\Env1": CreateProcess error=5, 拒绝访问。
-Log message: Error executing cloud Data clawingCannot run program "D:\1tools\Miniconda\envs\Env1": CreateProcess error=5, 拒绝访问。
-Log message: Error executing clawing Typhoon DataCannot run program "D:\1tools\Miniconda\envs\Env1": CreateProcess error=5, 拒绝访问。
-Log message: Error executing radar Data clawingCannot run program "D:\1tools\Miniconda\envs\Env1": CreateProcess error=5, 拒绝访问。
-Log message: Error executing FieldGeneratingCannot run program "D:\1tools\Miniconda\envs\Env1": CreateProcess error=5, 拒绝访问。
-Log message: Error executing rainfall Data clawingCannot run program "D:\1tools\Miniconda\envs\Env1": CreateProcess error=5, 拒绝访问。
-Log message: Error executing cloud Data clawingCannot run program "D:\1tools\Miniconda\envs\Env1": CreateProcess error=5, 拒绝访问。
-Log message: Error executing cloud Data clawingCannot run program "D:\1tools\Miniconda\envs\Env1": CreateProcess error=5, 拒绝访问。
-Log message: Error executing radar Data clawingCannot run program "D:\1tools\Miniconda\envs\Env1": CreateProcess error=5, 拒绝访问。
-Log message: Error executing cloud Data clawingCannot run program "D:\1tools\Miniconda\envs\Env1": CreateProcess error=5, 拒绝访问。
-Log message: Error executing clawing Typhoon DataCannot run program "D:\1tools\Miniconda\envs\Env1": CreateProcess error=5, 拒绝访问。
-Log message: Error executing radar Data clawingCannot run program "D:\1tools\Miniconda\envs\Env1": CreateProcess error=5, 拒绝访问。
-Log message: Error executing FieldGeneratingCannot run program "D:\1tools\Miniconda\envs\Env1": CreateProcess error=5, 拒绝访问。
-Log message: Error executing rainfall Data clawingCannot run program "D:\1tools\Miniconda\envs\Env1": CreateProcess error=5, 拒绝访问。
->>>>>>> 675bf0be14ca4b51339dd849407d296bd66a89bc
-Log message: Manuel Data updating scheduled at 2024-04-25T11:40:13.954
-Log message: Manuel Data updating execution failed!
-Log message: Cloud Data clawing scheduled at 2024-04-25T12:10:00.037
-Log message: Cloud Data clawing executed successfully!
-Log message: Radar Data clawing scheduled at 2024-04-25T12:30:00.085
-Log message: Radar Data clawing executed successfully!
-Log message: Rainfall Data clawing scheduled at 2024-04-25T12:50:00.080
-Log message: Rainfall Data clawing executed successfully!
-Log message: Cloud Data clawing scheduled at 2024-04-25T14:10:00.218
-Log message: Cloud Data clawing executed successfully!
-Log message: Cloud Data clawing scheduled at 2024-04-26T20:42:15.782
-Log message: Error executing cloud Data clawingnull
-Log message: Error executing radar Data clawingCannot run program "D:\1tools\Miniconda\envs\Env1": CreateProcess error=2, 系统找不到指定的文件。
-Log message: Error executing rainfall Data clawingCannot run program "D:\1tools\Miniconda\envs\Env1": CreateProcess error=2, 系统找不到指定的文件。
-Log message: Error executing cloud Data clawingCannot run program "D:\1tools\Miniconda\envs\Env1\python.exe": CreateProcess error=2, 系统找不到指定的文件。
-Log message: Error executing radar Data clawingCannot run program "D:\1tools\Miniconda\envs\Env1\python.exe": CreateProcess error=2, 系统找不到指定的文件。
-Log message: Error executing radar Data clawingCannot run program "D:\1tools\Miniconda\envs\Env1\python.exe": CreateProcess error=2, 系统找不到指定的文件。
-Log message: Cloud Data clawing scheduled at 2024-05-23T16:10:00.010
-Log message: Error executing cloud Data clawingnull
-Log message: Rainfall Data clawing scheduled at 2024-05-23T20:50:00.024
-Log message: Rainfall Data clawing executed successfully!
-Log message: Cloud Data clawing scheduled at 2024-05-23T22:10:00.017
-Log message: Cloud Data clawing executed successfully!
-Log message: Rainfall Data clawing scheduled at 2024-05-23T22:50:00.013
-Log message: Rainfall Data clawing executed successfully!
-Log message: Cloud Data clawing scheduled at 2024-05-24T00:10:00.033
-Log message: Cloud Data clawing executed successfully!
+Log message: Rainfall Data clawing scheduled at 2024-05-31T02:50:00.096
+Log message: Rainfall Data clawing execution failed!
+Log message: Cloud Data clawing scheduled at 2024-05-31T04:10:00.095
+Log message: Cloud Data clawing execution failed!
+Log message: Radar Data clawing scheduled at 2024-05-31T04:30:00.084
+Log message: Radar Data clawing execution failed!
+Log message: Rainfall Data clawing scheduled at 2024-05-31T04:50:00.089
+Log message: Rainfall Data clawing execution failed!
+Log message: Clawed data deleting scheduled at 2024-05-31T05:55:00.325
+Log message: Clawed data deleting execution failed!
+Log message: Cloud Data clawing scheduled at 2024-05-31T06:10:00.086
+Log message: Cloud Data clawing execution failed!
+Log message: Radar Data clawing scheduled at 2024-05-31T06:30:00.096
+Log message: Radar Data clawing execution failed!
+Log message: Rainfall Data clawing scheduled at 2024-05-31T06:50:00.095
+Log message: Rainfall Data clawing execution failed!
+Log message: Cloud Data clawing scheduled at 2024-05-31T08:10:00.194
+Log message: Cloud Data clawing execution failed!
+Log message: Radar Data clawing scheduled at 2024-05-31T08:30:00.221
+Log message: Radar Data clawing execution failed!
+Log message: Rainfall Data clawing scheduled at 2024-05-31T08:50:00.243
+Log message: Rainfall Data clawing execution failed!
+Log message: Rainfallpre Data clawing scheduled at 2024-05-31T09:00:00.612
+Log message: Rainfallpre Data clawing execution failed!

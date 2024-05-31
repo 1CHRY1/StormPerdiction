@@ -191,6 +191,19 @@ export const drawEcharts_cover = async (
         connectNulls: true,
       },
     ],
+    graphic: {
+      elements: [
+        {
+          type: 'text',
+          style: {
+            text: '单位:(m)',
+            x: 5,
+            y: 900,
+            fontSize: 13,
+          },
+        },
+      ],
+    },
   }
   if (!isValid) {
     option.graphic = {

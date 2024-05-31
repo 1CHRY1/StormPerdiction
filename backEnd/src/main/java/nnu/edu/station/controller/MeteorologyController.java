@@ -78,6 +78,7 @@ public class MeteorologyController {
             String filePath = fileInfo.get("path");
             File file = new File(filePath);
             String fileName = file.getName();
+            System.out.println("文件名称");
             if (file.exists()){
                 HttpHeaders headers = new HttpHeaders();
                 headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; ftiilename=" + fileName);
@@ -90,10 +91,11 @@ public class MeteorologyController {
                         .contentType(MediaType.APPLICATION_OCTET_STREAM)
                         .body(new FileSystemResource(file));
             } else {
-                return ResponseEntity.notFound().build();
+                return ResponseEntity.status(500).build();
             }
-        } catch ( Exception e ){
-            return ResponseEntity.notFound().build();
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+            return ResponseEntity.status(500).build();
         }
     }
 }

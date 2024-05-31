@@ -17,7 +17,9 @@ public class UpdateUtil {
         PrintWriter writer = new PrintWriter(new FileWriter(logPath, true));
         // 每日更新站点数据
         try {
-            Process process = Runtime.getRuntime().exec(python + " " + updateData + " " + dataprocessPath);
+            String command = python + " " + updateData + " " + dataprocessPath;
+            System.out.println(command);
+            Process process = Runtime.getRuntime().exec(command);
             // 添加日志输出
             System.out.println("Data updating scheduled at " + LocalDateTime.now());
             writer.println("Log message: Data updating scheduled at " + LocalDateTime.now());
@@ -42,7 +44,9 @@ public class UpdateUtil {
         PrintWriter writer = new PrintWriter(new FileWriter(logPath, true));
         // 每日更新站点数据
         try {
-            Process process = Runtime.getRuntime().exec(python + " " + manuelUpdateData + " " + dataprocessPath + " " + folderPath);
+            String command = python + " " + manuelUpdateData + " " + dataprocessPath + " " + folderPath;
+            System.out.println(command);
+            Process process = Runtime.getRuntime().exec(command);
             // 添加日志输出
             System.out.println("Manuel Data updating scheduled at " + LocalDateTime.now());
             writer.println("Log message: Manuel Data updating scheduled at " + LocalDateTime.now());

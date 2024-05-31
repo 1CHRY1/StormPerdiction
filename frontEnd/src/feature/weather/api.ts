@@ -49,6 +49,7 @@ export const getSatelliteImage = async (
     type3 = type.split(' - ')[1]
   }
   const url = `/api/v1/data/meteorology/time&type?time=${time}&type1=${imageType}&type2=${type2}&type3=${type3}`
+  console.log(url)
   const imageBlob = await fetch(url)
     .then((res) => res.blob())
     .then((blob) => blob)

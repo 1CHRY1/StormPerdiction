@@ -1,67 +1,5 @@
-import os
-import sqlite3
-from datetime import datetime, timedelta
 import sys
-
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.chrome.options import Options
-import pymongo
-from selenium.webdriver.common.action_chains import ActionChains
-import re
-import urllib
-from urllib.parse import quote
-import requests
-import time
-import asyncio
-
-def insertData(db_path, name, time, type1, type2, type3, path):
-    conn = sqlite3.connect(db_path)
-    cursor = conn.cursor()
-    updatetime = datetime.now()
-    # 插入数据
-    cursor.execute(f'''
-                INSERT INTO {name} ( updatetime, time, type1, type2, type3, path )
-                VALUES ('{updatetime}', '{time}', '{type1}', '{type2}', '{type3}', '{path}')
-            ''')
-    conn.commit()
-    conn.close()
-
-def Rainfallpre_clawing(Path, name, url, type1, type2, type3, webdriverpath):
-    folderpath = Path + '/' + name
-    # 图片爬取
-    options = Options()
-    options.add_argument('--headless')  # 不打开浏览器
-    chromedriver_service = Service(executable_path=webdriverpath)
-    driver = webdriver.Chrome(options=options, service=chromedriver_service)
-    wait = WebDriverWait(driver, 10)
-    try:
-        driver.get(url)
-        img = wait.until(EC.presence_of_element_located((By.ID, "imgpath")))
-        img_url = img.get_attribute("src")
-        time_obj = datetime.now() + timedelta(days=1)
-        time = time_obj.strftime("%m%d")
-        filepath = f"{folderpath}/{time}.jpg"
-        response = requests.get(img_url)
-        if response.status_code == 200:
-            with open(filepath, 'wb') as f:
-                f.write(response.content)
-            f.close()
-            print(f"文件{time}下载成功", time)
-            insertData(db_path, "Meteorology", time_obj.date(), type1, type2, type3, filepath)
-            print(f"文件{time}插入数据库成功")
-        else:
-            print("文件下载失败")
-    except Exception as e:
-        print(e)
-        driver.close()
-        Rainfallpre_clawing(Path, name, url, type1, type2, type3, webdriverpath)
-        return
-    finally:
-        driver.close()
+from ClawUtils import Rainfallpre_clawing
 
 datatypes = [
     {"name":"24小时降水量","url":[
@@ -81,9 +19,11 @@ datatypes = [
     ]}
 ]
 
-# db_path = "D:/1study/Work/2023_12_22_Storm/stormPerdiction/data/DataProcess/Clawing/Meteorology.db"
-# Path = "D:/1study/Work/2023_12_22_Storm/stormPerdiction/data/气象产品/降水量预报"
-# webdriverpath = "D:/1tools/chromedriver/chromedriver.exe"
+# db_path = "/home/ps/ForecastPlatform/DataProcess/Clawing/Meteorology.db"
+# Path = "/home/ps/ForecastPlatform/气象产品/降水量预报"
+# webdriverpath = "/home/ps/apps/webdriver/geckodriver"
+# "D:/1study/Work/2024_4_9_野外观测系统集成/系统部署/StormData/DataProcess_new/Clawing/Meteorology.db" "D:/1study/Work/2024_4_9_野外观测系统集成/系统部署/StormData/气象产品/降水量预报" "D:/1tools/chromedriver/chromedriver.exe"
+
 
 args = sys.argv
 if len(args) < 3:
@@ -103,4 +43,5 @@ for datatype in datatypes:
         name = item["name"]
         url = item["url"]
         type3 = name
-        Rainfallpre_clawing(Path_, name, url, type1, type2, type3, webdriverpath)
+        Rainfallpre_clawing(db_path, Path_, name, url, type1, type2, type3, webdriverpath)
+        # Rainfallpre_clawing_linux(db_path, Path_, name, url, type1, type2, type3, webdriverpath)
