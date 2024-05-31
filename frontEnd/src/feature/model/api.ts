@@ -8,14 +8,21 @@ const decimalToDMS = (decimal: number): string => {
 }
 
 export const runWaterModel = async () => {
-  const url = `/api/v1/process/model/run`
+  const url = `/api/v1/process/model/run/once`
   const data = (await fetch(url)
     .then((res) => res.json())
     .then((value) => value.data)) as string
 
-  console.log(data)
+  return data
+}
 
-  return true
+export const getWaterModelStatus = async () => {
+  const url = `/api/v1/process/model/run/once/condition`
+  const data = (await fetch(url)
+    .then((res) => res.json())
+    .then((value) => value.data)) as string
+
+  return data
 }
 
 export const getStationInfo = (id: keyof typeof stationInfo): IStationInfo => {

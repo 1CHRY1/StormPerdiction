@@ -17,7 +17,7 @@ import { useMapStore } from '../../store/mapStore'
 import { useModelStore } from '../../store/modelStore'
 import { useStationStore } from '../../store/stationStore'
 import { initScratchMap2 } from '../../util/initMap'
-import { runWaterModel } from './api'
+import { getWaterModelStatus, runWaterModel } from './api'
 import { addLayer } from './util'
 
 const radio: Ref<HTMLDivElement | null> = ref(null)
@@ -246,10 +246,13 @@ const text = computed(() => {
 const runModel = async () => {
   console.log('run model')
   const status = await runWaterModel()
+  console.log(status)
   if (status) {
     modelStore.run('')
-    const id = setInterval(() => {
+    const id = setInterval(async () => {
       console.log('in')
+      const status = await getWaterModelStatus()
+      console.log(status)
       const currentProgress = (modelStore.modelProgress += 5 * Math.random())
       if (currentProgress > 100) {
         modelStore.modelProgress = 100
@@ -327,48 +330,30 @@ onMounted(async () => {
 
 <template>
   <div
-    class="z-10 absolute flex flex-col top-6 left-6 h-64 w-72 rounded-xl shadow text-white shadow-slate-800 bg-[#262626]"
-  >
+    class="z-10 absolute flex flex-col top-6 left-6 h-64 w-72 rounded-xl shadow text-white shadow-slate-800 bg-[#262626]">
     <div class="h-10 leading-10 px-3 font-bold rounded-t-xl bg-[#3d6796]">
       模型计算
     </div>
     <div class="flex-auto m-2 rounded-md flex flex-col bg-[#494949]">
       <div class="my-2 mx-2 text-lg">
-        <el-button
-          type="info"
-          class="w-full bg-slate-300 hover:bg-slate-400/90 border-0 text-black"
-          @click="runModel"
-          >运行模型</el-button
-        >
+        <el-button type="info" class="w-full bg-slate-300 hover:bg-slate-400/90 border-0 text-black" @click="runModel"
+          :disabled="modelStore.modelStatus === 'running'">运行模型</el-button>
       </div>
-      <div
-        class="flex flex-col flex-auto mb-3 text-base mx-2 bg-slate-300 rounded-md"
-      >
+      <div class="flex flex-col flex-auto mb-3 text-base mx-2 bg-slate-300 rounded-md">
         <div class="h-8 leading-8 px-3 rounded-t-md bg-[#3d6796]">模型状态</div>
         <div class="flex flex-auto justify-center items-center text-black">
           <div v-if="modelStore.modelStatus === 'no'" class="relative bottom-1">
             当前无模型运行
           </div>
-          <div
-            v-else-if="modelStore.modelStatus === 'finish'"
-            class="relative bottom-1 flex flex-col justify-center"
-          >
+          <div v-else-if="modelStore.modelStatus === 'finish'" class="relative bottom-1 flex flex-col justify-center">
             <div class="m-3 pl-2">模型运行完成</div>
-            <el-button
-              type="primary"
-              color="#3d6796"
-              class="w-full border-0"
-              @click="dispalyModelResult"
-              >显示模型运行结果</el-button
-            >
+            <el-button type="primary" color="#3d6796" class="w-full border-0"
+              @click="dispalyModelResult">显示模型运行结果</el-button>
           </div>
           <div v-else class="w-full px-3 relative bottom-1">
             <div class="mb-2">运行进度</div>
             <div class="flex items-center">
-              <el-slider
-                v-model="modelStore.modelProgress"
-                class="w-[80%]"
-              ></el-slider>
+              <el-slider v-model="modelStore.modelProgress" class="w-[80%]"></el-slider>
               <div class="pl-4">
                 {{ modelStore.modelProgress.toFixed(1) + '%' }}
               </div>
@@ -539,7 +524,7 @@ onMounted(async () => {
   transition: all 0.2s ease-in-out;
 }
 
-.radio-button input[type='radio']:checked + .radio-circle::before {
+.radio-button input[type='radio']:checked+.radio-circle::before {
   transform: translate(-50%, -50%) scale(1);
   background-color: #ffffff;
 }
