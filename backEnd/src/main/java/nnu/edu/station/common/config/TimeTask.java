@@ -102,7 +102,7 @@ public class TimeTask {
     NCService ncService;
 
 //    @Scheduled(cron = "0/5 * * * * *")
-//    @Scheduled(cron = "0 0 16 * * ?")
+    @Scheduled(cron = "0 30 0 * * ?")
     public void executePythonUpdateData() throws IOException {
         // 每日更新站点数据
         UpdateUtil.DataUpdating(python, updateData, dataprocess, logPath);
@@ -129,25 +129,25 @@ public class TimeTask {
         ClawingUtil.ClawingRainfallData(python, clawingRainfall, meteorologydb, rainfallfile, webdriver, logPath);
     }
 
-    @Scheduled(cron = "0 0 9 * * ?")
+    @Scheduled(cron = "0 20 0 * * ?")
     public void executePythonClawingRainfallpreData() throws IOException {
         // 爬取降水量预报数据
         ClawingUtil.ClawingRainfallpreData(python, clawingRainfallpre, meteorologydb, rainfallprefile, webdriver, logPath);
     }
 
-    @Scheduled(cron = "0 20 10 * * ?")
+    @Scheduled(cron = "0 20 2 * * ?")
     public void  executePythonClawingTyphoonData() throws IOException {
         // 爬取当日台风数据
         ClawingUtil.ClawingTyphoonData(python, clawingTyphoon, logPath);
     }
 
-    @Scheduled(cron = "00 55 5 * * ?")
+    @Scheduled(cron = "00 00 00 * * ?")
     public void executePythonDeleteClawingData() throws IOException {
         // 删除过期数据
         ClawingUtil.DeleteClawingData(python, deleteClawingData, logPath);
     }
 
-    @Scheduled(cron = "30 48 10 * * ?")
+    @Scheduled(cron = "0 0 1 * * ?")
 //    @Scheduled(cron = "0/1 * * * * ?")
     public void executePythonFieldProcessingData() throws IOException {
         // 计算当天流场数据

@@ -31,7 +31,9 @@ public class FieldUtil {
         PrintWriter writer = new PrintWriter(new FileWriter(logPath, true));
         // 执行场二进制数据生成
         try {
-            Process process = Runtime.getRuntime().exec(python + " " + FieldGenerating + " " + ncfilepath + " " + fieldpath);
+            String command = python + " " + FieldGenerating + " " + ncfilepath + " " + fieldpath;
+            System.out.println(command);
+            Process process = Runtime.getRuntime().exec(command);
             // 添加日志输出
             System.out.println("FieldGenerating scheduled at " + LocalDateTime.now());
             writer.println("Log message: FieldGenerating scheduled at " + LocalDateTime.now());
@@ -43,6 +45,7 @@ public class FieldUtil {
                 return 0;
             } else {
                 System.out.println("FieldGenerating execution failed!");
+                System.out.println(process.getErrorStream());
                 writer.println("Log message: FieldGenerating execution failed!");
                 return exitCode;
             }
@@ -59,7 +62,9 @@ public class FieldUtil {
         PrintWriter writer = new PrintWriter(new FileWriter(logPath, true));
         // 执行增水场数据生成脚本
         try {
-            Process process = Runtime.getRuntime().exec(python + " " + addFieldGenerating + " " + ncfilepath2_acdirc + " " + ncfilepath_fort + " " + addField + " " + addFieldMask);
+            String command = python + " " + addFieldGenerating + " " + ncfilepath2_acdirc + " " + ncfilepath_fort + " " + addField + " " + addFieldMask;
+            System.out.println(command);
+            Process process = Runtime.getRuntime().exec(command);
             // 添加日志输出
             writer.println("TxtBuilder4zeta execution scheduled at: {}" + LocalDateTime.now());
             System.out.println("Log message: TxtBuilder4zeta execution scheduled at: {}" + LocalDateTime.now());

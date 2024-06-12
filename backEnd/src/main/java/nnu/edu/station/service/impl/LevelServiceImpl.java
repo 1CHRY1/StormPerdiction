@@ -232,12 +232,13 @@ public class LevelServiceImpl implements LevelService {
     public Map<String, Object> get48scNotyNoman(String station) {
         String localTime = getLocalTimeStr();
         Map<String, Object> obj = ListUtil.StringObj2ArrayObj(levelMapper.get48scNotyNoman(station, localTime));
-        obj.put("time",getLocalTimeBeforeStr(2));
         if (obj == null) {
-            localTime = getLocalTimeBeforeStr(2);
+            localTime = getLocalTimeBeforeStr(1);
             obj = ListUtil.StringObj2ArrayObj(levelMapper.get48scNotyNoman(station, localTime));
             obj.put("time",getLocalTimeBeforeStr(3));
+            return obj;
         }
+        obj.put("time",getLocalTimeBeforeStr(2));
         return obj;
     }
 
@@ -245,12 +246,13 @@ public class LevelServiceImpl implements LevelService {
     public Map<String, Object> get48ybNotyNoman(String station) {
         String localTime = getLocalTimeStr();
         Map<String, Object> obj = ListUtil.StringObj2ArrayObj(levelMapper.get48ybNotyNoman(station, localTime));
-        obj.put("time",getLocalTimeBeforeStr(2));
         if (obj == null) {
-            localTime = getLocalTimeBeforeStr(2);
+            localTime = getLocalTimeBeforeStr(1);
             obj = ListUtil.StringObj2ArrayObj(levelMapper.get48ybNotyNoman(station, localTime));
             obj.put("time",getLocalTimeBeforeStr(3));
+            return obj;
         }
+        obj.put("time",getLocalTimeBeforeStr(2));
         return obj;
     }
 

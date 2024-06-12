@@ -23,8 +23,7 @@ datatypes = [
 # db_path = "/home/ps/ForecastPlatform/DataProcess/Clawing/Meteorology.db"
 # Path = "/home/ps/ForecastPlatform/气象产品/降水量预报"
 # webdriverpath = "/home/ps/apps/webdriver/geckodriver"
-# "D:/1study/Work/2024_4_9_野外观测系统集成/系统部署/StormData/DataProcess_new/Clawing/Meteorology.db" "D:/1study/Work/2024_4_9_野外观测系统集成/系统部署/StormData/气象产品/降水量预报" "D:/1tools/chromedriver/chromedriver.exe"
-
+# "D:/1study/Work/2023_12_22_Storm/StormPerdiction/data/DataProcess/Clawing/Meteorology.db" "D:/1study/Work/2023_12_22_Storm/StormPerdiction/data/qixiangchanpin/jiangshuiliangyubao" "D:/1tools/chromedriver/chromedriver.exe"
 
 args = sys.argv
 if len(args) < 3:

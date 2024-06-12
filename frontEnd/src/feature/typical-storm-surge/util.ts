@@ -209,7 +209,7 @@ export const addStationLayer = async (map: mapbox.Map) => {
 }
 
 export const generateTreeDataOfStation = (): Tree[] => {
-  const stationFilterID = ['1', '6', '7', '8', '10', '14']
+  const stationFilterID = ['1', '5', '6', '7', '9', '13']
   const data: Tree[] = stationFilterID.map((value) => ({
     id: value,
     label: stationInfo[value as keyof typeof stationInfo].name,

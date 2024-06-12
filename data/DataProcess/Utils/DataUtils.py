@@ -17,6 +17,16 @@ class DataUtils():
         else:
             return False
 
+    def DeleteTodayData(self, db_path, name, time):
+        conn = sqlite3.connect(db_path)
+        cursor = conn.cursor()
+        # 删除数据
+        cursor.execute(f'''
+                        DELETE FROM {name} WHERE time = '{time}'
+                    ''')
+        conn.commit()
+        conn.close()
+
     # 插入有台风时的数据
     def insert_typhdata(self, db_path, name, time, hpre, hyubao, hadd, manual):
         # 插入有台风数据

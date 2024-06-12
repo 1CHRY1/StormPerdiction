@@ -47,3 +47,17 @@ Log message: Shell script1 executed successfully at 2024-05-31T16:51:47.494
 Log message: Shell script1 executed successfully at 2024-05-31T16:52:53.666
 Log message: Shell script1 executed successfully at 2024-05-31T16:53:13.040
 Log message: Shell script1 executed successfully at 2024-05-31T16:53:19.785
+Log message: Cloud Data clawing scheduled at 2024-06-05T18:10:00.049
+Log message: Cloud Data clawing executed successfully!
+Log message: Radar Data clawing scheduled at 2024-06-05T18:30:00.056
+Log message: Error executing radar Data clawingnull
+Log message: Rainfall Data clawing scheduled at 2024-06-05T20:50:00.019
+Log message: Rainfall Data clawing executed successfully!
+Log message: Typhoon Data clawing scheduled at 2024-06-06T10:20:00.029
+Log message: Typhoon Data clawing execution failed!
+Log message: Rainfall Data clawing scheduled at 2024-06-06T14:50:00.035
+Log message: Rainfall Data clawing executed successfully!
+Log message: Shell script1 executed successfully at 2024-06-07T13:49:30.557
+Log message: Shell script1 executed successfully at 2024-06-07T15:40:47.371
+Log message: Cloud Data clawing scheduled at 2024-06-12T10:10:00.042
+Log message: Cloud Data clawing execution failed!

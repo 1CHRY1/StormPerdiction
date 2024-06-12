@@ -1,9 +1,9 @@
 import sys, json, os
-from datetime import datetime
+from datetime import datetime, timedelta
 from Utils.DataUtils import DataUtils, UpdateData_mysql
 from scipy.io import loadmat
 
-# dataprocess_path = "D:/1study/Work/2024_4_9_野外观测系统集成/系统部署/StormData/DataProcess"
+# dataprocess_path = "D:\1study\Work\2023_12_22_Storm\StormPerdiction\data\DataProcess"
 
 def main():
     dataUtils = DataUtils()

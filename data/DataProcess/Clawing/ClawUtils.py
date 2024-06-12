@@ -493,8 +493,8 @@ def remove_dbcontent(db_path, name):
     cursor.execute(f"SELECT type1 FROM {name}")
     rows = cursor.fetchall()
     for row in rows:
-        if (row[0] == "降水量预报"):
-            typename = '"降水量预报"'
+        if (row[0] == "jiangshuiliangyubao"):
+            typename = '"jiangshuiliangyubao"'
             cursor.execute(f"DELETE FROM {name} WHERE type1 = {typename} and time < ?", (tommorrow_str,))
     conn.commit()
     conn.close()

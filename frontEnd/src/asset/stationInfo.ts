@@ -134,49 +134,49 @@ export const stationInfo = {
   },
   '19': {
     coord: [120.5667, 33.8833],
-    name: '射阳河闸下',
+    name: '射阳河闸',
     pinyin: 'sheyanghezhaxia',
     type: 'sea',
     id: '19'
   },
   '20': {
     coord: [120.5225361, 33.8186472],
-    name: '黄沙港闸下',
+    name: '黄沙港闸',
     pinyin: 'huangshagangzhaxia',
     type: 'sea',
     id: '20'
   },
   '21': {
     coord: [120.644513, 33.5016111],
-    name: '斗龙港闸下',
+    name: '斗龙港闸',
     pinyin: 'doulonggangzhaxia',
     type: 'sea',
     id: '21'
   },
   '22': {
     coord: [121.0464472, 32.5675333],
-    name: '小洋口闸下',
+    name: '小洋口闸',
     pinyin: 'xiaoyangkouzhaxia',
     type: 'sea',
     id: '22'
   },
   '23': {
     coord: [120.59291, 33.6434389],
-    name: '新洋港闸下',
+    name: '新洋港闸',
     pinyin: 'xinyanggangzhaxia',
     type: 'sea',
     id: '23'
   },
   '24': {
     coord: [120.8470361, 33.1912967],
-    name: '王港新闸闸下',
+    name: '王港新闸',
     pinyin: 'wanggangxinzhazhaxia',
     type: 'sea',
     id: '24'
   },
   '25': {
     coord: [120.9397639, 32.8891417],
-    name: '粱垛河闸下',
+    name: '粱垛河闸',
     pinyin: 'liangduohezhaxia',
     type: 'sea',
     id: '25'

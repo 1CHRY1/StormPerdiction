@@ -195,7 +195,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "射阳河闸下",
+        "name": "射阳河闸",
         "id": "19",
         "pinyin": "sheyanghezhaxia",
         "type": "sea"
@@ -205,7 +205,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "黄沙港闸下",
+        "name": "黄沙港闸",
         "id": "20",
         "pinyin": "huangshagangzhaxia",
         "type": "sea"
@@ -215,7 +215,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "斗龙港闸下",
+        "name": "斗龙港闸",
         "id": "21",
         "pinyin": "doulonggangzhaxia",
         "type": "sea"
@@ -225,7 +225,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "小洋口闸下",
+        "name": "小洋口闸",
         "id": "22",
         "pinyin": "xiaoyangkouzhaxia",
         "type": "sea"
@@ -235,7 +235,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "新洋港闸下",
+        "name": "新洋港闸",
         "id": "23",
         "pinyin": "xinyanggangzhaxia",
         "type": "sea"
@@ -245,7 +245,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "王港新闸闸下",
+        "name": "王港新闸",
         "id": "24",
         "pinyin": "wanggangxinzhazhaxia",
         "type": "sea"
@@ -255,7 +255,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "粱垛河闸下",
+        "name": "粱垛河闸",
         "id": "25",
         "pinyin": "liangduohezhaxia",
         "type": "sea"

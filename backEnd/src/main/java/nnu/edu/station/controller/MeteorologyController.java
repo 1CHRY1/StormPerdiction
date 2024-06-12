@@ -74,6 +74,9 @@ public class MeteorologyController {
     @GetMapping("/time&type")
     public ResponseEntity<FileSystemResource> getInfoByTimeAndType(@RequestParam String time, @RequestParam String type1, @RequestParam String type2, @RequestParam String type3) {
         try {
+            if (type3.equals("undefined")) {
+                type3 = "";
+            }
             Map<String, String> fileInfo = (Map<String, String>) meteorologyService.getInfoByTimeAndType(time, type1, type2, type3);
             String filePath = fileInfo.get("path");
             File file = new File(filePath);
@@ -93,7 +96,6 @@ public class MeteorologyController {
                 return ResponseEntity.status(500).build();
             }
         } catch (Exception e){
-            System.out.println(e.getMessage());
             return ResponseEntity.status(500).build();
         }
     }
