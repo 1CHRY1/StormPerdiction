@@ -4,54 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c804ed09-7260-41c7-be88-6933e22abfe0" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../../backEnd/src/main/resources/application-dockerServer.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DeleteTodayData.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../backEnd/src/main/java/nnu/edu/station/common/config/TimeTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../backEnd/src/main/java/nnu/edu/station/common/config/TimeTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../backEnd/src/main/java/nnu/edu/station/common/utils/FieldUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../backEnd/src/main/java/nnu/edu/station/common/utils/FieldUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../backEnd/src/main/java/nnu/edu/station/controller/MeteorologyController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../backEnd/src/main/java/nnu/edu/station/controller/MeteorologyController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../backEnd/src/main/resources/application-docker.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../../backEnd/src/main/resources/application-dockerLocal.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Clawing/ClawUtils.py" beforeDir="false" afterPath="$PROJECT_DIR$/Clawing/ClawUtils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Clawing/DeleteData.py" beforeDir="false" afterPath="$PROJECT_DIR$/Clawing/DeleteData.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Clawing/Rainfall_pre.py" beforeDir="false" afterPath="$PROJECT_DIR$/Clawing/Rainfall_pre.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UpdateData.py" beforeDir="false" afterPath="$PROJECT_DIR$/UpdateData.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Utils/DataUtils.py" beforeDir="false" afterPath="$PROJECT_DIR$/Utils/DataUtils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logfile.log" beforeDir="false" afterPath="$PROJECT_DIR$/logfile.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../frontEnd/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../frontEnd/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../frontEnd/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../frontEnd/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../frontEnd/public/geojson/station.geojson" beforeDir="false" afterPath="$PROJECT_DIR$/../../frontEnd/public/geojson/station.geojson" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../frontEnd/src/asset/stationInfo.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../frontEnd/src/asset/stationInfo.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../frontEnd/src/feature/typical-storm-surge/util.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../frontEnd/src/feature/typical-storm-surge/util.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../frontEnd/stormFront/assets/AccuracyDetail-acg7MgGG.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../frontEnd/stormFront/assets/AccuracyMapView-gwN7MP8C.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../frontEnd/stormFront/assets/HelloWorld copy-Cvxc0IkW.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../frontEnd/stormFront/assets/ModelDetail-PP672EO7.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../frontEnd/stormFront/assets/ModelMapView-BVaFHOPh.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../frontEnd/stormFront/assets/ModelMapView-D2azlCgU.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../frontEnd/stormFront/assets/Observation-BKTNhkZ9.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../frontEnd/stormFront/assets/Precipitation-HnHwAFDj.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../frontEnd/stormFront/assets/Radar-D1p75IHw.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../frontEnd/stormFront/assets/Satellite-B7kn7aRR.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../frontEnd/stormFront/assets/StormDetail-D6xLEBmx.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../frontEnd/stormFront/assets/StormMapView-Bn-p9yBI.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../frontEnd/stormFront/assets/TideDetail-vqUQMfgp.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../frontEnd/stormFront/assets/TideMapView-ClD8C_FB.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../frontEnd/stormFront/assets/Typhoon-Blm3AA-f.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../frontEnd/stormFront/assets/WaterMapView-DXxwY-ut.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../frontEnd/stormFront/assets/WaterSituationDetail-BNt69Ind.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../frontEnd/stormFront/assets/api-DbTkhfLn.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../frontEnd/stormFront/assets/api-DruAj8pT.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../frontEnd/stormFront/assets/axios-CfQa2ZHH.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../frontEnd/stormFront/assets/controller-4oAeiCmh.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../frontEnd/stormFront/assets/index-BqiXETND.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../frontEnd/stormFront/assets/initMap--QzwS8UC.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../frontEnd/stormFront/assets/util-DaKuedOg.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../frontEnd/stormFront/assets/wind_back-COhjbh-S.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../frontEnd/stormFront/geojson/station.geojson" beforeDir="false" afterPath="$PROJECT_DIR$/../../frontEnd/stormFront/geojson/station.geojson" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../frontEnd/stormFront/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/../../frontEnd/stormFront/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../frontEnd/vite.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../frontEnd/vite.config.ts" afterDir="false" />
-    </list>
+    <list default="true" id="c804ed09-7260-41c7-be88-6933e22abfe0" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
