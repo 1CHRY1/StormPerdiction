@@ -172,8 +172,18 @@ class DataUtils():
         prefix = input_str[:-10]
         return prefix
 
+    def get_prefix_before_now(self, input_str):
+        prefix = input_str[:-3]
+        return prefix
 
-def UpdateData_mysql(Path, time):
+    def judge_time(self, time_origin, time_compare):
+        # 判断两时间差距是否在半小时内
+        if (time_origin - time_compare < timedelta(minutes=60)):
+            return True
+        else:
+            return False
+
+def UpdateData_mysql(Path, time, manual):
     thisDataUtils = DataUtils()
     # mysql数据库配置
     config = {
@@ -191,13 +201,16 @@ def UpdateData_mysql(Path, time):
             # 获取站点名称
             name = os.path.splitext(file)[0]
             # 去掉尾部数字
-            name = thisDataUtils.get_prefix_before_digitsV2(name)
+            if (manual == 0):
+                name = thisDataUtils.get_prefix_before_digitsV2(name)
+            else:
+                name = thisDataUtils.get_prefix_before_now(name)
             mat_path = os.path.join(Path, file)
             mat_data = loadmat(mat_path)
             try:
                 hpre_list = thisDataUtils.list_process(mat_data['hpre'])
                 hpre = [0.0 if value is None else value for value in hpre_list]
-                thisDataUtils.insert_data_mysql(conn_mysql, name, time, hpre, 0)
+                thisDataUtils.insert_data_mysql(conn_mysql, name, time, hpre, manual)
             except Exception as e:
                 print(e)
     conn_mysql.close()

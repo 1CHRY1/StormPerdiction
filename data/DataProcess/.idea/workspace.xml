@@ -4,7 +4,36 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c804ed09-7260-41c7-be88-6933e22abfe0" name="Changes" comment="" />
+    <list default="true" id="c804ed09-7260-41c7-be88-6933e22abfe0" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/UpdateManData.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UpdateData.py" beforeDir="false" afterPath="$PROJECT_DIR$/UpdateData.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Utils/DataUtils.py" beforeDir="false" afterPath="$PROJECT_DIR$/Utils/DataUtils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontEnd/src/feature/accuracy-assessment/util.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../frontEnd/src/feature/accuracy-assessment/util.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontEnd/stormFront/assets/AccuracyDetail-Cu92N3AD.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontEnd/stormFront/assets/AccuracyMapView-MsIoJ7XS.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontEnd/stormFront/assets/HelloWorld copy-ByJNDsDp.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontEnd/stormFront/assets/ModelDetail-BefRzagm.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontEnd/stormFront/assets/ModelMapView-CNpelKM0.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontEnd/stormFront/assets/Observation-B-8frj2u.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontEnd/stormFront/assets/Precipitation-MVQnX5oT.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontEnd/stormFront/assets/Radar-wGGNjnN8.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontEnd/stormFront/assets/Satellite-CF34zQCD.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontEnd/stormFront/assets/StormDetail-B12_Mmg9.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontEnd/stormFront/assets/StormMapView-DJw3mn35.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontEnd/stormFront/assets/TideDetail-87Eic_wY.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontEnd/stormFront/assets/TideMapView-CGDCzQCX.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontEnd/stormFront/assets/Typhoon-DXVzWFGC.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontEnd/stormFront/assets/WaterMapView-Df-V1kyq.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontEnd/stormFront/assets/WaterSituationDetail-BR5iOVnl.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontEnd/stormFront/assets/axios-C2RRHLEQ.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontEnd/stormFront/assets/controller-DBhFXwJS.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontEnd/stormFront/assets/index-Dkd1HQJ2.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontEnd/stormFront/assets/initMap-DFYsgEnA.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontEnd/stormFront/assets/util-BHXRlXAT.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontEnd/stormFront/assets/wind_back-DRSxZdC_.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontEnd/stormFront/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/../../frontEnd/stormFront/index.html" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -34,7 +63,7 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/1study/Work/2024_4_9_野外观测系统集成/系统部署/StormData/DataProcess&quot;
+    &quot;last_opened_file_path&quot;: &quot;D:/1study/Work/2023_12_22_Storm/StormPerdiction/data/DataProcess&quot;
   }
 }</component>
   <component name="RecentsManager">
@@ -42,7 +71,7 @@
       <recent name="D:\1study\Work\2023_12_22_Storm\StormPerdiction\data\DataProcess\Clawing" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.UpdateData">
+  <component name="RunManager" selected="Python.UpdateManData">
     <configuration name="Cloud" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="DataProcess" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -78,27 +107,6 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/DeleteTodayData.py" />
       <option name="PARAMETERS" value="&quot;$PROJECT_DIR$&quot;" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="Radar" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="DataProcess" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Clawing" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Clawing/Radar.py" />
-      <option name="PARAMETERS" value="&quot;$PROJECT_DIR$/Clawing/Meteorology.db&quot; &quot;$PROJECT_DIR$/../qixiangchanpin/leidapintu&quot; &quot;$PROJECT_DIR$/../../../../../../1tools/chromedriver/chromedriver.exe&quot;" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -148,20 +156,41 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="UpdateManData" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="DataProcess" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/UpdateManData.py" />
+      <option name="PARAMETERS" value="&quot;D:\1study\Work\2023_12_22_Storm\StormPerdiction\data\DataProcess&quot;" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <list>
+      <item itemvalue="Python.UpdateManData" />
       <item itemvalue="Python.Rainfall_pre" />
       <item itemvalue="Python.UpdateData" />
       <item itemvalue="Python.DeleteTodayData" />
-      <item itemvalue="Python.Radar" />
       <item itemvalue="Python.Cloud" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.UpdateManData" />
         <item itemvalue="Python.UpdateData" />
         <item itemvalue="Python.Cloud" />
         <item itemvalue="Python.Rainfall_pre" />
         <item itemvalue="Python.DeleteTodayData" />
-        <item itemvalue="Python.Radar" />
       </list>
     </recent_temporary>
   </component>

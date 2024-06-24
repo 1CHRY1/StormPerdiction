@@ -30,12 +30,15 @@ def main():
         print("****************" + folder + " begin!" + "****************")
         time = datetime.strptime(folder, "%Y%m%d")
         manual = 0
-        # UpdateData_mysql(Path, time)
+        try:
+            UpdateData_mysql(Path, time, manual)
+        except Exception as e:
+            print(e)
         try:
             txtPath = os.path.join(Path, "ifTyph.txt")
             if (dataUtils.JudgeIfTyph(txtPath) == True):
                 # 存在台风
-                dataUtils.insert_iftyph(db_path_Forcasting, time, 1, 0)
+                dataUtils.insert_iftyph(db_path_Forcasting, time, 1, manual)
                 files = os.listdir(Path)
                 hyubao = []
                 hpre = []
