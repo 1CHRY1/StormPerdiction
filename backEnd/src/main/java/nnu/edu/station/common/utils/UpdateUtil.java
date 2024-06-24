@@ -40,11 +40,11 @@ public class UpdateUtil {
         }
     }
 
-    public static void ManuelDataUpdating(String python, String manuelUpdateData, String dataprocessPath, String folderPath, String logPath) throws IOException {
+    public static void ManuelDataUpdating(String python, String manuelUpdateData, String dataprocessPath, String logPath) throws IOException {
         PrintWriter writer = new PrintWriter(new FileWriter(logPath, true));
         // 每日更新站点数据
         try {
-            String command = python + " " + manuelUpdateData + " " + dataprocessPath + " " + folderPath;
+            String command = python + " " + manuelUpdateData + " " + dataprocessPath;
             System.out.println(command);
             Process process = Runtime.getRuntime().exec(command);
             // 添加日志输出

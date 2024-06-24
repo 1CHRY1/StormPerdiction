@@ -28,6 +28,8 @@ Typhoon:
 
 updateData:
   ${dataprocess}/UpdateData.py
+updateManData:
+  ${dataprocess}/UpdateManData.py
 
 clawingCloud:
   ${dataprocess}/Clawing/Cloud.py

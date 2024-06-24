@@ -73,7 +73,7 @@ public class TaskManager {
                 for (Object obj : newFolders.toArray()) {
                     String folderName = obj.toString();
                     if ( new File(folderName).getName().length() > 8) {
-                        UpdateUtil.ManuelDataUpdating(python, manuelUpdating, dataprocess, folderName, logPath);
+                        UpdateUtil.ManuelDataUpdating(python, manuelUpdating, dataprocess, logPath);
                     }
                 }
             }
@@ -104,7 +104,7 @@ public class TaskManager {
                 for (Object obj : newFolders.toArray()) {
                     String folderName = obj.toString();
                     if ( new File(folderName).getName().length() > 8) {
-                        UpdateUtil.ManuelDataUpdating(python, manuelUpdating, dataprocess, folderName, logPath);
+                        UpdateUtil.ManuelDataUpdating(python, manuelUpdating, dataprocess, logPath);
                     }
                 }
             }
