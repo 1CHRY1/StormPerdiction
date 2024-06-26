@@ -1,0 +1,338 @@
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v2.7.8)
+
+2024-06-20 01:54:41.369  INFO 71997 --- [           main] nnu.edu.station.StationApplication       : Starting StationApplication v0.0.1-SNAPSHOT using Java 1.8.0_411 on d610db47a8b9 with PID 71997 (/usr/monitorApp/stormBack.jar started by root in /usr/monitorApp)
+2024-06-20 01:54:41.371  INFO 71997 --- [           main] nnu.edu.station.StationApplication       : The following 1 profile is active: "dockerServer"
+2024-06-20 01:54:42.121  INFO 71997 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 9989 (http)
+2024-06-20 01:54:42.128  INFO 71997 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-06-20 01:54:42.128  INFO 71997 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.71]
+2024-06-20 01:54:42.226  INFO 71997 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-06-20 01:54:42.226  INFO 71997 --- [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 821 ms
+2024-06-20 01:54:42.739  INFO 71997 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 9989 (http) with context path ''
+2024-06-20 01:54:42.747  INFO 71997 --- [           main] nnu.edu.station.StationApplication       : Started StationApplication in 1.654 seconds (JVM running for 2.078)
+2024-06-20 01:57:04.366  INFO 71997 --- [nio-9989-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-06-20 01:57:04.366  INFO 71997 --- [nio-9989-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2024-06-20 01:57:04.367  INFO 71997 --- [nio-9989-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2024-06-20 01:57:04.396  INFO 71997 --- [nio-9989-exec-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-06-20 01:57:04.410  INFO 71997 --- [nio-9989-exec-2] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Starting...
+2024-06-20 01:57:04.458  INFO 71997 --- [nio-9989-exec-2] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Start completed.
+2024-06-20 01:57:04.458  INFO 71997 --- [nio-9989-exec-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-06-20 01:58:55.521  INFO 71997 --- [nio-9989-exec-7] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Starting...
+2024-06-20 01:58:55.522  INFO 71997 --- [nio-9989-exec-7] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Start completed.
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Cloud.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/weixingyuntu /usr/bin/chromedriver
+Cloud Data clawing scheduled at 2024-06-20T02:10:00.008
+Cloud Data clawing  executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Typhoon.py
+Typhoon Data clawing scheduled at 2024-06-20T02:20:00.001
+Typhoon Data clawing execution failed!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Radar.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/leidapintu /usr/bin/chromedriver
+Radar Data clawing scheduled at 2024-06-20T02:30:00.002
+Radar Data clawing executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Rainfall.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/jiangshuiliangshikuang /usr/bin/chromedriver
+Rainfall Data clawing scheduled at 2024-06-20T02:50:00.002
+Rainfall Data clawing  executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Cloud.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/weixingyuntu /usr/bin/chromedriver
+Cloud Data clawing scheduled at 2024-06-20T04:10:00.002
+Cloud Data clawing  executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Radar.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/leidapintu /usr/bin/chromedriver
+Radar Data clawing scheduled at 2024-06-20T04:30:00.001
+Radar Data clawing executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Rainfall.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/jiangshuiliangshikuang /usr/bin/chromedriver
+Rainfall Data clawing scheduled at 2024-06-20T04:50:00.002
+Rainfall Data clawing execution failed!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Cloud.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/weixingyuntu /usr/bin/chromedriver
+Cloud Data clawing scheduled at 2024-06-20T06:10:00.001
+Cloud Data clawing  executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Radar.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/leidapintu /usr/bin/chromedriver
+Radar Data clawing scheduled at 2024-06-20T06:30:00.001
+Radar Data clawing executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Rainfall.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/jiangshuiliangshikuang /usr/bin/chromedriver
+Rainfall Data clawing scheduled at 2024-06-20T06:50:00.001
+Rainfall Data clawing  executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Cloud.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/weixingyuntu /usr/bin/chromedriver
+Cloud Data clawing scheduled at 2024-06-20T08:10:00.001
+Cloud Data clawing  executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Radar.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/leidapintu /usr/bin/chromedriver
+Radar Data clawing scheduled at 2024-06-20T08:30:00.001
+Radar Data clawing executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Rainfall.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/jiangshuiliangshikuang /usr/bin/chromedriver
+Rainfall Data clawing scheduled at 2024-06-20T08:50:00.002
+Rainfall Data clawing  executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Cloud.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/weixingyuntu /usr/bin/chromedriver
+Cloud Data clawing scheduled at 2024-06-20T10:10:00.001
+Cloud Data clawing  executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Radar.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/leidapintu /usr/bin/chromedriver
+Radar Data clawing scheduled at 2024-06-20T10:30:00.001
+Radar Data clawing executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Rainfall.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/jiangshuiliangshikuang /usr/bin/chromedriver
+Rainfall Data clawing scheduled at 2024-06-20T10:50:00.001
+Rainfall Data clawing  executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Cloud.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/weixingyuntu /usr/bin/chromedriver
+Cloud Data clawing scheduled at 2024-06-20T12:10:00.001
+Cloud Data clawing  executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Radar.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/leidapintu /usr/bin/chromedriver
+Radar Data clawing scheduled at 2024-06-20T12:30:00.001
+Radar Data clawing execution failed!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Rainfall.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/jiangshuiliangshikuang /usr/bin/chromedriver
+Rainfall Data clawing scheduled at 2024-06-20T12:50:00.001
+Rainfall Data clawing  executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Cloud.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/weixingyuntu /usr/bin/chromedriver
+Cloud Data clawing scheduled at 2024-06-20T14:10:00.002
+Cloud Data clawing  executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Radar.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/leidapintu /usr/bin/chromedriver
+Radar Data clawing scheduled at 2024-06-20T14:30:00.001
+Radar Data clawing execution failed!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Rainfall.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/jiangshuiliangshikuang /usr/bin/chromedriver
+Rainfall Data clawing scheduled at 2024-06-20T14:55:04.143
+Rainfall Data clawing execution failed!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Cloud.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/weixingyuntu /usr/bin/chromedriver
+Cloud Data clawing scheduled at 2024-06-20T16:10:00.002
+Cloud Data clawing  executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Radar.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/leidapintu /usr/bin/chromedriver
+Radar Data clawing scheduled at 2024-06-20T16:30:00.002
+Radar Data clawing executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Rainfall.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/jiangshuiliangshikuang /usr/bin/chromedriver
+Rainfall Data clawing scheduled at 2024-06-20T16:50:00.001
+Rainfall Data clawing  executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Cloud.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/weixingyuntu /usr/bin/chromedriver
+Cloud Data clawing scheduled at 2024-06-20T18:10:00.002
+Cloud Data clawing  executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Radar.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/leidapintu /usr/bin/chromedriver
+Radar Data clawing scheduled at 2024-06-20T18:30:00.002
+Radar Data clawing executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Rainfall.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/jiangshuiliangshikuang /usr/bin/chromedriver
+Rainfall Data clawing scheduled at 2024-06-20T18:50:00.001
+Rainfall Data clawing  executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Cloud.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/weixingyuntu /usr/bin/chromedriver
+Cloud Data clawing scheduled at 2024-06-20T20:10:00.002
+Cloud Data clawing  executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Radar.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/leidapintu /usr/bin/chromedriver
+Radar Data clawing scheduled at 2024-06-20T20:30:00.003
+Radar Data clawing executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Rainfall.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/jiangshuiliangshikuang /usr/bin/chromedriver
+Rainfall Data clawing scheduled at 2024-06-20T20:50:00.002
+Rainfall Data clawing execution failed!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Cloud.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/weixingyuntu /usr/bin/chromedriver
+Cloud Data clawing scheduled at 2024-06-20T22:10:00.001
+Cloud Data clawing  executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Radar.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/leidapintu /usr/bin/chromedriver
+Radar Data clawing scheduled at 2024-06-20T22:30:00.001
+Radar Data clawing executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Rainfall.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/jiangshuiliangshikuang /usr/bin/chromedriver
+Rainfall Data clawing scheduled at 2024-06-20T22:50:00.001
+Rainfall Data clawing  executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/DeleteData.py
+Clawed data deleting scheduled at 2024-06-21T00:00:00.001
+Clawed data deleting executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Cloud.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/weixingyuntu /usr/bin/chromedriver
+Cloud Data clawing scheduled at 2024-06-21T00:10:00.001
+Cloud Data clawing  executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Rainfall_pre.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/jiangshuiliangyubao /usr/bin/chromedriver
+Rainfallpre Data clawing scheduled at 2024-06-21T00:20:00.002
+Rainfallpre Data clawing  executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Radar.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/leidapintu /usr/bin/chromedriver
+Radar Data clawing scheduled at 2024-06-21T00:30:00.002
+Radar Data clawing executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/UpdateData.py /usr/local/resource/StormData/DataProcess
+Data updating scheduled at 2024-06-21T00:31:09.520
+Data updating executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Rainfall.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/jiangshuiliangshikuang /usr/bin/chromedriver
+Rainfall Data clawing scheduled at 2024-06-21T00:50:00.001
+Rainfall Data clawing  executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/FieldProcess/FieldGenerating.py "/usr/local/resource/StormData/forecastData/20240621/adcirc_addwind.nc" /usr/local/resource/StormData/Field
+FieldGenerating scheduled at 2024-06-21T01:00:00.007
+FieldGenerating execution failed!
+java.lang.UNIXProcess$ProcessPipeInputStream@464f8342
+1
+Log message: Field data processed successfully at 2024-06-21T01:00:00.785
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Cloud.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/weixingyuntu /usr/bin/chromedriver
+Cloud Data clawing scheduled at 2024-06-21T02:10:00.001
+Cloud Data clawing  executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Typhoon.py
+Typhoon Data clawing scheduled at 2024-06-21T02:20:00.001
+Typhoon Data clawing execution failed!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Radar.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/leidapintu /usr/bin/chromedriver
+Radar Data clawing scheduled at 2024-06-21T02:30:00.002
+Radar Data clawing executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Rainfall.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/jiangshuiliangshikuang /usr/bin/chromedriver
+Rainfall Data clawing scheduled at 2024-06-21T02:50:00.001
+Rainfall Data clawing  executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Cloud.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/weixingyuntu /usr/bin/chromedriver
+Cloud Data clawing scheduled at 2024-06-21T04:10:00.002
+Cloud Data clawing execution failed!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Radar.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/leidapintu /usr/bin/chromedriver
+Radar Data clawing scheduled at 2024-06-21T04:30:00.002
+Radar Data clawing execution failed!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Rainfall.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/jiangshuiliangshikuang /usr/bin/chromedriver
+Rainfall Data clawing scheduled at 2024-06-21T04:50:00.002
+2024-06-24 08:20:20.932 ERROR 71997 --- [nio-9989-exec-7] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is java.lang.NullPointerException] with root cause
+
+java.lang.NullPointerException: null
+	at nnu.edu.station.service.impl.LevelServiceImpl.get48ybNotyNoman(LevelServiceImpl.java:252) ~[classes!/:0.0.1-SNAPSHOT]
+	at nnu.edu.station.controller.LevelController.get48A_noty_noman(LevelController.java:105) ~[classes!/:0.0.1-SNAPSHOT]
+	at sun.reflect.GeneratedMethodAccessor9.invoke(Unknown Source) ~[na:na]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:1.8.0_411]
+	at java.lang.reflect.Method.invoke(Method.java:498) ~[na:1.8.0_411]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:205) ~[spring-web-5.3.25.jar!/:5.3.25]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:150) ~[spring-web-5.3.25.jar!/:5.3.25]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:117) ~[spring-webmvc-5.3.25.jar!/:5.3.25]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:895) ~[spring-webmvc-5.3.25.jar!/:5.3.25]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:808) ~[spring-webmvc-5.3.25.jar!/:5.3.25]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87) ~[spring-webmvc-5.3.25.jar!/:5.3.25]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1071) ~[spring-webmvc-5.3.25.jar!/:5.3.25]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:964) ~[spring-webmvc-5.3.25.jar!/:5.3.25]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1006) ~[spring-webmvc-5.3.25.jar!/:5.3.25]
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:898) ~[spring-webmvc-5.3.25.jar!/:5.3.25]
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:670) ~[tomcat-embed-core-9.0.71.jar!/:na]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:883) ~[spring-webmvc-5.3.25.jar!/:5.3.25]
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:779) ~[tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:227) ~[tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162) ~[tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53) ~[tomcat-embed-websocket-9.0.71.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189) ~[tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162) ~[tomcat-embed-core-9.0.71.jar!/:na]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-5.3.25.jar!/:5.3.25]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.25.jar!/:5.3.25]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189) ~[tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162) ~[tomcat-embed-core-9.0.71.jar!/:na]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-5.3.25.jar!/:5.3.25]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.25.jar!/:5.3.25]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189) ~[tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162) ~[tomcat-embed-core-9.0.71.jar!/:na]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-5.3.25.jar!/:5.3.25]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.25.jar!/:5.3.25]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189) ~[tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162) ~[tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:177) ~[tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:97) [tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:541) [tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:135) [tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92) [tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:78) [tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:360) [tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:399) [tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65) [tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:891) [tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1784) [tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49) [tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191) [tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) [tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) [tomcat-embed-core-9.0.71.jar!/:na]
+	at java.lang.Thread.run(Thread.java:750) [na:1.8.0_411]
+
+2024-06-24 08:20:23.108 ERROR 71997 --- [io-9989-exec-10] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is java.lang.NullPointerException] with root cause
+
+java.lang.NullPointerException: null
+	at nnu.edu.station.service.impl.LevelServiceImpl.get48ybNotyNoman(LevelServiceImpl.java:252) ~[classes!/:0.0.1-SNAPSHOT]
+	at nnu.edu.station.controller.LevelController.get48A_noty_noman(LevelController.java:105) ~[classes!/:0.0.1-SNAPSHOT]
+	at sun.reflect.GeneratedMethodAccessor9.invoke(Unknown Source) ~[na:na]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:1.8.0_411]
+	at java.lang.reflect.Method.invoke(Method.java:498) ~[na:1.8.0_411]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:205) ~[spring-web-5.3.25.jar!/:5.3.25]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:150) ~[spring-web-5.3.25.jar!/:5.3.25]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:117) ~[spring-webmvc-5.3.25.jar!/:5.3.25]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:895) ~[spring-webmvc-5.3.25.jar!/:5.3.25]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:808) ~[spring-webmvc-5.3.25.jar!/:5.3.25]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87) ~[spring-webmvc-5.3.25.jar!/:5.3.25]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1071) ~[spring-webmvc-5.3.25.jar!/:5.3.25]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:964) ~[spring-webmvc-5.3.25.jar!/:5.3.25]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1006) ~[spring-webmvc-5.3.25.jar!/:5.3.25]
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:898) ~[spring-webmvc-5.3.25.jar!/:5.3.25]
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:670) ~[tomcat-embed-core-9.0.71.jar!/:na]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:883) ~[spring-webmvc-5.3.25.jar!/:5.3.25]
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:779) ~[tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:227) ~[tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162) ~[tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53) ~[tomcat-embed-websocket-9.0.71.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189) ~[tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162) ~[tomcat-embed-core-9.0.71.jar!/:na]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-5.3.25.jar!/:5.3.25]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.25.jar!/:5.3.25]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189) ~[tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162) ~[tomcat-embed-core-9.0.71.jar!/:na]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-5.3.25.jar!/:5.3.25]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.25.jar!/:5.3.25]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189) ~[tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162) ~[tomcat-embed-core-9.0.71.jar!/:na]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-5.3.25.jar!/:5.3.25]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.25.jar!/:5.3.25]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189) ~[tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162) ~[tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:177) ~[tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:97) [tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:541) [tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:135) [tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92) [tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:78) [tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:360) [tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:399) [tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65) [tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:891) [tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1784) [tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49) [tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191) [tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) [tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) [tomcat-embed-core-9.0.71.jar!/:na]
+	at java.lang.Thread.run(Thread.java:750) [na:1.8.0_411]
+
+2024-06-24 08:20:23.546 ERROR 71997 --- [nio-9989-exec-5] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is java.lang.NullPointerException] with root cause
+
+java.lang.NullPointerException: null
+	at nnu.edu.station.service.impl.LevelServiceImpl.get48ybNotyNoman(LevelServiceImpl.java:252) ~[classes!/:0.0.1-SNAPSHOT]
+	at nnu.edu.station.controller.LevelController.get48A_noty_noman(LevelController.java:105) ~[classes!/:0.0.1-SNAPSHOT]
+	at sun.reflect.GeneratedMethodAccessor9.invoke(Unknown Source) ~[na:na]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:1.8.0_411]
+	at java.lang.reflect.Method.invoke(Method.java:498) ~[na:1.8.0_411]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:205) ~[spring-web-5.3.25.jar!/:5.3.25]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:150) ~[spring-web-5.3.25.jar!/:5.3.25]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:117) ~[spring-webmvc-5.3.25.jar!/:5.3.25]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:895) ~[spring-webmvc-5.3.25.jar!/:5.3.25]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:808) ~[spring-webmvc-5.3.25.jar!/:5.3.25]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87) ~[spring-webmvc-5.3.25.jar!/:5.3.25]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1071) ~[spring-webmvc-5.3.25.jar!/:5.3.25]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:964) ~[spring-webmvc-5.3.25.jar!/:5.3.25]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1006) ~[spring-webmvc-5.3.25.jar!/:5.3.25]
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:898) ~[spring-webmvc-5.3.25.jar!/:5.3.25]
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:670) ~[tomcat-embed-core-9.0.71.jar!/:na]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:883) ~[spring-webmvc-5.3.25.jar!/:5.3.25]
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:779) ~[tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:227) ~[tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162) ~[tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53) ~[tomcat-embed-websocket-9.0.71.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189) ~[tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162) ~[tomcat-embed-core-9.0.71.jar!/:na]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-5.3.25.jar!/:5.3.25]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.25.jar!/:5.3.25]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189) ~[tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162) ~[tomcat-embed-core-9.0.71.jar!/:na]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-5.3.25.jar!/:5.3.25]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.25.jar!/:5.3.25]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189) ~[tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162) ~[tomcat-embed-core-9.0.71.jar!/:na]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-5.3.25.jar!/:5.3.25]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.25.jar!/:5.3.25]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189) ~[tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162) ~[tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:177) ~[tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:97) [tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:541) [tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:135) [tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92) [tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:78) [tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:360) [tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:399) [tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65) [tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:891) [tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1784) [tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49) [tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191) [tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) [tomcat-embed-core-9.0.71.jar!/:na]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) [tomcat-embed-core-9.0.71.jar!/:na]
+	at java.lang.Thread.run(Thread.java:750) [na:1.8.0_411]
+

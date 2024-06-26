@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="c804ed09-7260-41c7-be88-6933e22abfe0" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logfile.log" beforeDir="false" afterPath="$PROJECT_DIR$/logfile.log" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,20 +32,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/1study/Work/2023_12_22_Storm/StormPerdiction/data/DataProcess&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "D:/1study/Work/2023_12_22_Storm/StormPerdiction/data/DataProcess",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\1study\Work\2023_12_22_Storm\StormPerdiction\data\DataProcess\Clawing" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.UpdateManData">
+  <component name="RunManager" selected="Python.UpdateData">
     <configuration name="Cloud" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="DataProcess" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -159,8 +161,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.UpdateManData" />
         <item itemvalue="Python.UpdateData" />
+        <item itemvalue="Python.UpdateManData" />
         <item itemvalue="Python.Cloud" />
         <item itemvalue="Python.Rainfall_pre" />
         <item itemvalue="Python.DeleteTodayData" />
