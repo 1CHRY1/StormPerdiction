@@ -105,13 +105,13 @@ public class LevelController {
         return ResultUtils.success(levelService.get48ybNotyNoman(station));
     }
 
-    @GetMapping(value = "/manuel/all")
+    @GetMapping(value = "/manuel/all",produces = "application/json;charset=utf-8")
     public JsonResult getAllManuel() {
         // 获取当天所有手动计算数据
         return ResultUtils.success(levelService.getAllManul());
     }
 
-    @GetMapping(value = "/manuel/time")
+    @GetMapping(value = "/manuel/time",produces = "application/json;charset=utf-8")
     public JsonResult getManuelByTime(@RequestParam String time) {
         // 获取指定时间的手动计算数据
         return ResultUtils.success(levelService.getManuelByTime(time));
