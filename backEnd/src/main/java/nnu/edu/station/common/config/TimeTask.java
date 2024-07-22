@@ -156,7 +156,7 @@ public class TimeTask {
         ClawingUtil.DeleteClawingData(python, deleteClawingData, logPath);
     }
 
-    @Scheduled(cron = "0 0 1 * * ?")
+//    @Scheduled(cron = "0 0 1 * * ?")
 //    @Scheduled(cron = "0/1 * * * * ?")
     public void executePythonFieldProcessingData() throws IOException {
         // 计算当天流场数据

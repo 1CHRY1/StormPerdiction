@@ -87,3 +87,6 @@ ForecastDataPath:
   "${data}/forecastData"
 ManuelUpdating:
   ${dataprocess}/UpdateDataMan.py
+
+TyphoonUrl:
+  http://typhoon.zjwater.gov.cn/

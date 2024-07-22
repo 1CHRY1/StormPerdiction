@@ -27,6 +27,25 @@ class DataUtils():
         conn.commit()
         conn.close()
 
+    def DeleteRemoteData(self, name, time):
+        config = {
+            "user": "root",
+            "password": "Richway1@",
+            "host": "1.94.167.211",
+            "port": 3306,
+            "database": "forecast",
+            "raise_on_warnings": True
+        }
+        conn_mysql = mysql.connector.connect(**config)
+        # 插入无台风数据
+        cursor = conn_mysql.cursor()
+        # 删除数据
+        cursor.execute(f'''
+                        DELETE FROM {name} WHERE time = '{time}'
+                    ''')
+        conn_mysql.commit()
+        conn_mysql.close()
+
     # 插入有台风时的数据
     def insert_typhdata(self, db_path, name, time, hpre, hyubao, hadd, manual):
         # 插入有台风数据

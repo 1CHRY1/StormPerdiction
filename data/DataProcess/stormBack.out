@@ -7,171 +7,243 @@
  =========|_|==============|___/=/_/_/_/
  :: Spring Boot ::                (v2.7.8)
 
-2024-06-20 01:54:41.369  INFO 71997 --- [           main] nnu.edu.station.StationApplication       : Starting StationApplication v0.0.1-SNAPSHOT using Java 1.8.0_411 on d610db47a8b9 with PID 71997 (/usr/monitorApp/stormBack.jar started by root in /usr/monitorApp)
-2024-06-20 01:54:41.371  INFO 71997 --- [           main] nnu.edu.station.StationApplication       : The following 1 profile is active: "dockerServer"
-2024-06-20 01:54:42.121  INFO 71997 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 9989 (http)
-2024-06-20 01:54:42.128  INFO 71997 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2024-06-20 01:54:42.128  INFO 71997 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.71]
-2024-06-20 01:54:42.226  INFO 71997 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2024-06-20 01:54:42.226  INFO 71997 --- [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 821 ms
-2024-06-20 01:54:42.739  INFO 71997 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 9989 (http) with context path ''
-2024-06-20 01:54:42.747  INFO 71997 --- [           main] nnu.edu.station.StationApplication       : Started StationApplication in 1.654 seconds (JVM running for 2.078)
-2024-06-20 01:57:04.366  INFO 71997 --- [nio-9989-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2024-06-20 01:57:04.366  INFO 71997 --- [nio-9989-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
-2024-06-20 01:57:04.367  INFO 71997 --- [nio-9989-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
-2024-06-20 01:57:04.396  INFO 71997 --- [nio-9989-exec-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
-2024-06-20 01:57:04.410  INFO 71997 --- [nio-9989-exec-2] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Starting...
-2024-06-20 01:57:04.458  INFO 71997 --- [nio-9989-exec-2] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Start completed.
-2024-06-20 01:57:04.458  INFO 71997 --- [nio-9989-exec-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
-2024-06-20 01:58:55.521  INFO 71997 --- [nio-9989-exec-7] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Starting...
-2024-06-20 01:58:55.522  INFO 71997 --- [nio-9989-exec-7] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Start completed.
+2024-06-28 13:05:42.423  INFO 284873 --- [           main] nnu.edu.station.StationApplication       : Starting StationApplication v0.0.1-SNAPSHOT using Java 1.8.0_411 on d610db47a8b9 with PID 284873 (/usr/monitorApp/stormBack.jar started by root in /usr/monitorApp)
+2024-06-28 13:05:42.425  INFO 284873 --- [           main] nnu.edu.station.StationApplication       : The following 1 profile is active: "dockerServer"
+2024-06-28 13:05:43.235  INFO 284873 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 9989 (http)
+2024-06-28 13:05:43.243  INFO 284873 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-06-28 13:05:43.243  INFO 284873 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.71]
+2024-06-28 13:05:43.317  INFO 284873 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-06-28 13:05:43.317  INFO 284873 --- [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 836 ms
+2024-06-28 13:05:44.007  INFO 284873 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 9989 (http) with context path ''
+2024-06-28 13:05:44.017  INFO 284873 --- [           main] nnu.edu.station.StationApplication       : Started StationApplication in 1.931 seconds (JVM running for 2.306)
+2024-06-28 13:05:48.181  INFO 284873 --- [nio-9989-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-06-28 13:05:48.181  INFO 284873 --- [nio-9989-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2024-06-28 13:05:48.183  INFO 284873 --- [nio-9989-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2024-06-28 13:05:48.238  INFO 284873 --- [nio-9989-exec-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-06-28 13:05:48.308  INFO 284873 --- [nio-9989-exec-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
 /root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Cloud.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/weixingyuntu /usr/bin/chromedriver
-Cloud Data clawing scheduled at 2024-06-20T02:10:00.008
+Cloud Data clawing scheduled at 2024-06-28T14:10:00.008
 Cloud Data clawing  executed successfully!
-/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Typhoon.py
-Typhoon Data clawing scheduled at 2024-06-20T02:20:00.001
-Typhoon Data clawing execution failed!
 /root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Radar.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/leidapintu /usr/bin/chromedriver
-Radar Data clawing scheduled at 2024-06-20T02:30:00.002
+Radar Data clawing scheduled at 2024-06-28T14:30:00.001
 Radar Data clawing executed successfully!
 /root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Rainfall.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/jiangshuiliangshikuang /usr/bin/chromedriver
-Rainfall Data clawing scheduled at 2024-06-20T02:50:00.002
+Rainfall Data clawing scheduled at 2024-06-28T14:50:00.001
+Rainfall Data clawing  executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/UpdateManData.py /usr/local/resource/StormData/DataProcess
+Manuel Data updating scheduled at 2024-06-28T15:00:01.001
+Manuel Data updating execution failed!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Cloud.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/weixingyuntu /usr/bin/chromedriver
+Cloud Data clawing scheduled at 2024-06-28T16:10:00.002
+Cloud Data clawing  executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Radar.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/leidapintu /usr/bin/chromedriver
+Radar Data clawing scheduled at 2024-06-28T16:30:00.001
+Radar Data clawing executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Rainfall.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/jiangshuiliangshikuang /usr/bin/chromedriver
+Rainfall Data clawing scheduled at 2024-06-28T16:50:00.003
+Rainfall Data clawing  executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/UpdateManData.py /usr/local/resource/StormData/DataProcess
+Manuel Data updating scheduled at 2024-06-28T18:00:01.002
+Manuel Data updating execution failed!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Cloud.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/weixingyuntu /usr/bin/chromedriver
+Cloud Data clawing scheduled at 2024-06-28T18:10:00.003
+Cloud Data clawing  executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Radar.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/leidapintu /usr/bin/chromedriver
+Radar Data clawing scheduled at 2024-06-28T18:30:00.001
+Radar Data clawing executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Rainfall.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/jiangshuiliangshikuang /usr/bin/chromedriver
+Rainfall Data clawing scheduled at 2024-06-28T18:50:00.001
 Rainfall Data clawing  executed successfully!
 /root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Cloud.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/weixingyuntu /usr/bin/chromedriver
-Cloud Data clawing scheduled at 2024-06-20T04:10:00.002
+Cloud Data clawing scheduled at 2024-06-28T20:10:00.002
 Cloud Data clawing  executed successfully!
 /root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Radar.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/leidapintu /usr/bin/chromedriver
-Radar Data clawing scheduled at 2024-06-20T04:30:00.001
+Radar Data clawing scheduled at 2024-06-28T20:30:00.001
 Radar Data clawing executed successfully!
 /root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Rainfall.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/jiangshuiliangshikuang /usr/bin/chromedriver
-Rainfall Data clawing scheduled at 2024-06-20T04:50:00.002
-Rainfall Data clawing execution failed!
-/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Cloud.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/weixingyuntu /usr/bin/chromedriver
-Cloud Data clawing scheduled at 2024-06-20T06:10:00.001
-Cloud Data clawing  executed successfully!
-/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Radar.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/leidapintu /usr/bin/chromedriver
-Radar Data clawing scheduled at 2024-06-20T06:30:00.001
-Radar Data clawing executed successfully!
-/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Rainfall.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/jiangshuiliangshikuang /usr/bin/chromedriver
-Rainfall Data clawing scheduled at 2024-06-20T06:50:00.001
+Rainfall Data clawing scheduled at 2024-06-28T20:50:00.002
 Rainfall Data clawing  executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/UpdateManData.py /usr/local/resource/StormData/DataProcess
+Manuel Data updating scheduled at 2024-06-28T21:00:01.001
+Manuel Data updating execution failed!
 /root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Cloud.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/weixingyuntu /usr/bin/chromedriver
-Cloud Data clawing scheduled at 2024-06-20T08:10:00.001
+Cloud Data clawing scheduled at 2024-06-28T22:10:00.002
 Cloud Data clawing  executed successfully!
 /root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Radar.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/leidapintu /usr/bin/chromedriver
-Radar Data clawing scheduled at 2024-06-20T08:30:00.001
+Radar Data clawing scheduled at 2024-06-28T22:30:00.002
 Radar Data clawing executed successfully!
 /root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Rainfall.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/jiangshuiliangshikuang /usr/bin/chromedriver
-Rainfall Data clawing scheduled at 2024-06-20T08:50:00.002
-Rainfall Data clawing  executed successfully!
-/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Cloud.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/weixingyuntu /usr/bin/chromedriver
-Cloud Data clawing scheduled at 2024-06-20T10:10:00.001
-Cloud Data clawing  executed successfully!
-/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Radar.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/leidapintu /usr/bin/chromedriver
-Radar Data clawing scheduled at 2024-06-20T10:30:00.001
-Radar Data clawing executed successfully!
-/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Rainfall.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/jiangshuiliangshikuang /usr/bin/chromedriver
-Rainfall Data clawing scheduled at 2024-06-20T10:50:00.001
-Rainfall Data clawing  executed successfully!
-/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Cloud.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/weixingyuntu /usr/bin/chromedriver
-Cloud Data clawing scheduled at 2024-06-20T12:10:00.001
-Cloud Data clawing  executed successfully!
-/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Radar.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/leidapintu /usr/bin/chromedriver
-Radar Data clawing scheduled at 2024-06-20T12:30:00.001
-Radar Data clawing execution failed!
-/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Rainfall.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/jiangshuiliangshikuang /usr/bin/chromedriver
-Rainfall Data clawing scheduled at 2024-06-20T12:50:00.001
-Rainfall Data clawing  executed successfully!
-/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Cloud.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/weixingyuntu /usr/bin/chromedriver
-Cloud Data clawing scheduled at 2024-06-20T14:10:00.002
-Cloud Data clawing  executed successfully!
-/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Radar.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/leidapintu /usr/bin/chromedriver
-Radar Data clawing scheduled at 2024-06-20T14:30:00.001
-Radar Data clawing execution failed!
-/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Rainfall.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/jiangshuiliangshikuang /usr/bin/chromedriver
-Rainfall Data clawing scheduled at 2024-06-20T14:55:04.143
-Rainfall Data clawing execution failed!
-/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Cloud.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/weixingyuntu /usr/bin/chromedriver
-Cloud Data clawing scheduled at 2024-06-20T16:10:00.002
-Cloud Data clawing  executed successfully!
-/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Radar.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/leidapintu /usr/bin/chromedriver
-Radar Data clawing scheduled at 2024-06-20T16:30:00.002
-Radar Data clawing executed successfully!
-/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Rainfall.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/jiangshuiliangshikuang /usr/bin/chromedriver
-Rainfall Data clawing scheduled at 2024-06-20T16:50:00.001
-Rainfall Data clawing  executed successfully!
-/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Cloud.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/weixingyuntu /usr/bin/chromedriver
-Cloud Data clawing scheduled at 2024-06-20T18:10:00.002
-Cloud Data clawing  executed successfully!
-/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Radar.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/leidapintu /usr/bin/chromedriver
-Radar Data clawing scheduled at 2024-06-20T18:30:00.002
-Radar Data clawing executed successfully!
-/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Rainfall.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/jiangshuiliangshikuang /usr/bin/chromedriver
-Rainfall Data clawing scheduled at 2024-06-20T18:50:00.001
-Rainfall Data clawing  executed successfully!
-/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Cloud.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/weixingyuntu /usr/bin/chromedriver
-Cloud Data clawing scheduled at 2024-06-20T20:10:00.002
-Cloud Data clawing  executed successfully!
-/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Radar.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/leidapintu /usr/bin/chromedriver
-Radar Data clawing scheduled at 2024-06-20T20:30:00.003
-Radar Data clawing executed successfully!
-/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Rainfall.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/jiangshuiliangshikuang /usr/bin/chromedriver
-Rainfall Data clawing scheduled at 2024-06-20T20:50:00.002
-Rainfall Data clawing execution failed!
-/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Cloud.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/weixingyuntu /usr/bin/chromedriver
-Cloud Data clawing scheduled at 2024-06-20T22:10:00.001
-Cloud Data clawing  executed successfully!
-/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Radar.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/leidapintu /usr/bin/chromedriver
-Radar Data clawing scheduled at 2024-06-20T22:30:00.001
-Radar Data clawing executed successfully!
-/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Rainfall.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/jiangshuiliangshikuang /usr/bin/chromedriver
-Rainfall Data clawing scheduled at 2024-06-20T22:50:00.001
+Rainfall Data clawing scheduled at 2024-06-28T22:50:00.001
 Rainfall Data clawing  executed successfully!
 /root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/DeleteData.py
-Clawed data deleting scheduled at 2024-06-21T00:00:00.001
+Clawed data deleting scheduled at 2024-06-29T00:00:00.001
 Clawed data deleting executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/UpdateManData.py /usr/local/resource/StormData/DataProcess
+Manuel Data updating scheduled at 2024-06-29T00:00:01.001
+Manuel Data updating execution failed!
 /root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Cloud.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/weixingyuntu /usr/bin/chromedriver
-Cloud Data clawing scheduled at 2024-06-21T00:10:00.001
+Cloud Data clawing scheduled at 2024-06-29T00:10:00.001
 Cloud Data clawing  executed successfully!
 /root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Rainfall_pre.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/jiangshuiliangyubao /usr/bin/chromedriver
-Rainfallpre Data clawing scheduled at 2024-06-21T00:20:00.002
+Rainfallpre Data clawing scheduled at 2024-06-29T00:20:00.001
 Rainfallpre Data clawing  executed successfully!
-/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Radar.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/leidapintu /usr/bin/chromedriver
-Radar Data clawing scheduled at 2024-06-21T00:30:00.002
-Radar Data clawing executed successfully!
 /root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/UpdateData.py /usr/local/resource/StormData/DataProcess
-Data updating scheduled at 2024-06-21T00:31:09.520
+Data updating scheduled at 2024-06-29T00:30:00.002
 Data updating executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Radar.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/leidapintu /usr/bin/chromedriver
+Radar Data clawing scheduled at 2024-06-29T00:30:03.477
+Radar Data clawing executed successfully!
 /root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Rainfall.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/jiangshuiliangshikuang /usr/bin/chromedriver
-Rainfall Data clawing scheduled at 2024-06-21T00:50:00.001
+Rainfall Data clawing scheduled at 2024-06-29T00:50:00.002
 Rainfall Data clawing  executed successfully!
-/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/FieldProcess/FieldGenerating.py "/usr/local/resource/StormData/forecastData/20240621/adcirc_addwind.nc" /usr/local/resource/StormData/Field
-FieldGenerating scheduled at 2024-06-21T01:00:00.007
-FieldGenerating execution failed!
-java.lang.UNIXProcess$ProcessPipeInputStream@464f8342
-1
-Log message: Field data processed successfully at 2024-06-21T01:00:00.785
+2024-06-29 01:59:09.190  INFO 284873 --- [nio-9989-exec-9] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Starting...
+2024-06-29 01:59:09.192  INFO 284873 --- [nio-9989-exec-9] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Start completed.
+2024-06-29 01:59:09.252  INFO 284873 --- [nio-9989-exec-6] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Starting...
+2024-06-29 01:59:09.255  INFO 284873 --- [nio-9989-exec-6] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Start completed.
 /root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Cloud.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/weixingyuntu /usr/bin/chromedriver
-Cloud Data clawing scheduled at 2024-06-21T02:10:00.001
+Cloud Data clawing scheduled at 2024-06-29T02:10:00.001
 Cloud Data clawing  executed successfully!
 /root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Typhoon.py
-Typhoon Data clawing scheduled at 2024-06-21T02:20:00.001
+Typhoon Data clawing scheduled at 2024-06-29T02:20:00.002
 Typhoon Data clawing execution failed!
 /root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Radar.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/leidapintu /usr/bin/chromedriver
-Radar Data clawing scheduled at 2024-06-21T02:30:00.002
+Radar Data clawing scheduled at 2024-06-29T02:30:00.001
 Radar Data clawing executed successfully!
 /root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Rainfall.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/jiangshuiliangshikuang /usr/bin/chromedriver
-Rainfall Data clawing scheduled at 2024-06-21T02:50:00.001
+Rainfall Data clawing scheduled at 2024-06-29T02:50:00.002
 Rainfall Data clawing  executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/UpdateManData.py /usr/local/resource/StormData/DataProcess
+Manuel Data updating scheduled at 2024-06-29T03:00:01.001
+Manuel Data updating execution failed!
 /root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Cloud.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/weixingyuntu /usr/bin/chromedriver
-Cloud Data clawing scheduled at 2024-06-21T04:10:00.002
-Cloud Data clawing execution failed!
+Cloud Data clawing scheduled at 2024-06-29T04:10:00.002
+Cloud Data clawing  executed successfully!
 /root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Radar.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/leidapintu /usr/bin/chromedriver
-Radar Data clawing scheduled at 2024-06-21T04:30:00.002
+Radar Data clawing scheduled at 2024-06-29T04:30:00.002
 Radar Data clawing execution failed!
 /root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Rainfall.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/jiangshuiliangshikuang /usr/bin/chromedriver
-Rainfall Data clawing scheduled at 2024-06-21T04:50:00.002
-2024-06-24 08:20:20.932 ERROR 71997 --- [nio-9989-exec-7] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is java.lang.NullPointerException] with root cause
+Rainfall Data clawing scheduled at 2024-06-29T04:50:00.003
+Rainfall Data clawing  executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/UpdateManData.py /usr/local/resource/StormData/DataProcess
+Manuel Data updating scheduled at 2024-06-29T06:00:01.001
+Manuel Data updating execution failed!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Cloud.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/weixingyuntu /usr/bin/chromedriver
+Cloud Data clawing scheduled at 2024-06-29T06:10:00.002
+Cloud Data clawing  executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Radar.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/leidapintu /usr/bin/chromedriver
+Radar Data clawing scheduled at 2024-06-29T06:30:00.001
+Radar Data clawing executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Rainfall.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/jiangshuiliangshikuang /usr/bin/chromedriver
+Rainfall Data clawing scheduled at 2024-06-29T06:50:00.001
+Rainfall Data clawing  executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Cloud.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/weixingyuntu /usr/bin/chromedriver
+Cloud Data clawing scheduled at 2024-06-29T08:10:00.002
+Cloud Data clawing  executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Radar.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/leidapintu /usr/bin/chromedriver
+Radar Data clawing scheduled at 2024-06-29T08:30:00.002
+Radar Data clawing executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Rainfall.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/jiangshuiliangshikuang /usr/bin/chromedriver
+Rainfall Data clawing scheduled at 2024-06-29T08:50:00.002
+Rainfall Data clawing  executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/UpdateManData.py /usr/local/resource/StormData/DataProcess
+Manuel Data updating scheduled at 2024-06-29T09:00:01.001
+Manuel Data updating execution failed!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Cloud.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/weixingyuntu /usr/bin/chromedriver
+Cloud Data clawing scheduled at 2024-06-29T10:10:00.001
+Cloud Data clawing  executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Radar.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/leidapintu /usr/bin/chromedriver
+Radar Data clawing scheduled at 2024-06-29T10:30:00.002
+Radar Data clawing executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Rainfall.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/jiangshuiliangshikuang /usr/bin/chromedriver
+Rainfall Data clawing scheduled at 2024-06-29T10:50:00.002
+Rainfall Data clawing  executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/UpdateManData.py /usr/local/resource/StormData/DataProcess
+Manuel Data updating scheduled at 2024-06-29T12:00:01.001
+Manuel Data updating execution failed!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Cloud.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/weixingyuntu /usr/bin/chromedriver
+Cloud Data clawing scheduled at 2024-06-29T12:10:00.001
+Cloud Data clawing execution failed!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Radar.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/leidapintu /usr/bin/chromedriver
+Radar Data clawing scheduled at 2024-06-29T12:30:00.002
+Radar Data clawing executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Rainfall.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/jiangshuiliangshikuang /usr/bin/chromedriver
+Rainfall Data clawing scheduled at 2024-06-29T12:50:00.001
+Rainfall Data clawing  executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Cloud.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/weixingyuntu /usr/bin/chromedriver
+Cloud Data clawing scheduled at 2024-06-29T14:10:00.002
+Cloud Data clawing  executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Radar.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/leidapintu /usr/bin/chromedriver
+Radar Data clawing scheduled at 2024-06-29T14:30:00.002
+Radar Data clawing executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Rainfall.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/jiangshuiliangshikuang /usr/bin/chromedriver
+Rainfall Data clawing scheduled at 2024-06-29T14:50:00.001
+Rainfall Data clawing  executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/UpdateManData.py /usr/local/resource/StormData/DataProcess
+Manuel Data updating scheduled at 2024-06-29T15:00:01.002
+Manuel Data updating execution failed!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Cloud.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/weixingyuntu /usr/bin/chromedriver
+Cloud Data clawing scheduled at 2024-06-29T16:10:00.001
+Cloud Data clawing  executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Radar.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/leidapintu /usr/bin/chromedriver
+Radar Data clawing scheduled at 2024-06-29T16:30:00.001
+Radar Data clawing executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Rainfall.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/jiangshuiliangshikuang /usr/bin/chromedriver
+Rainfall Data clawing scheduled at 2024-06-29T16:50:00.002
+Rainfall Data clawing  executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/UpdateManData.py /usr/local/resource/StormData/DataProcess
+Manuel Data updating scheduled at 2024-06-29T18:00:01.002
+Manuel Data updating execution failed!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Cloud.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/weixingyuntu /usr/bin/chromedriver
+Cloud Data clawing scheduled at 2024-06-29T18:10:00.001
+Cloud Data clawing  executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Radar.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/leidapintu /usr/bin/chromedriver
+Radar Data clawing scheduled at 2024-06-29T18:30:00.001
+Radar Data clawing executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Rainfall.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/jiangshuiliangshikuang /usr/bin/chromedriver
+Rainfall Data clawing scheduled at 2024-06-29T18:50:00.001
+Rainfall Data clawing  executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Cloud.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/weixingyuntu /usr/bin/chromedriver
+Cloud Data clawing scheduled at 2024-06-29T20:10:00.003
+Cloud Data clawing  executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Radar.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/leidapintu /usr/bin/chromedriver
+Radar Data clawing scheduled at 2024-06-29T20:30:00.002
+Radar Data clawing executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Rainfall.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/jiangshuiliangshikuang /usr/bin/chromedriver
+Rainfall Data clawing scheduled at 2024-06-29T20:50:00.002
+Rainfall Data clawing  executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/UpdateManData.py /usr/local/resource/StormData/DataProcess
+Manuel Data updating scheduled at 2024-06-29T21:00:01.001
+Manuel Data updating execution failed!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Cloud.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/weixingyuntu /usr/bin/chromedriver
+Cloud Data clawing scheduled at 2024-06-29T22:10:00.002
+Cloud Data clawing  executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Radar.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/leidapintu /usr/bin/chromedriver
+Radar Data clawing scheduled at 2024-06-29T22:30:00.002
+Radar Data clawing executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Rainfall.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/jiangshuiliangshikuang /usr/bin/chromedriver
+Rainfall Data clawing scheduled at 2024-06-29T22:50:00.002
+Rainfall Data clawing  executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/DeleteData.py
+Clawed data deleting scheduled at 2024-06-30T00:00:00.002
+Clawed data deleting executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/UpdateManData.py /usr/local/resource/StormData/DataProcess
+Manuel Data updating scheduled at 2024-06-30T00:00:01.001
+Manuel Data updating execution failed!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Cloud.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/weixingyuntu /usr/bin/chromedriver
+Cloud Data clawing scheduled at 2024-06-30T00:10:00.002
+Cloud Data clawing  executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Rainfall_pre.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/jiangshuiliangyubao /usr/bin/chromedriver
+Rainfallpre Data clawing scheduled at 2024-06-30T00:20:00.001
+Rainfallpre Data clawing  executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/UpdateData.py /usr/local/resource/StormData/DataProcess
+Data updating scheduled at 2024-06-30T00:30:00.001
+Data updating executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Radar.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/leidapintu /usr/bin/chromedriver
+Radar Data clawing scheduled at 2024-06-30T00:30:03.413
+Radar Data clawing executed successfully!
+/root/miniconda3/envs/Env1/bin/python /usr/local/resource/StormData/DataProcess/Clawing/Rainfall.py /usr/local/resource/StormData/DataProcess/Clawing/Meteorology.db /usr/local/resource/StormData/qixiangchanpin/jiangshuiliangshikuang /usr/bin/chromedriver
+Rainfall Data clawing scheduled at 2024-06-30T00:50:00.001
+2024-07-03 01:24:09.708 ERROR 284873 --- [io-9989-exec-10] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is java.lang.NullPointerException] with root cause
 
 java.lang.NullPointerException: null
 	at nnu.edu.station.service.impl.LevelServiceImpl.get48ybNotyNoman(LevelServiceImpl.java:252) ~[classes!/:0.0.1-SNAPSHOT]
@@ -226,7 +298,7 @@ java.lang.NullPointerException: null
 	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) [tomcat-embed-core-9.0.71.jar!/:na]
 	at java.lang.Thread.run(Thread.java:750) [na:1.8.0_411]
 
-2024-06-24 08:20:23.108 ERROR 71997 --- [io-9989-exec-10] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is java.lang.NullPointerException] with root cause
+2024-07-05 01:09:20.103 ERROR 284873 --- [nio-9989-exec-6] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is java.lang.NullPointerException] with root cause
 
 java.lang.NullPointerException: null
 	at nnu.edu.station.service.impl.LevelServiceImpl.get48ybNotyNoman(LevelServiceImpl.java:252) ~[classes!/:0.0.1-SNAPSHOT]
@@ -281,7 +353,7 @@ java.lang.NullPointerException: null
 	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) [tomcat-embed-core-9.0.71.jar!/:na]
 	at java.lang.Thread.run(Thread.java:750) [na:1.8.0_411]
 
-2024-06-24 08:20:23.546 ERROR 71997 --- [nio-9989-exec-5] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is java.lang.NullPointerException] with root cause
+2024-07-08 01:15:07.580 ERROR 284873 --- [nio-9989-exec-5] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is java.lang.NullPointerException] with root cause
 
 java.lang.NullPointerException: null
 	at nnu.edu.station.service.impl.LevelServiceImpl.get48ybNotyNoman(LevelServiceImpl.java:252) ~[classes!/:0.0.1-SNAPSHOT]

@@ -29,7 +29,7 @@ const stationTable = computed(() => {
   if (!waterSituationData.value) {
     return []
   } else {
-    const result: {
+    const result: { 
       hpre: number
       hyubao: number | null
       hadd: number | null

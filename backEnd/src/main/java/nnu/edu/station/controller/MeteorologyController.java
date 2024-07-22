@@ -65,6 +65,7 @@ public class MeteorologyController {
         return ResultUtils.success(meteorologyService.getRainfallpre());
     }
 
+    // 不用了
     @GetMapping("/typhoon")
     public JsonResult getTyphoon() {
         /* 获取实时台风数据 */
@@ -98,5 +99,15 @@ public class MeteorologyController {
         } catch (Exception e){
             return ResponseEntity.status(500).build();
         }
+    }
+
+    @GetMapping("/typhoon/year")
+    public JsonResult getTyphoonByYear(@RequestParam String year) {
+        return ResultUtils.success(meteorologyService.getTyphoonByYear(year));
+    }
+
+    @GetMapping("/typhoon/tid")
+    public JsonResult getTyphoonByTid(@RequestParam String tid) {
+        return ResultUtils.success(meteorologyService.getTyphoonByTid(tid));
     }
 }

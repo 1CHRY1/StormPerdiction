@@ -2,6 +2,7 @@ package nnu.edu.station.common.utils;
 
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.HttpEntity;
 import org.apache.http.ParseException;
 import org.apache.http.client.ClientProtocolException;
@@ -107,6 +108,34 @@ public class HttpUtil {
         } catch (Exception e) {
             System.out.println(e);
             return new JSONObject();
+        }
+    }
+
+    public static String GetRealData4Typhoon(String url) {
+        try {
+            String encodedURL = encodeChineseURL(url);
+            URL Url = new URL(encodedURL);
+            HttpURLConnection connection = (HttpURLConnection) Url.openConnection();
+            connection.setRequestMethod("GET");
+            int responseCode = connection.getResponseCode();
+            StringBuilder response = new StringBuilder();
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    response.append(line);
+                }
+                reader.close();
+            } else {
+                System.out.println("GET request failed with response code " + responseCode);
+                return "请求错误";
+            }
+            connection.disconnect();
+            String jsonStr = response.toString();
+            return jsonStr;
+        } catch (Exception e) {
+            System.out.println(e);
+            return "请求错误";
         }
     }
 }

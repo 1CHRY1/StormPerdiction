@@ -69,3 +69,6 @@ WindField:
   "${data}/Field/Wind"
 AddField:
   "${data}/Field/Add"
+
+TyphoonUrl:
+  http://typhoon.zjwater.gov.cn/

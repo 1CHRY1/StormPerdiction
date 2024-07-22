@@ -3,8 +3,8 @@ import sys
 import json
 from datetime import datetime
 
-"D:/1study/Work/2023_12_22_Storm/StormPerdiction/data/DataProcess"
-"/run/media/ps/c4cc18ff-fa71-43fb-8a59-06bc37d5c482/ForecastPlatform/DataProcess"
+# "D:/1study/Work/2023_12_22_Storm/StormPerdiction/data/DataProcess"
+# "/run/media/ps/c4cc18ff-fa71-43fb-8a59-06bc37d5c482/ForecastPlatform/DataProcess"
 def main():
     dataUtils = DataUtils()
     args = sys.argv
@@ -21,6 +21,7 @@ def main():
     time = now.strftime("%Y-%m-%d 00:00:00")
     for station in stations:
         dataUtils.DeleteTodayData(db_path_Forcasting, station, time)
+        dataUtils.DeleteRemoteData(station, time)
     dataUtils.DeleteTodayData(db_path_Forcasting, 'typh', time)
     dataUtils.DeleteTodayData(db_path_NC,'NC',time)
 

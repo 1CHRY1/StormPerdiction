@@ -1,13 +1,17 @@
 package nnu.edu.station.service.impl;
 
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 import nnu.edu.station.common.utils.FileUtil;
+import nnu.edu.station.common.utils.HttpUtil;
 import nnu.edu.station.dao.meteorology.MeteorologyMapper;
 import nnu.edu.station.service.MeteorologyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.management.ObjectName;
 import java.util.List;
 
 /**
@@ -25,6 +29,9 @@ public class MeteorologyServiceImpl implements MeteorologyService {
 
     @Value("${Typhoon}")
     String typhoon;
+
+    @Value("${TyphoonUrl}")
+    String typhoonUrl;
 
     @Autowired
     MeteorologyMapper meteorologyMapper;
@@ -68,5 +75,19 @@ public class MeteorologyServiceImpl implements MeteorologyService {
     @Override
     public Object getInfoByTimeAndType(String time, String type1, String type2, String type3){
         return meteorologyMapper.getInfoByTimeAndType(time, type1, type2, type3);
+    }
+
+    @Override
+    public Object getTyphoonByYear(String year) {
+        String Url = typhoonUrl + "Api/TyphoonList/" + year;
+        String response = HttpUtil.GetRealData4Typhoon(Url);
+        return response;
+    }
+
+    @Override
+    public Object getTyphoonByTid(String tid) {
+        String Url = typhoonUrl + "Api/TyphoonInfo/" + tid;
+        JSONObject response = HttpUtil.GetRealData(Url);
+        return response;
     }
 }
