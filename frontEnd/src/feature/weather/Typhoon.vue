@@ -155,8 +155,7 @@ onMounted(async () => {
             <div>
               <span class="inline-block pr-2">当前强度:</span>
               <span class="inline-block pr-3">{{
-                selectPointData &&
-                `${selectPointData?.power}级 (${selectPointData?.strong})`
+                selectPointData && `${selectPointData?.power}级`
               }}</span>
             </div>
           </div>

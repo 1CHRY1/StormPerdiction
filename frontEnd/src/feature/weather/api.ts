@@ -194,7 +194,7 @@ export const getStormDataMap = async (
     if (response?.name) {
       const points = response.points.map((value, index) => ({
         id: index.toString(),
-        name: response.name,
+        name: response.enname,
         time: value.time,
         lng: Number(value.lng),
         lat: Number(value.lat),
