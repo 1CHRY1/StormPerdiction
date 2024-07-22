@@ -1,5 +1,10 @@
 import mapbox from 'mapbox-gl'
-import { IStormDataOfPoint, IStormTableRow } from './type'
+import {
+  IStormDataOfPoint,
+  IStormHistoryTableRow,
+  IStormTableRow,
+  StormDataList,
+} from './type'
 
 export const formatDate = (inputDate: string): string => {
   const date = new Date(inputDate)
@@ -12,9 +17,24 @@ export const formatDate = (inputDate: string): string => {
 }
 
 export const generateStormTableData = (
-  data: IStormDataOfPoint[],
+  data: StormDataList,
 ): IStormTableRow[] => {
-  const result: IStormTableRow[] = data.map((value) => ({
+  const result: IStormTableRow[] = data
+    .filter((value) => value.isactive === '1')
+    .map((value) => ({
+      id: value.tfid,
+      name: value.name,
+      enname: value.enname,
+      startTime: value.starttime,
+    }))
+
+  return result
+}
+
+export const generateStormHistoryTableData = (
+  data: IStormDataOfPoint[],
+): IStormHistoryTableRow[] => {
+  const result: IStormHistoryTableRow[] = data.map((value) => ({
     id: value.id,
     name: value.name,
     time: formatDate(value.time),

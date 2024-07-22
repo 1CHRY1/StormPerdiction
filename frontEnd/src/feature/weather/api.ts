@@ -4,6 +4,7 @@ import {
   IStormDataMap,
   IStormDataResponse,
   ImageType,
+  StormDataList,
 } from './type'
 
 const nameMap: Record<string, string> = {
@@ -164,40 +165,48 @@ export const getSatelliteImage = async (
   return imageUrl
 }
 
-export const getStormDataMap = async (): Promise<IStormDataMap> => {
-  const result: IStormDataMap = {}
-
-  const month = new Date(Date.now() + 8 * 3600 * 1000)
-    .getMonth()
-    .toString()
-    .padStart(2, '0')
-
+export const getStormDataList = async () => {
   const year = new Date(Date.now() + 8 * 3600 * 1000).getFullYear().toString()
-  const url = `http://typhoon.zjwater.gov.cn/Api/TyphoonInfo/${year}${month}`
+  const url = `/api/v1/data/meteorology/typhoon/year?year=${year}`
   const response = (await fetch(url)
     .then((res) => res.json())
-    .then((json) => json)
+    .then((json) => {
+      return JSON.parse(json.data)
+    })
     .catch(() => {
       return null
-    })) as IStormDataResponse | null
+    })) as StormDataList
+  return response || []
+}
 
-  if (response?.name) {
-    const points = response.points.map((value, index) => ({
-      id: index.toString(),
-      name: response.name,
-      time: value.time,
-      lng: Number(value.lng),
-      lat: Number(value.lat),
-      strong: value.strong,
-      power: value.power,
-      speed: value.speed,
-      pressure: value.pressure,
-      moveSpeed: value.movespeed,
-      moveDirection: value.movedirection,
-    }))
-    result[response.name] = points
-
-    return result
+export const getStormDataMap = async (
+  tfIDList: string[],
+): Promise<IStormDataMap> => {
+  const result: IStormDataMap = {}
+  for (const id of tfIDList) {
+    const url = `/api/v1/data/meteorology/typhoon/tid?tid=${id}`
+    const response = (await fetch(url)
+      .then((res) => res.json())
+      .then((json) => json.data)
+      .catch(() => {
+        return null
+      })) as IStormDataResponse | null
+    if (response?.name) {
+      const points = response.points.map((value, index) => ({
+        id: index.toString(),
+        name: response.name,
+        time: value.time,
+        lng: Number(value.lng),
+        lat: Number(value.lat),
+        strong: value.strong,
+        power: value.power,
+        speed: value.speed,
+        pressure: value.pressure,
+        moveSpeed: value.movespeed,
+        moveDirection: value.movedirection,
+      }))
+      result[response.name] = points
+    }
   }
-  return {}
+  return result
 }

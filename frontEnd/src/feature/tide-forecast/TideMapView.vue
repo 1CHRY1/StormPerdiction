@@ -296,7 +296,7 @@ const typh: Ref<number> = ref(0)
 //   return typh==1?"当前有台风":"当前无台风"
 // })
 const text = computed(() => {
-  return typh.value == 1 ? '当前有台风 !' : '当前无台风 !'
+  return typh.value === 1 ? ' !' : '当前有台风 !'
 })
 
 onMounted(async () => {
@@ -304,7 +304,7 @@ onMounted(async () => {
   // typh.value = (await axios.get(`/api/v1/data/level/typh`)).data.data
   typh.value = 0;
 
-  const map: mapbox.Map = await initScrMap(mapContainerRef.value!,[120.55, 32.08],6.5)
+  const map: mapbox.Map = await initScrMap(mapContainerRef.value!, [120.55, 32.08], 6.5)
   ElMessage({
     message: '地图加载完毕',
     type: 'success',
@@ -397,7 +397,7 @@ const removeFieldResource = () => {
   flow = null
   wind = null
   console.log('destroy');
-  
+
 }
 onUnmounted(() => {
   removeFieldResource()
@@ -487,7 +487,7 @@ const getSpeedValue_wind = (e) => {
   </div>
 
   <flowLegend v-show="selectedLayer == 1 || selectedLayer == 0 || selectedLayer == 2"
-    :max-speed="selectedLayer == 1 ? flowMaxSpeedRef : selectedLayer == 0 ? windMaxSpeedRef : 10.0 "
+    :max-speed="selectedLayer == 1 ? flowMaxSpeedRef : selectedLayer == 0 ? windMaxSpeedRef : 10.0"
     :add-range="addRangeRef" :desc="selectedLayer == 1 ? '流速(m/s)' : selectedLayer == 0 ? '风速(m/s)' : '风暴增水(m)'">
   </flowLegend>
   <div class="absolute w-[500px] h-[400px] bg-white bg-opacity-70 p-2 rounded border border-black" :style="{
