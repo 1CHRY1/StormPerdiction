@@ -23,7 +23,7 @@ export const generateStormTableData = (
     .filter((value) => value.isactive === '1')
     .map((value) => ({
       id: value.tfid,
-      name: value.name,
+      name: value.enname,
       enname: value.enname,
       startTime: value.starttime,
     }))
@@ -38,7 +38,7 @@ export const generateStormHistoryTableData = (
     id: value.id,
     name: value.name,
     time: formatDate(value.time),
-    powerAndStrong: `${value.power} (${value.strong})`,
+    powerAndStrong: `${value.power}`,
     speed: value.speed,
   }))
 
