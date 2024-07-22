@@ -4,13 +4,14 @@ import 'mapbox-gl/dist/mapbox-gl.css'
 import { Ref, computed, onMounted, ref, watch } from 'vue'
 import { useMapStore } from '../../store/mapStore'
 import { initMap } from '../../util/initMap'
-import { getStormDataMap } from './api'
+import { getStormDataMap, getStormDataList } from './api'
 import { IStormDataMap, IStormDataOfPoint, IStormTableRow } from './type'
 import {
   addStormLayer,
   addTyphoonSymbolSource,
   decimalToDMS,
   formatDate,
+  generateStormHistoryTableData,
   generateStormTableData,
   updateTyphoonSymbol,
 } from './util'
@@ -25,7 +26,7 @@ const activateStormTableData: Ref<null | IStormTableRow[]> = ref(null)
 
 const selectHistoryTableData = computed(() => {
   if (selectStormName.value && activateStormDataMap.value) {
-    return generateStormTableData(
+    return generateStormHistoryTableData(
       activateStormDataMap.value[selectStormName.value].slice().reverse(),
     )
   } else {
@@ -65,11 +66,17 @@ watch(selectPointID, () => {
 })
 
 onMounted(async () => {
-  activateStormDataMap.value = await getStormDataMap()
-  selectStormName.value = Object.keys(activateStormDataMap.value)[0]
-  activateStormTableData.value = generateStormTableData(
-    Object.values(activateStormDataMap.value).map((value) => value[0]),
+  const stormDataList = await getStormDataList()
+  activateStormDataMap.value = await getStormDataMap(
+    stormDataList
+      .filter((value) => value.isactive === '1')
+      .map((value) => value.tfid),
   )
+  selectStormName.value = Object.keys(activateStormDataMap.value)[0]
+  selectPointID.value = (
+    activateStormDataMap.value![selectStormName.value].length - 1
+  ).toString()
+  activateStormTableData.value = generateStormTableData(stormDataList)
 
   const map: mapbox.Map = await initMap(
     mapContainerRef.value as HTMLDivElement,
@@ -114,7 +121,7 @@ onMounted(async () => {
       <div ref="mapContainerRef" class="map-container h-full w-full" />
     </div>
     <div class="bg-white w-[21rem] flex flex-col">
-      <div class="h-48 m-2 border border-zinc-300 bg-white flex flex-col">
+      <div class="h-52 m-2 border border-zinc-300 bg-white flex flex-col">
         <div class="h-10 leading-10 px-3 bg-[#1b6ec8] text-white">实时信息</div>
         <div v-if="activateStormTableData?.length !== 0">
           <div class="mx-2 my-1 flex flex-col">
@@ -178,8 +185,7 @@ onMounted(async () => {
             @current-change="handleActivateTableSelectionChange"
           >
             <el-table-column prop="name" label="名称" />
-            <el-table-column prop="powerAndStrong" label="强度" />
-            <el-table-column prop="speed" label="风速" />
+            <el-table-column prop="startTime" label="开始时间" />
           </el-table>
         </div>
       </div>
@@ -191,7 +197,7 @@ onMounted(async () => {
             border
             table-layout="auto"
             :data="selectHistoryTableData"
-            class="h-[37vh]"
+            class="h-[40vh]"
             @current-change="handleHistoryTableSelectionChange"
           >
             <el-table-column prop="time" label="时间" />
