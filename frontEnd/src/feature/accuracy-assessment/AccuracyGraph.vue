@@ -50,9 +50,9 @@ onMounted(async () => {
   waterSituationData.value = await getStationPredictionTideSituation(
     stationStore.currentStationID as any,
   )
+  echart = initEcharts(echartsRef)
   stationTable.value = await getAccurateAssessmentTable()
   if (isStationDataExist.value) {
-    echart = initEcharts(echartsRef)
     drawEcharts(
       echart,
       waterSituationData.value,

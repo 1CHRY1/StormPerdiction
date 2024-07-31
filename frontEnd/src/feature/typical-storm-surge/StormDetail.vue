@@ -73,8 +73,8 @@ onMounted(async () => {
   waterSituationData.value = await getStationHistoryTide(
     stationStore.currentStationID as any,
   )
+  echart = initEcharts(echartsRef)
   if (isStationDataExist.value) {
-    echart = initEcharts(echartsRef)
     drawEcharts(
       echart,
       waterSituationData.value,

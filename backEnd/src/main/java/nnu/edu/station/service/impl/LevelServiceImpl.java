@@ -80,9 +80,10 @@ public class LevelServiceImpl implements LevelService {
         }
         LocalDateTime currentTime = LocalDateTime.now();
         LocalDateTime threeDaysAgo = currentTime.minusDays(3);
-        JSONObject jsonResponse = new JSONObject();
+        JSONObject jsonResponse;
         if (name.equals("江阴") || name.equals("徐六泾") || name.equals("连兴港") || name.equals("六滧")){
             url = url_time + "/" + threeDaysAgo.atZone(ZoneOffset.UTC).toInstant().getEpochSecond()*1000 + "/" + currentTime.atZone(ZoneOffset.UTC).toInstant().getEpochSecond()*1000;
+            System.out.println(url);
             jsonResponse = HttpUtil.GetRealData4Station(url);
             // 获取实时监测数据
             JSONArray realDataList = (JSONArray) jsonResponse.get("data");
@@ -94,6 +95,7 @@ public class LevelServiceImpl implements LevelService {
             }
         } else {
             url = url_time + "/" + name + "/" + threeDaysAgo + "/" + currentTime;
+            System.out.println(url);
             jsonResponse = HttpUtil.GetRealData(url);
             // 获取实时监测数据
             JSONArray realDataList = (JSONArray) jsonResponse.get("data");
