@@ -358,7 +358,7 @@ onMounted(async () => {
     layout: {
       'icon-image': 'tide-station-marker',
       'icon-size': 0.13,
-      // 'icon-allow-overlap': true,
+      'icon-allow-overlap': true,
       'text-field': ['get', 'name'],
       'text-font': ['Open Sans Semibold', 'Arial Unicode MS Bold'],
       'text-offset': [0, 1.0],
