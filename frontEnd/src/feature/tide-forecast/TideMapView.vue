@@ -21,6 +21,7 @@ import flowLegend from '../../components/legend/flowLegend.vue'
 import timeShower from '../../components/legend/timeShower.vue'
 import controller from '../../components/legend/controller.vue'
 import TideGraph from './TideGraph.vue'
+import tideLineChart from '../../components/tideLineChart.vue'
 
 const isPopup: Ref<boolean> = ref(false)
 const x: Ref<number> = ref(0)
@@ -320,6 +321,57 @@ onMounted(async () => {
 
   addLayer(map)
 
+  ////// add tide station
+  const tide_station_geojson = {
+    "type": "FeatureCollection",
+    "features": [
+      {
+        "type": "Feature",
+        "properties": {
+          "name": "吴淞",
+          "en_name": "wusong",
+        },
+        "geometry": {
+          "coordinates": [
+            121.37, 31.38
+          ],
+          "type": "Point"
+        }
+      }
+    ]
+  }
+
+  const image = await new Promise((resolve) => {
+    map.loadImage('/png/tide.png', (_, image) => {
+      resolve(image)
+    })
+  })
+  map.addImage('tide-station-marker', image as any)
+  map.addSource('tide-station-source',{
+    type: 'geojson',
+    data: tide_station_geojson as any
+  })
+  map.addLayer({
+    id: 'tide-station',
+    source: 'tide-station-source',
+    type: 'symbol',
+    layout: {
+      'icon-image': 'tide-station-marker',
+      'icon-size': 0.13,
+      // 'icon-allow-overlap': true,
+      'text-field': ['get', 'name'],
+      'text-font': ['Open Sans Semibold', 'Arial Unicode MS Bold'],
+      'text-offset': [0, 1.0],
+      'text-anchor': 'top',
+      'text-size': 18,
+    },
+    paint: {
+      'text-color': '#e2e8f0',
+    },
+  })
+
+
+
   map.on('click', (event: mapbox.MapMouseEvent) => {
     const box: [[number, number], [number, number]] = [
       [event.point.x - 3, event.point.y - 3],
@@ -431,24 +483,24 @@ watchEffect(() => {
     timeStep.value = flow.currentResourcePointer
 })
 
-const getProgressValue_flow = (e) => {
+const getProgressValue_flow = (e: any) => {
   flowProgress_flow.value = e
   flow.setProgress(flowProgress_flow.value)
 }
-const getParticleNumValue_flow = (e) => {
+const getParticleNumValue_flow = (e: any) => {
   flow.particleNum.n = e;
 }
-const getSpeedValue_flow = (e) => {
+const getSpeedValue_flow = (e: any) => {
   flow.speedFactor.n = e;
 }
-const getProgressValue_wind = (e) => {
+const getProgressValue_wind = (e: any) => {
   flowProgress_wind.value = e
   wind.setProgress(flowProgress_wind.value)
 }
-const getParticleNumValue_wind = (e) => {
+const getParticleNumValue_wind = (e: any) => {
   wind.particleNum.n = e;
 }
-const getSpeedValue_wind = (e) => {
+const getSpeedValue_wind = (e: any) => {
   wind.speedFactor.n = e;
 }
 
@@ -513,6 +565,10 @@ const getSpeedValue_wind = (e) => {
     @particle-num-value="getParticleNumValue_wind" @progress-value="getProgressValue_wind"
     @speed-value="getSpeedValue_wind">
   </controller>
+
+  <div class="tide-line-chart-block" v-show="selectedLayer == 1">
+    <tideLineChart :progress="flowProgress_flow"></tideLineChart>
+  </div>
 </template>
 
 <style scoped>
@@ -665,5 +721,12 @@ const getSpeedValue_wind = (e) => {
 .radio-label {
   font-size: calc(0.7vh + 0.5vw);
   /*   font-weight: bold; */
+}
+
+.tide-line-chart-block {
+  position: absolute;
+  bottom: 3.3vh;
+  left: .5vw;
+  z-index: 3;
 }
 </style>
