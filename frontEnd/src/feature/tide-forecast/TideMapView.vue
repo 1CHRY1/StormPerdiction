@@ -22,6 +22,7 @@ import timeShower from '../../components/legend/timeShower.vue'
 import controller from '../../components/legend/controller.vue'
 import TideGraph from './TideGraph.vue'
 import tideLineChart from '../../components/tideLineChart.vue'
+import axios from 'axios'
 
 const isPopup: Ref<boolean> = ref(false)
 const x: Ref<number> = ref(0)
@@ -297,29 +298,30 @@ const typh: Ref<number> = ref(0)
 //   return typh==1?"当前有台风":"当前无台风"
 // })
 const text = computed(() => {
-  return typh.value === 1 ? ' !' : '当前有台风 !'
+  return typh.value === 1 ? ' 当前无台风!' : '当前有台风 !'
 })
 
 onMounted(async () => {
 
+  const typhJudge = (await axios.get('/api/v1/data/level/typh')).data.data
+  typh.value = typhJudge === null ? 1 : 0
+
+
   // typh.value = (await axios.get(`/api/v1/data/level/typh`)).data.data
-  typh.value = 0;
+  // typh.value = 1;
 
   const map: mapbox.Map = await initScrMap(mapContainerRef.value!, [120.55, 32.08], 6.5)
   ElMessage({
     message: '地图加载完毕',
     type: 'success',
   })
-  map.addLayer(wind as mapboxgl.AnyLayer)
+  await addLayer(map)
+
+  map.addLayer(wind as mapboxgl.AnyLayer, 'stations')
   wind.hide()
-  map.addLayer(flow as mapboxgl.AnyLayer)
+  map.addLayer(flow as mapboxgl.AnyLayer, 'stations')
   flow.hide()
 
-  window.addEventListener('keydown', (e) => {
-    if (e.key === '\\') console.log(map)
-  })
-
-  addLayer(map)
 
   ////// add tide station
   const tide_station_geojson = {
@@ -333,7 +335,7 @@ onMounted(async () => {
         },
         "geometry": {
           "coordinates": [
-            121.37, 31.38
+            121.4908778, 31.43670452
           ],
           "type": "Point"
         }
@@ -347,7 +349,7 @@ onMounted(async () => {
     })
   })
   map.addImage('tide-station-marker', image as any)
-  map.addSource('tide-station-source',{
+  map.addSource('tide-station-source', {
     type: 'geojson',
     data: tide_station_geojson as any
   })
