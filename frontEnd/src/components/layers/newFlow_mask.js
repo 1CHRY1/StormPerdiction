@@ -126,6 +126,7 @@ export default class SteadyFlowLayer {
     }
 
     render(gl, matrix) {
+        if(this.id === 'flow') console.log(this.currentResourcePointer)
         // Ask map to repaint
         this.map.triggerRepaint()
 

@@ -213,8 +213,6 @@ const getTideLineDataOption = async (dataUrl) => {
             // type: 'slider',//类型,滑动块插件
             type: 'inside',
             show: true,//是否显示下滑块
-            start: 0,
-            end: 0
         },
         tooltip: {
             trigger: 'axis',
@@ -235,6 +233,43 @@ const getTideLineDataOption = async (dataUrl) => {
                 fontWeight: 'bold',
             },
         },
+        series: [
+            {
+                name: '潮位',
+                data: zData,
+                type: 'line',
+                smooth: true,
+                markLine: {
+                    symbolSize: 5,
+                    itemStyle: {
+                        normal: {
+                            color: 'rgb(94, 208, 251)',
+                            borderColor: 'black',
+                            borderWidth: 0.5,
+                        },
+                    },
+                    lineStyle: {
+                        color: 'red',
+                        opacity: 0.8,
+                        width: 3,
+                    },
+                    data: [
+                        {
+                            name: 'timeStep',
+                            xAxis: parseFloat(0),
+                            label: {
+                                formatter: `0`,
+                                backgroundColor: 'rgb(208, 236, 255)',
+                                color: 'red',
+                                fontSize: '15px',
+                                position: 'end',
+                                offset: [0, 10],
+                            },
+                        },
+                    ],
+                },
+            },
+        ]
     }
     return {
         option: tideLineOption,
@@ -268,22 +303,53 @@ onMounted(async () => {
                 data: zData,
                 type: 'line',
                 smooth: true,
+                markLine: {
+                    symbolSize: 5,
+                    itemStyle: {
+                        normal: {
+                            color: 'rgb(94, 208, 251)',
+                            borderColor: 'black',
+                            borderWidth: 0.5,
+                        },
+                    },
+                    lineStyle: {
+                        color: '#12c791',
+                        opacity: 0.8,
+                        width: 3,
+                    },
+                    data: [
+                        {
+                            name: 'timeStep',
+                            xAxis: parseFloat(props.timeStep),
+                            label: {
+                                formatter: `${parseFloat(props.timeStep)}`,
+                                backgroundColor: 'rgb(208, 236, 255)',
+                                color: '#12c791',
+                                fontSize: '15px',
+                                position: 'end',
+                                offset: [0, 10],
+                            },
+                        },
+                    ],
+                },
             },
         ]
     }
-    chartIns.setOption(opt)
 
     watch(() => props.progress, (newVal) => {
-        console.log('progress changed', newVal)
-        chartIns.dispatchAction({
-            type: 'dataZoom',
-            // // 开始位置的百分比，0 - 100
-            // start: newVal - 5 <= 0 ? 0 : newVal - 5,
-            // // 结束位置的百分比，0 - 100
-            // end: newVal + 5 >= 100 ? 100 : newVal + 5,
-            start: newVal - 10 <= 0 ? 0 : newVal - 10,
-            end: newVal >= 100 ? 100 : newVal,
-        })
+        // console.log('progress changed', newVal)
+        // chartIns.dispatchAction({
+        //     type: 'dataZoom',
+        //     // // 开始位置的百分比，0 - 100
+        //     // start: newVal - 5 <= 0 ? 0 : newVal - 5,
+        //     // // 结束位置的百分比，0 - 100
+        //     // end: newVal + 5 >= 100 ? 100 : newVal + 5,
+        //     start: newVal - 10 <= 0 ? 0 : newVal - 10,
+        //     end: newVal >= 100 ? 100 : newVal,
+        // })
+        option.series[0].markLine.data[0].xAxis = parseFloat(newVal)
+        option.series[0].markLine.data[0].label.formatter = `${parseFloat(newVal)}`
+        chartIns.setOption(option)
     })
 
 
@@ -295,8 +361,8 @@ onMounted(async () => {
 <style scoped>
 .tide-line-chart {
     position: relative;
-    width: 24vw;
-    height: 32vh;
+    width: 20vw;
+    height: 28vh;
     background-color: rgb(36, 36, 36);
     display: flex;
     flex-direction: column;
@@ -308,8 +374,8 @@ onMounted(async () => {
 
 .title {
     position: relative;
-    width: 24vw;
-    height: 4.5vh;
+    width: 20vw;
+    height: 4vh;
     background-color: rgb(63, 100, 144);
     display: flex;
     flex-direction: row;
@@ -339,8 +405,8 @@ onMounted(async () => {
 .content {
     position: relative;
     background-color: rgb(36, 36, 36);
-    width: 24vw;
-    height: 27.5vh;
+    width: 20vw;
+    height: 24vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -349,8 +415,8 @@ onMounted(async () => {
 
 .content>#tideChart {
     position: relative;
-    width: 23.2vw;
-    height: 26.1vh;
+    width: 19.5vw;
+    height: 23vh;
     border-radius: 10px;
     background-color: rgb(206, 206, 206);
 }

@@ -127,7 +127,7 @@ let flow = reactive(new lastFlow_mask(
   (url: any) => url.match(/uv_(\d+)\.bin/)[1],
   '/ffvsrc/flowbound2.geojson',
 ))
-flow.speedFactor.n = 3.0;
+flow.speedFactor.n = 7.0;
 
 
 const flowMaxSpeedRef: Ref<Number> = ref(0)
@@ -187,13 +187,15 @@ watch(selectedLayer, async (now: null | number, old: null | number) => {
       })
       break
     default:
+      console.log('do nothing')
       break
   }
 
   // 同步progress
   let index = Math.floor(timeStep.value / wind.uvUrlList.length * 100)
-  if (index < 1) index = index - 1 + 100
-  else index = index - 1
+  // if (index < 1) index = index - 1 + 100
+  // else index = index - 1
+  if (index > 1) index = index - 1
 
 
 
@@ -569,7 +571,7 @@ const getSpeedValue_wind = (e: any) => {
   </controller>
 
   <div class="tide-line-chart-block" v-show="selectedLayer == 1">
-    <tideLineChart :progress="flowProgress_flow"></tideLineChart>
+    <tideLineChart :progress="timeStep"></tideLineChart>
   </div>
 </template>
 
