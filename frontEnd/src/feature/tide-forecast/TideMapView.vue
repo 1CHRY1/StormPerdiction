@@ -300,17 +300,14 @@ const typh: Ref<number> = ref(0)
 //   return typh==1?"当前有台风":"当前无台风"
 // })
 const text = computed(() => {
-  return typh.value === 1 ? ' 当前无台风!' : '当前有台风 !'
+  return typh.value === 1 ? ' 当前有台风!' : '当前无台风 !'
 })
 
 onMounted(async () => {
 
   const typhJudge = (await axios.get('/api/v1/data/level/typh')).data.data
-  typh.value = typhJudge === null ? 1 : 0
+  typh.value = typhJudge === null ? 0 : 1
 
-
-  // typh.value = (await axios.get(`/api/v1/data/level/typh`)).data.data
-  // typh.value = 1;
 
   const map: mapbox.Map = await initScrMap(mapContainerRef.value!, [120.55, 32.08], 6.5)
   ElMessage({
