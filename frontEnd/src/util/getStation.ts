@@ -1,3 +1,4 @@
+import { AnyPaint } from 'mapbox-gl'
 import { stationInfo } from '../asset/stationInfo.ts'
 import { TToday } from './type.ts'
 
@@ -12,8 +13,7 @@ const getStation = async (type: TToday) => {
 export const generateStationGeoJson = async (type: TToday) => {
   const geojson = (await fetch('/geojson/station.geojson')
     .then((res) => res.json())
-    .then((value) => value)) as any
-
+    .then((value) => value)) as AnyPaint
   const stationList = await getStation(type)
   const result = {
     type: 'FeatureCollection',

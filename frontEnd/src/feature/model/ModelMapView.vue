@@ -3,246 +3,25 @@ import axios from 'axios'
 import { ElMessage } from 'element-plus'
 import mapbox from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
-import { Ref, computed, onMounted, ref, watch } from 'vue'
-import {
-  addWaterLayer,
-  addWaterLayer2,
-  floww,
-  prepareAddWaterLayer,
-  prepareAddWaterLayer2,
-  windd,
-} from '../../components/LayerFromWebGPU'
+import { Ref, onMounted, ref } from 'vue'
 import { router } from '../../router'
-import { useMapStore } from '../../store/mapStore'
 import { useModelStore } from '../../store/modelStore'
 import { useStationStore } from '../../store/stationStore'
-import { initScratchMap2 } from '../../util/initMap'
+import { initMap } from '../../util/initMap'
 import { getWaterModelStatus, runWaterModel } from './api'
 import { addLayer } from './util'
 
-const radio: Ref<HTMLDivElement | null> = ref(null)
-const radio2: Ref<HTMLDivElement | null> = ref(null)
-const mapStore = useMapStore()
 const stationStore = useStationStore()
 const mapContainerRef: Ref<HTMLDivElement | null> = ref(null)
 const modelStore = useModelStore()
-const radioOptions = [
-  { label: '风场', value: 0 },
-  { label: '流场', value: 1 },
-  // { label: '增水场', value: 2 }
-]
-const optt = { label: '增水场', value: 2 }
-const selectedLayer: Ref<null | number> = ref(null)
-const contourDATA: Ref<null | Object> = ref(null)
 
-let adwtid = 0
-const adwtTicker: Ref<number> = ref(0)
-const adwtHandler = async (addwaterCount: number) => {
-  const addWaterID = addwaterCount
-  const addWaterSrcIds = ['pngsource', 'contourSrc']
-  // remove
-  const addWaterLayerIds = ['addWater', 'contourLayer', 'contourLabel']
-  // remove
-  addWaterLayerIds.forEach((layerid) => {
-    mapStore.map!.getLayer(layerid) && mapStore.map!.removeLayer(layerid)
-  })
-  addWaterSrcIds.forEach((srcid) => {
-    mapStore.map!.getSource(srcid) && mapStore.map!.removeSource(srcid)
-  })
-  // add
-  contourDATA.value = await prepareAddWaterLayer(mapStore.map!, addWaterID)
-  addWaterLayer(mapStore.map!, addWaterID)
-}
-const adwtHandler2 = async (addwaterCount: number) => {
-  const addWaterID = addwaterCount
-  const addWaterSrcIds = ['pngsource2', 'contourSrc2']
-  const addWaterLayerIds = ['addWater2', 'contourLayer2', 'contourLabel2']
-  // remove
-  addWaterLayerIds.forEach((layerid) => {
-    mapStore.map!.getLayer(layerid) && mapStore.map!.removeLayer(layerid)
-  })
-  addWaterSrcIds.forEach((srcid) => {
-    mapStore.map!.getSource(srcid) && mapStore.map!.removeSource(srcid)
-  })
-  // add
-  contourDATA.value = await prepareAddWaterLayer2(mapStore.map!, addWaterID)
-  addWaterLayer2(mapStore.map!, addWaterID)
-}
 
-const wind = new windd() as mapboxgl.AnyLayer
-const flow = new floww() as mapboxgl.AnyLayer
 
-watch(selectedLayer, async (now: null | number, old: null | number) => {
-  // clear
-  if (!mapStore.map) {
-    ElMessage({
-      message: '地图尚未加载完毕，请等待..',
-      type: 'warning',
-    })
-    return
-  }
-
-  switch (old) {
-    case 0:
-      // if (mapStore.map!.getLayer('WindLayer9711'))
-      //   mapStore.map!.removeLayer('WindLayer9711')
-      wind.hide()
-
-      break
-    case 1:
-      // if (mapStore.map!.getLayer('FlowLayer9711'))
-      //   mapStore.map!.removeLayer('FlowLayer9711')
-      flow.hide()
-      break
-    case 2:
-      clearInterval(adwtTicker.value)
-      const addWaterSrcIds = [
-        'pngsource',
-        'contourSrc',
-        'pngsource2',
-        'contourSrc2',
-      ]
-      const addWaterLayerIds = [
-        'addWater',
-        'contourLayer',
-        'contourLabel',
-        'addWater2',
-        'contourLayer2',
-        'contourLabel2',
-      ]
-
-      addWaterLayerIds.forEach((layerid) => {
-        mapStore.map!.getLayer(layerid) && mapStore.map!.removeLayer(layerid)
-      })
-      addWaterSrcIds.forEach((srcid) => {
-        mapStore.map!.getSource(srcid) && mapStore.map!.removeSource(srcid)
-      })
-
-      // adwtTicker&&clearInterval(adwtTicker)
-
-      break
-    default:
-      break
-  }
-
-  // addding
-  switch (now) {
-    case 0:
-      ElMessage({
-        offset: 50,
-        message: '正在加载风场...',
-      })
-      // mapStore.map!.addLayer(new WindLayer9711() as mapboxgl.AnyLayer);
-      // mapStore.map!.addLayer(new wind9711() as mapboxgl.AnyLayer)
-      // mapStore.map!.addLayer(new wind() as mapboxgl.AnyLayer)
-      wind.show()
-
-      mapStore.map!.flyTo({
-        center: [122.92069384160902, 33.5063086220937],
-        zoom: 5.184918089769568,
-        duration: 500,
-      })
-      break
-    case 1:
-      ElMessage({
-        offset: 50,
-        message: '正在加载流场...',
-      })
-      // mapStore.map!.addLayer(new FlowLayer9711() as mapboxgl.AnyLayer);
-      // mapStore.map!.addLayer(new flow9711() as mapboxgl.AnyLayer)
-      // mapStore.map!.addLayer(new flow() as mapboxgl.AnyLayer)
-      flow.show()
-
-      mapStore.map!.flyTo({
-        center: [122.92069384160902, 32.0063086220937],
-        zoom: 7.512044631152661,
-        duration: 500,
-      })
-      break
-    case 2:
-      ElMessage({
-        offset: 50,
-        message: '正在加载增水场...',
-      })
-
-      mapStore.map!.flyTo({
-        center: [122.92069384160902, 32.0063086220937],
-        zoom: 6.912044631152661,
-        duration: 500,
-      })
-
-      // adwtTicker = adwtHandeler()
-      // static
-      // let addWaterID = 26
-      // let addWaterSrcIds = ['pngsource', 'contourSrc']
-      // if (mapStore.map!.getSource(addWaterSrcIds[0]) && mapStore.map!.getSource(addWaterSrcIds[1]))
-      //   addWaterLayer(mapStore.map!, addWaterID)
-      // else {
-      //   mapStore.map!.getSource(addWaterSrcIds[0]) && mapStore.map!.removeSource(addWaterSrcIds[0])
-      //   mapStore.map!.getSource(addWaterSrcIds[1]) && mapStore.map!.removeSource(addWaterSrcIds[1])
-      //   contourDATA.value = await prepareAddWaterLayer(mapStore.map!, addWaterID)
-      //   addWaterLayer(mapStore.map!, addWaterID)
-      // }
-      adwtid = 4
-      adwtTicker.value = setInterval(() => {
-        adwtid % 2 && adwtHandler(adwtid)
-        !(adwtid % 2) && adwtHandler2(adwtid)
-
-        adwtid = (adwtid + 1) % 195
-      }, 3000)
-
-      break
-    default:
-      break
-  }
-})
-
-const closeHandeler = () => {
-  wind.hide()
-  flow.hide()
-
-  adwtTicker.value && clearInterval(adwtTicker.value)
-  const addWaterSrcIds = [
-    'pngsource',
-    'contourSrc',
-    'pngsource2',
-    'contourSrc2',
-  ]
-  const addWaterLayerIds = [
-    'addWater',
-    'contourLayer',
-    'contourLabel',
-    'addWater2',
-    'contourLayer2',
-    'contourLabel2',
-  ]
-  addWaterLayerIds.forEach((layerid) => {
-    mapStore.map!.getLayer(layerid) && mapStore.map!.removeLayer(layerid)
-  })
-  addWaterSrcIds.forEach((srcid) => {
-    mapStore.map!.getSource(srcid) && mapStore.map!.removeSource(srcid)
-  })
-
-  selectedLayer.value = null
-
-  radio2!.value!.checked = false
-  radio.value.forEach((element) => {
-    element.checked = false
-  })
-
-  // (radio.value![0]! as any).checked = false
-  // (radio.value![1]! as any).checked = false
-  // (radio.value![2]! as any).checked = false
-}
 
 const typh: Ref<number> = ref(0)
 // const text = computed(typh,()=>{
 //   return typh==1?"当前有台风":"当前无台风"
 // })
-const text = computed(() => {
-  return typh.value == 1 ? '当前有台风' : '当前无台风'
-})
-
 const runModel = async () => {
   console.log('run model')
   const status = await runWaterModel()
@@ -292,7 +71,8 @@ onMounted(async () => {
   typh.value = (await axios.get(`/api/v1/data/level/typh`)).data.data
   // typh.value = 1;
 
-  const map: mapbox.Map = await initScratchMap2(mapContainerRef.value)
+  const map = await initMap(mapContainerRef.value!, { center: [120.55, 32.08], zoom: 6.5, })
+
   ElMessage({
     message: '地图加载完毕',
     type: 'success',
@@ -364,44 +144,6 @@ onMounted(async () => {
     </div>
   </div>
   <div ref="mapContainerRef" class="map-container h-full w-full" />
-  <canvas id="GPUFrame" class="playground"></canvas>
-  <!-- <radioVue></radioVue> -->
-  <!-- <div class="card">
-    <div class="imge">
-      <div class="title">图层控制</div>
-    </div>
-
-    <div class="Description">
-      <div class="typh">{{ text }}</div>
-      <div class="radio-buttons">
-        <label
-          v-for="opt in radioOptions"
-          :key="opt.value"
-          class="radio-button"
-        >
-          <input ref="radio" type="radio" name="option" :value="opt.value" />
-          <div class="radio-circle" @click="selectedLayer = opt.value"></div>
-          <span class="radio-label" @click="selectedLayer = opt.value">{{
-            opt.label
-          }}</span>
-        </label>
-        <label v-show="typh" class="radio-button">
-          <input ref="radio2" type="radio" name="option" :value="optt.value" />
-          <div class="radio-circle" @click="selectedLayer = optt.value"></div>
-          <span class="radio-label" @click="selectedLayer = optt.value">{{
-            optt.label
-          }}</span>
-        </label>
-      </div>
-    </div>
-    <div class="imge2">
-      <div class="close" @click="closeHandeler">关闭所有</div>
-    </div>
-  </div>
-  <adwtLegend
-    v-show="selectedLayer == 2"
-    :contour-data="contourDATA"
-  ></adwtLegend> -->
 </template>
 
 <style scoped>

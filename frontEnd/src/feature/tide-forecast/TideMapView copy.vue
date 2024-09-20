@@ -6,13 +6,16 @@ import { Ref, computed, onMounted, ref, watch, reactive, watchEffect, onUnmounte
 import {
   addWaterLayer,
   addWaterLayer2,
+  // floww,
   prepareAddWaterLayer,
   prepareAddWaterLayer2,
+  // windd,
+  lastFlow_mask
 } from '../../components/LayerFromWebGPU'
 import { router } from '../../router'
 import { useMapStore } from '../../store/mapStore'
 import { useStationStore } from '../../store/stationStore'
-import { initMap } from '../../util/initMap'
+import { initScrMap } from '../../util/initMap'
 import { addLayer } from './util'
 import flowLegend from '../../components/legend/flowLegend.vue'
 import timeShower from '../../components/legend/timeShower.vue'
@@ -20,10 +23,6 @@ import controller from '../../components/legend/controller.vue'
 import TideGraph from './TideGraph.vue'
 import tideLineChart from '../../components/tideLineChart.vue'
 import axios from 'axios'
-
-import WebGLFlowLayer from '../../components/webgl/flowLayerWithMask'
-import { config_normalWind, config_normalFlow } from '../../components/webgl/config'
-
 
 const isPopup: Ref<boolean> = ref(false)
 const x: Ref<number> = ref(0)
@@ -93,10 +92,42 @@ const adwtHandler = async (addwaterCount: number, swapTag: number) => {
   }
   addRangeRef.value = getAddRange(contourDATA.value)
 }
+//front
+// let windsrc = new Array(40)
+// for (let i = 0; i < 40; i++) {
+//   windsrc[i] = `/ffvsrc/wind/uv_${i}.bin`
+// }
+// let flowsrc = new Array(40)
+// for (let i = 0; i < 40; i++) {
+//   flowsrc[i] = `/ffvsrc/flow/uv_${i}.bin`
+// }
+//back
+let windsrc = new Array(144)
+for (let i = 0; i < 144; i++) {
+  windsrc[i] = `/field/wind/bin?name=uv_${i}.bin`
+}
+let flowsrc = new Array(144)
+for (let i = 0; i < 144; i++) {
+  flowsrc[i] = `/field/flow/bin?name=uv_${i}.bin`
+}
+let wind = reactive(new lastFlow_mask(
+  'wind',
+  // '/ffvsrc/wind/station.bin', //front
+  '/field/wind/bin?name=station.bin',
+  windsrc,
+  (url: any) => url.match(/uv_(\d+)\.bin/)[1],
+  '/ffvsrc/windBound.geojson',
 
-
-let wind = reactive(new WebGLFlowLayer(config_normalWind))
-let flow = reactive(new WebGLFlowLayer(config_normalFlow))
+))
+let flow = reactive(new lastFlow_mask(
+  'flow',
+  // '/ffvsrc/flow/station.bin', //front
+  '/field/flow/bin?name=station.bin',
+  flowsrc,
+  (url: any) => url.match(/uv_(\d+)\.bin/)[1],
+  '/ffvsrc/flowbound2.geojson',
+))
+flow.speedFactor.n = 7.0;
 
 
 const flowMaxSpeedRef: Ref<Number> = ref(0)
@@ -105,8 +136,8 @@ const addRangeRef: Ref<Array<Number>> = ref([0, 0])
 const adwtidRef: Ref<Number> = ref(0)
 
 watchEffect(() => {
-  flowMaxSpeedRef.value = flow.maxSpeed;
-  windMaxSpeedRef.value = wind.maxSpeed;
+  flowMaxSpeedRef.value = flow.maxSpeed.n;
+  windMaxSpeedRef.value = wind.maxSpeed.n;
 })
 
 
@@ -277,7 +308,8 @@ onMounted(async () => {
   const typhJudge = (await axios.get('/api/v1/data/level/typh')).data.data
   typh.value = typhJudge === null ? 0 : 1
 
-  const map = await initMap(mapContainerRef.value!, { center: [120.55, 32.08], zoom: 6.5, })
+
+  const map: mapbox.Map = await initScrMap(mapContainerRef.value!, [120.55, 32.08], 6.5)
   ElMessage({
     message: '地图加载完毕',
     type: 'success',
@@ -409,8 +441,14 @@ onMounted(async () => {
 
 
 const removeFieldResource = () => {
+  if (mapStore.map) {
+    mapStore.map.removeLayer('flow')
+    mapStore.map.removeLayer('wind')
+  }
   flow.destroy()
   wind.destroy()
+  flow = null
+  wind = null
   console.log('destroy');
 
 }
@@ -432,10 +470,10 @@ watchEffect(() => {
   flowProgress_flow.value = Math.floor(progress_flow * 100)
 
   //maxspeed
-  flowMaxSpeedRef.value = flow.maxSpeed
+  flowMaxSpeedRef.value = flow.maxSpeed.n
 
 
-  windMaxSpeedRef.value = wind.maxSpeed
+  windMaxSpeedRef.value = wind.maxSpeed.n
   let progress_wind = wind.currentResourcePointer / wind.uvUrlList.length
   flowProgress_wind.value = Math.floor(progress_wind * 100)
 
@@ -451,26 +489,27 @@ const getProgressValue_flow = (e: any) => {
   flow.setProgress(flowProgress_flow.value)
 }
 const getParticleNumValue_flow = (e: any) => {
-  flow.particleNum = e;
+  flow.particleNum.n = e;
 }
 const getSpeedValue_flow = (e: any) => {
-  flow.speedFactor = e;
+  flow.speedFactor.n = e;
 }
 const getProgressValue_wind = (e: any) => {
   flowProgress_wind.value = e
   wind.setProgress(flowProgress_wind.value)
 }
 const getParticleNumValue_wind = (e: any) => {
-  wind.particleNum = e;
+  wind.particleNum.n = e;
 }
 const getSpeedValue_wind = (e: any) => {
-  wind.speedFactor = e;
+  wind.speedFactor.n = e;
 }
 
 </script>
 
 <template>
   <div ref="mapContainerRef" class="map-container h-full w-full" />
+  <canvas id="GPUFrame" class="playground"></canvas>
   <!-- <radioVue></radioVue> -->
   <div class="card">
     <div class="imge">
@@ -518,12 +557,12 @@ const getSpeedValue_wind = (e: any) => {
 
 
   <controller v-show="selectedLayer == 1" :flow-progress="flowProgress_flow" :max-particle-num="flow.maxParticleNum"
-    :now-particle-num="flow.particleNum" :now-speed="flow.speedFactor" :max-speed="flow.maxSpeed"
+    :now-particle-num="flow.particleNum.n" :now-speed="flow.speedFactor.n" :max-speed="10.0"
     @particle-num-value="getParticleNumValue_flow" @progress-value="getProgressValue_flow"
     @speed-value="getSpeedValue_flow">
   </controller>
   <controller v-show="selectedLayer == 0" :flow-progress="flowProgress_wind" :max-particle-num="wind.maxParticleNum"
-    :now-particle-num="wind.particleNum" :now-speed="wind.speedFactor" :max-speed="wind.maxSpeed"
+    :now-particle-num="wind.particleNum.n" :now-speed="wind.speedFactor.n" :max-speed="10.0"
     @particle-num-value="getParticleNumValue_wind" @progress-value="getProgressValue_wind"
     @speed-value="getSpeedValue_wind">
   </controller>

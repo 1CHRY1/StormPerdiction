@@ -523,6 +523,7 @@ export const drawEcharts_cover = async (
 export const addLayer = async (map: mapbox.Map) => {
   // const geojson = await generateStationGeoJsonNomaanshan()
   const geojson = await generateStationGeoJson('forecast')
+  console.log(geojson)
   map.addSource('stations', {
     type: 'geojson',
     data: geojson as any,
