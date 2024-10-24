@@ -1,1 +1,0 @@
-(function(){"use strict";self.addEventListener("message",n=>{const{url:e,workerIndex:o}=n.data;t(e)});function t(n){fetch(n).then(e=>e.blob()).then(e=>createImageBitmap(e,{imageOrientation:"none",premultiplyAlpha:"none",colorSpaceConversion:"default"})).then(e=>{self.postMessage({imageBitmap:e})}).catch(e=>console.error(`Error loading image (url: ${n})`,e))}})();

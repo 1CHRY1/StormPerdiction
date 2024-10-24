@@ -67,17 +67,26 @@ watch(selectPointID, () => {
 
 onMounted(async () => {
   const stormDataList = await getStormDataList()
-  activateStormDataMap.value = await getStormDataMap(
-    stormDataList
-      .filter((value) => value.isactive === '1')
-      .map((value) => value.tfid),
-  )
-  selectStormName.value = Object.keys(activateStormDataMap.value)[0]
-  selectPointID.value = (
-    activateStormDataMap.value![selectStormName.value].length - 1
-  ).toString()
-  activateStormTableData.value = generateStormTableData(stormDataList)
-
+  // 若当前无台风
+  if (stormDataList.length === 0) {
+    // 处理空列表的情况，例如设置默认值或显示提示信息
+    activateStormDataMap.value = {};
+    selectStormName.value = null; // 或者设置为默认值
+    selectPointID.value = '0'; // 或者设置为默认值
+    activateStormTableData.value = []; // 设置为空数组或其他默认值
+  } else {
+    activateStormDataMap.value = await getStormDataMap(
+      stormDataList
+        .filter((value) => value.isactive === '1')
+        .map((value) => value.tfid),
+    )
+    selectStormName.value = Object.keys(activateStormDataMap.value)[0]
+    selectPointID.value = (
+      activateStormDataMap.value![selectStormName.value].length - 1
+    ).toString()
+    activateStormTableData.value = generateStormTableData(stormDataList)
+  }
+  
   const map: mapbox.Map = await initMap(
     mapContainerRef.value as HTMLDivElement,
     {

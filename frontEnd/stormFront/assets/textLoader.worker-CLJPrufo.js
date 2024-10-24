@@ -1,1 +1,0 @@
-(function(){"use strict";self.addEventListener("message",t=>{const{url:e,workerIndex:n}=t.data;s(e)});function s(t){fetch(t).then(e=>e.text()).then(e=>{self.postMessage({text:e})}).catch(e=>console.error("Error loading shader codes:",e))}})();

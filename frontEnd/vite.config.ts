@@ -12,12 +12,13 @@ export default defineConfig({
       '/api': {
         target: 'http://172.21.212.166:9989/api',
         changeOrigin: true,
+        secure: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },
       '/field': {
         target: 'http://172.21.212.166:9989/api/v1/data/nc/field',
         changeOrigin: true,
-        secure: false,
+        secure: true,
         rewrite: (path) => path.replace(/^\/field/, ''),
       },
     },
