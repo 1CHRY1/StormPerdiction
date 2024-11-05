@@ -540,10 +540,10 @@ class FlowLayer {
         // this.uvResourcePointer = value
     }
     get maxSpeed() {
-        return 100
+        return this.flowMaxVelocity
     }
     set maxSpeed(value: number) {
-        // this.flowMaxVelocity = value
+        this.flowMaxVelocity = value
     }
     get speedFactor() {
         return this.velocityFactor
